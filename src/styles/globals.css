@@ -188,35 +188,43 @@ html {
   font-size: var(--font-size);
 }
 
-/* Custom typography for minimal, editorial aesthetic */
+/* Custom Merath Styles */
 @layer base {
-  h1 {
-    font-size: 2.5rem;
+  /* Larger, more dramatic typography for headers */
+  h1.eatable-text {
+    font-size: clamp(2rem, 8vw, 4.5rem);
     font-weight: 400;
-    line-height: 1.2;
+    line-height: 1.1;
     letter-spacing: -0.02em;
   }
 
-  h2 {
-    font-size: 1.75rem;
+  h2.eatable-text {
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
     font-weight: 400;
-    line-height: 1.3;
+    line-height: 1.2;
     letter-spacing: -0.01em;
   }
 
-  h3 {
-    font-size: 1.125rem;
-    font-weight: 500;
+  p.eatable-text {
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+    font-weight: 400;
     line-height: 1.4;
   }
 
-  @media (min-width: 1024px) {
-    h1 {
-      font-size: 3.5rem;
-    }
+  /* RTL support improvements */
+  [dir="rtl"] {
+    text-align: right;
+  }
 
-    h2 {
-      font-size: 2.25rem;
-    }
+  [dir="rtl"] input,
+  [dir="rtl"] textarea {
+    text-align: right;
+  }
+}
+
+/* Smooth transitions for all elements */
+@layer utilities {
+  .transition-all-smooth {
+    transition: all 0.3s ease-in-out;
   }
 }

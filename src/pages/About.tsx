@@ -1,184 +1,210 @@
 import { useState } from 'react';
-import { PageTransition } from '../components/PageTransition';
 import { useLanguage } from '../contexts/LanguageContext';
-import { Button } from '../components/ui/button';
-import { Input } from '../components/ui/input';
-import { Textarea } from '../components/ui/textarea';
-import { ImageWithFallback } from '../components/figma/ImageWithFallback';
+
+const team = [
+  {
+    nameEn: 'Layla Mansour',
+    nameAr: 'ليلى منصور',
+    roleEn: 'Director',
+    roleAr: 'المدير',
+    bioEn: 'Cultural researcher and curator with over fifteen years of experience in heritage preservation and community engagement.',
+    bioAr: 'باحثة ثقافية ومنسقة معارض مع أكثر من خمسة عشر عامًا من الخبرة في الحفاظ على التراث والمشاركة المجتمعية.',
+  },
+  {
+    nameEn: 'Ahmed Hassan',
+    nameAr: 'أحمد حسن',
+    roleEn: 'Research Coordinator',
+    roleAr: 'منسق البحوث',
+    bioEn: 'Historian specializing in oral history methodologies and urban cultural studies.',
+    bioAr: 'مؤرخ متخصص في منهجيات التاريخ الشفوي والدراسات الثقافية الحضرية.',
+  },
+  {
+    nameEn: 'Sara Khalil',
+    nameAr: 'سارة خليل',
+    roleEn: 'Archive Manager',
+    roleAr: 'مدير الأرشيف',
+    bioEn: 'Digital archivist focused on preservation technologies and accessible documentation systems.',
+    bioAr: 'أمين أرشيف رقمي يركز على تقنيات الحفظ وأنظمة التوثيق التي يسهل الوصول إليها.',
+  },
+  {
+    nameEn: 'Omar Khalil',
+    nameAr: 'عمر خليل',
+    roleEn: 'Community Liaison',
+    roleAr: 'ضابط الاتصال المجتمعي',
+    bioEn: 'Community organizer with deep roots in Tripoli, facilitating connections between the foundation and local residents.',
+    bioAr: 'منظم مجتمعي له جذور عميقة في طرابلس، يسهل الاتصالات بين المؤسسة والسكان المحليين.',
+  },
+];
+
+const collaborators = [
+  'American University of Beirut',
+  'Arab Image Foundation',
+  'Lebanese Association for History',
+  'Tripoli Municipality',
+  'Institut Français du Liban',
+  'Goethe-Institut Libanon',
+  'Local Heritage Initiative',
+  'Center for Lebanese Studies',
+  'ALBA (Académie Libanaise des Beaux-Arts)',
+];
 
 export function About() {
-  const { t, language } = useLanguage();
-  const [formData, setFormData] = useState({
+  const { language, t } = useLanguage();
+  const [contactForm, setContactForm] = useState({
     name: '',
     email: '',
-    subject: '',
-    message: ''
+    message: '',
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Contact form submitted:', formData);
+    console.log('Contact form submitted:', contactForm);
+    setContactForm({ name: '', email: '', message: '' });
     alert(language === 'en' ? 'Thank you for your message!' : 'شكراً لرسالتك!');
-    setFormData({ name: '', email: '', subject: '', message: '' });
   };
 
-  const teamMembers = [
-    {
-      name: {
-        en: 'Layla Hassan',
-        ar: 'ليلى حسان'
-      },
-      role: t('about.team.role1'),
-      bio: t('about.team.bio1'),
-      image: 'https://images.unsplash.com/photo-1649589244330-09ca58e4fa64?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwb3J0cmFpdCUyMHdvbWFuJTIwcHJvZmVzc2lvbmFsfGVufDF8fHx8MTc2Mjk4NTQ5Mnww&ixlib=rb-4.1.0&q=80&w=1080'
-    },
-    {
-      name: {
-        en: 'Omar Khalil',
-        ar: 'عمر خليل'
-      },
-      role: t('about.team.role2'),
-      bio: t('about.team.bio2'),
-      image: 'https://images.unsplash.com/photo-1672685667592-0392f458f46f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwb3J0cmFpdCUyMG1hbiUyMHByb2Zlc3Npb25hbHxlbnwxfHx8fDE3NjMwNzI0NTZ8MA&ixlib=rb-4.1.0&q=80&w=1080'
-    },
-    {
-      name: {
-        en: 'Sara Al-Mansour',
-        ar: 'سارة المنصور'
-      },
-      role: t('about.team.role3'),
-      bio: t('about.team.bio3'),
-      image: 'https://images.unsplash.com/photo-1649589244330-09ca58e4fa64?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwb3J0cmFpdCUyMHdvbWFuJTIwcHJvZmVzc2lvbmFsfGVufDF8fHx8MTc2Mjk4NTQ5Mnww&ixlib=rb-4.1.0&q=80&w=1080'
-    }
-  ];
-
-  const collaborators = [
-    { name: 'Cultural Heritage Institute', en: true },
-    { name: 'معهد الدراسات الثقافية', ar: true },
-    { name: 'National Archive Foundation', en: true },
-    { name: 'مؤسسة الأرشيف الوطني', ar: true },
-    { name: 'Urban Research Collective', en: true },
-    { name: 'مركز الأبحاث المعاصرة', ar: true },
-    { name: 'Digital Heritage Lab', en: true },
-    { name: 'جمعية حفظ التراث', ar: true },
-    { name: 'Community Arts Network', en: true },
-    { name: 'شبكة الفنون المجتمعية', ar: true },
-    { name: 'Oral History Association', en: true },
-    { name: 'مركز التاريخ الشفوي', ar: true }
-  ];
-
   return (
-    <PageTransition>
-      <div className="pt-32 pb-24 px-8 max-w-[1400px] mx-auto">
-        <h1 className="mb-16">
+    <div className="pt-32 pb-20 px-6">
+      <div className="max-w-screen-xl mx-auto">
+        <h1 className="eatable-text mb-16">
           {t('about.title')}
         </h1>
 
-        {/* Foundation statement */}
-        <div className="mb-24">
-          <h2 className="mb-8">
+        {/* Mission Statement */}
+        <section className="mb-20 max-w-3xl">
+          <h2 className="eatable-text mb-6">
             {t('about.statement.title')}
           </h2>
-          <div className="max-w-[900px]">
-            <p className="leading-relaxed text-neutral-700">
-              {t('about.statement.text')}
-            </p>
-          </div>
-        </div>
+          <p className="leading-relaxed">
+            {t('about.statement.text')}
+          </p>
+        </section>
 
         {/* Team */}
-        <div className="mb-24">
-          <h2 className="mb-12">
+        <section className="mb-20">
+          <h2 className="eatable-text mb-8">
             {t('about.team.title')}
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-            {teamMembers.map((member, index) => (
-              <div key={index}>
-                <div className="aspect-[3/4] bg-neutral-100 mb-6">
-                  <ImageWithFallback
-                    src={member.image}
-                    alt={member.name[language]}
-                    className="w-full h-full object-cover grayscale"
-                  />
-                </div>
+          <div className="grid md:grid-cols-2 gap-8">
+            {team.map((member, index) => (
+              <div key={index} className="border border-black p-6">
                 <h3 className="mb-1">
-                  {member.name[language]}
+                  {language === 'en' ? member.nameEn : member.nameAr}
                 </h3>
-                <p className="text-sm text-neutral-500 mb-4">
-                  {member.role}
+                <p className="opacity-60 mb-3">
+                  {language === 'en' ? member.roleEn : member.roleAr}
                 </p>
-                <p className="text-sm leading-relaxed text-neutral-600">
-                  {member.bio}
+                <p>
+                  {language === 'en' ? member.bioEn : member.bioAr}
                 </p>
               </div>
             ))}
           </div>
-        </div>
+        </section>
 
         {/* Collaborators */}
-        <div className="mb-24">
-          <h2 className="mb-12">
+        <section className="mb-20">
+          <h2 className="eatable-text mb-8">
             {t('about.collaborators.title')}
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {collaborators.map((collaborator, index) => (
               <div
                 key={index}
-                className="py-4 border-b border-neutral-200 text-sm text-neutral-600"
+                className="border border-black p-4 text-center flex items-center justify-center min-h-24"
               >
-                {collaborator.name}
+                {collaborator}
               </div>
             ))}
           </div>
-        </div>
+        </section>
 
-        {/* Contact form */}
-        <div>
-          <h2 className="mb-4">
+        {/* Contact */}
+        <section className="max-w-3xl">
+          <h2 className="eatable-text mb-8">
             {t('about.contact.title')}
           </h2>
-          <p className="mb-8 max-w-[600px] text-neutral-600 leading-relaxed">
-            {t('about.contact.description')}
-          </p>
-          <div className="max-w-[600px]">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Input
+
+          <div className="grid md:grid-cols-2 gap-12 mb-12">
+            <div>
+              <h3 className="mb-3">
+                {t('about.contact.email')}
+              </h3>
+              <a 
+                href="mailto:info@merath.org"
+                className="underline hover:opacity-50 transition-opacity"
+              >
+                info@merath.org
+              </a>
+
+              <h3 className="mb-3 mt-8">
+                {t('about.contact.social')}
+              </h3>
+              <div className="space-y-2">
+                <a 
+                  href="#" 
+                  className="block underline hover:opacity-50 transition-opacity"
+                >
+                  Instagram
+                </a>
+                <a 
+                  href="#" 
+                  className="block underline hover:opacity-50 transition-opacity"
+                >
+                  Facebook
+                </a>
+              </div>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block mb-2">
+                  {t('about.contact.form.name')}
+                </label>
+                <input
                   type="text"
-                  placeholder={t('about.form.name')}
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  required
-                />
-                <Input
-                  type="email"
-                  placeholder={t('about.form.email')}
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  value={contactForm.name}
+                  onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
+                  className="w-full border border-black px-4 py-2"
                   required
                 />
               </div>
-              <Input
-                type="text"
-                placeholder={t('about.form.subject')}
-                value={formData.subject}
-                onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                required
-              />
-              <Textarea
-                placeholder={t('about.form.message')}
-                value={formData.message}
-                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                required
-                rows={6}
-              />
-              <Button type="submit">
-                {t('about.form.send')}
-              </Button>
+
+              <div>
+                <label className="block mb-2">
+                  {t('about.contact.form.email')}
+                </label>
+                <input
+                  type="email"
+                  value={contactForm.email}
+                  onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
+                  className="w-full border border-black px-4 py-2"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block mb-2">
+                  {t('about.contact.form.message')}
+                </label>
+                <textarea
+                  value={contactForm.message}
+                  onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
+                  className="w-full border border-black px-4 py-2 min-h-32"
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="border border-black px-8 py-3 hover:bg-black hover:text-white transition-colors"
+              >
+                {t('about.contact.form.submit')}
+              </button>
             </form>
           </div>
-        </div>
+        </section>
       </div>
-    </PageTransition>
+    </div>
   );
 }
