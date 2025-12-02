@@ -1,10 +1,32 @@
+# Merath Cultural Foundation Website
 
-  # Bilingual Cultural Foundation Website
+Website for Merath Cultural Foundation. Built with React, TypeScript, and Vite.
 
-  This is a code bundle for Bilingual Cultural Foundation Website. 
-  ## Running the code
+## Setup
 
-  Run `npm i` to install the dependencies.
+```bash
+npm install
+npm run dev
+```
 
-  Run `npm run dev` to start the development server.
-  
+## Build
+
+```bash
+npm run build
+```
+
+## Tech Stack
+
+- React 18.3.1
+- TypeScript
+- Vite 6.3.5
+- React Router
+- Tailwind CSS
+
+## Features
+
+- English/Arabic support with RTL
+- Projects gallery
+- Archive section
+- Contact forms
+

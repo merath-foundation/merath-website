@@ -1,184 +1,91 @@
-import { useState } from 'react';
-import { PageTransition } from '../components/PageTransition';
-import { useLanguage } from '../contexts/LanguageContext';
-import { Button } from '../components/ui/button';
-import { Input } from '../components/ui/input';
-import { Textarea } from '../components/ui/textarea';
-import { ImageWithFallback } from '../components/figma/ImageWithFallback';
-
 export function About() {
-  const { t, language } = useLanguage();
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Contact form submitted:', formData);
-    alert(language === 'en' ? 'Thank you for your message!' : 'شكراً لرسالتك!');
-    setFormData({ name: '', email: '', subject: '', message: '' });
-  };
-
-  const teamMembers = [
-    {
-      name: {
-        en: 'Layla Hassan',
-        ar: 'ليلى حسان'
-      },
-      role: t('about.team.role1'),
-      bio: t('about.team.bio1'),
-      image: 'https://images.unsplash.com/photo-1649589244330-09ca58e4fa64?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwb3J0cmFpdCUyMHdvbWFuJTIwcHJvZmVzc2lvbmFsfGVufDF8fHx8MTc2Mjk4NTQ5Mnww&ixlib=rb-4.1.0&q=80&w=1080'
-    },
-    {
-      name: {
-        en: 'Omar Khalil',
-        ar: 'عمر خليل'
-      },
-      role: t('about.team.role2'),
-      bio: t('about.team.bio2'),
-      image: 'https://images.unsplash.com/photo-1672685667592-0392f458f46f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwb3J0cmFpdCUyMG1hbiUyMHByb2Zlc3Npb25hbHxlbnwxfHx8fDE3NjMwNzI0NTZ8MA&ixlib=rb-4.1.0&q=80&w=1080'
-    },
-    {
-      name: {
-        en: 'Sara Al-Mansour',
-        ar: 'سارة المنصور'
-      },
-      role: t('about.team.role3'),
-      bio: t('about.team.bio3'),
-      image: 'https://images.unsplash.com/photo-1649589244330-09ca58e4fa64?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwb3J0cmFpdCUyMHdvbWFuJTIwcHJvZmVzc2lvbmFsfGVufDF8fHx8MTc2Mjk4NTQ5Mnww&ixlib=rb-4.1.0&q=80&w=1080'
-    }
-  ];
-
-  const collaborators = [
-    { name: 'Cultural Heritage Institute', en: true },
-    { name: 'معهد الدراسات الثقافية', ar: true },
-    { name: 'National Archive Foundation', en: true },
-    { name: 'مؤسسة الأرشيف الوطني', ar: true },
-    { name: 'Urban Research Collective', en: true },
-    { name: 'مركز الأبحاث المعاصرة', ar: true },
-    { name: 'Digital Heritage Lab', en: true },
-    { name: 'جمعية حفظ التراث', ar: true },
-    { name: 'Community Arts Network', en: true },
-    { name: 'شبكة الفنون المجتمعية', ar: true },
-    { name: 'Oral History Association', en: true },
-    { name: 'مركز التاريخ الشفوي', ar: true }
-  ];
-
   return (
-    <PageTransition>
-      <div className="pt-32 pb-24 px-8 max-w-[1400px] mx-auto">
-        <h1 className="mb-16">
-          {t('about.title')}
-        </h1>
+    <div className="about-page">
+      <section className="py-16 md:py-24 px-6">
+        <div className="max-w-7xl mx-auto">
+          {/* Page Header */}
+          <div className="mb-16">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-black mb-4">
+              About Merath Cultural Foundation
+            </h1>
+            <div className="w-16 h-0.5 bg-black/20"></div>
+          </div>
 
-        {/* Foundation statement */}
-        <div className="mb-24">
-          <h2 className="mb-8">
-            {t('about.statement.title')}
-          </h2>
-          <div className="max-w-[900px]">
-            <p className="leading-relaxed text-neutral-700">
-              {t('about.statement.text')}
+          {/* Mission */}
+          <div className="mb-20">
+            <h2 className="text-3xl md:text-4xl font-light text-black mb-6">Mission</h2>
+            <div className="max-w-3xl">
+              <p className="text-lg text-black/70 leading-relaxed">
+                Merath Cultural Foundation is dedicated to preserving and celebrating cultural heritage through 
+                documentation, community engagement, and innovative presentation. We believe that every community's 
+                stories, traditions, and knowledge systems deserve careful preservation and respectful sharing.
+              </p>
+            </div>
+          </div>
+
+          {/* Approach */}
+          <div className="mb-20">
+            <h2 className="text-3xl md:text-4xl font-light text-black mb-6">Approach</h2>
+            <div className="max-w-3xl">
+              <p className="text-lg text-black/70 leading-relaxed mb-4">
+                Our work is grounded in collaboration and respect. We partner with communities to ensure that 
+                cultural documentation reflects authentic voices and perspectives. Every project begins with 
+                listening and builds toward shared goals.
+              </p>
+              <p className="text-lg text-black/70 leading-relaxed">
+                We combine traditional research methods with contemporary digital tools, always prioritizing 
+                ethical practices and community benefit over institutional gain.
+              </p>
+            </div>
+          </div>
+
+          {/* Areas of Focus */}
+          <div className="mb-20">
+            <h2 className="text-3xl md:text-4xl font-light text-black mb-6">Areas of Focus</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl">
+              <div>
+                <h3 className="text-xl font-medium text-black mb-3">Oral Histories</h3>
+                <p className="text-black/70 leading-relaxed">
+                  Recording and preserving community narratives and personal testimonies.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-xl font-medium text-black mb-3">Cultural Practices</h3>
+                <p className="text-black/70 leading-relaxed">
+                  Documenting traditional crafts, rituals, and knowledge systems.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-xl font-medium text-black mb-3">Heritage Sites</h3>
+                <p className="text-black/70 leading-relaxed">
+                  Researching and recording places of cultural and historical significance.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-xl font-medium text-black mb-3">Digital Archives</h3>
+                <p className="text-black/70 leading-relaxed">
+                  Creating accessible collections that serve communities and researchers.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Contact & Support */}
+          <div className="bg-white border border-black/10 rounded p-8 md:p-12 max-w-3xl">
+            <h2 className="text-3xl md:text-4xl font-light text-black mb-6">Contact & Support</h2>
+            <p className="text-lg text-black/70 leading-relaxed mb-6">
+              We welcome collaboration, partnership inquiries, and community-initiated projects. 
+              If you're interested in working with us or supporting our mission, please reach out.
             </p>
+            <a 
+              href="mailto:info@merath.org" 
+              className="inline-flex items-center justify-center px-8 py-3 bg-[#A0695F] text-white font-medium rounded hover:bg-[#8B5A50] transition-colors"
+            >
+              Get in Touch
+            </a>
           </div>
         </div>
-
-        {/* Team */}
-        <div className="mb-24">
-          <h2 className="mb-12">
-            {t('about.team.title')}
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-            {teamMembers.map((member, index) => (
-              <div key={index}>
-                <div className="aspect-[3/4] bg-neutral-100 mb-6">
-                  <ImageWithFallback
-                    src={member.image}
-                    alt={member.name[language]}
-                    className="w-full h-full object-cover grayscale"
-                  />
-                </div>
-                <h3 className="mb-1">
-                  {member.name[language]}
-                </h3>
-                <p className="text-sm text-neutral-500 mb-4">
-                  {member.role}
-                </p>
-                <p className="text-sm leading-relaxed text-neutral-600">
-                  {member.bio}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Collaborators */}
-        <div className="mb-24">
-          <h2 className="mb-12">
-            {t('about.collaborators.title')}
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-6">
-            {collaborators.map((collaborator, index) => (
-              <div
-                key={index}
-                className="py-4 border-b border-neutral-200 text-sm text-neutral-600"
-              >
-                {collaborator.name}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Contact form */}
-        <div>
-          <h2 className="mb-4">
-            {t('about.contact.title')}
-          </h2>
-          <p className="mb-8 max-w-[600px] text-neutral-600 leading-relaxed">
-            {t('about.contact.description')}
-          </p>
-          <div className="max-w-[600px]">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Input
-                  type="text"
-                  placeholder={t('about.form.name')}
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  required
-                />
-                <Input
-                  type="email"
-                  placeholder={t('about.form.email')}
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  required
-                />
-              </div>
-              <Input
-                type="text"
-                placeholder={t('about.form.subject')}
-                value={formData.subject}
-                onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                required
-              />
-              <Textarea
-                placeholder={t('about.form.message')}
-                value={formData.message}
-                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                required
-                rows={6}
-              />
-              <Button type="submit">
-                {t('about.form.send')}
-              </Button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </PageTransition>
+      </section>
+    </div>
   );
 }

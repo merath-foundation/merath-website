@@ -1,83 +1,85 @@
 import { useParams, Link } from 'react-router-dom';
-import { PageTransition } from '../components/PageTransition';
 import { useLanguage } from '../contexts/LanguageContext';
 import { projects } from '../data/projects';
-import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 
 export function ProjectDetail() {
   const { id } = useParams<{ id: string }>();
-  const { t, language } = useLanguage();
+  const { language } = useLanguage();
 
-  const project = projects.find(p => p.id === id);
+  const project = projects.find((p) => p.id === id);
 
   if (!project) {
     return (
-      <PageTransition>
-        <div className="pt-32 pb-24 px-8 max-w-[1400px] mx-auto">
-          <p>Project not found</p>
+      <div className="py-16 px-6">
+        <div className="max-w-7xl mx-auto text-center">
+          <h1 className="text-3xl font-light text-black mb-4">Project not found</h1>
+          <Link to="/projects" className="text-black/60 hover:text-black">
+            ← Back to Projects
+          </Link>
         </div>
-      </PageTransition>
+      </div>
     );
   }
 
   return (
-    <PageTransition>
-      <div className="pt-32 pb-24 px-8 max-w-[1400px] mx-auto">
-        <Link
-          to="/projects"
-          className="inline-block mb-12 opacity-60 hover:opacity-100 transition-opacity"
-        >
-          {t('project.back')}
-        </Link>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-          <div>
-            <h1 className="mb-4">
-              {project.title[language]}
-            </h1>
-            <p className="text-neutral-600 mb-2">
-              {project.type[language]}
-            </p>
-            <p className="text-neutral-600">
-              {project.year}
-            </p>
-          </div>
-          <div className="aspect-[4/3] bg-neutral-100">
-            <ImageWithFallback
-              src={project.image}
-              alt={project.title[language]}
-              className="w-full h-full object-cover"
-            />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          <div>
-            <h3 className="mb-4 text-neutral-500">
-              {t('project.overview')}
-            </h3>
-            <p className="leading-relaxed">
-              {project.overview[language]}
-            </p>
-          </div>
-          <div>
-            <h3 className="mb-4 text-neutral-500">
-              {t('project.approach')}
-            </h3>
-            <p className="leading-relaxed">
-              {project.approach[language]}
-            </p>
-          </div>
-          <div>
-            <h3 className="mb-4 text-neutral-500">
-              {t('project.outcomes')}
-            </h3>
-            <p className="leading-relaxed">
-              {project.outcomes[language]}
-            </p>
-          </div>
+    <div className="project-detail-page">
+      {/* Back Link */}
+      <div className="py-6 px-6 border-b border-black/10 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <Link to="/projects" className="text-sm text-black/60 hover:text-black transition-colors">
+            ← Back to Projects
+          </Link>
         </div>
       </div>
-    </PageTransition>
+
+      {/* Hero Image */}
+      {project.image && (
+        <div className="aspect-[16/9] bg-neutral-100">
+          <img
+            src={project.image}
+            alt={project.title[language]}
+            className="w-full h-full object-cover"
+          />
+        </div>
+      )}
+
+      {/* Content */}
+      <section className="py-16 md:py-24 px-6">
+        <div className="max-w-7xl mx-auto">
+          {/* Title & Metadata */}
+          <div className="mb-16">
+            <div className="flex items-center gap-2 text-xs text-black/40 uppercase tracking-wide mb-4">
+              <span>{project.type[language]}</span>
+              <span>•</span>
+              <span>{project.year}</span>
+            </div>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-black">
+              {project.title[language]}
+            </h1>
+          </div>
+
+          {/* Sections */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
+            {/* Overview */}
+            <div>
+              <h2 className="text-2xl font-light text-black mb-4">Overview</h2>
+              <p className="text-black/70 leading-relaxed">{project.overview[language]}</p>
+            </div>
+
+            {/* Methods */}
+            <div>
+              <h2 className="text-2xl font-light text-black mb-4">Methods</h2>
+              <p className="text-black/70 leading-relaxed">{project.approach[language]}</p>
+            </div>
+
+            {/* Outcomes */}
+            <div>
+              <h2 className="text-2xl font-light text-black mb-4">Outcomes</h2>
+              <p className="text-black/70 leading-relaxed">{project.outcomes[language]}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }

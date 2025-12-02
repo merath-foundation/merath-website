@@ -1,33 +1,44 @@
 import { Link } from 'react-router-dom';
-import { ImageWithFallback } from './figma/ImageWithFallback';
 
 interface ProjectCardProps {
   id: string;
   title: string;
-  type: string;
+  category: string;
   year: string;
-  image: string;
+  image?: string;
+  summary?: string;
 }
 
-export function ProjectCard({ id, title, type, year, image }: ProjectCardProps) {
+export function ProjectCard({ id, title, category, year, image, summary }: ProjectCardProps) {
   return (
-    <Link
-      to={`/projects/${id}`}
-      className="group block"
-    >
-      <div className="aspect-[3/4] overflow-hidden bg-neutral-100 border border-neutral-200 mb-4">
-        <ImageWithFallback
-          src={image}
-          alt={title}
-          className="w-full h-full object-cover group-hover:opacity-80 transition-opacity"
-        />
-      </div>
-      <h3 className="mb-1 group-hover:opacity-60 transition-opacity">
-        {title}
-      </h3>
-      <p className="text-neutral-500 text-sm">
-        {type} · {year}
-      </p>
+    <Link to={`/projects/${id}`} style={{ textDecoration: 'none' }}>
+      <article className="project-card">
+        {/* Image */}
+        {image && (
+          <div className="project-image-wrapper">
+            <img
+              src={image}
+              alt={title}
+            />
+          </div>
+        )}
+
+        {/* Metadata */}
+        <div className="project-meta">
+          <span>{category}</span>
+          <span>{year}</span>
+        </div>
+
+        {/* Title */}
+        <h3 className="project-title">{title}</h3>
+
+        {/* Summary */}
+        {summary && (
+          <p style={{ fontSize: 'var(--text-base)', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+            {summary}
+          </p>
+        )}
+      </article>
     </Link>
   );
 }

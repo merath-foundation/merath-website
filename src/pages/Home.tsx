@@ -1,44 +1,131 @@
-import { PageTransition } from '../components/PageTransition';
-import { TeaserBlock } from '../components/TeaserBlock';
 import { useLanguage } from '../contexts/LanguageContext';
+import { ProjectCard } from '../components/ProjectCard';
+import { projects } from '../data/projects';
+import { Link } from 'react-router-dom';
 
 export function Home() {
-  const { t } = useLanguage();
+  const { language } = useLanguage();
 
   return (
-    <PageTransition>
-      {/* Full-screen landing statement */}
-      <section className="min-h-screen flex items-center justify-center px-8 border-b border-neutral-200">
-        <div className="max-w-[900px] mx-auto text-center">
-          <h1 className="leading-tight">
-            {t('home.statement')}
+    <div className="home-page">
+      {/* Hero Section - Minimal & Editorial */}
+      <section className="hero">
+        <div>
+          <div className="hero-label">
+            CULTURAL FOUNDATION
+          </div>
+          
+          <h1 className="hero-title">
+            Preserving Heritage
           </h1>
+          
+          <p className="hero-subtitle">
+            Documenting and safeguarding the cultural narratives that define our shared identity and collective memory.
+          </p>
+          
+          <div>
+            <Link to="/projects" className="btn-primary">
+              Explore Our Work
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* Three teaser blocks */}
-      <section className="max-w-[1400px] mx-auto px-8 py-24">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <TeaserBlock
-            title={t('home.projects.title')}
-            description={t('home.projects.description')}
-            image="https://images.unsplash.com/photo-1758186174447-282aaf601477?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjdWx0dXJhbCUyMGhlcml0YWdlJTIwYXJ0aWZhY3RzfGVufDF8fHx8MTc2MzAxNDAwOXww&ixlib=rb-4.1.0&q=80&w=1080"
-            link="/projects"
-          />
-          <TeaserBlock
-            title={t('home.archive.title')}
-            description={t('home.archive.description')}
-            image="https://images.unsplash.com/photo-1713700743037-ebc94696d157?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhcmNoaXZlJTIwZG9jdW1lbnRzJTIwZXhoaWJpdGlvbnxlbnwxfHx8fDE3NjMwNzI0NTV8MA&ixlib=rb-4.1.0&q=80&w=1080"
-            link="/archive"
-          />
-          <TeaserBlock
-            title={t('home.about.title')}
-            description={t('home.about.description')}
-            image="https://images.unsplash.com/photo-1622701893201-9bc9eb616690?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0cmFkaXRpb25hbCUyMGNyYWZ0JTIwaGFuZHN8ZW58MXx8fHwxNjMwMDA2OTk1fDA&ixlib=rb-4.1.0&q=80&w=1080"
-            link="/about"
-          />
+      {/* Our Mission */}
+      <section>
+        <div>
+          <h2>Our Mission</h2>
+          <p>
+            The Merath Cultural Foundation safeguards cultural narratives through rigorous documentation, 
+            community collaboration, and innovative exhibition practices. We believe every story contributes 
+            to our shared heritage and deserves to be preserved with care and respect.
+          </p>
         </div>
       </section>
-    </PageTransition>
+
+      {/* What We Do */}
+      <section>
+        <div>
+          <h2>What We Do</h2>
+
+          <div className="what-we-do-grid">
+            {/* Card 1 */}
+            <div>
+              <h3>Research & Documentation</h3>
+              <p>
+                We conduct comprehensive research to document cultural practices, oral histories, and heritage 
+                sites with academic rigor and community partnership.
+              </p>
+            </div>
+
+            {/* Card 2 */}
+            <div>
+              <h3>Community Engagement</h3>
+              <p>
+                We work directly with communities to ensure authentic representation and collaborative 
+                storytelling that honors lived experiences.
+              </p>
+            </div>
+
+            {/* Card 3 */}
+            <div>
+              <h3>Digital Archiving & Exhibition</h3>
+              <p>
+                We create accessible digital archives and produce immersive exhibitions that bring cultural 
+                heritage to life for diverse audiences.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Recent Projects */}
+      <section>
+        <div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-lg)' }}>
+            <h2 style={{ margin: 0 }}>Recent Projects</h2>
+            <Link 
+              to="/projects" 
+              className="label"
+              style={{ textDecoration: 'none', color: 'var(--accent-primary)' }}
+            >
+              View All Projects →
+            </Link>
+          </div>
+
+          <div className="projects-grid">
+            {projects.slice(0, 6).map((project) => (
+              <ProjectCard
+                key={project.id}
+                id={project.id}
+                title={project.title[language]}
+                category={project.type[language]}
+                year={project.year}
+                image={project.image}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Band */}
+      <section style={{ textAlign: 'center', paddingTop: 'var(--space-xxl)', paddingBottom: 'var(--space-xxl)' }}>
+        <div>
+          <h2 style={{ fontSize: 'var(--text-3xl)', fontWeight: 300, marginBottom: 'var(--space-lg)' }}>
+            Bridging past and present through cultural preservation
+          </h2>
+          
+          <div style={{ display: 'flex', gap: 'var(--space-md)', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <Link to="/about" className="btn-primary">
+              Learn More
+            </Link>
+            
+            <Link to="/projects" className="btn-secondary">
+              View Projects
+            </Link>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }
