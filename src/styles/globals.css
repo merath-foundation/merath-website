@@ -41,6 +41,7 @@
     font-family: 'Cairo', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
 
+<<<<<<< HEAD
   /* Typography Hierarchy */
   h1 {
     @apply text-5xl md:text-6xl lg:text-7xl font-light text-[#1A1A1A];
@@ -62,6 +63,50 @@
   h4 {
     @apply text-xl md:text-2xl font-medium text-[#1A1A1A];
     line-height: var(--line-height-heading);
+=======
+html {
+  font-size: var(--font-size);
+}
+
+/* Custom Merath Styles */
+@layer base {
+  /* Larger, more dramatic typography for headers */
+  h1.eatable-text {
+    font-size: clamp(2rem, 8vw, 4.5rem);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  h2.eatable-text {
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  p.eatable-text {
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  /* RTL support improvements */
+  [dir="rtl"] {
+    text-align: right;
+  }
+
+  [dir="rtl"] input,
+  [dir="rtl"] textarea {
+    text-align: right;
+  }
+}
+
+/* Smooth transitions for all elements */
+@layer utilities {
+  .transition-all-smooth {
+    transition: all 0.3s ease-in-out;
+>>>>>>> 1834f666793186ec6873134da49b3b6df728ebda
   }
 
   h5 {
