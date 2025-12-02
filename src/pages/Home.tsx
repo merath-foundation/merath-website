@@ -2,12 +2,16 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { ProjectCard } from '../components/ProjectCard';
 import { projects } from '../data/projects';
 import { Link } from 'react-router-dom';
+import { LogoSnakeExperience } from '../components/LogoSnakeExperience';
 
 export function Home() {
   const { language } = useLanguage();
 
   return (
     <div className="home-page">
+      {/* Logo Maze Experience */}
+      <LogoSnakeExperience />
+
       {/* Hero Section - Minimal & Editorial */}
       <section className="hero">
         <div>
