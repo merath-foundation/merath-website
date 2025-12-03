@@ -4,7 +4,7 @@ import { useState } from 'react';
 export function Sidebar() {
   const [language, setLanguage] = useState('en');
 
-  const handleLanguageChange = (lang) => {
+  const handleLanguageChange = (lang: string) => {
     setLanguage(lang);
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.lang = lang;

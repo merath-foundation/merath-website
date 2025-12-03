@@ -1,12 +1,11 @@
 import { ReactNode } from 'react';
 import { Sidebar } from '../components/Sidebar';
+import { ScrollProgress } from '../components/ScrollProgress';
 
-export function AppLayout({ children }: { children: ReactNode }) {
+export function AppLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <div className="app-root">
-      <a href="#main-content" className="skip-link">
-        Skip to main content
-      </a>
+      <ScrollProgress />
       <Sidebar />
       <main id="main-content">{children}</main>
       <footer className="app-footer">

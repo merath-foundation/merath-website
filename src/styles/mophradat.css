@@ -74,6 +74,29 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* App root container */
+.app-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Skip link for accessibility */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--accent-primary);
+  color: white;
+  padding: var(--space-sm);
+  text-decoration: none;
+  z-index: 1000;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
 /* ============================================
    TYPOGRAPHY - EDITORIAL HIERARCHY
    ============================================ */

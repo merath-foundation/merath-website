@@ -126,7 +126,7 @@ export function Archive() {
               </div>
             )}
 
-            {!loading && !error && articles && articles.length === 0 && (
+            {!loading && !error && articles?.length === 0 && (
               <div className="text-center py-12">
                 <p className="text-black/60">
                   {language === 'en' 

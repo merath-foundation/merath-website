@@ -100,3 +100,34 @@ export function useSanityProject(id: string | undefined) {
 
   return { project, loading, error };
 }
+
+// Generic hook for any Sanity query
+export function useSanity(query: string) {
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      if (!isSanityConfigured()) {
+        setLoading(false);
+        setError(new Error('Sanity not configured'));
+        return;
+      }
+
+      try {
+        const result = await sanityClient.fetch(query);
+        setData(result);
+      } catch (err) {
+        console.error('Error fetching from Sanity:', err);
+        setError(err as Error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, [query]);
+
+  return { data, loading, error };
+}

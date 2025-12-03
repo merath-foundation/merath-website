@@ -6,23 +6,28 @@ import { Projects } from './pages/Projects';
 import { ProjectDetail } from './pages/ProjectDetail';
 import { Archive } from './pages/Archive';
 import { About } from './pages/About';
+import { ErrorBoundary } from './components/ErrorBoundary';
+import { BlobCursor } from './components/BlobCursor';
 
 function App() {
   return (
-    <LanguageProvider>
-      <HashRouter>
-        <AppLayout>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/projects" element={<Projects />} />
-            <Route path="/projects/:id" element={<ProjectDetail />} />
-            <Route path="/archive" element={<Archive />} />
-            <Route path="/about" element={<About />} />
-            <Route path="*" element={<Home />} />
-          </Routes>
-        </AppLayout>
-      </HashRouter>
-    </LanguageProvider>
+    <ErrorBoundary>
+      <LanguageProvider>
+        <HashRouter>
+          <BlobCursor />
+          <AppLayout>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/projects" element={<Projects />} />
+              <Route path="/projects/:id" element={<ProjectDetail />} />
+              <Route path="/archive" element={<Archive />} />
+              <Route path="/about" element={<About />} />
+              <Route path="*" element={<Home />} />
+            </Routes>
+          </AppLayout>
+        </HashRouter>
+      </LanguageProvider>
+    </ErrorBoundary>
   );
 }
 
