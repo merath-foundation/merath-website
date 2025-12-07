@@ -58,6 +58,8 @@ function LayoutChrome({ children }: Readonly<LayoutShellProps>) {
   const localeDirection = language === 'ar' ? 'rtl' : 'ltr';
   const triggerLabel = language === 'en' ? 'Open navigation menu' : 'افتح قائمة التصفح';
   const heading = language === 'en' ? 'Foundation navigation' : 'تنقل المؤسسة';
+  const languageToggleLabel = language === 'en' ? 'العربية' : 'EN';
+  const languageToggleAria = language === 'en' ? 'Switch to Arabic' : 'التبديل إلى الإنجليزية';
 
   const toggleNav = () => setIsNavOpen(prev => !prev);
 
@@ -102,10 +104,11 @@ function LayoutChrome({ children }: Readonly<LayoutShellProps>) {
 
     const query = getQueryString(location.search, location.pathname);
     const params = new URLSearchParams(query);
-    if (params.get('room') === activeRoom) {
+    if (!params.has('room')) {
       return;
     }
-    params.set('room', activeRoom);
+
+    params.delete('room');
     const searchString = params.toString();
     const cleanPath = getCleanPath(location.pathname);
     navigate({ pathname: cleanPath, search: searchString ? `?${searchString}` : '' }, { replace: true, state: location.state });
@@ -128,9 +131,9 @@ function LayoutChrome({ children }: Readonly<LayoutShellProps>) {
           className="language-toggle"
           data-lang-toggle
           onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
-          aria-label={language === 'en' ? 'Switch to Arabic' : 'التبديل إلى الإنجليزية'}
+          aria-label={languageToggleAria}
         >
-          {language === 'en' ? 'AR' : 'EN'}
+          {languageToggleLabel}
         </button>
       </div>
 

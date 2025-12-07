@@ -52,6 +52,7 @@ export const OuroborosMenuButton = forwardRef<HTMLButtonElement, OuroborosMenuBu
       >
         <motion.span className="ouroboros-ring" animate={rotationControls}>
           <svg viewBox="0 0 120 120" role="presentation" aria-hidden="true">
+            <circle cx="60" cy="60" r="46" fill="currentColor" opacity="0.12" />
             <motion.circle
               cx="60"
               cy="60"
@@ -59,20 +60,10 @@ export const OuroborosMenuButton = forwardRef<HTMLButtonElement, OuroborosMenuBu
               fill="none"
               stroke="currentColor"
               strokeWidth="3"
-              strokeLinecap="round"
               initial={false}
-              animate={{ strokeDasharray: isOpen ? '320 20' : '280 80' }}
-              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              animate={{ opacity: isOpen ? 0.65 : 1 }}
+              transition={{ duration: 0.35, ease: [0.37, 0, 0.63, 1] }}
               className="ouroboros-ring__stroke"
-            />
-            <motion.circle
-              cx="95"
-              cy="40"
-              r="5"
-              fill="currentColor"
-              initial={{ opacity: 1, scale: 1 }}
-              animate={{ opacity: isOpen ? 0 : 1, scale: isOpen ? 0.6 : 1 }}
-              transition={{ duration: 0.3, ease: [0.37, 0, 0.63, 1] }}
             />
           </svg>
         </motion.span>

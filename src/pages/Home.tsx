@@ -27,6 +27,7 @@ export function Home() {
   const { scrollToRoom, activeRoom } = useRooms();
   const queryString = getQueryString(location.search, location.pathname);
   const lastQueryRef = useRef<string | null>(null);
+  const cleanPath = location.pathname.split('?')[0];
 
   useEffect(() => {
     const state = location.state as RoomNavigationState;
@@ -35,7 +36,6 @@ export function Home() {
     }
 
     if (state?.targetRoom) {
-      const cleanPath = location.pathname.split('?')[0];
       navigate({ pathname: cleanPath, search: location.search }, { replace: true, state: null });
       return;
     }
@@ -50,10 +50,22 @@ export function Home() {
     const roomParam = params.get('room');
     const searchRoom = ROOM_SEQUENCE.includes(roomParam as RoomId) ? roomParam as RoomId : null;
 
-    if (searchRoom && searchRoom !== activeRoom) {
-      scrollToRoom(searchRoom);
+    if (searchRoom) {
+      if (searchRoom !== activeRoom) {
+        scrollToRoom(searchRoom);
+      }
+
+      params.delete('room');
+      const nextSearch = params.toString();
+      navigate(
+        {
+          pathname: cleanPath,
+          search: nextSearch ? `?${nextSearch}` : '',
+        },
+        { replace: true, state: location.state }
+      );
     }
-  }, [location, navigate, scrollToRoom, activeRoom, queryString]);
+  }, [location, navigate, scrollToRoom, activeRoom, queryString, cleanPath]);
 
   return (
     <div className="home-page rooms-stack">
