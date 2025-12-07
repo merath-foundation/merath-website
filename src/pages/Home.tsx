@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ROOM_SEQUENCE, useRooms, type RoomId } from '../contexts/RoomsContext';
-import { FoundationRoom, LivingArchiveRoom, ProjectsLedgerRoom, PreservationNetworkRoom, SignalsRoom } from './home/rooms';
+import { FoundationRoom, AboutRoom } from './home/rooms';
 
 type RoomNavigationState = { targetRoom?: RoomId } | null;
 
@@ -26,31 +26,39 @@ export function Home() {
   const navigate = useNavigate();
   const { scrollToRoom, activeRoom } = useRooms();
   const queryString = getQueryString(location.search, location.pathname);
+  const lastQueryRef = useRef<string | null>(null);
 
   useEffect(() => {
     const state = location.state as RoomNavigationState;
-    const params = new URLSearchParams(queryString);
-    const roomParam = params.get('room');
-    const searchRoom = ROOM_SEQUENCE.includes(roomParam as RoomId) ? roomParam as RoomId : null;
-    const targetRoom = state?.targetRoom ?? searchRoom;
-
-    if (targetRoom && targetRoom !== activeRoom) {
-      scrollToRoom(targetRoom);
+    if (state?.targetRoom && state.targetRoom !== activeRoom) {
+      scrollToRoom(state.targetRoom);
     }
 
     if (state?.targetRoom) {
       const cleanPath = location.pathname.split('?')[0];
       navigate({ pathname: cleanPath, search: location.search }, { replace: true, state: null });
+      return;
+    }
+
+    const queryChanged = lastQueryRef.current !== queryString;
+    lastQueryRef.current = queryString;
+    if (!queryChanged) {
+      return;
+    }
+
+    const params = new URLSearchParams(queryString);
+    const roomParam = params.get('room');
+    const searchRoom = ROOM_SEQUENCE.includes(roomParam as RoomId) ? roomParam as RoomId : null;
+
+    if (searchRoom && searchRoom !== activeRoom) {
+      scrollToRoom(searchRoom);
     }
   }, [location, navigate, scrollToRoom, activeRoom, queryString]);
 
   return (
     <div className="home-page rooms-stack">
       <FoundationRoom />
-      <LivingArchiveRoom />
-      <ProjectsLedgerRoom />
-      <PreservationNetworkRoom />
-      <SignalsRoom />
+      <AboutRoom />
     </div>
   );
 }

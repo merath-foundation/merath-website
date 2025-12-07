@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 
-export type RoomId = 'foundation' | 'livingArchive' | 'projectsLedger' | 'preservationNetwork' | 'signals';
+export type RoomId = 'foundation' | 'about';
 
 interface RoomCopy {
   readonly title: { en: string; ar: string };
@@ -24,47 +24,14 @@ export const ROOM_DEFINITIONS: RoomDefinition[] = [
     },
   },
   {
-    id: 'livingArchive',
+    id: 'about',
     title: {
-      en: 'Living Archive',
-      ar: 'واجهة الأرشيف الحي',
+      en: 'About',
+      ar: 'نبذة',
     },
     subtitle: {
-      en: 'Interface and prompts',
-      ar: 'الواجهة والتلميحات',
-    },
-  },
-  {
-    id: 'projectsLedger',
-    title: {
-      en: 'Projects Ledger',
-      ar: 'دفتر المشاريع',
-    },
-    subtitle: {
-      en: 'Commissions in progress',
-      ar: 'التكليفات قيد التطوير',
-    },
-  },
-  {
-    id: 'preservationNetwork',
-    title: {
-      en: 'Preservation Network',
-      ar: 'شبكة الحفظ',
-    },
-    subtitle: {
-      en: 'Mobile studios & bridges',
-      ar: 'استوديوهات متنقلة وجسور',
-    },
-  },
-  {
-    id: 'signals',
-    title: {
-      en: 'Signals',
-      ar: 'إشارات',
-    },
-    subtitle: {
-      en: 'Contact & invitations',
-      ar: 'التواصل والدعوات',
+      en: 'Mission & stewardship notes',
+      ar: 'ملاحظات الرسالة والرعاية',
     },
   },
 ];
@@ -73,10 +40,7 @@ export const ROOM_SEQUENCE = ROOM_DEFINITIONS.map(room => room.id);
 
 const initialNodes: Record<RoomId, HTMLElement | null> = {
   foundation: null,
-  livingArchive: null,
-  projectsLedger: null,
-  preservationNetwork: null,
-  signals: null,
+  about: null,
 };
 
 const toPixels = (rawValue: string, rootFontSize: number) => {
