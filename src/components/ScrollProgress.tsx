@@ -1,4 +1,4 @@
-import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
+import { motion, useScroll, useSpring } from 'framer-motion';
 
 export function ScrollProgress() {
   const { scrollYProgress } = useScroll();
@@ -8,47 +8,14 @@ export function ScrollProgress() {
     restDelta: 0.001
   });
 
-  const backgroundColor = useTransform(
-    scrollYProgress,
-    [0, 0.5, 1],
-    ['#A0695F', '#8B5A50', '#1A1A1A']
-  );
-
-  const height = useTransform(
-    scrollYProgress,
-    [0, 0.05],
-    ['3px', '4px']
-  );
-
   return (
-    <>
-      <motion.div
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          height,
-          background: backgroundColor,
-          transformOrigin: '0%',
-          scaleX,
-          zIndex: 9999,
-          boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
-        }}
-      />
-      <motion.div
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100vh',
-          background: 'linear-gradient(180deg, rgba(0,0,0,0.03) 0%, transparent 20%)',
-          pointerEvents: 'none',
-          zIndex: 9998,
-          opacity: useTransform(scrollYProgress, [0, 0.1], [1, 0])
-        }}
-      />
-    </>
+    <motion.div
+      className="fixed top-0 left-0 right-0 h-[2px] z-[800] origin-left"
+      style={{
+        background: 'var(--color-accent-primary)',
+        scaleX,
+        boxShadow: 'var(--glow-accent)'
+      }}
+    />
   );
 }

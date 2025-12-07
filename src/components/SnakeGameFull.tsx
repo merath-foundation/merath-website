@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 
 type Direction = 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
 type Position = { x: number; y: number };
@@ -8,6 +7,7 @@ const GRID_SIZE = 20;
 const CELL_SIZE = 20;
 const INITIAL_SPEED = 150;
 const SPEED_INCREMENT = 5;
+const HIGH_SCORE_STORAGE_KEY = 'merath-snake-highscore';
 
 export function SnakeGameFull() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -22,7 +22,7 @@ export function SnakeGameFull() {
 
   // Load high score from localStorage
   useEffect(() => {
-    const savedHighScore = localStorage.getItem('snakeHighScore');
+    const savedHighScore = localStorage.getItem(HIGH_SCORE_STORAGE_KEY);
     if (savedHighScore) {
       setHighScore(Number.parseInt(savedHighScore, 10));
     }
@@ -88,7 +88,7 @@ export function SnakeGameFull() {
             const newScore = prev + 10;
             if (newScore > highScore) {
               setHighScore(newScore);
-              localStorage.setItem('merath-snake-highscore', newScore.toString());
+              localStorage.setItem(HIGH_SCORE_STORAGE_KEY, newScore.toString());
             }
             return newScore;
           });
@@ -243,91 +243,95 @@ export function SnakeGameFull() {
     setTouchStart(null);
   };
 
+  const scoreDisplay = score.toString().padStart(4, '0');
+  const highScoreDisplay = highScore.toString().padStart(4, '0');
+  const isNewHighScore = score > 0 && score === highScore;
+  const statusTone = gameOver ? 'danger' : isPaused ? 'idle' : 'active';
+  const statusLabel = gameOver
+    ? 'Archive interrupted — tap reset to try again.'
+    : isPaused
+      ? 'Press start or use the arrow keys to begin.'
+      : 'Recording in progress. Keep collecting.';
+
+  const primaryLabel = gameOver
+    ? 'Replay Session'
+    : isPaused
+      ? 'Start Session'
+      : 'Pause Session';
+
+  const handlePrimaryAction = () => {
+    if (gameOver) {
+      resetGame();
+      return;
+    }
+    setIsPaused(prev => !prev);
+  };
+
   return (
-    <div className="relative w-full max-w-[600px] mx-auto">
-      {/* Score Display */}
-      <div className="flex justify-between items-center mb-4 font-mono text-sm">
-        <div className="text-white">
-          SCORE: <span className="font-bold">{score.toString().padStart(4, '0')}</span>
+    <section className="snake-game" aria-label="Interactive snake archive">
+      <div className="snake-game__hud">
+        <div className="snake-game__score">
+          <span>Score</span>
+          <strong>{scoreDisplay}</strong>
+          {isNewHighScore && <span className="snake-game__badge">New High</span>}
         </div>
-        <div className="text-white/60">
-          HIGH: <span className="font-bold">{highScore.toString().padStart(4, '0')}</span>
+        <div className="snake-game__meta">
+          <span>High</span>
+          <strong>{highScoreDisplay}</strong>
+          <span className="snake-game__speed">Speed {Math.round(300 - speed)}%</span>
         </div>
       </div>
 
-      {/* Game Canvas */}
-      <div className="relative border-2 border-white/20 bg-black">
+      <div
+        className="snake-game__frame"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
         <canvas
           ref={canvasRef}
           width={GRID_SIZE * CELL_SIZE}
           height={GRID_SIZE * CELL_SIZE}
-          className="w-full h-auto"
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
+          className="snake-game__canvas"
         />
-
-        {/* Overlays */}
-        <AnimatePresence>
-          {isPaused && !gameOver && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center text-white"
-            >
-              <motion.div
-                initial={{ scale: 0.8 }}
-                animate={{ scale: 1 }}
-                className="text-center"
-              >
-                <h3 className="text-2xl font-bold mb-4 tracking-tight">MERATH</h3>
-                <p className="text-sm mb-6 opacity-60">Press any arrow key or swipe to start</p>
-                <div className="text-xs opacity-40 space-y-1">
-                  <p>↑↓←→ or WASD to move</p>
-                  <p>SPACE to pause</p>
-                </div>
-              </motion.div>
-            </motion.div>
-          )}
-
-          {gameOver && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="absolute inset-0 bg-black/90 flex flex-col items-center justify-center text-white"
-            >
-              <motion.div
-                initial={{ scale: 0.8, y: 20 }}
-                animate={{ scale: 1, y: 0 }}
-                className="text-center"
-              >
-                <h3 className="text-3xl font-bold mb-2 tracking-tight">GAME OVER</h3>
-                <p className="text-xl mb-6">Score: {score}</p>
-                {score === highScore && score > 0 && (
-                  <motion.p
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="text-sm mb-4 text-white/80"
-                  >
-                    ★ NEW HIGH SCORE! ★
-                  </motion.p>
-                )}
-                <button
-                  onClick={resetGame}
-                  className="px-8 py-3 border-2 border-white hover:bg-white hover:text-black transition-colors font-mono text-sm"
-                >
-                  PLAY AGAIN
-                </button>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <div className="snake-game__frame-glow" aria-hidden="true" />
       </div>
 
-      {/* Instructions */}
-      <div className="mt-4 text-xs text-white/40 text-center font-mono">
-        Eat the squares. Don't hit the walls. Preserve your legacy.
+      <div className="snake-game__info">
+        <div
+          className={`snake-game__status snake-game__status--${statusTone}`}
+          aria-live="polite"
+        >
+          {statusLabel}
+        </div>
+
+        <div className="snake-game__controls" aria-label="Game controls">
+          <span className="snake-key-pill">↑ ↓ ← →</span>
+          <span className="snake-key-pill">W A S D</span>
+          <span className="snake-key-pill">Space = Pause</span>
+          <span className="snake-key-pill">Swipe on touch</span>
+        </div>
+
+        <p className="snake-game__hint">
+          Eat the luminous tiles, avoid the walls, and keep the serpent moving to extend the archive.
+        </p>
+
+        <div className="snake-game__actions">
+          <button
+            type="button"
+            className="primary"
+            onClick={handlePrimaryAction}
+          >
+            {primaryLabel}
+          </button>
+          <button
+            type="button"
+            className="secondary"
+            onClick={resetGame}
+          >
+            Reset Grid
+          </button>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

@@ -1,176 +1,219 @@
 import { NavLink, useLocation } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
-import { useState } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+
+// Helper function to get mobile menu classes
+function getMobileMenuClass(mobileMenuOpen: boolean, language: string): string {
+  if (mobileMenuOpen) return 'translate-x-0';
+  return language === 'ar' 
+    ? 'translate-x-full lg:translate-x-0' 
+    : '-translate-x-full lg:translate-x-0';
+}
 
 export function Sidebar() {
-  const { language, setLanguage } = useLanguage();
+  const { language } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { scrollYProgress } = useScroll();
-  const opacity = useTransform(scrollYProgress, [0, 0.1], [1, 0.95]);
+  const location = useLocation();
 
   const navLinks = [
-    { path: '/', label: language === 'en' ? 'Home' : 'الرئيسية' },
-    { path: '/projects', label: language === 'en' ? 'Projects' : 'المشاريع' },
-    { path: '/archive', label: language === 'en' ? 'Archive' : 'الأرشيف' },
-    { path: '/about', label: language === 'en' ? 'About' : 'عن' },
+    { 
+      path: '/', 
+      label: { en: 'Home', ar: 'الرئيسية' },
+      eyebrow: { en: 'Foundation overview', ar: 'نظرة عامة على المؤسسة' }
+    },
+    { 
+      path: '/projects', 
+      label: { en: 'Projects', ar: 'المشاريع' },
+      eyebrow: { en: 'Current initiatives', ar: 'المبادرات الحالية' }
+    },
+    { 
+      path: '/archive', 
+      label: { en: 'Archive', ar: 'الأرشيف' },
+      eyebrow: { en: 'Research library', ar: 'مكتبة البحث' }
+    },
+    { 
+      path: '/about', 
+      label: { en: 'About', ar: 'عن' },
+      eyebrow: { en: 'Mission & team', ar: 'الرؤية والفريق' }
+    },
   ];
+
+  const residencyLabel = language === 'en' ? 'Residencies & research' : 'الإقامات والبحوث';
+  const foundationMeta = language === 'en' 
+    ? 'Archiving culture since 2011'
+    : 'توثيق الثقافة منذ 2011';
+  const contactLabel = language === 'en' ? 'Contact' : 'تواصل';
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
+
+  // Close mobile menu on Escape key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileMenuOpen(false);
+    };
+    globalThis.addEventListener('keydown', handleEscape);
+    return () => globalThis.removeEventListener('keydown', handleEscape);
+  }, []);
 
   return (
     <>
-      {/* Mobile menu button */}
+      {/* Mobile menu toggle button */}
       <button
         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        className="sidebar-toggle"
         aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
         aria-expanded={mobileMenuOpen}
         aria-controls="sidebar-nav"
       >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg 
+          width="24" 
+          height="24" 
+          viewBox="0 0 24 24" 
+          fill="none" 
+          stroke="currentColor" 
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
           {mobileMenuOpen ? (
-            <path d="M18 6L6 18M6 6l12 12" />
+            <>
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </>
           ) : (
-            <path d="M3 12h18M3 6h18M3 18h18" />
+            <>
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </>
           )}
         </svg>
       </button>
 
       {/* Overlay for mobile */}
       {mobileMenuOpen && (
-        <button
-          className="mobile-overlay active"
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/80 z-[600] lg:hidden"
           onClick={() => setMobileMenuOpen(false)}
-          onKeyDown={(e) => e.key === 'Escape' && setMobileMenuOpen(false)}
-          aria-label="Close menu"
+          aria-hidden="true"
         />
       )}
 
       {/* Sidebar */}
-      <motion.aside 
-        id="sidebar-nav" 
+      <motion.aside
+        id="sidebar-nav"
+        className={`
+          fixed top-0 h-screen z-[650]
+          transition-transform duration-300 ease-smooth
+          ${language === 'ar' ? 'right-0' : 'left-0'}
+          ${getMobileMenuClass(mobileMenuOpen, language)}
+        `}
         style={{ 
-          transform: mobileMenuOpen ? 'translateX(0)' : undefined,
-          opacity
+          width: 'var(--sidebar-width)',
         }}
-        initial={{ x: -20, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       >
-        {/* Brand */}
-        <motion.div
-          initial={{ y: -30, opacity: 0, scale: 0.8 }}
-          animate={{ 
-            y: 0, 
-            opacity: 1, 
-            scale: 1,
-            transition: {
-              type: "spring",
-              stiffness: 100,
-              damping: 15,
-              delay: 0.2
-            }
-          }}
-          whileHover={{ 
-            scale: 1.05,
-            rotate: [0, -1, 1, 0],
-            transition: { duration: 0.3 }
-          }}
-        >
-          <NavLink to="/" onClick={() => setMobileMenuOpen(false)}>
-            <motion.div 
-              className="brand-name"
-              initial={{ letterSpacing: "-0.05em" }}
-              animate={{ letterSpacing: "0em" }}
-              transition={{ duration: 1, delay: 0.4 }}
+        <div className="flex flex-col h-full p-8 gap-10">
+          {/* Brand */}
+          <motion.div
+            className="mb-12"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            <NavLink 
+              to="/" 
+              className="block focus-ring rounded-md sidebar-brand"
+              onClick={() => setMobileMenuOpen(false)}
             >
-              MERATH
-            </motion.div>
-            <motion.div 
-              className="brand-subtitle"
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-            >
-              Cultural Foundation
-            </motion.div>
-          </NavLink>
-        </motion.div>
-
-        {/* Navigation */}
-        <nav>
-          <ul>
-            {navLinks.map((link, index) => (
-              <motion.li 
-                key={link.path}
-                initial={{ x: -20, opacity: 0, rotateY: -15 }}
-                animate={{ x: 0, opacity: 1, rotateY: 0 }}
-                transition={{ 
-                  duration: 0.8, 
-                  delay: 0.3 + index * 0.15,
-                  ease: [0.22, 1, 0.36, 1]
+              <div 
+                className="text-2xl font-light tracking-tight mb-1 sidebar-brand__title"
+                style={{ 
+                  color: 'var(--color-text-primary)',
+                  letterSpacing: 'var(--tracking-tight)'
                 }}
-                whileHover={{ 
-                  x: 12,
-                  scale: 1.05,
-                  transition: { 
-                    type: "spring",
-                    stiffness: 400,
-                    damping: 10
-                  } 
-                }}
-                whileTap={{ scale: 0.98 }}
               >
-                <NavLink
-                  to={link.path}
-                  className={({ isActive }) => isActive ? 'active' : ''}
-                  aria-current={({ isActive }) => (isActive ? 'page' : undefined)}
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <motion.span
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.5 + index * 0.15 }}
-                  >
-                    {link.label}
-                  </motion.span>
-                </NavLink>
-              </motion.li>
-            ))}
-          </ul>
-        </nav>
+                MERATH
+              </div>
+              <div 
+                className="text-xs uppercase tracking-widest sidebar-brand__subtitle"
+                style={{ 
+                  color: 'var(--color-accent-primary)',
+                  letterSpacing: 'var(--tracking-widest)'
+                }}
+              >
+                {language === 'en' ? 'Cultural Foundation' : 'مؤسسة ثقافية'}
+              </div>
+              <p className="sidebar-brand__tagline">
+                {language === 'en' 
+                  ? 'Independent platform for memory, art, and research.'
+                  : 'منصة مستقلة للذاكرة والفن والبحث.'}
+              </p>
+            </NavLink>
+          </motion.div>
 
-        {/* Language toggle */}
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <div>
-            <motion.button
-              onClick={() => {
-                setLanguage('en');
-                setMobileMenuOpen(false);
-              }}
-              aria-pressed={language === 'en'}
-              className={language === 'en' ? 'active' : ''}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              EN
-            </motion.button>
-            <motion.button
-              onClick={() => {
-                setLanguage('ar');
-                setMobileMenuOpen(false);
-              }}
-              aria-pressed={language === 'ar'}
-              className={language === 'ar' ? 'active' : ''}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              العربية
-            </motion.button>
+          {/* Navigation */}
+          <nav className="flex-1">
+            <ul className="sidebar-nav__list">
+              {navLinks.map((link, index) => {
+                const isActive = location.pathname === link.path || 
+                  (link.path !== '/' && location.pathname.startsWith(link.path));
+                const orderLabel = (index + 1).toString().padStart(2, '0');
+
+                return (
+                  <motion.li
+                    key={link.path}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.4, delay: 0.1 + index * 0.1 }}
+                  >
+                    <NavLink
+                      to={link.path}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`sidebar-link focus-ring ${isActive ? 'active' : ''}`}
+                    >
+                      {isActive && (
+                        <motion.span
+                          layoutId="sidebar-active-glow"
+                          className="sidebar-link__highlight"
+                          transition={{ type: 'spring', stiffness: 500, damping: 40 }}
+                          aria-hidden="true"
+                        />
+                      )}
+                      <div className="sidebar-link__inner">
+                        <span className="sidebar-link__index">{orderLabel}</span>
+                        <div className="sidebar-link__copy">
+                          <span className="sidebar-link__label">{link.label[language]}</span>
+                          <span className="sidebar-link__eyebrow">{link.eyebrow[language]}</span>
+                        </div>
+                        <span className="sidebar-link__chevron" aria-hidden="true">↗</span>
+                      </div>
+                    </NavLink>
+                  </motion.li>
+                );
+              })}
+            </ul>
+          </nav>
+
+          <div className="sidebar-footer">
+            <div>
+              <p className="sidebar-footer__eyebrow">{residencyLabel}</p>
+              <p className="sidebar-footer__headline">{foundationMeta}</p>
+            </div>
+            <div className="sidebar-footer__cta">
+              <span>{contactLabel}</span>
+              <a href="mailto:hello@merath.org" className="sidebar-footer__link">
+                hello@merath.org
+              </a>
+            </div>
           </div>
-        </motion.div>
+        </div>
       </motion.aside>
     </>
   );

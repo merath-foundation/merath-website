@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { sanityClient, isSanityConfigured } from '../lib/sanity';
 import type { Project } from '../data/projects';
+import { projects as staticProjects } from '../data/projects';
 
 export function useSanityProjects() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -11,7 +12,6 @@ export function useSanityProjects() {
     async function fetchProjects() {
       if (!isSanityConfigured()) {
         // Fallback to static data if Sanity is not configured
-        const { projects: staticProjects } = await import('../data/projects');
         setProjects(staticProjects);
         setLoading(false);
         return;
@@ -34,7 +34,6 @@ export function useSanityProjects() {
       } catch (err) {
         console.error('Error fetching projects from Sanity:', err);
         // Fallback to static data on error
-        const { projects: staticProjects } = await import('../data/projects');
         setProjects(staticProjects);
         setError(err as Error);
       } finally {
@@ -62,7 +61,6 @@ export function useSanityProject(id: string | undefined) {
 
       if (!isSanityConfigured()) {
         // Fallback to static data
-        const { projects: staticProjects } = await import('../data/projects');
         const found = staticProjects.find(p => p.id === id);
         setProject(found || null);
         setLoading(false);
@@ -86,7 +84,6 @@ export function useSanityProject(id: string | undefined) {
       } catch (err) {
         console.error('Error fetching project from Sanity:', err);
         // Fallback to static data on error
-        const { projects: staticProjects } = await import('../data/projects');
         const found = staticProjects.find(p => p.id === id);
         setProject(found || null);
         setError(err as Error);
@@ -102,7 +99,7 @@ export function useSanityProject(id: string | undefined) {
 }
 
 // Generic hook for any Sanity query
-export function useSanity(query: string) {
+export function useSanity(query: string, params?: Record<string, any>) {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -116,7 +113,7 @@ export function useSanity(query: string) {
       }
 
       try {
-        const result = await sanityClient.fetch(query);
+        const result = await sanityClient.fetch(query, params || {});
         setData(result);
       } catch (err) {
         console.error('Error fetching from Sanity:', err);
@@ -127,7 +124,7 @@ export function useSanity(query: string) {
     }
 
     fetchData();
-  }, [query]);
+  }, [query, params]);
 
   return { data, loading, error };
 }
