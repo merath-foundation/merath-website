@@ -8,8 +8,8 @@ export function FoundationRoom() {
   const roomRef = useRoomAnchor('foundation');
 
   const missionCopy = isArabic
-    ? 'تدعم مؤسسة ميراث الفنانين والباحثين وحماة المدن في بيروت والمنطقة لتوثيق الذاكرة الحضرية وتفعيلها عبر الإقامات والبرامج العامة والأرشيف الحي.'
-    : 'Merath Cultural Foundation supports artists, researchers, and civic stewards in Beirut and across the region to document, interpret, and activate urban memory through residencies, public programs, and a living archive.';
+    ? '.ميراث هي جماعة فنية تدير أيضاً مؤسسة ثقافية، تعمل على دعم الفنانين والباحثين والرعاة المدنيين في بيروت وعموم المنطقة لتوثيق الذاكرة الحضرية وتأويلها وتفعيلها من خلال الإقامات الفنية، والبرامج العامة، والأرشيف الحي'
+    : 'merath is an art collective who also run cultural foundation that supports artists, researchers, and civic stewards in Beirut and across the region to document, interpret, and activate resources.';
 
   return (
     <section ref={roomRef} id="room-foundation" className="room room--hero foundation-room" aria-labelledby="foundation-title">
