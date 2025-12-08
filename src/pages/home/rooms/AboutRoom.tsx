@@ -3,14 +3,14 @@ import { useRoomAnchor } from '../../../contexts/RoomsContext';
 
 const aboutCopy = {
   en: [
-    'Merath Foundation is an archival studio in Beirut supporting artists, researchers, and civic custodians to document and reactivate urban memory.',
-    'We run residencies, care-led research forums, and preservation workshops so collections remain accessible within their communities.',
-    'Our team maintains long-term partnerships with municipalities and independent institutions to keep records legible, bilingual, and in-region.',
+    'Based in Tripoli, Libya, Merath is a transregional collective operating across the Sahara and Mediterranean.',
+    'Functioning as both infrastructure builder and art studio, we develop (im)material systems, structures and workshops to circulate knowledge under constraint.',
+    'Merath weaves ecological frameworks and archival research into durational exhibitions and performances that bridge resonant contexts across sand and sea.',
   ],
   ar: [
-    'مؤسسة ميراث هي استوديو أرشيفي في بيروت يدعم الفنانين والباحثين والقيّمين المدنيين لتوثيق الذاكرة الحضرية وتفعيلها.',
-    'نُدير إقامات ومنتديات بحث قائمة على الرعاية وورش حفظ لضمان بقاء المجموعات متاحة داخل مجتمعاتها.',
-    'يحافظ فريقنا على شراكات طويلة الأمد مع البلديات والمؤسسات المستقلة كي تبقى السجلات مقروءة وثنائية اللغة وضمن المنطقة.',
+  'تتخذ ميراث من طرابلس، ليبيا، مقراً لها، وهي جماعة عابرة للأقاليم تنشط عبر الصحراء الكبرى والبحر الأبيض المتوسط.'
+'وبصفتنا بانٍ للبنية التحتية واستوديو فني في آن واحد، نطور أنظمة وهياكل وورش عمل (لا) مادية لتداول المعرفة في ظل ظروف القيد.'
+'تنسج ميراث الأطر البيئية والبحث الأرشيفي في معارض وأعمال أدائية متمهلة، تجسر السياقات المتناغمة عبر الرمال والبحر.'
   ],
 };
 
