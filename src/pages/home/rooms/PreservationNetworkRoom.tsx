@@ -16,8 +16,8 @@ export function PreservationNetworkRoom() {
           </h2>
           <p className="context-band__copy">
             {isArabic
-              ? 'من مخيمات اللاجئين إلى أرشيفات المعاهد، تعمل فرق ميراث على مزامنة بروتوكولات الحفظ بحيث تبقى المواد قابلة للتداول عبر المنطقة.'
-              : 'From refugee camps to municipal archives, Merath teams synchronise preservation protocols so material can circulate regionally.'}
+              ? 'من أرشيفات المعاهد، تعمل فرق ميراث على مزامنة بروتوكولات الحفظ بحيث تبقى المواد قابلة للتداول عبر المنطقة.'
+              : 'From municipal archives, Merath teams synchronise preservation protocols so material can circulate regionally.'}
           </p>
         </div>
 
