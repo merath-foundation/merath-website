@@ -4,8 +4,18 @@ on:
   push:
     branches: [ "main" ]
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+environment:
+  name: github-pages
+  url: ${{ steps.deployment.outputs.page_url }}
+
 jobs:
   build-and-deploy:
+    environment: github-pages
     runs-on: ubuntu-latest
     
     steps:
@@ -23,17 +33,11 @@ jobs:
     - name: Build
       run: npm run build
     
-    - name: Deploy to GitHub Pages
-      if: success()
-      run: |
-        git config --global user.email "action@github.com"
-        git config --global user.name "GitHub Action"
-        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-        git checkout --orphan gh-pages
-        rm -rf .git/index
-        git add build/
-        mv build/* .
-        rm -rf build/
-        git add .
-        git commit -m "Deploy to GitHub Pages" || true
-        git push -f origin gh-pages
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: './build'
+    
+    - name: Deploy
+      id: deployment
+      uses: actions/deploy-pages@v4
