@@ -1,6 +1,5 @@
 import { motion, useAnimationControls } from 'framer-motion';
 import { forwardRef, useEffect, useState } from 'react';
-import { useLivingArchive } from '../../contexts/LivingArchiveContext';
 
 interface OuroborosMenuButtonProps {
   readonly isOpen: boolean;
@@ -13,11 +12,9 @@ export const OuroborosMenuButton = forwardRef<HTMLButtonElement, OuroborosMenuBu
   ({ isOpen, onToggle, controlsId, label }, ref) => {
     const rotationControls = useAnimationControls();
     const [isHovering, setIsHovering] = useState(false);
-    const { tempo } = useLivingArchive();
 
     useEffect(() => {
-      const tempoDuration = tempo === 'active' ? 6 : tempo === 'paused' ? 12 : tempo === 'complete' ? 10 : 14;
-      const duration = isHovering ? Math.max(4, tempoDuration - 2) : tempoDuration;
+      const duration = isHovering ? 6 : 10;
       if (isOpen) {
         rotationControls.stop();
         rotationControls.start({ rotate: 0, transition: { duration: 0.35, ease: [0.37, 0, 0.63, 1] } });
@@ -32,7 +29,7 @@ export const OuroborosMenuButton = forwardRef<HTMLButtonElement, OuroborosMenuBu
           duration,
         },
       });
-    }, [rotationControls, isHovering, isOpen, tempo]);
+    }, [rotationControls, isHovering, isOpen]);
 
     return (
       <motion.button
