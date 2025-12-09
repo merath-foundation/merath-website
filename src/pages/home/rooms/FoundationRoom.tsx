@@ -14,7 +14,7 @@ export function FoundationRoom() {
 
   const missionCopy = isArabic
     ? '.ميراث هي جماعة فنية تدير أيضاً مؤسسة ثقافية، تعمل على دعم الفنانين والباحثين والرعاة المدنيين في بيروت وعموم المنطقة لتوثيق الذاكرة الحضرية وتأويلها وتفعيلها من خلال الإقامات الفنية، والبرامج العامة، والأرشيف الحي'
-    : 'merath is an art collective who also run cultural foundation that supports artists, researchers, and civic stewards in Beirut and across the region to document, interpret, and activate resources.';
+    : 'merath is an art collective who also run cultural foundation that supports artists, researchers, and civic stewards in Tripoli and across the region to document, interpret, and activate resources.';
 
   return (
     <section ref={roomRef} id="room-foundation" className="room room--hero foundation-room" aria-labelledby="foundation-title">
@@ -27,7 +27,7 @@ export function FoundationRoom() {
           <p className="foundation-room__lede">{missionCopy}</p>
           <div className="foundation-room__actions">
             <Link to="/projects" className="btn btn-primary foundation-room__action--primary">
-              {isArabic ? 'استكشف البرامج' : 'Explore programs'}
+              {isArabic ? 'الأرشيف قريباً' : 'Archive coming soon'}
             </Link>
             <button type="button" className="btn btn-ghost" onClick={handleGovernanceClick}>
               {isArabic ? 'اقرأ عن الحوكمة' : 'Review governance'}
