@@ -21,8 +21,7 @@ export function AboutRoom() {
 
   const paragraphs = aboutCopy[isArabic ? 'ar' : 'en'];
   const kicker = isArabic ? 'نبذة' : 'About';
-  const heading = isArabic ? 'مهمتنا ورعايتنا' : 'Our mission and care';
-
+ const heading = isArabic ? 'مهمتنا ورعايتنا' : 'Our mission and care';
   return (
     <section ref={roomRef} id="room-about" className="room about-room" aria-labelledby="about-title">
       <div className="about-room__content">
