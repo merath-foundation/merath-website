@@ -1390,7 +1390,8 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: clamp(var(--space-10), 10vh, var(--space-20)) 0 clamp(var(--space-6), 8vh, var(--space-14));
+    padding: clamp(var(--space-10), 12vh, var(--space-22)) 0 clamp(var(--space-8), 10vh, var(--space-16));
+    margin-top: clamp(var(--space-10), 8vh, var(--space-24));
   }
 
   .foundation-room__logo {
@@ -1401,9 +1402,11 @@
   }
 
   .foundation-room__logo img {
+    margin-top: 200px;
     width: clamp(220px, 38vw, 420px);
     height: auto;
     display: block;
+    width: min(70vw, 280px);
     border-radius: clamp(1rem, 4vw, 2rem);
     border: 1.5px solid rgba(0, 0, 0, 0.3);
     background: rgba(255, 255, 255, 0.9);
@@ -1477,13 +1480,9 @@
     }
 
     .foundation-room__hero {
-    margin-top: 250px;
       padding: clamp(var(--space-8), 12vh, var(--space-14)) 0 var(--space-10);
     }
 
-    .foundation-room__logo img {
-      width: min(70vw, 280px);
-    }
 
     .foundation-room__text {
       gap: var(--space-3);
@@ -1566,6 +1565,18 @@
     text-transform: uppercase;
     letter-spacing: 0.3em;
     color: var(--color-text-secondary);
+  }
+
+  .snake-console__prompt {
+    align-self: center;
+    padding: var(--space-2) var(--space-5);
+    border-radius: var(--radius-full);
+    background: rgba(5, 5, 5, 0.9);
+    color: #f7ea5f;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
   }
 
   .snake-console__metric {

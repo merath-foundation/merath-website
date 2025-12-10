@@ -38,6 +38,11 @@ const TEXT = {
   },
 } satisfies Record<'en' | 'ar', Record<string, string>>;
 
+const POINT_PROMPTS = {
+  en: ['New memory logged', 'Archive signal received', 'Ledger entry added', 'Foundation pulse ++', 'Desert line extended', 'Preservation link secured'],
+  ar: ['ذكرى جديدة', 'إشارة أرشيفية وصلت', 'مدخل جديد في السجل', 'نبضة للمؤسسة', 'خط الصحراء امتد', 'رابط حفظ تأكد'],
+} as const;
+
 export function SnakeGameFull({ locale = 'en' }: SnakeGameFullProps) {
   const copy = TEXT[locale];
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -50,6 +55,26 @@ export function SnakeGameFull({ locale = 'en' }: SnakeGameFullProps) {
   const [isPaused, setIsPaused] = useState(true);
   const [speed, setSpeed] = useState(INITIAL_SPEED);
   const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
+  const [pointPrompt, setPointPrompt] = useState<{ id: number; text: string } | null>(null);
+  const promptTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const showPointPrompt = useCallback(() => {
+    const prompts = POINT_PROMPTS[locale];
+    const next = prompts[Math.floor(Math.random() * prompts.length)];
+
+    if (promptTimeoutRef.current) {
+      clearTimeout(promptTimeoutRef.current);
+    }
+
+    setPointPrompt({ id: Date.now(), text: next });
+    promptTimeoutRef.current = setTimeout(() => setPointPrompt(null), 2200);
+  }, [locale]);
+
+  useEffect(() => () => {
+    if (promptTimeoutRef.current) {
+      clearTimeout(promptTimeoutRef.current);
+    }
+  }, []);
 
   useEffect(() => {
     const savedHighScore = localStorage.getItem(STORAGE_KEY);
@@ -114,6 +139,7 @@ export function SnakeGameFull({ locale = 'en' }: SnakeGameFullProps) {
             }
             return newScore;
           });
+          showPointPrompt();
           setFood(generateFood(newSnake));
           setSpeed(prev => Math.max(50, prev - SPEED_INCREMENT));
           return newSnake;
@@ -125,7 +151,7 @@ export function SnakeGameFull({ locale = 'en' }: SnakeGameFullProps) {
     }, speed);
 
     return () => clearInterval(gameInterval);
-  }, [direction, gameOver, isPaused, food, generateFood, checkCollision, speed, highScore]);
+  }, [direction, gameOver, isPaused, food, generateFood, checkCollision, speed, highScore, showPointPrompt]);
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
@@ -299,6 +325,20 @@ export function SnakeGameFull({ locale = 'en' }: SnakeGameFullProps) {
           <p>{copy.pauseHint}</p>
         </div>
       </div>
+
+      <AnimatePresence>
+        {pointPrompt && (
+          <motion.div
+            key={pointPrompt.id}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            className="snake-console__prompt"
+          >
+            {pointPrompt.text}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <div className="snake-console__frame">
         <div className="snake-console__canvas" role="region" aria-label={copy.startPrompt}>
