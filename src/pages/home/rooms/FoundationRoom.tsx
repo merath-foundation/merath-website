@@ -17,6 +17,8 @@ export function FoundationRoom() {
     ? '.ميراث هي جماعة فنية تدير أيضاً مؤسسة ثقافية، تعمل على دعم الفنانين والباحثين والرعاة المدنيين في طرابلس، لتوثيق الذاكرة الحضرية وتأويلها وتفعيلها من خلال الإقامات الفنية، والبرامج العامة، والأرشيف الحي'
     : 'merath is an art collective who also run cultural foundation that supports artists, researchers, and civic stewards in Tripoli and across the region to document, interpret, and activate resources.';
 
+  const foundationTitle = isArabic ? 'مؤسسة ميراث' : 'merath foundation';
+
   return (
     <section ref={roomRef} id="room-foundation" className="room room--hero foundation-room" aria-labelledby="foundation-title">
       <div className="foundation-room__hero">
@@ -25,8 +27,11 @@ export function FoundationRoom() {
         </div>
 
         <div className="foundation-room__text" dir={isArabic ? 'rtl' : 'ltr'}>
-          <h1 className="foundation-room__title" id="foundation-title">
-            {isArabic ? 'مؤسسة ميراث' : 'merath foundation'}
+          <h1 className="foundation-room__title" id="foundation-title" data-text={foundationTitle}>
+            <span className="foundation-room__title-text">{foundationTitle}</span>
+            <span className="foundation-room__title-grain" aria-hidden="true">
+              {foundationTitle}
+            </span>
           </h1>
           <p className="foundation-room__lede">{missionCopy}</p>
           <div className="foundation-room__actions">
