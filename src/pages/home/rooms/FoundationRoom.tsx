@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../../../contexts/LanguageContext';
 import { useRoomAnchor, useRooms } from '../../../contexts/RoomsContext';
+import archiveLogo from '../../../assets/archive-logo.png';
 
 export function FoundationRoom() {
   const { language } = useLanguage();
@@ -13,14 +14,17 @@ export function FoundationRoom() {
   };
 
   const missionCopy = isArabic
-    ? '.ميراث هي جماعة فنية تدير أيضاً مؤسسة ثقافية، تعمل على دعم الفنانين والباحثين والرعاة المدنيين في بيروت وعموم المنطقة لتوثيق الذاكرة الحضرية وتأويلها وتفعيلها من خلال الإقامات الفنية، والبرامج العامة، والأرشيف الحي'
+    ? '.ميراث هي جماعة فنية تدير أيضاً مؤسسة ثقافية، تعمل على دعم الفنانين والباحثين والرعاة المدنيين في طرابلس، لتوثيق الذاكرة الحضرية وتأويلها وتفعيلها من خلال الإقامات الفنية، والبرامج العامة، والأرشيف الحي'
     : 'merath is an art collective who also run cultural foundation that supports artists, researchers, and civic stewards in Tripoli and across the region to document, interpret, and activate resources.';
 
   return (
     <section ref={roomRef} id="room-foundation" className="room room--hero foundation-room" aria-labelledby="foundation-title">
       <div className="foundation-room__hero">
-        <div>
-          <p className="foundation-room__label">{isArabic ? 'المؤسسة' : 'Foundation'}</p>
+        <div className="foundation-room__logo" aria-hidden="true">
+          <img src={archiveLogo} alt="" loading="lazy" />
+        </div>
+
+        <div className="foundation-room__text" dir={isArabic ? 'rtl' : 'ltr'}>
           <h1 className="foundation-room__title" id="foundation-title">
             {isArabic ? 'مؤسسة ميراث' : 'merath foundation'}
           </h1>

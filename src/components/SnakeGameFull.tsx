@@ -5,6 +5,7 @@ const GRID_SIZE = 20;
 const CELL_SIZE = 20;
 const INITIAL_SPEED = 150;
 const SPEED_INCREMENT = 5;
+const SWIPE_THRESHOLD = 16;
 const STORAGE_KEY = 'merath-snake-highscore';
 
 type Direction = 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
@@ -226,6 +227,9 @@ export function SnakeGameFull({ locale = 'en' }: SnakeGameFullProps) {
   };
 
   const handleTouchStart = (e: TouchEvent<HTMLCanvasElement>) => {
+    if (e.cancelable) {
+      e.preventDefault();
+    }
     const touch = e.touches[0];
     setTouchStart({ x: touch.clientX, y: touch.clientY });
   };
@@ -236,8 +240,17 @@ export function SnakeGameFull({ locale = 'en' }: SnakeGameFullProps) {
     const touch = e.changedTouches[0];
     const deltaX = touch.clientX - touchStart.x;
     const deltaY = touch.clientY - touchStart.y;
+    const absX = Math.abs(deltaX);
+    const absY = Math.abs(deltaY);
+    const isSwipe = Math.max(absX, absY) > SWIPE_THRESHOLD;
 
-    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+    if (!isSwipe) {
+      if (isPaused) setIsPaused(false);
+      setTouchStart(null);
+      return;
+    }
+
+    if (absX > absY) {
       if (deltaX > 0) {
         setDirection(prev => (prev === 'LEFT' ? prev : 'RIGHT'));
       } else {
@@ -251,6 +264,18 @@ export function SnakeGameFull({ locale = 'en' }: SnakeGameFullProps) {
 
     if (isPaused) setIsPaused(false);
     setTouchStart(null);
+  };
+
+  const handleTouchMove = (e: TouchEvent<HTMLCanvasElement>) => {
+    if (e.cancelable) {
+      e.preventDefault();
+    }
+  };
+
+  const handleOverlayTap = () => {
+    if (!gameOver) {
+      setIsPaused(false);
+    }
   };
 
 
@@ -284,6 +309,7 @@ export function SnakeGameFull({ locale = 'en' }: SnakeGameFullProps) {
             className="snake-console__canvas-inner"
             tabIndex={0}
             onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
           />
 
@@ -294,6 +320,8 @@ export function SnakeGameFull({ locale = 'en' }: SnakeGameFullProps) {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 className="snake-console__overlay"
+                onClick={handleOverlayTap}
+                onTouchStart={handleOverlayTap}
               >
                 <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} className="snake-console__overlay-card">
                   <p className="snake-console__overlay-title">{copy.startPrompt}</p>

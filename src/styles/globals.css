@@ -1,5 +1,5 @@
 /* ===================================
-   MERATH CULTURAL FOUNDATION
+   MERATH CULTURAL -
    Global Styles
    =================================== */
 
@@ -181,7 +181,6 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
-    min-height: 100vh;
   }
 
   /* Arabic font support */
@@ -309,7 +308,6 @@
   }
 
   #main-content {
-    min-height: 100vh;
     padding-bottom: var(--space-24);
   }
 
@@ -706,6 +704,12 @@
     max-width: clamp(320px, 92vw, 1120px);
     margin-left: auto;
     margin-right: auto;
+  }
+
+  @media (max-width: 768px) {
+    .archive-page .room.room--hero {
+      padding-top: clamp(var(--space-32), 18vh, var(--space-40));
+    }
   }
 
   .archive-lab {
@@ -1371,41 +1375,78 @@
   }
 
   .foundation-room {
-    padding-top: clamp(8rem, 14vh, 12rem);
-    padding-bottom: clamp(6rem, 12vh, 10rem);
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100svh;
+    padding: 0 var(--section-padding-x);
+    display: flex;
+    flex-direction: column;
   }
 
   .foundation-room__hero {
-    min-height: clamp(480px, 80vh, 720px);
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100svh;
     display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: clamp(var(--space-10), 10vh, var(--space-20)) 0 clamp(var(--space-6), 8vh, var(--space-14));
+  }
+
+  .foundation-room__logo {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .foundation-room__logo img {
+    width: clamp(220px, 38vw, 420px);
+    height: auto;
+    display: block;
+    border-radius: clamp(1rem, 4vw, 2rem);
+    border: 1.5px solid rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow:
+      0 20px 45px rgba(0, 0, 0, 0.25),
+      0 60px 120px rgba(0, 0, 0, 0.2);
+  }
+
+  .foundation-room__text {
+    margin-top: var(--space-32);
+    padding-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-width: clamp(320px, 68vw, 900px);
+  }
+
+  [dir='rtl'] .foundation-room__text {
+    text-align: right;
     align-items: flex-end;
-    padding-bottom: var(--space-6);
   }
 
   .foundation-room__label {
-    font-size: var(--text-sm);
-    letter-spacing: 0.45em;
+    font-size: var(--text-xs);
+    letter-spacing: 0.4em;
     text-transform: uppercase;
     color: var(--color-text-tertiary);
-    margin-bottom: var(--space-4);
   }
 
-  .foundation-room__title {
-    font-size: clamp(3rem, 8vw, 6rem);
-    margin-bottom: var(--space-4);
-  }
-
+/*not used beep boop why are you reading my stylesheets you creep! With love from Tripoli*/
   .foundation-room__lede {
+    margin-top: var(--space-20);
     font-size: var(--text-xl);
     color: var(--color-text-secondary);
     max-width: 60ch;
-    margin-bottom: var(--space-6);
+    margin-bottom: var(--space-5);
   }
 
   .foundation-room__actions {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-4);
+    margin-top: var(--space-24);
   }
 
   .foundation-room__action--primary {
@@ -1413,8 +1454,9 @@
   }
 
   .about-room {
+    margin-top: var(--space-32);
     padding-top: clamp(5rem, 12vh, 8rem);
-    padding-bottom: clamp(5rem, 12vh, 8rem);
+    padding-bottom: 10px;
     background: var(--color-background);
   }
 
@@ -1426,13 +1468,25 @@
   .about-room__text {
     display: grid;
     gap: var(--space-4);
-    margin-top: var(--space-6);
+    margin-top: var(--space-24);
   }
 
   @media (max-width: 768px) {
+    .foundation-room {
+      padding: 0 var(--space-4);
+    }
+
     .foundation-room__hero {
-      min-height: auto;
-      padding-bottom: 0;
+    margin-top: 250px;
+      padding: clamp(var(--space-8), 12vh, var(--space-14)) 0 var(--space-10);
+    }
+
+    .foundation-room__logo img {
+      width: min(70vw, 280px);
+    }
+
+    .foundation-room__text {
+      gap: var(--space-3);
     }
   }
 
@@ -1472,6 +1526,10 @@
   @media (max-width: 640px) {
     .room {
       padding: var(--space-12) var(--space-4);
+    }
+
+    .foundation-room {
+      padding: 0 var(--space-4);
     }
 
     .project-ledger li {
@@ -1554,6 +1612,9 @@
     border: 1px solid rgba(0, 0, 0, 0.35);
     overflow: hidden;
     background: rgba(0, 0, 0, 0.9);
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
   }
 
   .snake-console__canvas-inner {

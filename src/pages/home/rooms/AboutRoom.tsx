@@ -1,6 +1,5 @@
 import { useLanguage } from '../../../contexts/LanguageContext';
 import { useRoomAnchor } from '../../../contexts/RoomsContext';
-
 const aboutCopy = {
   en: [
     'Based in Tripoli, Libya, Merath is a transregional collective operating across the Sahara and Mediterranean.',
@@ -13,7 +12,6 @@ const aboutCopy = {
     'تنسج ميراث الأطر البيئية والبحث الأرشيفي في معارض وأعمال أدائية متمهلة، تجسر السياقات المتناغمة عبر الرمال والبحر.',
   ],
 } as const;
-
 export function AboutRoom() {
   const { language } = useLanguage();
   const isArabic = language === 'ar';
