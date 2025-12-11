@@ -15,7 +15,7 @@ export function FoundationRoom() {
 
   const missionCopy = isArabic
     ? '..ميراث هي جماعة فنية تدير أيضاً مؤسسة ثقافية، تعمل على دعم الفنانين والباحثين والرعاة المدنيين في بيروت وعموم المنطقة لتوثيق الذاكرة الحضرية وتأويلها وتفعيلها من خلال الإقامات الفنية، والبرامج العامة، والأرشيف الحي'
-    : 'merath is an art collective who also run cultural foundation that supports artists, researchers, and civic stewards in Tripoli and across the region to document, interpret, and activate resources.';
+    : 'merath is an art collective who also run cultural foundation that supports artists, researchers, and cultural producers in Tripoli and across the region to document, garners, and activate resources.';
 
   return (
     <section ref={roomRef} id="room-foundation" className="room room--hero foundation-room" aria-labelledby="foundation-title">
