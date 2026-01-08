@@ -3,7 +3,11 @@ import Footer from '../components/Footer';
 import './ProjectDetailPage.css';
 import logo from '../assets/merath_logo_transparent.png';
 
-const ProjectDetailPage: React.FC = () => {
+interface ProjectDetailPageProps {
+  direction?: 'rtl' | 'ltr';
+}
+
+const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ direction = 'rtl' }) => {
   const tabs = [
     { name: 'PROJECT UNO', active: true },
     { name: 'PROJECT DUO', active: false },
@@ -14,7 +18,7 @@ const ProjectDetailPage: React.FC = () => {
   ];
 
   return (
-    <div className="project-detail-page">
+    <div className="project-detail-page" dir={direction}>
       <div className="project-detail-navbar">
         <div className="navbar-icon navbar-icon--white">
           <div className="navbar-icon-bar"></div>

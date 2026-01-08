@@ -4,11 +4,13 @@ import Footer from '../components/Footer';
 import './PublicationsPage.css';
 
 const PublicationsPage: React.FC = () => {
+  // Default language is Arabic, so direction is 'rtl'.
+  const direction: 'rtl' | 'ltr' = 'rtl';
   const publications = Array(9).fill(null);
 
   return (
-    <div className="publications-page">
-      <NavBar />
+    <div className="publications-page" dir={direction}>
+      <NavBar direction={direction} />
       
       <div className="publications-grid">
         {publications.map((_, index) => (

@@ -5,11 +5,13 @@ import './AboutPage.css';
 import logo from '../assets/merath_logo_transparent.png';
 
 const AboutPage: React.FC = () => {
+  // Default language is Arabic, so direction is 'rtl'.
+  const direction: 'rtl' | 'ltr' = 'rtl';
   const teamMembers = ['Jane Doe', 'John Doe', 'Moad Doe', 'Yusuf Doe'];
 
   return (
-    <div className="about-page">
-      <NavBar />
+    <div className="about-page" dir={direction}>
+      <NavBar direction={direction} />
       
       <img src={logo} alt="Merath Logo" className="about-logo" />
       

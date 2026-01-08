@@ -5,10 +5,14 @@ import Card from '../components/Card';
 import './LandingPage.css';
 import logo from '../assets/merath_logo_transparent.png';
 
-const LandingPage: React.FC = () => {
+interface LandingPageProps {
+  direction?: 'rtl' | 'ltr';
+}
+
+const LandingPage: React.FC<LandingPageProps> = ({ direction = 'rtl' }) => {
   return (
-    <div className="landing-page">
-      <NavBar />
+    <div className="landing-page" dir={direction}>
+      <NavBar direction={direction} />
       
       <section className="hero-section">
         <div className="hero-content">

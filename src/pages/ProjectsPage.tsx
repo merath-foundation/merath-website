@@ -5,6 +5,8 @@ import './ProjectsPage.css';
 import logo from '../assets/merath_logo_transparent.png';
 
 const ProjectsPage: React.FC = () => {
+  // Default language is Arabic, so direction is 'rtl'.
+  const direction: 'rtl' | 'ltr' = 'rtl';
   const projects = [
     { id: 1, number: '1' },
     { id: 2, number: '2' },
@@ -15,8 +17,8 @@ const ProjectsPage: React.FC = () => {
   ];
 
   return (
-    <div className="projects-page">
-      <NavBar />
+    <div className="projects-page" dir={direction}>
+      <NavBar direction={direction} />
       
       <img src={logo} alt="Merath Logo" className="projects-logo" />
       
