@@ -18,3 +18,9 @@ html, body, #root {
   margin: 0;
   padding: 0;
 }
+
+:root {
+  --merath-background: #F9F3E0;
+  --merath-blue: #2B4C7E;
+  --merath-text: #000000;
+}

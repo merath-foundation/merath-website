@@ -4,19 +4,30 @@
   padding: 0 59px;
   align-items: center;
   background: var(--merath-background);
+  position: relative;
+  justify-content: space-between;
 }
 
 .navbar-icon {
   display: flex;
-  width: 20px;
-  align-items: flex-end;
+  flex-direction: column;
   gap: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 0.2s;
+}
+
+.navbar-icon:hover {
+  opacity: 0.7;
 }
 
 .navbar-icon-bar {
-  width: 4px;
-  height: 50px;
+  width: 50px;
+  height: 4px;
   background: var(--merath-blue);
+  transition: all 0.3s ease;
 }
 
 .navbar-icon--white .navbar-icon-bar {
@@ -24,13 +35,36 @@
 }
 
 .navbar-links {
-  display: flex;
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 400px;
+  max-width: 80vw;
+  background: var(--merath-background);
   list-style: none;
-  margin: 0 32px;
-  padding: 0;
+  margin: 0;
+  padding: 120px 60px 60px;
+  display: flex;
+  flex-direction: column;
   gap: 32px;
-  align-items: center;
-  transition: max-height 0.3s;
+  align-items: flex-start;
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+}
+
+[dir="rtl"] .navbar-links {
+  right: auto;
+  left: 0;
+  transform: translateX(-100%);
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+  align-items: flex-end;
+}
+
+.navbar-links--open {
+  transform: translateX(0) !important;
 }
 
 .navbar-link-item {
@@ -39,41 +73,149 @@
 
 .navbar-link {
   text-decoration: none;
-  color: var(--merath-blue, #003366);
-  font-size: 1.2rem;
+  color: var(--merath-blue);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 24px;
   font-weight: 600;
-  transition: color 0.2s;
+  line-height: 140%;
+  letter-spacing: 0.02em;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  position: relative;
 }
+
 .navbar-link:hover {
-  color: #0077cc;
+  opacity: 0.7;
+  transform: translateX(-4px);
+}
+
+[dir="rtl"] .navbar-link:hover {
+  transform: translateX(4px);
+}
+
+.navbar-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--merath-blue);
+  transition: width 0.3s ease;
+}
+
+.navbar-link:hover::after {
+  width: 100%;
 }
 
 .navbar-lang-switcher {
-  margin-inline-start: auto;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
 }
 
-@media (max-width: 900px) {
+.navbar-lang-switcher label {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--merath-blue);
+  margin: 0;
+}
+
+.navbar-lang-switcher select {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--merath-blue);
+  background: transparent;
+  border: 2px solid var(--merath-blue);
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.navbar-lang-switcher select:hover {
+  background: var(--merath-blue);
+  color: var(--merath-background);
+}
+
+.navbar-lang-switcher select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(43, 76, 126, 0.2);
+}
+
+/* Overlay backdrop when menu is open */
+.navbar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 999;
+}
+
+.navbar-overlay--visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Close button in sidebar */
+.navbar-close {
+  position: absolute;
+  top: 60px;
+  right: 60px;
+  background: none;
+  border: none;
+  font-size: 32px;
+  color: var(--merath-blue);
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: opacity 0.2s;
+}
+
+[dir="rtl"] .navbar-close {
+  right: auto;
+  left: 60px;
+}
+
+.navbar-close:hover {
+  opacity: 0.7;
+}
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .navbar {
+    height: 120px;
+    padding: 0 24px;
+  }
+  
+  .navbar-icon-bar {
+    width: 35px;
+    height: 3px;
+  }
+  
   .navbar-links {
-    position: absolute;
-    top: 100px;
-    right: 0;
-    left: 0;
-    background: var(--merath-background, #fff);
-    flex-direction: column;
-    gap: 16px;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s;
-    z-index: 100;
+    width: 100vw;
+    max-width: 100vw;
+    padding: 100px 40px 40px;
   }
-  .navbar-links.navbar-links--open {
-    max-height: 300px;
-    padding: 16px 0;
+  
+  .navbar-close {
+    top: 40px;
+    right: 40px;
   }
-  .navbar-lang-switcher {
-    margin-inline-start: 0;
+  
+  [dir="rtl"] .navbar-close {
+    left: 40px;
+  }
+  
+  .navbar-link {
+    font-size: 20px;
   }
 }

@@ -18,37 +18,54 @@ const NavBar: React.FC<NavBarProps> = ({ variant = 'default', direction = 'rtl',
     { label: language === 'ar' ? 'المنشورات' : 'Publications', to: '/publications' },
   ];
 
+  const closeMenu = () => setMenuOpen(false);
+
   return (
-    <nav className="navbar" dir={direction}>
-      <button
-        className={`navbar-icon navbar-icon--${variant}`}
-        aria-label="Toggle menu"
-        onClick={() => setMenuOpen((open) => !open)}
-        style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
-      >
-        <div className="navbar-icon-bar"></div>
-        <div className="navbar-icon-bar"></div>
-        <div className="navbar-icon-bar"></div>
-      </button>
-      <ul className={`navbar-links${menuOpen ? ' navbar-links--open' : ''}`}>
+    <>
+      {/* Overlay backdrop */}
+      <div 
+        className={`navbar-overlay${menuOpen ? ' navbar-overlay--visible' : ''}`}
+        onClick={closeMenu}
+      />
+      
+      <nav className="navbar" dir={direction}>
+        <button
+          className={`navbar-icon navbar-icon--${variant}`}
+          aria-label="Toggle menu"
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          <div className="navbar-icon-bar"></div>
+          <div className="navbar-icon-bar"></div>
+          <div className="navbar-icon-bar"></div>
+        </button>
+        
+        <div className="navbar-lang-switcher">
+          <label htmlFor="lang-switch">{language === 'ar' ? 'اللغة' : 'Language'}</label>
+          <select
+            id="lang-switch"
+            value={language}
+            onChange={e => setLanguage(e.target.value as 'ar' | 'en')}
+          >
+            <option value="ar">ع</option>
+            <option value="en">EN</option>
+          </select>
+        </div>
+      </nav>
+
+      {/* Sidebar navigation */}
+      <aside className={`navbar-links${menuOpen ? ' navbar-links--open' : ''}`} dir={direction}>
+        <button className="navbar-close" onClick={closeMenu} aria-label="Close menu">
+          ×
+        </button>
         {links.map((link) => (
           <li key={link.to} className="navbar-link-item">
-            <Link to={link.to} className="navbar-link" onClick={() => setMenuOpen(false)}>{link.label}</Link>
+            <Link to={link.to} className="navbar-link" onClick={closeMenu}>
+              {link.label}
+            </Link>
           </li>
         ))}
-      </ul>
-      <div className="navbar-lang-switcher">
-        <label htmlFor="lang-switch" style={{ fontWeight: 500 }}>{language === 'ar' ? 'اللغة:' : 'Language:'}</label>
-        <select
-          id="lang-switch"
-          value={language}
-          onChange={e => setLanguage(e.target.value as 'ar' | 'en')}
-        >
-          <option value="ar">العربية</option>
-          <option value="en">English</option>
-        </select>
-      </div>
-    </nav>
+      </aside>
+    </>
   );
 };
 
