@@ -4,9 +4,13 @@ import Footer from '../components/Footer';
 import './ProjectsPage.css';
 import logo from '../assets/merath_logo_transparent.png';
 
-const ProjectsPage: React.FC = () => {
-  // Default language is Arabic, so direction is 'rtl'.
-  const direction: 'rtl' | 'ltr' = 'rtl';
+interface ProjectsPageProps {
+  direction: 'rtl' | 'ltr';
+  language: 'ar' | 'en';
+  setLanguage: (lang: 'ar' | 'en') => void;
+}
+
+const ProjectsPage: React.FC<ProjectsPageProps> = ({ direction, language, setLanguage }) => {
   const projects = [
     { id: 1, number: '1' },
     { id: 2, number: '2' },
@@ -18,7 +22,7 @@ const ProjectsPage: React.FC = () => {
 
   return (
     <div className="projects-page" dir={direction}>
-      <NavBar direction={direction} />
+      <NavBar direction={direction} language={language} setLanguage={setLanguage} />
       
       <img src={logo} alt="Merath Logo" className="projects-logo" />
       

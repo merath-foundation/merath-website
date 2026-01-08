@@ -4,14 +4,18 @@ import Footer from '../components/Footer';
 import './AboutPage.css';
 import logo from '../assets/merath_logo_transparent.png';
 
-const AboutPage: React.FC = () => {
-  // Default language is Arabic, so direction is 'rtl'.
-  const direction: 'rtl' | 'ltr' = 'rtl';
+interface AboutPageProps {
+  direction: 'rtl' | 'ltr';
+  language: 'ar' | 'en';
+  setLanguage: (lang: 'ar' | 'en') => void;
+}
+
+const AboutPage: React.FC<AboutPageProps> = ({ direction, language, setLanguage }) => {
   const teamMembers = ['Jane Doe', 'John Doe', 'Moad Doe', 'Yusuf Doe'];
 
   return (
     <div className="about-page" dir={direction}>
-      <NavBar direction={direction} />
+      <NavBar direction={direction} language={language} setLanguage={setLanguage} />
       
       <img src={logo} alt="Merath Logo" className="about-logo" />
       

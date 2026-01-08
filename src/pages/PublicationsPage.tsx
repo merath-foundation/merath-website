@@ -3,14 +3,18 @@ import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import './PublicationsPage.css';
 
-const PublicationsPage: React.FC = () => {
-  // Default language is Arabic, so direction is 'rtl'.
-  const direction: 'rtl' | 'ltr' = 'rtl';
+interface PublicationsPageProps {
+  direction: 'rtl' | 'ltr';
+  language: 'ar' | 'en';
+  setLanguage: (lang: 'ar' | 'en') => void;
+}
+
+const PublicationsPage: React.FC<PublicationsPageProps> = ({ direction, language, setLanguage }) => {
   const publications = Array(9).fill(null);
 
   return (
     <div className="publications-page" dir={direction}>
-      <NavBar direction={direction} />
+      <NavBar direction={direction} language={language} setLanguage={setLanguage} />
       
       <div className="publications-grid">
         {publications.map((_, index) => (

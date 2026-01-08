@@ -4,10 +4,12 @@ import './ProjectDetailPage.css';
 import logo from '../assets/merath_logo_transparent.png';
 
 interface ProjectDetailPageProps {
-  direction?: 'rtl' | 'ltr';
+  direction: 'rtl' | 'ltr';
+  language: 'ar' | 'en';
+  setLanguage: (lang: 'ar' | 'en') => void;
 }
 
-const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ direction = 'rtl' }) => {
+const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ direction, language, setLanguage }) => {
   const tabs = [
     { name: 'PROJECT UNO', active: true },
     { name: 'PROJECT DUO', active: false },
@@ -20,11 +22,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ direction = 'rtl'
   return (
     <div className="project-detail-page" dir={direction}>
       <div className="project-detail-navbar">
-        <div className="navbar-icon navbar-icon--white">
-          <div className="navbar-icon-bar"></div>
-          <div className="navbar-icon-bar"></div>
-          <div className="navbar-icon-bar"></div>
-        </div>
+        <NavBar direction={direction} variant="white" language={language} setLanguage={setLanguage} />
       </div>
       
       <div className="project-detail-hero">

@@ -5,14 +5,17 @@ import Card from '../components/Card';
 import './LandingPage.css';
 import logo from '../assets/merath_logo_transparent.png';
 
+
 interface LandingPageProps {
   direction?: 'rtl' | 'ltr';
+  language: 'ar' | 'en';
+  setLanguage: (lang: 'ar' | 'en') => void;
 }
 
-const LandingPage: React.FC<LandingPageProps> = ({ direction = 'rtl' }) => {
+const LandingPage: React.FC<LandingPageProps> = ({ direction = 'rtl', language, setLanguage }) => {
   return (
     <div className="landing-page" dir={direction}>
-      <NavBar direction={direction} />
+      <NavBar direction={direction} language={language} setLanguage={setLanguage} />
       
       <section className="hero-section">
         <div className="hero-content">
