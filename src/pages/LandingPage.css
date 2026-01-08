@@ -1,0 +1,128 @@
+.landing-page {
+  display: flex;
+  width: 100%;
+  max-width: 1210px;
+  margin: 0 auto;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  background: var(--merath-background);
+}
+
+.hero-section {
+  display: inline-grid;
+  padding: 68px 0;
+  grid-template-rows: repeat(1, fit-content(100%));
+  grid-template-columns: repeat(1, fit-content(100%));
+  background: var(--merath-background);
+  width: 100%;
+}
+
+.hero-content {
+  width: 1200px;
+  height: 513px;
+  position: relative;
+}
+
+.hero-logo {
+  width: 282px;
+  height: 315px;
+  position: absolute;
+  left: 459px;
+  top: 0;
+}
+
+.hero-subtitle {
+  position: absolute;
+  left: 357px;
+  top: 347px;
+  width: 487px;
+  color: var(--sds-color-text-utilities-text-on-overlay);
+  text-align: center;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 120%;
+}
+
+.hero-description {
+  width: 748px;
+  color: #000;
+  text-align: center;
+  font-family: 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: normal;
+  position: absolute;
+  left: 226px;
+  top: 403px;
+}
+
+.hero-description-secondary {
+  color: #000;
+  text-align: center;
+  font-family: 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: normal;
+  position: absolute;
+  left: 270px;
+  top: 487px;
+  width: 660px;
+}
+
+.hero-side-text {
+  width: 135px;
+  height: 300px;
+  color: #000;
+  font-family: 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: normal;
+  position: absolute;
+  left: 884px;
+  top: 71px;
+}
+
+.cards-section {
+  display: flex;
+  padding: 64px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 48px;
+  align-self: stretch;
+  background: var(--merath-background);
+}
+
+.cards-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  gap: 64px;
+  flex-shrink: 0;
+  align-self: stretch;
+  flex-wrap: wrap;
+}
+
+.project-showcase {
+  display: flex;
+  padding: 128px;
+  align-items: flex-start;
+  gap: 48px;
+  flex: 1 0 0;
+  align-self: stretch;
+  background: var(--merath-background);
+}
+
+.showcase-image {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1 0 0;
+  align-self: stretch;
+  overflow: hidden;
+  background: var(--sds-color-slate-200);
+  min-height: 300px;
+}

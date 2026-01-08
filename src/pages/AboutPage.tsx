@@ -1,0 +1,35 @@
+import React from 'react';
+import NavBar from '../components/NavBar';
+import Footer from '../components/Footer';
+import './AboutPage.css';
+import logo from '../assets/merath_logo_transparent.png';
+
+const AboutPage: React.FC = () => {
+  const teamMembers = ['Jane Doe', 'John Doe', 'Moad Doe', 'Yusuf Doe'];
+
+  return (
+    <div className="about-page">
+      <NavBar />
+      
+      <img src={logo} alt="Merath Logo" className="about-logo" />
+      
+      <div className="about-text">
+        <h1 className="about-heading">ABOUT</h1>
+        <p className="about-paragraph">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </p>
+      </div>
+      
+      <div className="team-section">
+        <h2 className="team-heading">Team</h2>
+        {teamMembers.map((member, index) => (
+          <div key={index} className="team-member">{member}</div>
+        ))}
+      </div>
+      
+      <Footer />
+    </div>
+  );
+};
+
+export default AboutPage;

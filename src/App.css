@@ -1,0 +1,38 @@
+.app {
+  min-height: 100vh;
+  background: var(--merath-background);
+}
+
+.app-navigation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  background: var(--merath-blue);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.nav-button {
+  padding: 8px 16px;
+  background: #FFF;
+  border: 2px solid var(--taffy);
+  border-radius: 4px;
+  font-family: 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.nav-button:hover {
+  background: var(--merath-yellow);
+  transform: translateY(-2px);
+}
+
+.app-main {
+  padding-top: 60px;
+}

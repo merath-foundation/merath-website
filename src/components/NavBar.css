@@ -1,0 +1,24 @@
+.navbar {
+  display: flex;
+  height: 221px;
+  padding: 0 59px;
+  align-items: center;
+  background: var(--merath-background);
+}
+
+.navbar-icon {
+  display: flex;
+  width: 20px;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.navbar-icon-bar {
+  width: 4px;
+  height: 50px;
+  background: var(--merath-blue);
+}
+
+.navbar-icon--white .navbar-icon-bar {
+  background: #FFF;
+}

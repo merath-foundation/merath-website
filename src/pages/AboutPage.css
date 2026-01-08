@@ -1,0 +1,64 @@
+.about-page {
+  display: flex;
+  width: 100%;
+  max-width: 1210px;
+  margin: 0 auto;
+  flex-direction: column;
+  align-items: center;
+  gap: 150px;
+  background: var(--merath-background);
+  overflow: hidden;
+}
+
+.about-logo {
+  width: 293px;
+  height: 328px;
+}
+
+.about-text {
+  width: 868px;
+  color: #000;
+  text-align: center;
+  font-family: 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.about-heading {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 140%;
+  margin-bottom: 16px;
+}
+
+.about-paragraph {
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 140%;
+}
+
+.team-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.team-heading {
+  width: 868px;
+  color: #000;
+  text-align: center;
+  font-family: 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 140%;
+}
+
+.team-member {
+  width: 868px;
+  color: #000;
+  text-align: center;
+  font-family: 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 140%;
+}
