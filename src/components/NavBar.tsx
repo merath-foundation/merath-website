@@ -26,31 +26,38 @@ const NavBar: React.FC<NavBarProps> = ({ variant = 'default', direction = 'rtl',
       <div 
         className={`navbar-overlay${menuOpen ? ' navbar-overlay--visible' : ''}`}
         onClick={closeMenu}
+        role="button"
+        tabIndex={menuOpen ? 0 : -1}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') closeMenu();
+        }}
       />
       
       <nav className="navbar" dir={direction}>
         <button
-          className={`navbar-icon navbar-icon--${variant}`}
+          className={`navbar-icon navbar-icon--${variant}${menuOpen ? ' navbar-icon--open' : ''}`}
           aria-label="Toggle menu"
+          aria-expanded={menuOpen}
           onClick={() => setMenuOpen((open) => !open)}
         >
           <div className="navbar-icon-bar"></div>
           <div className="navbar-icon-bar"></div>
           <div className="navbar-icon-bar"></div>
         </button>
-        
-        <div className="navbar-lang-switcher">
-          <label htmlFor="lang-switch">{language === 'ar' ? 'اللغة' : 'Language'}</label>
-          <select
-            id="lang-switch"
-            value={language}
-            onChange={e => setLanguage(e.target.value as 'ar' | 'en')}
-          >
-            <option value="ar">ع</option>
-            <option value="en">EN</option>
-          </select>
-        </div>
       </nav>
+
+      {/* Language switcher positioned below navbar */}
+      <div className="navbar-lang-switcher" dir={direction}>
+        <label htmlFor="lang-switch">{language === 'ar' ? 'اللغة' : 'Language'}</label>
+        <select
+          id="lang-switch"
+          value={language}
+          onChange={e => setLanguage(e.target.value as 'ar' | 'en')}
+        >
+          <option value="ar">ع</option>
+          <option value="en">EN</option>
+        </select>
+      </div>
 
       {/* Sidebar navigation */}
       <aside className={`navbar-links${menuOpen ? ' navbar-links--open' : ''}`} dir={direction}>

@@ -1,14 +1,23 @@
 .navbar {
   display: flex;
   height: 221px;
-  padding: 0 59px;
+  padding: 0;
   align-items: center;
   background: var(--merath-background);
-  position: relative;
-  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  transition: opacity 0.2s, transform 0.3s ease;
 }
 
 .navbar-icon {
+  position: absolute;
+  left: 59px;
+
+.navbar-icon--open {
+  transform: rotate(90deg);
+}
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -17,6 +26,11 @@
   cursor: pointer;
   padding: 0;
   transition: opacity 0.2s;
+}
+
+[dir="rtl"] .navbar-icon {
+  left: auto;
+  right: 59px;
 }
 
 .navbar-icon:hover {
@@ -51,7 +65,7 @@
   align-items: flex-start;
   transform: translateX(100%);
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 1000;
+  z-index: 1200;
   box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
 }
 
@@ -109,14 +123,25 @@
 }
 
 .navbar-lang-switcher {
+  position: fixed;
+  top: 240px;
+  left: 59px;
   display: flex;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  z-index: 100;
+}
+
+[dir="rtl"] .navbar-lang-switcher {
+  left: auto;
+  right: 59px;
+  align-items: flex-end;
 }
 
 .navbar-lang-switcher label {
   font-family: 'IBM Plex Sans', sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--merath-blue);
   margin: 0;
@@ -124,13 +149,13 @@
 
 .navbar-lang-switcher select {
   font-family: 'IBM Plex Sans', sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--merath-blue);
   background: transparent;
   border: 2px solid var(--merath-blue);
   border-radius: 4px;
-  padding: 6px 12px;
+  padding: 4px 10px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -156,7 +181,7 @@
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0.3s ease;
-  z-index: 999;
+  z-index: 1150;
 }
 
 .navbar-overlay--visible {
@@ -217,5 +242,15 @@
   
   .navbar-link {
     font-size: 20px;
+  }
+  
+  .navbar-lang-switcher {
+    top: 140px;
+    left: 24px;
+  }
+  
+  [dir="rtl"] .navbar-lang-switcher {
+    left: auto;
+    right: 24px;
   }
 }

@@ -7,6 +7,7 @@
   align-items: center;
   overflow: hidden;
   background: var(--merath-background);
+  padding-top: 221px;
 }
 
 .hero-section {
