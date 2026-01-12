@@ -48,15 +48,13 @@ const NavBar: React.FC<NavBarProps> = ({ variant = 'default', direction = 'rtl',
 
       {/* Language switcher positioned below navbar */}
       <div className="navbar-lang-switcher" dir={direction}>
-        <label htmlFor="lang-switch">{language === 'ar' ? 'اللغة' : 'Language'}</label>
-        <select
-          id="lang-switch"
-          value={language}
-          onChange={e => setLanguage(e.target.value as 'ar' | 'en')}
+        <button
+          className="navbar-lang-button"
+          onClick={() => setLanguage(language === 'ar' ? 'en' : 'ar')}
+          aria-label={language === 'ar' ? 'Switch to English' : 'التبديل إلى العربية'}
         >
-          <option value="ar">ع</option>
-          <option value="en">EN</option>
-        </select>
+          {language === 'ar' ? 'EN' : 'ع'}
+        </button>
       </div>
 
       {/* Sidebar navigation */}
