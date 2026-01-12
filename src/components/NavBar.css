@@ -14,13 +14,9 @@
 .navbar-icon {
   position: absolute;
   left: 59px;
-
-.navbar-icon--open {
-  transform: rotate(90deg);
-}
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  align-items: center;
+  justify-content: center;
   background: none;
   border: none;
   cursor: pointer;
@@ -35,17 +31,6 @@
 
 .navbar-icon:hover {
   opacity: 0.7;
-}
-
-.navbar-icon-bar {
-  width: 50px;
-  height: 4px;
-  background: var(--merath-blue);
-  transition: all 0.3s ease;
-}
-
-.navbar-icon--white .navbar-icon-bar {
-  background: #FFF;
 }
 
 .navbar-links {

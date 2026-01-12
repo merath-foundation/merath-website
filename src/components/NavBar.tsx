@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import MenuToggleIcon from './MenuToggleIcon';
 import './NavBar.css';
 
 interface NavBarProps {
@@ -35,14 +36,12 @@ const NavBar: React.FC<NavBarProps> = ({ variant = 'default', direction = 'rtl',
       
       <nav className="navbar" dir={direction}>
         <button
-          className={`navbar-icon navbar-icon--${variant}${menuOpen ? ' navbar-icon--open' : ''}`}
+          className={`navbar-icon navbar-icon--${variant}`}
           aria-label="Toggle menu"
           aria-expanded={menuOpen}
           onClick={() => setMenuOpen((open) => !open)}
         >
-          <div className="navbar-icon-bar"></div>
-          <div className="navbar-icon-bar"></div>
-          <div className="navbar-icon-bar"></div>
+          <MenuToggleIcon isOpen={menuOpen} variant={variant} />
         </button>
       </nav>
 
