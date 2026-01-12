@@ -1,25 +1,28 @@
 .about-page {
   display: flex;
   width: 100%;
-  max-width: 1210px;
-  margin: 0 auto;
+  min-height: 100vh;
   flex-direction: column;
   align-items: center;
-  gap: 150px;
   background: var(--merath-background);
-  overflow: hidden;
+  overflow-x: hidden;
+  padding-top: 280px;
 }
 
 .about-logo {
   width: 293px;
   height: 328px;
+  flex-shrink: 0;
+  margin-bottom: 40px;
 }
 
 .about-text {
-  width: 868px;
+  max-width: 868px;
+  width: 90%;
   color: #000;
   text-align: center;
   font-family: 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
+  margin-bottom: 60px;
 }
 
 .about-heading {
@@ -40,25 +43,67 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
+  width: 100%;
+  margin-bottom: 80px;
 }
 
 .team-heading {
-  width: 868px;
+  max-width: 868px;
+  width: 90%;
   color: #000;
   text-align: center;
   font-family: 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
   font-size: 32px;
   font-weight: 700;
   line-height: 140%;
+  margin-bottom: 16px;
 }
 
 .team-member {
-  width: 868px;
+  max-width: 868px;
+  width: 90%;
   color: #000;
   text-align: center;
   font-family: 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
   font-size: 32px;
   font-weight: 400;
   line-height: 140%;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .about-page {
+    padding-top: 200px;
+  }
+  
+  .about-logo {
+    width: 200px;
+    height: 224px;
+    margin-bottom: 30px;
+  }
+  
+  .about-text {
+    margin-bottom: 40px;
+  }
+  
+  .about-heading {
+    font-size: 24px;
+  }
+  
+  .about-paragraph {
+    font-size: 16px;
+  }
+  
+  .team-section {
+    margin-bottom: 60px;
+  }
+  
+  .team-heading {
+    font-size: 24px;
+  }
+  
+  .team-member {
+    font-size: 18px;
+  }
 }
