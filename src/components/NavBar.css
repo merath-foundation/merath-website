@@ -13,7 +13,8 @@
 
 .navbar-icon {
   position: absolute;
-  left: 59px;
+  left: 84px;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -26,7 +27,7 @@
 
 [dir="rtl"] .navbar-icon {
   left: auto;
-  right: 59px;
+  right: 84px;
 }
 
 .navbar-icon:hover {
@@ -109,19 +110,19 @@
 
 .navbar-lang-switcher {
   position: fixed;
-  top: 240px;
-  left: 59px;
+  top: 130px;
+  left: 84px;
+  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 8px;
   z-index: 100;
 }
 
 [dir="rtl"] .navbar-lang-switcher {
   left: auto;
-  right: 59px;
-  align-items: flex-end;
+  right: 84px;
 }
 
 .navbar-lang-button {
