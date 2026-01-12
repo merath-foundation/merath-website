@@ -8,11 +8,13 @@
   width: 100%;
   max-width: 1210px;
   margin: 0 auto;
+  padding-top: 280px;
 }
 
 .projects-logo {
   width: 282px;
   height: 315px;
+  margin-bottom: 40px;
 }
 
 .project-tile {
@@ -59,6 +61,7 @@
   justify-content: space-between;
   align-items: flex-start;
   align-self: stretch;
+  gap: 20px;
 }
 
 .project-number {
@@ -67,6 +70,35 @@
   font-family: 'IBM Plex Mono', -apple-system, Roboto, Helvetica, sans-serif;
   font-size: 18px;
   font-weight: 400;
+  flex-shrink: 0;
+}
+
+/* Interactive button styles */
+.project-grid-button {
+  display: flex;
+  flex: 1;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  align-items: flex-start;
+  gap: 20px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 4px;
+}
+
+.project-grid-button:hover {
+  opacity: 0.85;
+  transform: scale(1.02);
+}
+
+.project-grid-button:focus {
+  outline: 2px solid var(--merath-blue);
+  outline-offset: 4px;
+}
+
+.project-grid-button:active {
+  transform: scale(0.98);
 }
 
 .project-grid-image {
@@ -74,6 +106,13 @@
   height: 94px;
   border: 2px solid var(--taffy);
   background: var(--sds-color-slate-200);
+  flex-shrink: 0;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.project-grid-button:hover .project-grid-image {
+  border-color: var(--merath-blue);
 }
 
 .project-grid-text {
@@ -84,4 +123,72 @@
   font-size: 18px;
   font-weight: 400;
   line-height: 100%;
+  transition: all 0.3s ease;
 }
+
+.project-grid-button:hover .project-grid-text {
+  color: var(--merath-blue);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .projects-page {
+    padding-top: 200px;
+  }
+
+  .projects-logo {
+    width: 200px;
+    height: 224px;
+    margin-bottom: 30px;
+  }
+
+  .project-tile {
+    width: 90%;
+    max-width: 500px;
+    padding: 20px 0;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .project-tile-image {
+    width: 120px;
+    height: 120px;
+  }
+
+  .project-tile-text {
+    width: 100%;
+    height: auto;
+    font-size: 16px;
+  }
+
+  .project-grid {
+    width: 90%;
+    max-width: 500px;
+    grid-template-columns: 1fr;
+    column-gap: 0;
+    row-gap: 30px;
+  }
+
+  .project-grid-tile {
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+  }
+
+  .project-grid-button {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .project-grid-image {
+    width: 80px;
+    height: 80px;
+  }
+
+  .project-grid-text {
+    width: 100%;
+    font-size: 14px;
+  }
+}
+

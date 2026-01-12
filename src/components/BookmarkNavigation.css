@@ -1,0 +1,87 @@
+.bookmark-navigation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 30px 15px;
+  width: 80px;
+  min-height: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 2px solid rgba(43, 76, 126, 0.2);
+  border-right: 2px solid rgba(43, 76, 126, 0.2);
+}
+
+[dir="rtl"] .bookmark-navigation {
+  border-left: none;
+  border-right: 2px solid rgba(43, 76, 126, 0.2);
+}
+
+.bookmark-tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  background: transparent;
+  border: 2px solid var(--merath-blue);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.bookmark-number {
+  font-family: 'IBM Plex Mono', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--merath-blue);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bookmark-tab:hover {
+  background: rgba(43, 76, 126, 0.1);
+  transform: scale(1.05);
+}
+
+.bookmark-tab:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(43, 76, 126, 0.2);
+}
+
+/* Active state */
+.bookmark-tab--active {
+  background: var(--merath-blue);
+  border-color: var(--merath-blue);
+  box-shadow: 0 4px 12px rgba(43, 76, 126, 0.3);
+}
+
+.bookmark-tab--active .bookmark-number {
+  color: var(--merath-background);
+  font-weight: 700;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .bookmark-navigation {
+    flex-direction: row;
+    width: auto;
+    height: 70px;
+    border-left: 2px solid rgba(43, 76, 126, 0.2);
+    border-right: 2px solid rgba(43, 76, 126, 0.2);
+    border-top: none;
+    border-bottom: none;
+    padding: 10px 15px;
+    overflow-x: auto;
+    gap: 8px;
+  }
+
+  .bookmark-tab {
+    width: 44px;
+    height: 44px;
+  }
+
+  .bookmark-number {
+    font-size: 12px;
+  }
+}
