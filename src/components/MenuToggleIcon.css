@@ -5,25 +5,45 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
 }
 
-.menu-toggle-snake {
+.menu-toggle-icon--open {
+  transform: rotate(90deg);
+}
+
+.menu-toggle-snake-body {
   fill: none;
   stroke: var(--merath-blue);
-  transition: d 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-              fill 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  stroke-width: 4.5;
+  stroke-linecap: round;
+  transition: d 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.menu-toggle-icon--white .menu-toggle-snake {
+.menu-toggle-icon--white .menu-toggle-snake-body {
   stroke: #FFF;
 }
 
-.menu-toggle-head {
-  fill: var(--merath-blue);
-  transition: cx 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-              cy 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+.menu-toggle-snake-head {
+  fill: none;
+  stroke: var(--merath-blue);
+  stroke-width: 4.5;
+  transition: cx 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+              cy 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+              r 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.menu-toggle-icon--white .menu-toggle-head {
+.menu-toggle-icon--white .menu-toggle-snake-head {
+  stroke: #FFF;
+}
+
+.menu-toggle-snake-tail {
+  fill: var(--merath-blue);
+  transition: cx 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+              cy 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.menu-toggle-icon--white .menu-toggle-snake-tail {
   fill: #FFF;
 }
