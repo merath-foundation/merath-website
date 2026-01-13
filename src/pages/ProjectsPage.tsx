@@ -4,7 +4,6 @@ import Footer from '../components/Footer';
 import ProjectOverlay from '../components/ProjectOverlay';
 import { PROJECTS_DATA, Project } from '../data/projectsData';
 import './ProjectsPage.css';
-import logo from '../assets/merath_logo_transparent.png';
 
 interface ProjectsPageProps {
   direction: 'rtl' | 'ltr';
@@ -40,47 +39,53 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ direction, language, setLan
     <div className="projects-page" dir={direction}>
       <NavBar direction={direction} language={language} setLanguage={setLanguage} />
       
-      <img src={logo} alt="Merath Logo" className="projects-logo" />
-      
-      {/* Featured project tiles */}
-      <div className="project-tile">
-        <div className="project-tile-image"></div>
-        <div className="project-tile-text">
-          {language === 'ar' 
-            ? 'نحن نعمل مع بقايا منطقة في حركة - طريقة جماعية للتفكير والإنتاج من خلال كيفية تحرك الفن والذاكرة والعلاقات عبر الحدود والتواريخ.'
-            : 'We work with the remains of a region in motion a collective method for thinking and making through how art, memory, and relation move across borders and histories.'
-          }
-        </div>
-      </div>
-      
-      <div className="project-tile">
-        <div className="project-tile-image"></div>
-        <div className="project-tile-text">
-          {language === 'ar' 
-            ? 'نحن نعمل مع بقايا منطقة في حركة - طريقة جماعية للتفكير والإنتاج من خلال كيفية تحرك الفن والذاكرة والعلاقات عبر الحدود والتواريخ.'
-            : 'We work with the remains of a region in motion a collective method for thinking and making through how art, memory, and relation move across borders and histories.'
-          }
-        </div>
-      </div>
-      
-      {/* Interactive project grid */}
-      <div className="project-grid">
-        {PROJECTS_DATA.map((project) => (
-          <div key={project.id} className="project-grid-tile">
-            <div className="project-number">{project.id}</div>
-            <button
-              className="project-grid-button"
-              onClick={() => handleProjectClick(project.id)}
-              aria-label={`View project ${project.id}: ${language === 'ar' ? project.title.ar : project.title.en}`}
-            >
-              <div className="project-grid-image"></div>
-              <div className="project-grid-text">
-                {language === 'ar' ? project.shortDescription.ar : project.shortDescription.en}
-              </div>
-            </button>
+      {/* Main content wrapper - ensures consistent max-width and centering */}
+      <main className="projects-main">
+        
+        {/* Featured section with two description blocks */}
+        <section className="projects-featured">
+          <div className="project-description-block">
+            <div className="description-image"></div>
+            <p className="description-text">
+              {language === 'ar' 
+                ? 'نحن نعمل مع بقايا منطقة في حركة - طريقة جماعية للتفكير والإنتاج من خلال كيفية تحرك الفن والذاكرة والعلاقات عبر الحدود والتواريخ.'
+                : 'We work with the remains of a region in motion a collective method for thinking and making through how art, memory, and relation move across borders and histories.'
+              }
+            </p>
           </div>
-        ))}
-      </div>
+          
+          <div className="project-description-block">
+            <div className="description-image"></div>
+            <p className="description-text">
+              {language === 'ar' 
+                ? 'نحن نعمل مع بقايا منطقة في حركة - طريقة جماعية للتفكير والإنتاج من خلال كيفية تحرك الفن والذاكرة والعلاقات عبر الحدود والتواريخ.'
+                : 'We work with the remains of a region in motion a collective method for thinking and making through how art, memory, and relation move across borders and histories.'
+              }
+            </p>
+          </div>
+        </section>
+
+        {/* Interactive projects grid - numbered 1 through 6 */}
+        <section className="projects-grid-section">
+          <div className="projects-grid">
+            {PROJECTS_DATA.map((project) => (
+              <article key={project.id} className="project-grid-item">
+                <div className="project-item-number">{project.id}</div>
+                <button
+                  className="project-item-button"
+                  onClick={() => handleProjectClick(project.id)}
+                  aria-label={`View project ${project.id}: ${language === 'ar' ? project.title.ar : project.title.en}`}
+                >
+                  <div className="project-item-image"></div>
+                  <p className="project-item-text">
+                    {language === 'ar' ? project.shortDescription.ar : project.shortDescription.en}
+                  </p>
+                </button>
+              </article>
+            ))}
+          </div>
+        </section>
+      </main>
       
       {/* Project overlay modal */}
       {selectedProject && (

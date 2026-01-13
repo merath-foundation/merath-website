@@ -1,12 +1,25 @@
 .landing-page {
   display: flex;
   width: 100%;
-  max-width: 1210px;
-  margin: 0 auto;
   flex-direction: column;
   align-items: center;
   overflow: hidden;
   background: var(--merath-background);
+}
+
+/* Ensure all content sections respect max-width and center properly */
+.landing-page > * {
+  max-width: 1000px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.landing-page > *:nth-child(1) {
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .hero-section {
@@ -113,6 +126,117 @@
   flex: 1 0 0;
   align-self: stretch;
   background: var(--merath-background);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .landing-page > * {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .hero-section {
+    padding: 40px 0;
+  }
+
+  .hero-content {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+
+  .hero-logo {
+    width: 200px;
+    height: 224px;
+    position: static;
+    margin: 0 auto 20px;
+  }
+
+  .hero-subtitle {
+    position: static;
+    width: 100%;
+    margin-bottom: 20px;
+    font-size: 16px;
+  }
+
+  .hero-description {
+    width: 100%;
+    position: static;
+    margin-bottom: 16px;
+    font-size: 16px;
+  }
+
+  .hero-description-secondary {
+    width: 100%;
+    position: static;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  .hero-side-text {
+    width: 100%;
+    height: auto;
+    position: static;
+    font-size: 12px;
+    margin-bottom: 20px;
+  }
+
+  .cards-section {
+    padding: 40px 20px;
+    gap: 30px;
+  }
+
+  .cards-container {
+    gap: 20px;
+  }
+
+  .project-showcase {
+    padding: 40px 20px;
+    flex-direction: column;
+    gap: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .landing-page > * {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .hero-section {
+    padding: 30px 0;
+  }
+
+  .hero-logo {
+    width: 160px;
+    height: 179px;
+  }
+
+  .hero-subtitle {
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+
+  .hero-description {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .hero-description-secondary {
+    font-size: 12px;
+  }
+
+  .hero-side-text {
+    font-size: 11px;
+  }
+
+  .cards-section {
+    padding: 30px 16px;
+  }
+
+  .project-showcase {
+    padding: 30px 16px;
+  }
 }
 
 .showcase-image {

@@ -1,0 +1,38 @@
+/**
+ * PublicationGrid styles
+ * Responsive grid with 1-2-3-4 column layouts
+ */
+
+.publication-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(280px, 1fr));
+  gap: 40px;
+  width: 100%;
+  justify-items: center;
+  align-content: start;
+}
+
+/* Tablet: 2 columns */
+@media (max-width: 1024px) {
+  .publication-grid {
+    grid-template-columns: repeat(2, minmax(200px, 1fr));
+    gap: 32px;
+  }
+}
+
+/* Mobile: 1 column */
+@media (max-width: 640px) {
+  .publication-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    max-width: 100%;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  .publication-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}

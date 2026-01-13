@@ -1,5 +1,6 @@
 import React from 'react';
 import Footer from '../components/Footer';
+import NavBar from '../components/NavBar';
 import './ProjectDetailPage.css';
 import logo from '../assets/merath_logo_transparent.png';
 

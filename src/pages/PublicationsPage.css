@@ -1,32 +1,125 @@
 .publications-page {
   display: flex;
   width: 100%;
-  max-width: 1210px;
-  margin: 0 auto;
   flex-direction: column;
   align-items: center;
-  gap: 328px;
+  gap: 0;
+  padding: 80px 0 0;
   background: var(--merath-background);
-  overflow: hidden;
+  min-height: 100vh;
 }
 
-.publications-grid {
-  display: inline-grid;
-  row-gap: 150px;
-  column-gap: 120px;
-  grid-template-rows: repeat(3, fit-content(100%));
-  grid-template-columns: repeat(3, fit-content(100%));
+.publications-container {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-.publication-item {
-  width: 300px;
-  height: 300px;
-  border: 0 solid var(--taffy);
-  background: var(--sds-color-slate-200);
-  cursor: pointer;
-  transition: opacity 0.3s;
+/* Header section */
+.publications-header {
+  padding: 60px 40px;
+  text-align: center;
+  border-bottom: 1px solid #e5e5e5;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
 }
 
-.publication-item:hover {
-  opacity: 0.8;
+.publications-title {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--merath-text);
+  margin: 0 0 16px 0;
+  font-family: 'IBM Plex Sans Condensed', sans-serif;
+}
+
+.publications-subtitle {
+  font-size: 15px;
+  color: #666666;
+  margin: 0;
+  line-height: 1.6;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  font-weight: 400;
+}
+
+/* Main content area */
+.publications-main {
+  flex: 1;
+  padding: 60px 40px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.publications-page > * {
+  max-width: 1000px;
+  width: 100%;
+}
+
+/* Mobile responsive */
+@media (max-width: 1024px) {
+  .publications-header {
+    padding: 40px 32px;
+  }
+
+  .publications-title {
+    font-size: 28px;
+  }
+
+  .publications-subtitle {
+    font-size: 14px;
+  }
+
+  .publications-main {
+    padding: 40px 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .publications-page {
+    padding: 60px 0 0;
+  }
+
+  .publications-header {
+    padding: 40px 24px;
+    border-bottom: 1px solid #e5e5e5;
+  }
+
+  .publications-title {
+    font-size: 24px;
+  }
+
+  .publications-subtitle {
+    font-size: 13px;
+  }
+
+  .publications-main {
+    padding: 32px 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .publications-page {
+    padding: 40px 0 0;
+  }
+
+  .publications-header {
+    padding: 32px 16px;
+  }
+
+  .publications-title {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+
+  .publications-subtitle {
+    font-size: 12px;
+  }
+
+  .publications-main {
+    padding: 24px 16px;
+  }
 }
