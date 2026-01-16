@@ -17,9 +17,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ direction = 'rtl', language, 
     <div className="landing-page" dir={direction}>
       <NavBar direction={direction} language={language} setLanguage={setLanguage} />
       
+      <header className="page-logo-header">
+        <img src={logo} alt="Merath Logo" className="page-logo" />
+        <h1 className="page-logo-title">MERATH</h1>
+      </header>
+      
       <section className="hero-section">
         <div className="hero-content">
-          <img src={logo} alt="Merath Logo" className="hero-logo" />
           
           <div className="hero-subtitle">
             merath operates between research and production.

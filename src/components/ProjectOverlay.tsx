@@ -74,6 +74,7 @@ const ProjectOverlay: React.FC<ProjectOverlayProps> = ({
 
   const description = language === 'ar' ? project.fullDescription.ar : project.fullDescription.en;
   const title = language === 'ar' ? project.title.ar : project.title.en;
+  const subtitle = language === 'ar' ? project.subtitle.ar : project.subtitle.en;
 
   return (
     <>
@@ -95,42 +96,60 @@ const ProjectOverlay: React.FC<ProjectOverlayProps> = ({
         <button
           className="project-overlay-close"
           onClick={handleClose}
-          aria-label="Close project details"
-          title="Close (ESC)"
+          aria-label={language === 'ar' ? 'إغلاق' : 'Close project details'}
+          title={language === 'ar' ? 'إغلاق (ESC)' : 'Close (ESC)'}
         >
           ×
         </button>
 
-        {/* Content Container */}
+        {/* Content Container - Single column layout */}
         <div className="project-overlay-content">
-          {/* Left side: Image */}
-          <div className="project-overlay-image-section">
-            <div className="project-overlay-image">
-              {/* Placeholder for project image */}
-              <div className="project-image-placeholder">
-                <span>Project {project.id} Image</span>
+          <div className="project-overlay-inner">
+            {/* Title and subtitle */}
+            <header className="project-overlay-header">
+              <h2 id={`project-title-${project.id}`} className="project-overlay-title">
+                {title}
+              </h2>
+              <p className="project-overlay-subtitle">
+                {subtitle}
+              </p>
+            </header>
+
+            {/* Main text content */}
+            <div className="project-overlay-text">
+              {description.split('\n\n').map((paragraph, index) => (
+                <p key={index} className="project-overlay-paragraph">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+
+            {/* Bookmark Navigation */}
+            <div className="project-overlay-bookmarks">
+              <BookmarkNavigation
+                activeProjectId={project.id}
+                onBookmarkClick={onProjectChange}
+                totalProjects={totalProjects}
+              />
+            </div>
+
+            {/* Project Image */}
+            <div className="project-overlay-image-container">
+              <div className="project-overlay-image">
+                {/* Placeholder for project image */}
+                <div className="project-image-placeholder">
+                  <span className="project-image-number">{project.id}</span>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Center: Bookmarks */}
-          <BookmarkNavigation
-            activeProjectId={project.id}
-            onBookmarkClick={onProjectChange}
-            totalProjects={totalProjects}
-          />
-
-          {/* Right side: Text */}
-          <div className="project-overlay-text-section">
-            <h2 id={`project-title-${project.id}`} className="project-overlay-title">
-              {title}
-            </h2>
-            <p className="project-overlay-description">
-              {description}
-            </p>
+            {/* Meta information */}
             <div className="project-overlay-meta">
               <span className="project-counter">
-                Project {project.id} of {totalProjects}
+                {language === 'ar' 
+                  ? `مشروع ${project.id} من ${totalProjects}`
+                  : `Project ${project.id} of ${totalProjects}`
+                }
               </span>
             </div>
           </div>

@@ -19,35 +19,6 @@
   padding: 85.5px 0 0 59px;
 }
 
-.project-detail-hero {
-  display: flex;
-  width: 656px;
-  height: 349px;
-  justify-content: center;
-  align-items: center;
-}
-
-.project-detail-hero-blue {
-  display: flex;
-  width: 656px;
-  height: 349px;
-  padding: 99px 0 75px 577px;
-  justify-content: flex-end;
-  align-items: center;
-  flex-shrink: 0;
-  background: var(--merath-blue);
-  position: relative;
-}
-
-.project-detail-hero-logo {
-  width: 157px;
-  height: 175px;
-  flex-shrink: 0;
-  position: absolute;
-  left: 577px;
-  top: 99px;
-}
-
 .project-detail-grid {
   display: grid;
   width: 1210px;

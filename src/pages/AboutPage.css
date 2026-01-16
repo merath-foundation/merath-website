@@ -7,14 +7,6 @@
   overflow-x: hidden;
 }
 
-.about-logo {
-  width: 293px;
-  height: 328px;
-  flex-shrink: 0;
-  margin: 80px auto 40px;
-  display: block;
-}
-
 .about-text {
   max-width: 1000px;
   width: 100%;

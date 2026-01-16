@@ -96,9 +96,12 @@ const PublicationDetailPanel: React.FC<PublicationDetailPanelProps> = ({
           {/* Authors */}
           <p className="publication-detail-authors">{publication.authors}</p>
 
-          {/* Year and tags */}
+          {/* Date and tags */}
           <div className="publication-detail-meta">
-            <span className="publication-detail-year">{publication.year}</span>
+            <span className="publication-detail-date">
+              {publication.month && `${publication.month} `}
+              {publication.year}
+            </span>
             {publication.tags.length > 0 && (
               <div className="publication-detail-tags">
                 {publication.tags.map((tag) => (

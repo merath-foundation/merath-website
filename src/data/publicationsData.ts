@@ -8,6 +8,7 @@ export type Publication = {
   title: string;
   monogram: string;      // Short code (2-3 chars) rendered on the card
   authors: string;
+  month?: string;        // 3-letter month abbreviation (e.g., 'Jan', 'Feb')
   year: string;
   tags: string[];
   description: string;
@@ -23,6 +24,7 @@ export const PUBLICATIONS_DATA: Publication[] = [
     title: 'Traces of Memory: Archival Practices in the Digital Age',
     monogram: 'TOM',
     authors: 'Sarah Chen, Marcus Webb, Leila Mostafa',
+    month: 'Nov',
     year: '2024',
     tags: ['Archives', 'Digital Humanities', 'Memory Studies'],
     description:
@@ -36,6 +38,7 @@ export const PUBLICATIONS_DATA: Publication[] = [
     title: 'Station of Commons: Reimagining Public Knowledge',
     monogram: 'SOC',
     authors: 'Collective Authors, Station of Commons Contributors',
+    month: 'Sep',
     year: '2023',
     tags: ['Commons', 'Public Knowledge', 'Participatory Design'],
     description:
@@ -49,6 +52,7 @@ export const PUBLICATIONS_DATA: Publication[] = [
     title: 'Against the Archive: Decolonial Epistemologies',
     monogram: 'ATA',
     authors: 'Dr. Amara Okonkwo, Priya Sharma',
+    month: 'Mar',
     year: '2023',
     tags: ['Decolonialism', 'Archives', 'Epistemology'],
     description:
@@ -61,6 +65,7 @@ export const PUBLICATIONS_DATA: Publication[] = [
     title: 'Digital Materiality: Objects and Networks in the Museum',
     monogram: 'DM',
     authors: 'James Chen, Rosalind Williams',
+    month: 'Jun',
     year: '2024',
     tags: ['Digital Culture', 'Museums', 'Material Studies'],
     description:
@@ -73,6 +78,7 @@ export const PUBLICATIONS_DATA: Publication[] = [
     title: 'Feminist Futures: Technology and Care',
     monogram: 'FF',
     authors: 'Sofia Matos, Deepti Anand, collective',
+    month: 'Aug',
     year: '2024',
     tags: ['Feminism', 'Technology', 'Care Ethics'],
     description:
@@ -86,6 +92,7 @@ export const PUBLICATIONS_DATA: Publication[] = [
     title: 'Indexing the Invisible: Cataloging Silence and Absence',
     monogram: 'ITV',
     authors: 'Michael K. Tran, Dr. Elena Rossi',
+    month: 'Dec',
     year: '2023',
     tags: ['Archives', 'Metadata', 'Absence'],
     description:
@@ -98,6 +105,7 @@ export const PUBLICATIONS_DATA: Publication[] = [
     title: 'Networks of Care: Solidarity in Crisis',
     monogram: 'NOC',
     authors: 'Dr. Yuki Tanaka, Contributors from Mutual Aid Networks',
+    month: 'Apr',
     year: '2024',
     tags: ['Care', 'Solidarity', 'Networks'],
     description:
@@ -110,6 +118,7 @@ export const PUBLICATIONS_DATA: Publication[] = [
     title: 'The Library as Institution: Power, Access, and Resistance',
     monogram: 'LI',
     authors: 'Dr. Ahmad Hassan, Collective Research Group',
+    month: 'Jul',
     year: '2023',
     tags: ['Libraries', 'Institutional Critique', 'Access'],
     description:
@@ -123,6 +132,7 @@ export const PUBLICATIONS_DATA: Publication[] = [
     title: 'Ephemeral Publics: Temporary Spaces of Exchange',
     monogram: 'EP',
     authors: 'Curator Collective, Various Contributors',
+    month: 'Oct',
     year: '2024',
     tags: ['Public Spaces', 'Temporary', 'Ephemeral'],
     description:

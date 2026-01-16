@@ -17,7 +17,10 @@ const AboutPage: React.FC<AboutPageProps> = ({ direction, language, setLanguage 
     <div className="about-page" dir={direction}>
       <NavBar direction={direction} language={language} setLanguage={setLanguage} />
       
-      <img src={logo} alt="Merath Logo" className="about-logo" />
+      <header className="page-logo-header">
+        <img src={logo} alt="Merath Logo" className="page-logo" />
+        <h1 className="page-logo-title">MERATH</h1>
+      </header>
       
       <div className="about-text">
         <h1 className="about-heading">ABOUT</h1>

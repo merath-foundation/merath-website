@@ -1,0 +1,58 @@
+/* ===========================
+   SHARED PAGE LOGO HEADER
+   =========================== */
+
+.page-logo-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 80px 24px 40px;
+  gap: 20px;
+  background: var(--merath-background);
+}
+
+.page-logo {
+  width: 240px;
+  height: auto;
+  object-fit: contain;
+}
+
+.page-logo-title {
+  font-family: 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--merath-blue);
+  margin: 0;
+  letter-spacing: 0.05em;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .page-logo-header {
+    padding: 60px 20px 30px;
+  }
+
+  .page-logo {
+    width: 180px;
+  }
+
+  .page-logo-title {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-logo-header {
+    padding: 40px 16px 20px;
+  }
+
+  .page-logo {
+    width: 140px;
+  }
+
+  .page-logo-title {
+    font-size: 18px;
+  }
+}

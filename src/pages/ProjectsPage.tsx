@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import ProjectOverlay from '../components/ProjectOverlay';
-import { PROJECTS_DATA, Project } from '../data/projectsData';
+import { PROJECTS_DATA } from '../data/projectsData';
+import logo from '../assets/merath_logo_transparent.png';
 import './ProjectsPage.css';
 
 interface ProjectsPageProps {
@@ -39,47 +40,40 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ direction, language, setLan
     <div className="projects-page" dir={direction}>
       <NavBar direction={direction} language={language} setLanguage={setLanguage} />
       
+      {/* Header with centered logo */}
+      <header className="projects-header">
+        <img src={logo} alt="Merath Logo" className="projects-logo" />
+        <h1 className="projects-title">MERATH</h1>
+      </header>
+      
       {/* Main content wrapper - ensures consistent max-width and centering */}
       <main className="projects-main">
         
-        {/* Featured section with two description blocks */}
-        <section className="projects-featured">
-          <div className="project-description-block">
-            <div className="description-image"></div>
-            <p className="description-text">
-              {language === 'ar' 
-                ? 'نحن نعمل مع بقايا منطقة في حركة - طريقة جماعية للتفكير والإنتاج من خلال كيفية تحرك الفن والذاكرة والعلاقات عبر الحدود والتواريخ.'
-                : 'We work with the remains of a region in motion a collective method for thinking and making through how art, memory, and relation move across borders and histories.'
-              }
-            </p>
-          </div>
-          
-          <div className="project-description-block">
-            <div className="description-image"></div>
-            <p className="description-text">
-              {language === 'ar' 
-                ? 'نحن نعمل مع بقايا منطقة في حركة - طريقة جماعية للتفكير والإنتاج من خلال كيفية تحرك الفن والذاكرة والعلاقات عبر الحدود والتواريخ.'
-                : 'We work with the remains of a region in motion a collective method for thinking and making through how art, memory, and relation move across borders and histories.'
-              }
-            </p>
-          </div>
-        </section>
-
-        {/* Interactive projects grid - numbered 1 through 6 */}
+        {/* Interactive projects grid - all 6 projects with images */}
         <section className="projects-grid-section">
+          <h2 className="projects-section-title">
+            {language === 'ar' ? 'المشاريع' : 'Projects'}
+          </h2>
           <div className="projects-grid">
             {PROJECTS_DATA.map((project) => (
               <article key={project.id} className="project-grid-item">
-                <div className="project-item-number">{project.id}</div>
                 <button
-                  className="project-item-button"
+                  className="project-card-button"
                   onClick={() => handleProjectClick(project.id)}
-                  aria-label={`View project ${project.id}: ${language === 'ar' ? project.title.ar : project.title.en}`}
+                  aria-label={`View project: ${language === 'ar' ? project.title.ar : project.title.en}`}
                 >
-                  <div className="project-item-image"></div>
-                  <p className="project-item-text">
-                    {language === 'ar' ? project.shortDescription.ar : project.shortDescription.en}
-                  </p>
+                  <div className="project-card-image">
+                    {/* Placeholder for project image - will use actual images when available */}
+                    <span className="project-card-number">{project.id}</span>
+                  </div>
+                  <div className="project-card-content">
+                    <h3 className="project-card-title">
+                      {language === 'ar' ? project.title.ar : project.title.en}
+                    </h3>
+                    <p className="project-card-subtitle">
+                      {language === 'ar' ? project.subtitle.ar : project.subtitle.en}
+                    </p>
+                  </div>
                 </button>
               </article>
             ))}

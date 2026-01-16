@@ -19,6 +19,10 @@
   padding-inline: 0;
 }
 
+.landing-page > *:nth-child(2) {
+  padding-inline: 0;
+}
+
 .hero-section {
   display: flex;
   align-items: center;
@@ -40,12 +44,7 @@
   padding: 0;
 }
 
-.hero-logo {
-  width: 282px;
-  height: 315px;
-  margin: 0 auto;
-  object-fit: contain;
-}
+
 
 .hero-subtitle {
   width: 100%;

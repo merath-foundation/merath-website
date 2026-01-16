@@ -26,11 +26,10 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ direction, langua
         <NavBar direction={direction} variant="white" language={language} setLanguage={setLanguage} />
       </div>
       
-      <div className="project-detail-hero">
-        <div className="project-detail-hero-blue">
-          <img src={logo} alt="Merath Logo" className="project-detail-hero-logo" />
-        </div>
-      </div>
+      <header className="page-logo-header">
+        <img src={logo} alt="Merath Logo" className="page-logo" />
+        <h1 className="page-logo-title">MERATH</h1>
+      </header>
       
       <div className="project-detail-grid">
         <img className="project-detail-main-image" alt="Project" />

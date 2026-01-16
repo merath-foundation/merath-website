@@ -39,7 +39,10 @@ const PublicationCard: React.FC<PublicationCardProps> = ({
     >
       <div className="publication-card-monogram">{publication.monogram}</div>
       <div className="publication-card-meta">
-        <div className="publication-card-year">{publication.year}</div>
+        <div className="publication-card-date">
+          {publication.month && `${publication.month} `}
+          {publication.year}
+        </div>
       </div>
     </button>
   );
