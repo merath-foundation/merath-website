@@ -12,11 +12,11 @@ interface MenuToggleIconProps {
  * Open: Snake uncoiling into S-curve
  */
 const MenuToggleIcon: React.FC<MenuToggleIconProps> = ({ isOpen, variant = 'default' }) => {
-  // Closed state: Refined angular snake with balanced proportions
+  // Closed state: Snake coiled with tail visible
   const closedBodyPath = 'M 18 18 L 42 18 L 42 32 L 52 32 L 52 48 L 28 48 L 28 38 L 10 38';
   
-  // Open state: S-curve 
-  const openBodyPath = 'M 46 20 Q 34 15, 26 28 Q 20 40, 14 38';
+  // Open state: Snake extends and eats its tail
+  const openBodyPath = 'M 18 18 L 45 18 L 45 28 L 55 28 L 55 50 L 20 50 L 20 40 L 5 40';
   
   const currentBodyPath = isOpen ? openBodyPath : closedBodyPath;
   
@@ -39,11 +39,11 @@ const MenuToggleIcon: React.FC<MenuToggleIconProps> = ({ isOpen, variant = 'defa
           strokeLinejoin="round"
         />
         
-        {/* Snake head - hollow circle at the tail end, offset to avoid intersection */}
+        {/* Snake head - hollow circle at the tail end */}
         <circle
           className="menu-toggle-snake-head"
-          cx={isOpen ? 46 : 5}
-          cy={isOpen ? 20 : 38}
+          cx={isOpen ? 8 : 5}
+          cy={isOpen ? 38 : 38}
           r="5"
         />
         

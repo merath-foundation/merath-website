@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import MenuToggleIcon from './MenuToggleIcon';
 import './NavBar.css';
@@ -10,8 +10,29 @@ interface NavBarProps {
   setLanguage: (lang: 'ar' | 'en') => void;
 }
 
-const NavBar: React.FC<NavBarProps> = ({ variant = 'default', direction = 'rtl', language, setLanguage }) => {
+const NavBar: React.FC<NavBarProps> = ({ variant = 'default', direction, language, setLanguage }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const resolvedDirection = useMemo<'rtl' | 'ltr'>(() => {
+    if (direction) return direction;
+
+    if (typeof document !== 'undefined') {
+      const docDir = document.documentElement.getAttribute('dir');
+      if (docDir === 'rtl' || docDir === 'ltr') return docDir;
+    }
+
+    return language === 'ar' ? 'rtl' : 'ltr';
+  }, [direction, language]);
+
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+
+    const currentDir = document.documentElement.getAttribute('dir');
+    if (currentDir !== resolvedDirection) {
+      document.documentElement.setAttribute('dir', resolvedDirection);
+    }
+  }, [resolvedDirection]);
+
   const links = [
     { label: language === 'ar' ? 'الرئيسية' : 'Home', to: '/' },
     { label: language === 'ar' ? 'المشاريع' : 'Projects', to: '/projects' },
@@ -20,33 +41,35 @@ const NavBar: React.FC<NavBarProps> = ({ variant = 'default', direction = 'rtl',
   ];
 
   const closeMenu = () => setMenuOpen(false);
+  const toggleMenu = () => setMenuOpen((open) => !open);
 
   return (
-    <>
-      {/* Overlay backdrop */}
-      <div 
+    <div className="navbar-root" dir={resolvedDirection}>
+      <button
+        type="button"
         className={`navbar-overlay${menuOpen ? ' navbar-overlay--visible' : ''}`}
         onClick={closeMenu}
-        role="button"
+        aria-label={language === 'ar' ? 'إغلاق القائمة' : 'Close menu'}
         tabIndex={menuOpen ? 0 : -1}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') closeMenu();
-        }}
+        aria-hidden={!menuOpen}
       />
-      
-      <nav className="navbar" dir={direction}>
+
+      <nav
+        className="navbar"
+        aria-label={language === 'ar' ? 'التنقل الرئيسي' : 'Primary navigation'}
+      >
         <button
+          type="button"
           className={`navbar-icon navbar-icon--${variant}`}
-          aria-label="Toggle menu"
+          aria-label={language === 'ar' ? 'تبديل القائمة' : 'Toggle menu'}
           aria-expanded={menuOpen}
-          onClick={() => setMenuOpen((open) => !open)}
+          onClick={toggleMenu}
         >
           <MenuToggleIcon isOpen={menuOpen} variant={variant} />
         </button>
       </nav>
 
-      {/* Language switcher positioned below navbar */}
-      <div className="navbar-lang-switcher" dir={direction}>
+      <div className="navbar-lang-switcher">
         <button
           className="navbar-lang-button"
           onClick={() => setLanguage(language === 'ar' ? 'en' : 'ar')}
@@ -56,20 +79,29 @@ const NavBar: React.FC<NavBarProps> = ({ variant = 'default', direction = 'rtl',
         </button>
       </div>
 
-      {/* Sidebar navigation */}
-      <aside className={`navbar-links${menuOpen ? ' navbar-links--open' : ''}`} dir={direction}>
-        <button className="navbar-close" onClick={closeMenu} aria-label="Close menu">
+      <aside
+        className={`navbar-links${menuOpen ? ' navbar-links--open' : ''}`}
+        aria-hidden={!menuOpen}
+        aria-label={language === 'ar' ? 'قائمة التنقل' : 'Navigation menu'}
+      >
+        <button
+          className="navbar-close"
+          onClick={closeMenu}
+          aria-label={language === 'ar' ? 'إغلاق القائمة' : 'Close menu'}
+        >
           ×
         </button>
-        {links.map((link) => (
-          <li key={link.to} className="navbar-link-item">
-            <Link to={link.to} className="navbar-link" onClick={closeMenu}>
-              {link.label}
-            </Link>
-          </li>
-        ))}
+        <ul className="navbar-link-list">
+          {links.map((link) => (
+            <li key={link.to} className="navbar-link-item">
+              <Link to={link.to} className="navbar-link" onClick={closeMenu}>
+                {link.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
       </aside>
-    </>
+    </div>
   );
 };
 

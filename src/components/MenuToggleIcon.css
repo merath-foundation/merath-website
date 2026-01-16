@@ -5,12 +5,10 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  will-change: transform;
 }
 
 .menu-toggle-icon--open {
-  transform: rotate(90deg);
+  /* No rotation - snake morphs instead */
 }
 
 .menu-toggle-snake-body {

@@ -11,15 +11,12 @@
 .landing-page > * {
   max-width: 1000px;
   width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 24px;
-  padding-right: 24px;
+  margin-inline: auto;
+  padding-inline: 24px;
 }
 
 .landing-page > *:nth-child(1) {
-  padding-left: 0;
-  padding-right: 0;
+  padding-inline: 0;
 }
 
 .hero-section {
@@ -88,11 +85,6 @@
   margin: 0;
   padding: 0;
 }
-  position: absolute;
-  left: 270px;
-  top: 487px;
-  width: 660px;
-}
 
 .hero-side-text {
   width: 135px;
@@ -103,8 +95,14 @@
   font-weight: 400;
   line-height: normal;
   position: absolute;
-  left: 884px;
-  top: 71px;
+  inset-inline-end: 270px;
+  top: 487px;
+  inset-inline-start: auto;
+}
+
+[dir="rtl"] .hero-side-text {
+  inset-inline-start: 270px;
+  inset-inline-end: auto;
 }
 
 .cards-section {
@@ -141,8 +139,7 @@
 /* Mobile responsive */
 @media (max-width: 768px) {
   .landing-page > * {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-inline: 20px;
   }
 
   .hero-section {
@@ -209,8 +206,7 @@
 
 @media (max-width: 480px) {
   .landing-page > * {
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-inline: 16px;
   }
 
   .hero-section {
