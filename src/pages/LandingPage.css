@@ -23,6 +23,54 @@
   padding-inline: 0;
 }
 
+/* Logo header with side text layout */
+.page-logo-header {
+  width: 100%;
+}
+
+.page-logo-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+  width: 100%;
+  padding: 80px 24px 40px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+[dir="ltr"] .page-logo-wrapper {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .page-logo-wrapper {
+  flex-direction: row;
+}
+
+.page-logo-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.page-logo-side-text {
+  width: 135px;
+  flex-shrink: 0;
+  color: #000;
+  font-family: 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+/* Hide empty spacer on both directions */
+[dir="ltr"] .page-logo-side-text:last-child,
+[dir="rtl"] .page-logo-side-text:last-child {
+  visibility: hidden;
+}
+
 .hero-section {
   display: flex;
   align-items: center;
@@ -87,21 +135,12 @@
 
 .hero-side-text {
   width: 135px;
-  height: 300px;
+  flex-shrink: 0;
   color: #000;
   font-family: 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
   font-size: 15px;
   font-weight: 400;
-  line-height: normal;
-  position: absolute;
-  inset-inline-end: 270px;
-  top: 487px;
-  inset-inline-start: auto;
-}
-
-[dir="rtl"] .hero-side-text {
-  inset-inline-start: 270px;
-  inset-inline-end: auto;
+  line-height: 1.6;
 }
 
 .cards-section {
@@ -141,6 +180,21 @@
     padding-inline: 20px;
   }
 
+  .page-logo-wrapper {
+    flex-direction: column !important;
+    gap: 30px;
+    padding: 60px 20px 30px;
+  }
+
+  .page-logo-side-text {
+    width: 100%;
+    font-size: 12px;
+  }
+
+  .page-logo-side-text:last-child {
+    display: none !important;
+  }
+
   .hero-section {
     padding: 40px 0;
   }
@@ -151,11 +205,9 @@
     position: relative;
   }
 
-  .hero-logo {
-    width: 200px;
-    height: 224px;
-    position: static;
-    margin: 0 auto 20px;
+  .hero-main {
+    flex-direction: column !important;
+    gap: 30px;
   }
 
   .hero-subtitle {
@@ -208,13 +260,12 @@
     padding-inline: 16px;
   }
 
-  .hero-section {
-    padding: 30px 0;
+  .page-logo-wrapper {
+    padding: 40px 16px 20px;
   }
 
-  .hero-logo {
-    width: 160px;
-    height: 179px;
+  .hero-section {
+    padding: 30px 0;
   }
 
   .hero-subtitle {

@@ -10,8 +10,18 @@ interface AboutPageProps {
   setLanguage: (lang: 'ar' | 'en') => void;
 }
 
+interface TeamMember {
+  name: string;
+  isFormer?: boolean;
+}
+
 const AboutPage: React.FC<AboutPageProps> = ({ direction, language, setLanguage }) => {
-  const teamMembers = ['Jane Doe', 'John Doe', 'Moad Doe', 'Yusuf Doe'];
+  const teamMembers: TeamMember[] = [
+    { name: 'Jane Doe' },
+    { name: 'John Doe', isFormer: true },
+    { name: 'Moad Doe' },
+    { name: 'Yusuf Doe', isFormer: true },
+  ];
 
   return (
     <div className="about-page" dir={direction}>
@@ -31,9 +41,22 @@ const AboutPage: React.FC<AboutPageProps> = ({ direction, language, setLanguage 
       
       <div className="team-section">
         <h2 className="team-heading">Team</h2>
-        {teamMembers.map((member, index) => (
-          <div key={index} className="team-member">{member}</div>
+        {teamMembers.map((member) => (
+          <div key={member.name} className="team-member-wrapper">
+            <div className="team-member">
+              {member.name}
+              {member.isFormer && <span className="team-member-asterisk">*</span>}
+            </div>
+            {member.isFormer && (
+              <div className="team-member-note">Former member</div>
+            )}
+          </div>
         ))}
+        {teamMembers.some(m => m.isFormer) && (
+          <p className="team-footnote">
+            * Indicates former members of the team
+          </p>
+        )}
       </div>
       
       <Footer />

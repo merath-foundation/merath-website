@@ -18,13 +18,20 @@ const LandingPage: React.FC<LandingPageProps> = ({ direction = 'rtl', language, 
       <NavBar direction={direction} language={language} setLanguage={setLanguage} />
       
       <header className="page-logo-header">
-        <img src={logo} alt="Merath Logo" className="page-logo" />
-        <h1 className="page-logo-title">MERATH</h1>
+        <div className="page-logo-wrapper">
+          <div className="page-logo-side-text">
+            We work with the remains of a region in motion a collective method for thinking and making through how art, memory, and relation move across borders and histories.
+          </div>
+          <div className="page-logo-center">
+            <img src={logo} alt="Merath Logo" className="page-logo" />
+            <h1 className="page-logo-title">MERATH</h1>
+          </div>
+          <div className="page-logo-side-text"></div>
+        </div>
       </header>
       
       <section className="hero-section">
         <div className="hero-content">
-          
           <div className="hero-subtitle">
             merath operates between research and production.
           </div>
@@ -35,10 +42,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ direction = 'rtl', language, 
           
           <div className="hero-description-secondary">
             The collective's work extends across Libya and its neighbouring countries.
-          </div>
-          
-          <div className="hero-side-text">
-            We work with the remains of a region in motion a collective method for thinking and making through how art, memory, and relation move across borders and histories.
           </div>
         </div>
       </section>
