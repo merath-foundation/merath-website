@@ -4,7 +4,8 @@
  */
 
 import React, { useEffect, useRef } from 'react';
-import { Publication } from '../data/publicationsData';
+import { PortableTextRenderer } from './PortableTextRenderer';
+import { Publication } from '../types/publication';
 import './PublicationDetailPanel.css';
 
 interface PublicationDetailPanelProps {
@@ -113,8 +114,14 @@ const PublicationDetailPanel: React.FC<PublicationDetailPanelProps> = ({
             )}
           </div>
 
-          {/* Description */}
-          <p className="publication-detail-description">{publication.description}</p>
+          {/* Description / Body */}
+          {publication.body && publication.body.length > 0 ? (
+            <div className="publication-detail-description">
+              <PortableTextRenderer value={publication.body} />
+            </div>
+          ) : (
+            <p className="publication-detail-description">{publication.description}</p>
+          )}
 
           {/* Links section */}
           {(publication.pdfUrl || publication.externalUrl) && (

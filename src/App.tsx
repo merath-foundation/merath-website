@@ -1,6 +1,3 @@
-
-
-
 import React, { useState } from 'react';
 import LandingPage from './pages/LandingPage';
 import ProjectDetailPage from './pages/ProjectDetailPage';
@@ -8,6 +5,7 @@ import ProjectsPage from './pages/ProjectsPage';
 import AboutPage from './pages/AboutPage';
 import PublicationsPage from './pages/PublicationsPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 
 function App() {
   // Default language is Arabic

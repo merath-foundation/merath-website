@@ -2,20 +2,38 @@
   "name": "merath-cultural-foundation-website",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "scrape": "node --loader ts-node/esm scripts/scraper.ts",
+    "transform": "node --loader ts-node/esm scripts/transform.ts",
+    "sanity:dev": "sanity dev --config sanity/sanity.config.ts",
+    "sanity:crawl": "node scripts/merath-crawl.js",
+    "sanity:import": "node scripts/merath-import.js",
+    "sanity:migrate:publishedDate": "node scripts/migrations/ensure-published-date.js"
   },
   "dependencies": {
+    "@portabletext/react": "^3.0.16",
+    "@sanity/client": "^6.22.3",
+    "@sanity/import": "^3.7.4",
+    "@sanity/vision": "^3.57.0",
+    "cheerio": "^1.0.0-rc.12",
+    "jsdom": "^24.0.0",
+    "node-fetch": "^3.3.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^7.12.0"
+    "react-router-dom": "^7.12.0",
+    "sanity": "^3.57.0",
+    "styled-components": "^6.3.8"
   },
   "devDependencies": {
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react-swc": "^3.5.0",
+    "playwright": "^1.45.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
     "vite": "^6.3.5"
   }

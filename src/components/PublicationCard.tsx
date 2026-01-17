@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { Publication } from '../data/publicationsData';
+import { Publication } from '../types/publication';
 import './PublicationCard.css';
 
 interface PublicationCardProps {

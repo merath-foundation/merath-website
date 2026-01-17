@@ -1,24 +1,4 @@
-// Project data structure with multilingual content and images
-export interface Project {
-  id: number;
-  title: {
-    en: string;
-    ar: string;
-  };
-  subtitle: {
-    en: string;
-    ar: string;
-  };
-  shortDescription: {
-    en: string;
-    ar: string;
-  };
-  fullDescription: {
-    en: string;
-    ar: string;
-  };
-  image: string;
-}
+import { Project } from '../types/project';
 
 export const PROJECTS_DATA: Project[] = [
   {

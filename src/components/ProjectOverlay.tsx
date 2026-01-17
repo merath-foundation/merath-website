@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import BookmarkNavigation from './BookmarkNavigation';
-import { Project } from '../data/projectsData';
+import { PortableTextRenderer } from './PortableTextRenderer';
+import { Project } from '../types/project';
 import './ProjectOverlay.css';
 
 interface ProjectOverlayProps {
   project: Project;
+  projectNumber: number;
   isOpen: boolean;
   onClose: () => void;
-  onProjectChange: (projectId: number) => void;
+  onProjectChange: (projectNumber: number) => void;
   language: 'ar' | 'en';
   direction: 'rtl' | 'ltr';
   totalProjects: number;
@@ -15,6 +17,7 @@ interface ProjectOverlayProps {
 
 const ProjectOverlay: React.FC<ProjectOverlayProps> = ({
   project,
+  projectNumber,
   isOpen,
   onClose,
   onProjectChange,
@@ -46,16 +49,16 @@ const ProjectOverlay: React.FC<ProjectOverlayProps> = ({
         handleClose();
       } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
         e.preventDefault();
-        const nextId = e.key === 'ArrowRight' 
-          ? project.id < totalProjects ? project.id + 1 : 1
-          : project.id > 1 ? project.id - 1 : totalProjects;
-        onProjectChange(nextId);
+        const nextNumber = e.key === 'ArrowRight'
+          ? projectNumber < totalProjects ? projectNumber + 1 : 1
+          : projectNumber > 1 ? projectNumber - 1 : totalProjects;
+        onProjectChange(nextNumber);
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, project.id, totalProjects, onProjectChange]);
+  }, [isOpen, projectNumber, totalProjects, onProjectChange]);
 
   const handleClose = () => {
     setIsAnimating(false);
@@ -72,9 +75,10 @@ const ProjectOverlay: React.FC<ProjectOverlayProps> = ({
 
   if (!isOpen && !isAnimating) return null;
 
-  const description = language === 'ar' ? project.fullDescription.ar : project.fullDescription.en;
-  const title = language === 'ar' ? project.title.ar : project.title.en;
-  const subtitle = language === 'ar' ? project.subtitle.ar : project.subtitle.en;
+  const title = language === 'ar' ? project.title?.ar : project.title?.en;
+  const subtitle = language === 'ar' ? project.subtitle?.ar : project.subtitle?.en;
+  const descriptionValue = language === 'ar' ? project.fullDescription?.ar : project.fullDescription?.en;
+  const hasPortableText = Array.isArray(descriptionValue) && descriptionValue.length > 0;
 
   return (
     <>
@@ -117,17 +121,17 @@ const ProjectOverlay: React.FC<ProjectOverlayProps> = ({
 
             {/* Main text content */}
             <div className="project-overlay-text">
-              {description.split('\n\n').map((paragraph, index) => (
-                <p key={index} className="project-overlay-paragraph">
-                  {paragraph}
-                </p>
-              ))}
+              {hasPortableText ? (
+                <PortableTextRenderer value={descriptionValue as any[]} />
+              ) : (
+                <p className="project-overlay-paragraph">{descriptionValue as string}</p>
+              )}
             </div>
 
             {/* Bookmark Navigation */}
             <div className="project-overlay-bookmarks">
               <BookmarkNavigation
-                activeProjectId={project.id}
+                activeProjectNumber={projectNumber}
                 onBookmarkClick={onProjectChange}
                 totalProjects={totalProjects}
               />
@@ -138,7 +142,7 @@ const ProjectOverlay: React.FC<ProjectOverlayProps> = ({
               <div className="project-overlay-image">
                 {/* Placeholder for project image */}
                 <div className="project-image-placeholder">
-                  <span className="project-image-number">{project.id}</span>
+                  <span className="project-image-number">{projectNumber}</span>
                 </div>
               </div>
             </div>
@@ -147,8 +151,8 @@ const ProjectOverlay: React.FC<ProjectOverlayProps> = ({
             <div className="project-overlay-meta">
               <span className="project-counter">
                 {language === 'ar' 
-                  ? `مشروع ${project.id} من ${totalProjects}`
-                  : `Project ${project.id} of ${totalProjects}`
+                  ? `مشروع ${projectNumber} من ${totalProjects}`
+                  : `Project ${projectNumber} of ${totalProjects}`
                 }
               </span>
             </div>

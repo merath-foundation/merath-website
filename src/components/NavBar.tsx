@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import MenuToggleIcon from './MenuToggleIcon';
+import { sanityClient } from '../lib/sanityClient';
 import './NavBar.css';
 
 interface NavBarProps {
@@ -12,6 +13,12 @@ interface NavBarProps {
 
 const NavBar: React.FC<NavBarProps> = ({ variant = 'default', direction, language, setLanguage }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [links, setLinks] = useState<{ label: string; to: string }[]>([
+    { label: language === 'ar' ? 'الرئيسية' : 'Home', to: '/' },
+    { label: language === 'ar' ? 'المشاريع' : 'Projects', to: '/projects' },
+    { label: language === 'ar' ? 'حول' : 'About', to: '/about' },
+    { label: language === 'ar' ? 'المنشورات' : 'Publications', to: '/publications' },
+  ]);
 
   const resolvedDirection = useMemo<'rtl' | 'ltr'>(() => {
     if (direction) return direction;
@@ -33,12 +40,26 @@ const NavBar: React.FC<NavBarProps> = ({ variant = 'default', direction, languag
     }
   }, [resolvedDirection]);
 
-  const links = [
-    { label: language === 'ar' ? 'الرئيسية' : 'Home', to: '/' },
-    { label: language === 'ar' ? 'المشاريع' : 'Projects', to: '/projects' },
-    { label: language === 'ar' ? 'حول' : 'About', to: '/about' },
-    { label: language === 'ar' ? 'المنشورات' : 'Publications', to: '/publications' },
-  ];
+  useEffect(() => {
+    const fetchNav = async () => {
+      try {
+        const data: any = await sanityClient.fetch('*[_type == "navigation" && _id == "navigation-global"][0]{items[]{label, href, order, pageRef->{slug}}}');
+        if (data?.items?.length) {
+          const mapped = data.items
+            .filter((i: any) => i?.label)
+            .map((i: any) => {
+              const to = i.pageRef?.slug?.current ? `/${i.pageRef.slug.current}` : i.href || '#';
+              return { label: i.label, to };
+            })
+            .sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0));
+          setLinks(mapped);
+        }
+      } catch (err) {
+        console.error('Nav fetch failed', err);
+      }
+    };
+    fetchNav();
+  }, []);
 
   const closeMenu = () => setMenuOpen(false);
   const toggleMenu = () => setMenuOpen((open) => !open);

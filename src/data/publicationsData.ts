@@ -1,22 +1,4 @@
-/**
- * Publications data store
- * Strongly typed publication objects with metadata for library-style browsing
- */
-
-export type Publication = {
-  id: string;
-  title: string;
-  monogram: string;      // Short code (2-3 chars) rendered on the card
-  authors: string;
-  month?: string;        // 3-letter month abbreviation (e.g., 'Jan', 'Feb')
-  year: string;
-  tags: string[];
-  description: string;
-  imageUrl: string;      // Placeholder path
-  pdfUrl?: string;
-  externalUrl?: string;
-  notes?: string;
-};
+import { Publication } from '../types/publication';
 
 export const PUBLICATIONS_DATA: Publication[] = [
   {
