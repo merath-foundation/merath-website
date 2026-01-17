@@ -99,17 +99,20 @@
   animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Inner container - single column, text-dominant layout */
+/* Inner container - three unequal column layout */
 .project-overlay-inner {
-  display: flex;
-  flex-direction: column;
-  max-width: 900px;
+  display: grid;
+  grid-template-columns: 1.2fr 2.5fr 1.2fr;
+  grid-template-rows: auto 1fr auto;
+  max-width: 1400px;
   width: 100%;
-  gap: 32px;
+  gap: 40px;
+  align-items: start;
 }
 
-/* Header section */
+/* Header section - spans all three columns */
 .project-overlay-header {
+  grid-column: 1 / -1;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -145,12 +148,15 @@
   line-height: 1.5;
 }
 
-/* Text content section */
+/* Text content section - middle column (widest) */
 .project-overlay-text {
+  grid-column: 2;
+  grid-row: 2;
   display: flex;
   flex-direction: column;
   gap: 20px;
   animation: fadeIn 0.5s ease 0.2s backwards;
+  padding: 0 20px;
 }
 
 .project-overlay-paragraph {
@@ -162,25 +168,36 @@
   margin: 0;
 }
 
-/* Bookmarks section */
+/* Bookmarks section - left column */
 .project-overlay-bookmarks {
+  grid-column: 1;
+  grid-row: 2;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   padding: 20px 0;
   animation: fadeIn 0.5s ease 0.3s backwards;
+  position: sticky;
+  top: 120px;
 }
 
-/* Image container */
+/* Image container - right column */
 .project-overlay-image-container {
+  grid-column: 3;
+  grid-row: 2;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   padding: 20px 0;
   animation: fadeIn 0.5s ease 0.4s backwards;
+  position: sticky;
+  top: 120px;
 }
 
 .project-overlay-image {
   width: 100%;
-  max-width: 600px;
   aspect-ratio: 4/3;
   background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
   border: 2px solid var(--merath-blue);
@@ -207,8 +224,10 @@
   font-weight: 300;
 }
 
-/* Meta information */
+/* Meta information - spans all three columns */
 .project-overlay-meta {
+  grid-column: 1 / -1;
+  grid-row: 3;
   display: flex;
   gap: 15px;
   padding-top: 20px;
@@ -241,6 +260,46 @@
 }
 
 /* Responsive design */
+@media (max-width: 1024px) {
+  /* Switch to single column on tablets and mobile */
+  .project-overlay-inner {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto auto;
+    gap: 24px;
+  }
+
+  .project-overlay-header,
+  .project-overlay-text,
+  .project-overlay-bookmarks,
+  .project-overlay-image-container,
+  .project-overlay-meta {
+    grid-column: 1;
+    position: static;
+  }
+
+  .project-overlay-header {
+    grid-row: 1;
+  }
+
+  .project-overlay-text {
+    grid-row: 2;
+    padding: 0;
+  }
+
+  .project-overlay-bookmarks {
+    grid-row: 3;
+    justify-content: center;
+  }
+
+  .project-overlay-image-container {
+    grid-row: 4;
+  }
+
+  .project-overlay-meta {
+    grid-row: 5;
+  }
+}
+
 @media (max-width: 768px) {
   .project-overlay-close {
     width: 44px;
@@ -257,10 +316,6 @@
 
   .project-overlay-content {
     padding: 100px 30px 60px;
-  }
-
-  .project-overlay-inner {
-    gap: 24px;
   }
 
   .project-overlay-title {
