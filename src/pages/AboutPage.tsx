@@ -16,16 +16,22 @@ const AboutPage: React.FC<AboutPageProps> = ({ direction, language, setLanguage 
   const [pageTitle, setPageTitle] = useState<string | null>(null);
   const [body, setBody] = useState<any[] | null>(null);
   const [sections, setSections] = useState<any[]>([]);
+  const [team, setTeam] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchAboutPage = async () => {
       try {
-        const data = await sanityClient.fetch(`*[_type == "page" && slug.current == "about"][0]{title, body, sections[]{heading, content}}`);
-        setPageTitle(data?.title || null);
-        setBody(data?.body || null);
-        setSections(data?.sections || []);
+        const [aboutData, teamData] = await Promise.all([
+          sanityClient.fetch(`*[_type == "page" && slug.current == "about"] | order(_updatedAt desc)[0]{title, body, sections[]{heading, content, images[]{asset->{url}}}}`),
+          sanityClient.fetch(`*[_type == "person"] | order(name asc){_id, name, role, bio, "photoUrl": photo.asset->url}`),
+        ]);
+
+        setPageTitle(aboutData?.title || null);
+        setBody(aboutData?.body || null);
+        setSections(aboutData?.sections || []);
+        setTeam(teamData || []);
         setLoading(false);
       } catch (err) {
         console.error(err);
@@ -68,6 +74,23 @@ const AboutPage: React.FC<AboutPageProps> = ({ direction, language, setLanguage 
             <div key={idx} className="team-member-wrapper">
               {section.heading && <h2 className="team-heading">{section.heading}</h2>}
               {section.content && <PortableTextRenderer value={section.content} />}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {team.length > 0 && (
+        <div className="team-section">
+          <h2 className="team-heading">{language === 'ar' ? 'الفريق' : 'Team'}</h2>
+          {team.map((member: any) => (
+            <div key={member._id} className="team-member-wrapper">
+              <div className="team-member">
+                <div className="team-member-info">
+                  <div className="team-member-name">{member.name}</div>
+                  {member.role && <div className="team-member-role">{member.role}</div>}
+                  {member.bio && <div className="team-member-bio"><PortableTextRenderer value={member.bio} /></div>}
+                </div>
+              </div>
             </div>
           ))}
         </div>

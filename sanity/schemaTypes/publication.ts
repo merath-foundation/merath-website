@@ -15,6 +15,7 @@ export const publication = defineType({
     defineField({name: 'body', type: 'array', title: 'Body', of: [{type: 'block'}]}),
     defineField({name: 'authors', type: 'array', title: 'Authors', of: [{type: 'reference', to: [{type: 'person'}]}]}),
     defineField({name: 'topics', type: 'array', title: 'Topics/Tags', of: [{type: 'string'}]}),
+    defineField({name: 'heroImageUrl', type: 'url', title: 'Hero Image URL (legacy)', description: 'Optional direct URL for images imported from legacy data'}),
     defineField({name: 'heroImage', type: 'image', title: 'Hero Image', options: {hotspot: true}}),
     defineField({name: 'attachments', type: 'array', title: 'Attachments', of: [{type: 'file'}]}),
     defineField({name: 'sourceUrl', type: 'url', title: 'Source URL'}),
