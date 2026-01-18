@@ -76,14 +76,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ direction = 'rtl', language, 
       <NavBar direction={direction} language={language} setLanguage={setLanguage} />
       
       <header className="page-logo-header">
-        <div className="page-logo-wrapper">
-          <div className="page-logo-side-text" aria-hidden="true"></div>
-          <div className="page-logo-center">
-            <img src={logo} alt="Merath Logo" className="page-logo" />
-            <h1 className="page-logo-title">MERATH</h1>
-          </div>
-          <div className="page-logo-side-text" aria-hidden="true"></div>
-        </div>
+        <img src={logo} alt="Merath Logo" className="page-logo" />
+        <h1 className="page-logo-title">MERATH</h1>
       </header>
       
       <section className="hero-section">
