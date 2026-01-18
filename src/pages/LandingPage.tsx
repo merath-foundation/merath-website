@@ -77,14 +77,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ direction = 'rtl', language, 
       
       <header className="page-logo-header">
         <div className="page-logo-wrapper">
-          <div className="page-logo-side-text">
-            We work with the remains of a region in motion a collective method for thinking and making through how art, memory, and relation move across borders and histories.
-          </div>
+          <div className="page-logo-side-text" aria-hidden="true"></div>
           <div className="page-logo-center">
             <img src={logo} alt="Merath Logo" className="page-logo" />
             <h1 className="page-logo-title">MERATH</h1>
           </div>
-          <div className="page-logo-side-text"></div>
+          <div className="page-logo-side-text" aria-hidden="true"></div>
         </div>
       </header>
       
