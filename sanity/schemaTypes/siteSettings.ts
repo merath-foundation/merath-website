@@ -10,6 +10,20 @@ export const siteSettings = defineType({
     defineField({name: 'logo', type: 'image', title: 'Logo', options: {hotspot: true}}),
     defineField({name: 'favicon', type: 'image', title: 'Favicon'}),
     defineField({
+      name: 'footerLinks',
+      type: 'array',
+      title: 'Footer Links',
+      of: [{
+        type: 'object',
+        fields: [
+          {name: 'label', type: 'string', title: 'Label', validation: (rule) => rule.required()},
+          {name: 'href', type: 'string', title: 'Href'},
+          {name: 'order', type: 'number', title: 'Order'},
+        ],
+      }],
+    }),
+    defineField({name: 'footerNote', type: 'text', title: 'Footer Note'}),
+    defineField({
       name: 'defaultSeo',
       type: 'object',
       title: 'Default SEO',

@@ -4,9 +4,11 @@ import './Card.css';
 interface CardProps {
   title: string;
   description: string;
+  ctaLabel?: string;
+  ctaHref?: string;
 }
 
-const Card: React.FC<CardProps> = ({ title, description }) => {
+const Card: React.FC<CardProps> = ({ title, description, ctaLabel, ctaHref }) => {
   return (
     <div className="card">
       <svg className="card-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -16,6 +18,11 @@ const Card: React.FC<CardProps> = ({ title, description }) => {
         <div className="card-content">
           <h3 className="card-title">{title}</h3>
           <p className="card-description">{description}</p>
+          {ctaLabel && ctaHref && (
+            <a href={ctaHref} className="card-cta" aria-label={ctaLabel}>
+              {ctaLabel}
+            </a>
+          )}
         </div>
       </div>
     </div>

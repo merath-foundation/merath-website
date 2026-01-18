@@ -8,9 +8,26 @@ type NavItem = {label: string; to: string};
 const Footer: React.FC = () => {
   const [navItems, setNavItems] = useState<NavItem[]>([]);
   const [siteTitle, setSiteTitle] = useState<string>('Merath');
+  const [footerNote, setFooterNote] = useState<string>('');
 
   useEffect(() => {
     const fetchFooter = async () => {
+      try {
+        const settings: any = await sanityClient.fetch('*[_type == "siteSettings"][0]{title, footerNote, footerLinks[]{label, href, order}}');
+        if (settings?.title) setSiteTitle(settings.title);
+        if (settings?.footerNote) setFooterNote(settings.footerNote);
+        if (settings?.footerLinks?.length) {
+          const mapped = settings.footerLinks
+            .filter((i: any) => i?.label)
+            .map((i: any) => ({label: i.label, to: i.href || '#', order: i.order ?? 0}))
+            .sort((a: any, b: any) => a.order - b.order);
+          setNavItems(mapped.slice(0, 3));
+          return;
+        }
+      } catch (err) {
+        console.error('Footer settings fetch failed', err);
+      }
+
       try {
         const nav: any = await sanityClient.fetch('*[_type == "navigation" && _id == "navigation-global"][0]{items[]{label, href, order, pageRef->{slug}}}');
         if (nav?.items?.length) {
@@ -25,13 +42,6 @@ const Footer: React.FC = () => {
         }
       } catch (err) {
         console.error('Footer nav fetch failed', err);
-      }
-
-      try {
-        const settings: any = await sanityClient.fetch('*[_type == "siteSettings"][0]{title}');
-        if (settings?.title) setSiteTitle(settings.title);
-      } catch (err) {
-        console.error('Footer settings fetch failed', err);
       }
     };
 
@@ -50,6 +60,7 @@ const Footer: React.FC = () => {
           <img src={logo} alt={`${siteTitle} Logo`} className="footer-logo" />
         </div>
       </div>
+      {footerNote && <div className="footer-note">{footerNote}</div>}
     </footer>
   );
 };

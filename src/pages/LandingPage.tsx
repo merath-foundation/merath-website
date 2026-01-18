@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import Card from '../components/Card';
+import { sanityClient } from '../lib/sanityClient';
 import './LandingPage.css';
 import logo from '../assets/merath_logo_transparent.png';
 
@@ -13,6 +14,63 @@ interface LandingPageProps {
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ direction = 'rtl', language, setLanguage }) => {
+  const [heroSubtitle, setHeroSubtitle] = useState<string>('merath operates between research and production.');
+  const [heroDescription, setHeroDescription] = useState<string>('It engages archives, exhibitions, and collective study as methods for approaching how art can document, translate, and transform lived experience.');
+  const [heroDescriptionSecondary, setHeroDescriptionSecondary] = useState<string>("The collective's work extends across Libya and its neighbouring countries.");
+  const [cards, setCards] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchHome = async () => {
+      try {
+        const pageDoc = await sanityClient.fetch(`*[_type == "page" && slug.current == "home"] | order(_updatedAt desc)[0]{title, body, sections[]{heading, content, images[]{asset->{url}}}}`);
+
+        let homeData = pageDoc;
+        if (!pageDoc) {
+          homeData = await sanityClient.fetch(`*[_type == "homePage" && (slug.current == "home" || slug.current == "landing")]| order(_updatedAt desc)[0]{heroSubtitle, heroDescription, heroDescriptionSecondary, cards[]{title, description, ctaLabel, ctaHref, order}}`);
+        }
+
+        if (homeData?.heroSubtitle) setHeroSubtitle(homeData.heroSubtitle);
+        if (homeData?.heroDescription) setHeroDescription(homeData.heroDescription);
+        if (homeData?.heroDescriptionSecondary) setHeroDescriptionSecondary(homeData.heroDescriptionSecondary);
+
+        if (Array.isArray(homeData?.cards)) {
+          const sorted = [...homeData.cards].sort((a, b) => (a.order ?? 0) - (b.order ?? 0)).slice(0, 6);
+          setCards(sorted);
+        } else if (Array.isArray(homeData?.sections)) {
+          const mapped = homeData.sections
+            .filter((s: any) => s?.heading || s?.content)
+            .map((s: any, idx: number) => ({
+              title: s.heading || `Section ${idx + 1}`,
+              description: Array.isArray(s.content)
+                ? s.content.map((b: any) => (b.children || []).map((c: any) => c.text || '').join('')).join(' ')
+                : '',
+              order: idx,
+            }))
+            .slice(0, 6);
+          setCards(mapped);
+        }
+
+        setLoading(false);
+      } catch (err: any) {
+        console.error('Failed to load home page', err);
+        setError(err?.message || 'Failed to load home page');
+        setLoading(false);
+      }
+    };
+
+    fetchHome();
+  }, []);
+
+  const fallbackCards = useMemo(() => ([
+    {title: 'Projects', description: "Body text for whatever you'd like to say. Add main takeaway points, quotes, anecdotes, or even a very very short story."},
+    {title: 'Archives/Exhibitions', description: "Body text for whatever you'd like to say. Add main takeaway points, quotes, anecdotes, or even a very very short story."},
+    {title: 'About Us', description: "Body text for whatever you'd like to say. Add main takeaway points, quotes, anecdotes, or even a very very short story."},
+  ]), []);
+
+  const cardsToRender = cards.length ? cards : fallbackCards;
+
   return (
     <div className="landing-page" dir={direction}>
       <NavBar direction={direction} language={language} setLanguage={setLanguage} />
@@ -33,33 +91,32 @@ const LandingPage: React.FC<LandingPageProps> = ({ direction = 'rtl', language, 
       <section className="hero-section">
         <div className="hero-content">
           <div className="hero-subtitle">
-            merath operates between research and production.
+            {heroSubtitle}
           </div>
           
           <div className="hero-description">
-            It engages archives, exhibitions, and collective study as methods for approaching how art can document, translate, and transform lived experience.
+            {heroDescription}
           </div>
           
           <div className="hero-description-secondary">
-            The collective's work extends across Libya and its neighbouring countries.
+            {heroDescriptionSecondary}
           </div>
+          {error && <p className="hero-error">{error}</p>}
+          {loading && <p className="hero-loading">Loading...</p>}
         </div>
       </section>
       
       <section className="cards-section">
         <div className="cards-container">
-          <Card 
-            title="Projects"
-            description="Body text for whatever you'd like to say. Add main takeaway points, quotes, anecdotes, or even a very very short story."
-          />
-          <Card 
-            title="Archives/Exhibitions"
-            description="Body text for whatever you'd like to say. Add main takeaway points, quotes, anecdotes, or even a very very short story."
-          />
-          <Card 
-            title="About Us"
-            description="Body text for whatever you'd like to say. Add main takeaway points, quotes, anecdotes, or even a very very short story."
-          />
+          {cardsToRender.map((card, idx) => (
+            <Card
+              key={idx}
+              title={card.title}
+              description={card.description}
+              ctaLabel={card.ctaLabel}
+              ctaHref={card.ctaHref}
+            />
+          ))}
         </div>
       </section>
       
