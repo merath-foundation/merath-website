@@ -1,7 +1,8 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
-import ProjectOverlay from '../components/ProjectOverlay';
+import ProjectsGrid from '../components/ProjectsGrid';
+import ProjectTile from '../components/ProjectTile';
 import { sanityClient, sanityConfig } from '../lib/sanityClient';
 import { Project } from '../types/project';
 import logo from '../assets/merath_logo_transparent.png';
@@ -15,8 +16,6 @@ interface ProjectsPageProps {
 
 const ProjectsPage: React.FC<ProjectsPageProps> = ({ direction, language, setLanguage }) => {
   const [projects, setProjects] = useState<Project[]>([]);
-  const [selectedProjectIndex, setSelectedProjectIndex] = useState<number | null>(null);
-  const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -33,38 +32,45 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ direction, language, setLan
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const data: any[] = await sanityClient.fetch(`*[_type == "project"] | order(coalesce(order, 999) asc, title asc) {
+        const data: any[] = await sanityClient.fetch(`*[_type == "project"] | order(featured desc, coalesce(order, 999999) asc, coalesce(_createdAt, now()) desc) {
           _id,
-          title,
           slug,
-          subtitle,
-          shortDescription,
-          fullDescription,
+          titleEn,
+          titleAr,
+          excerptEn,
+          excerptAr,
+          categoryEn,
+          categoryAr,
+          bodyEn,
+          bodyAr,
+          year,
           order,
+          featured,
           sourceUrl,
           "imageUrl": image.asset->url,
           "imageRef": image.asset->_ref
         }`);
 
-        const mapped: Project[] = data.map((p, idx) => ({
-          id: p.slug?.current || p._id,
-          order: typeof p.order === 'number' ? p.order : idx + 1,
-          title: { en: p.title, ar: p.title },
-          subtitle: {
-            en: p.subtitle?.en || p.subtitle?.ar || '',
-            ar: p.subtitle?.ar || p.subtitle?.en || p.subtitle || '',
-          },
-          shortDescription: {
-            en: p.shortDescription?.en || p.shortDescription?.ar || '',
-            ar: p.shortDescription?.ar || p.shortDescription?.en || '',
-          },
-          fullDescription: {
-            en: p.fullDescription?.en || [],
-            ar: p.fullDescription?.ar || p.fullDescription?.en || [],
-          },
-          imageUrl: p.imageUrl || refToImageUrl(p.imageRef),
-          sourceUrl: p.sourceUrl,
-        }));
+        const mapped: Project[] = data.map((p, idx) => {
+          const id = p.slug?.current || p._id;
+          return {
+            id,
+            slug: p.slug?.current,
+            order: typeof p.order === 'number' ? p.order : idx + 1,
+            titleEn: p.titleEn,
+            titleAr: p.titleAr,
+            excerptEn: p.excerptEn,
+            excerptAr: p.excerptAr,
+            categoryEn: p.categoryEn,
+            categoryAr: p.categoryAr,
+            bodyEn: p.bodyEn,
+            bodyAr: p.bodyAr,
+            year: p.year,
+            featured: Boolean(p.featured),
+            imageUrl: p.imageUrl || refToImageUrl(p.imageRef),
+            sourceUrl: p.sourceUrl,
+          };
+        });
 
         setProjects(mapped);
         setLoading(false);
@@ -78,31 +84,6 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ direction, language, setLan
 
     fetchProjects();
   }, [language]);
-
-  const totalProjects = projects.length;
-  const selectedProject = useMemo(
-    () => (selectedProjectIndex !== null ? projects[selectedProjectIndex] : null),
-    [selectedProjectIndex, projects]
-  );
-  const selectedProjectNumber = selectedProjectIndex !== null ? selectedProjectIndex + 1 : null;
-
-  const handleProjectClick = (index: number) => {
-    setSelectedProjectIndex(index);
-    setIsOverlayOpen(true);
-  };
-
-  const handleOverlayClose = () => {
-    setIsOverlayOpen(false);
-    setTimeout(() => {
-      setSelectedProjectIndex(null);
-    }, 300);
-  };
-
-  const handleProjectChange = (projectNumber: number) => {
-    if (totalProjects === 0) return;
-    const nextIndex = (projectNumber - 1 + totalProjects) % totalProjects;
-    setSelectedProjectIndex(nextIndex);
-  };
 
   return (
     <div className="projects-page" dir={direction}>
@@ -126,54 +107,31 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ direction, language, setLan
             <h2 className="projects-section-title">
               {language === 'ar' ? 'المشاريع' : 'Projects'}
             </h2>
-            <div className="projects-grid">
-              {projects.map((project, idx) => (
-                <article key={project.id} className="project-grid-item">
-                  <button
-                    className="project-card-button"
-                    onClick={() => handleProjectClick(idx)}
-                    aria-label={`View project: ${language === 'ar' ? project.title?.ar : project.title?.en}`}
-                  >
-                    <div className="project-card-image">
-                      {project.imageUrl ? (
-                        <img src={project.imageUrl} alt={project.title?.en || project.title?.ar || 'Project'} />
-                      ) : (
-                        <span className="project-card-number">{idx + 1}</span>
-                      )}
-                    </div>
-                    <div className="project-card-content">
-                      <h3 className="project-card-title">
-                        {language === 'ar' ? project.title?.ar : project.title?.en}
-                      </h3>
-                      <p className="project-card-subtitle">
-                        {language === 'ar' ? project.subtitle?.ar : project.subtitle?.en}
-                      </p>
-                    </div>
-                  </button>
-                </article>
-              ))}
-              {projects.length === 0 && (
-                <p className="projects-empty">{language === 'ar' ? 'لا توجد مشاريع منشورة بعد.' : 'No projects published yet.'}</p>
-              )}
-            </div>
+
+            {/* Featured projects rendered in a single-column list above the grid */}
+            {projects.filter((p) => p.featured).length > 0 && (
+              <div className="projects-featured-section">
+                <h3 className="projects-featured-title">{language === 'ar' ? 'مختارات' : 'Featured'}</h3>
+                <div className="projects-featured-list">
+                  {projects
+                    .filter((p) => p.featured)
+                    .map((p) => (
+                      <div key={`featured-${p.id}`} className="projects-featured-item">
+                        <ProjectTile project={p} direction={direction} variant="featured" />
+                      </div>
+                    ))}
+                </div>
+              </div>
+            )}
+
+            <ProjectsGrid projects={projects} direction={direction} />
+            {projects.length === 0 && (
+              <p className="projects-empty">{language === 'ar' ? 'لا توجد مشاريع منشورة بعد.' : 'No projects published yet.'}</p>
+            )}
           </section>
         )}
       </main>
-      
-      {/* Project overlay modal */}
-      {selectedProject && selectedProjectNumber !== null && (
-        <ProjectOverlay
-          project={selectedProject}
-          projectNumber={selectedProjectNumber}
-          isOpen={isOverlayOpen}
-          onClose={handleOverlayClose}
-          onProjectChange={handleProjectChange}
-          language={language}
-          direction={direction}
-          totalProjects={totalProjects}
-        />
-      )}
-      
+
       <Footer />
     </div>
   );

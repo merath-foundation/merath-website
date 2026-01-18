@@ -75,9 +75,9 @@ const ProjectOverlay: React.FC<ProjectOverlayProps> = ({
 
   if (!isOpen && !isAnimating) return null;
 
-  const title = language === 'ar' ? project.title?.ar : project.title?.en;
-  const subtitle = language === 'ar' ? project.subtitle?.ar : project.subtitle?.en;
-  const descriptionValue = language === 'ar' ? project.fullDescription?.ar : project.fullDescription?.en;
+  const title = language === 'ar' ? project.titleAr : project.titleEn;
+  const subtitle = language === 'ar' ? (project.categoryAr || project.excerptAr) : (project.categoryEn || project.excerptEn);
+  const descriptionValue = language === 'ar' ? (project.bodyAr || project.excerptAr) : (project.bodyEn || project.excerptEn);
   const hasPortableText = Array.isArray(descriptionValue) && descriptionValue.length > 0;
 
   return (

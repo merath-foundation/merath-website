@@ -1,21 +1,17 @@
-export interface LocalizedString {
-  en?: string;
-  ar?: string;
-}
-
-// Full description can be rich text (Portable Text blocks) or plain strings.
-export interface LocalizedRichText {
-  en?: any[] | string;
-  ar?: any[] | string;
-}
-
 export interface Project {
-  id: string | number;
+  id: string;
+  slug?: string;
   order?: number;
-  title: LocalizedString;
-  subtitle?: LocalizedString;
-  shortDescription?: LocalizedString;
-  fullDescription?: LocalizedRichText;
+  titleEn?: string;
+  titleAr?: string;
+  excerptEn?: string;
+  excerptAr?: string;
+  categoryEn?: string;
+  categoryAr?: string;
+  bodyEn?: any[] | string;
+  bodyAr?: any[] | string;
   imageUrl?: string;
   sourceUrl?: string;
+  year?: string | number;
+  featured?: boolean;
 }
