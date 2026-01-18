@@ -24,12 +24,13 @@ const AboutPage: React.FC<AboutPageProps> = ({ direction, language, setLanguage 
     const fetchAboutPage = async () => {
       try {
         const [aboutData, teamData] = await Promise.all([
-          sanityClient.fetch(`*[_type == "page" && slug.current == "about"] | order(_updatedAt desc)[0]{title, body, sections[]{heading, content, images[]{asset->{url}}}}`),
-          sanityClient.fetch(`*[_type == "person"] | order(name asc){_id, name, role, bio, "photoUrl": photo.asset->url}`),
+          sanityClient.fetch(`*[_type == "page" && slug.current == "about"] | order(_updatedAt desc)[0]{title, titleAr, body, bodyAr, sections[]{heading, headingAr, content, contentAr, images[]{asset->{url}}}}`),
+          sanityClient.fetch(`*[_type == "person"] | order(name asc){_id, name, nameAr, role, roleAr, bio, bioAr, "photoUrl": photo.asset->url}`),
         ]);
 
-        setPageTitle(aboutData?.title || null);
-        setBody(aboutData?.body || null);
+        const isArabic = language === 'ar';
+        setPageTitle(isArabic ? (aboutData?.titleAr || aboutData?.title || null) : (aboutData?.title || aboutData?.titleAr || null));
+        setBody(isArabic ? (aboutData?.bodyAr || aboutData?.body || null) : (aboutData?.body || aboutData?.bodyAr || null));
         setSections(aboutData?.sections || []);
         setTeam(teamData || []);
         setLoading(false);
@@ -72,8 +73,8 @@ const AboutPage: React.FC<AboutPageProps> = ({ direction, language, setLanguage 
         <div className="team-section">
           {sections.map((section: any, idx: number) => (
             <div key={idx} className="team-member-wrapper">
-              {section.heading && <h2 className="team-heading">{section.heading}</h2>}
-              {section.content && <PortableTextRenderer value={section.content} />}
+              {section.heading && <h2 className="team-heading">{language === 'ar' ? (section.headingAr || section.heading) : (section.heading || section.headingAr)}</h2>}
+              {section.content && <PortableTextRenderer value={language === 'ar' ? (section.contentAr || section.content) : (section.content || section.contentAr)} />}
             </div>
           ))}
         </div>
@@ -86,9 +87,9 @@ const AboutPage: React.FC<AboutPageProps> = ({ direction, language, setLanguage 
             <div key={member._id} className="team-member-wrapper">
               <div className="team-member">
                 <div className="team-member-info">
-                  <div className="team-member-name">{member.name}</div>
-                  {member.role && <div className="team-member-role">{member.role}</div>}
-                  {member.bio && <div className="team-member-bio"><PortableTextRenderer value={member.bio} /></div>}
+                  <div className="team-member-name">{language === 'ar' ? (member.nameAr || member.name) : (member.name || member.nameAr)}</div>
+                  { (member.role || member.roleAr) && <div className="team-member-role">{language === 'ar' ? (member.roleAr || member.role) : (member.role || member.roleAr)}</div>}
+                  {member.bio && <div className="team-member-bio"><PortableTextRenderer value={language === 'ar' ? (member.bioAr || member.bio) : (member.bio || member.bioAr)} /></div>}
                 </div>
               </div>
             </div>
@@ -96,7 +97,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ direction, language, setLanguage 
         </div>
       )}
       
-      <Footer />
+      <Footer language={language} />
     </div>
   );
 };

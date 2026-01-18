@@ -75,7 +75,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ direction, langua
         </div>
       </div>
       
-      <Footer />
+      <Footer language={language} />
     </div>
   );
 };

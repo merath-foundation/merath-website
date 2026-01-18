@@ -166,7 +166,7 @@ const PublicationsPage: React.FC<PublicationsPageProps> = ({ direction, language
         />
       </div>
 
-      <Footer />
+      <Footer language={language} />
     </div>
   );
 };

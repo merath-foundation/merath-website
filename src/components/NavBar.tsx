@@ -43,13 +43,14 @@ const NavBar: React.FC<NavBarProps> = ({ variant = 'default', direction, languag
   useEffect(() => {
     const fetchNav = async () => {
       try {
-        const data: any = await sanityClient.fetch('*[_type == "navigation" && _id == "navigation-global"][0]{items[]{label, href, order, pageRef->{slug}}}');
+        const data: any = await sanityClient.fetch('*[_type == "navigation" && _id == "navigation-global"][0]{items[]{label, labelAr, href, order, pageRef->{slug}}}');
         if (data?.items?.length) {
           const mapped = data.items
             .filter((i: any) => i?.label)
             .map((i: any) => {
               const to = i.pageRef?.slug?.current ? `/${i.pageRef.slug.current}` : i.href || '#';
-              return { label: i.label, to };
+              const label = language === 'ar' ? (i.labelAr || i.label) : (i.label || i.labelAr);
+              return { label, to };
             })
             .sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0));
           setLinks(mapped);
@@ -59,7 +60,7 @@ const NavBar: React.FC<NavBarProps> = ({ variant = 'default', direction, languag
       }
     };
     fetchNav();
-  }, []);
+  }, [language]);
 
   const closeMenu = () => setMenuOpen(false);
   const toggleMenu = () => setMenuOpen((open) => !open);

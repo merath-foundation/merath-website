@@ -24,27 +24,34 @@ const LandingPage: React.FC<LandingPageProps> = ({ direction = 'rtl', language, 
   useEffect(() => {
     const fetchHome = async () => {
       try {
-        const pageDoc = await sanityClient.fetch(`*[_type == "page" && slug.current == "home"] | order(_updatedAt desc)[0]{title, body, sections[]{heading, content, images[]{asset->{url}}}}`);
+        const pageDoc = await sanityClient.fetch(`*[_type == "page" && slug.current == "home"] | order(_updatedAt desc)[0]{title, titleAr, body, bodyAr, sections[]{heading, headingAr, content, contentAr, images[]{asset->{url}}}}`);
 
         let homeData = pageDoc;
         if (!pageDoc) {
-          homeData = await sanityClient.fetch(`*[_type == "homePage" && (slug.current == "home" || slug.current == "landing")]| order(_updatedAt desc)[0]{heroSubtitle, heroDescription, heroDescriptionSecondary, cards[]{title, description, ctaLabel, ctaHref, order}}`);
+          homeData = await sanityClient.fetch(`*[_type == "homePage" && (slug.current == "home" || slug.current == "landing")]| order(_updatedAt desc)[0]{heroSubtitle, heroSubtitleAr, heroDescription, heroDescriptionAr, heroDescriptionSecondary, heroDescriptionSecondaryAr, cards[]{title, titleAr, description, descriptionAr, ctaLabel, ctaLabelAr, ctaHref, order}}`);
         }
 
-        if (homeData?.heroSubtitle) setHeroSubtitle(homeData.heroSubtitle);
-        if (homeData?.heroDescription) setHeroDescription(homeData.heroDescription);
-        if (homeData?.heroDescriptionSecondary) setHeroDescriptionSecondary(homeData.heroDescriptionSecondary);
+        const isArabic = language === 'ar';
+
+        if (homeData?.heroSubtitle) setHeroSubtitle(isArabic ? (homeData.heroSubtitleAr || homeData.heroSubtitle) : (homeData.heroSubtitle || homeData.heroSubtitleAr));
+        if (homeData?.heroDescription) setHeroDescription(isArabic ? (homeData.heroDescriptionAr || homeData.heroDescription) : (homeData.heroDescription || homeData.heroDescriptionAr));
+        if (homeData?.heroDescriptionSecondary) setHeroDescriptionSecondary(isArabic ? (homeData.heroDescriptionSecondaryAr || homeData.heroDescriptionSecondary) : (homeData.heroDescriptionSecondary || homeData.heroDescriptionSecondaryAr));
 
         if (Array.isArray(homeData?.cards)) {
-          const sorted = [...homeData.cards].sort((a, b) => (a.order ?? 0) - (b.order ?? 0)).slice(0, 6);
+          const sorted = [...homeData.cards].sort((a, b) => (a.order ?? 0) - (b.order ?? 0)).slice(0, 6).map((card) => ({
+            ...card,
+            title: isArabic ? (card.titleAr || card.title) : (card.title || card.titleAr),
+            description: isArabic ? (card.descriptionAr || card.description) : (card.description || card.descriptionAr),
+            ctaLabel: isArabic ? (card.ctaLabelAr || card.ctaLabel) : (card.ctaLabel || card.ctaLabelAr),
+          }));
           setCards(sorted);
         } else if (Array.isArray(homeData?.sections)) {
           const mapped = homeData.sections
             .filter((s: any) => s?.heading || s?.content)
             .map((s: any, idx: number) => ({
-              title: s.heading || `Section ${idx + 1}`,
-              description: Array.isArray(s.content)
-                ? s.content.map((b: any) => (b.children || []).map((c: any) => c.text || '').join('')).join(' ')
+              title: isArabic ? (s.headingAr || s.heading || `Section ${idx + 1}`) : (s.heading || s.headingAr || `Section ${idx + 1}`),
+              description: Array.isArray(isArabic ? s.contentAr : s.content)
+                ? (isArabic ? s.contentAr : s.content).map((b: any) => (b.children || []).map((c: any) => c.text || '').join('')).join(' ')
                 : '',
               order: idx,
             }))
@@ -61,7 +68,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ direction = 'rtl', language, 
     };
 
     fetchHome();
-  }, []);
+  }, [language]);
 
   const fallbackCards = useMemo(() => ([
     {title: 'Projects', description: "Body text for whatever you'd like to say. Add main takeaway points, quotes, anecdotes, or even a very very short story."},
@@ -117,7 +124,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ direction = 'rtl', language, 
         <div className="showcase-image"></div>
       </section>
       
-      <Footer />
+      <Footer language={language} />
     </div>
   );
 };

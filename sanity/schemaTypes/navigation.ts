@@ -17,6 +17,7 @@ export const navigation = defineType({
           title: 'Nav Item',
           fields: [
             {name: 'label', type: 'string', title: 'Label', validation: (rule) => rule.required()},
+            {name: 'labelAr', type: 'string', title: 'Label (Arabic)'},
             {name: 'href', type: 'url', title: 'Href'},
             {name: 'pageRef', type: 'reference', to: [{type: 'page'}], title: 'Page Reference'},
             {name: 'order', type: 'number', title: 'Order'},

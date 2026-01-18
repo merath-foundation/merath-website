@@ -132,7 +132,7 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ direction, language, setLan
         )}
       </main>
 
-      <Footer />
+      <Footer language={language} />
     </div>
   );
 };
