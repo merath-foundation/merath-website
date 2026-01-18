@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import PublicationGrid from '../components/PublicationGrid';
@@ -29,8 +29,8 @@ const refToImageUrl = (ref?: string) => {
 };
 
 const PublicationsPage: React.FC<PublicationsPageProps> = ({ direction, language, setLanguage }) => {
-  const [publications, setPublications] = useState<Publication[]>([]);
-  const [selectedPublication, setSelectedPublication] = useState<Publication | null>(null);
+  const [rawPublications, setRawPublications] = useState<any[]>([]);
+  const [selectedPublicationId, setSelectedPublicationId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -38,36 +38,33 @@ const PublicationsPage: React.FC<PublicationsPageProps> = ({ direction, language
     const fetchPubs = async () => {
       try {
         const data: any[] = await sanityClient.fetch(`*[_type == "publication"]{
-          _id, title, code, slug, publishedMonth, publishedYear, summary, body, authors[]->{name}, topics, heroImageUrl, heroImage{asset->{_ref}}, attachments[]{asset->{_ref, url}}, sourceUrl, externalUrl, pdfUrl, notes
+          _id,
+          title,
+          titleAr,
+          code,
+          slug,
+          publishedMonth,
+          publishedYear,
+          publishedDate,
+          summary,
+          summaryAr,
+          body,
+          bodyAr,
+          authors[]->{name},
+          authorsAr,
+          topics,
+          topicsAr,
+          heroImageUrl,
+          heroImage{asset->{_ref}},
+          attachments[]{asset->{_ref, url}},
+          sourceUrl,
+          externalUrl,
+          pdfUrl,
+          notes,
+          notesAr
         } | order(publishedYear desc, publishedMonth desc)`);
 
-        const mapped: Publication[] = data.map((p) => {
-          const id = p.slug?.current || p._id;
-          const monthRaw = p.publishedMonth;
-          let month = monthRaw;
-          if (monthRaw && monthRaw.length === 2 && MONTH_REV[monthRaw]) month = MONTH_REV[monthRaw];
-          const year = p.publishedYear || (p.publishedDate ? p.publishedDate.split('-')[0] : undefined);
-          const authors = (p.authors || []).map((a: any) => a.name).join(', ');
-          const imageUrl = p.heroImageUrl || refToImageUrl(p.heroImage?.asset?._ref);
-
-          return {
-            id,
-            title: p.title || id,
-            monogram: p.code || '',
-            authors,
-            month,
-            year,
-            tags: p.topics || [],
-            description: p.summary || (p.body && Array.isArray(p.body) ? p.body.map((b: any) => (b.children||[]).map((c:any)=>c.text||'').join('')).join('\n\n') : ''),
-            imageUrl,
-            pdfUrl: p.pdfUrl,
-            externalUrl: p.externalUrl || p.sourceUrl,
-            notes: p.notes,
-            body: p.body,
-          };
-        });
-
-        setPublications(mapped);
+        setRawPublications(data);
         setLoading(false);
       } catch (err) {
         console.error(err);
@@ -79,7 +76,64 @@ const PublicationsPage: React.FC<PublicationsPageProps> = ({ direction, language
     fetchPubs();
   }, []);
 
-  const handleClosePanel = () => setSelectedPublication(null);
+  const publications = useMemo(() => {
+    const isArabic = language === 'ar';
+
+    const toPlainText = (blocks?: any[]) => {
+      if (!blocks || !Array.isArray(blocks)) return '';
+      return blocks
+        .map((block: any) => (block.children || []).map((child: any) => child.text || '').join(''))
+        .filter(Boolean)
+        .join('\n\n');
+    };
+
+    return rawPublications.map((p) => {
+      const id = p.slug?.current || p._id;
+      const monthRaw = p.publishedMonth;
+      let month = monthRaw;
+      if (monthRaw && monthRaw.length === 2 && MONTH_REV[monthRaw]) month = MONTH_REV[monthRaw];
+      const year = p.publishedYear || (p.publishedDate ? p.publishedDate.split('-')[0] : undefined);
+
+      const authorsEn = (p.authors || []).map((a: any) => a.name).join(', ');
+      const authorsAr = (p.authorsAr || []).filter(Boolean).join(', ');
+      const authors = isArabic && authorsAr ? authorsAr : authorsEn;
+
+      const tags = isArabic && p.topicsAr?.length ? p.topicsAr : p.topics || [];
+
+      const bodySelected = isArabic && p.bodyAr?.length ? p.bodyAr : p.body;
+      const summarySelected = isArabic && p.summaryAr ? p.summaryAr : p.summary;
+      const description = summarySelected || toPlainText(bodySelected) || '';
+
+      const notes = isArabic && p.notesAr ? p.notesAr : p.notes;
+
+      const imageUrl = p.heroImageUrl || refToImageUrl(p.heroImage?.asset?._ref);
+
+      const title = (isArabic && p.titleAr) ? p.titleAr : (p.title || id);
+
+      return {
+        id,
+        title,
+        monogram: p.code || '',
+        authors,
+        month,
+        year,
+        tags,
+        description,
+        imageUrl,
+        pdfUrl: p.pdfUrl,
+        externalUrl: p.externalUrl || p.sourceUrl,
+        notes,
+        body: bodySelected,
+      } as Publication;
+    });
+  }, [language, rawPublications]);
+
+  const selectedPublication = useMemo(
+    () => publications.find((p) => p.id === selectedPublicationId) || null,
+    [publications, selectedPublicationId],
+  );
+
+  const handleClosePanel = () => setSelectedPublicationId(null);
 
   return (
     <div className="publications-page" dir={direction}>
@@ -97,8 +151,8 @@ const PublicationsPage: React.FC<PublicationsPageProps> = ({ direction, language
         <div className="publications-main">
           <PublicationGrid
             publications={publications}
-            selectedId={selectedPublication?.id || null}
-            onSelectPublication={setSelectedPublication}
+            selectedId={selectedPublicationId}
+            onSelectPublication={(pub) => setSelectedPublicationId(pub.id)}
             direction={direction}
           />
         </div>
