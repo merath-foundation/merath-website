@@ -18,12 +18,18 @@
 
 /* Header section */
 .publications-header {
-  padding: 60px 40px;
+  position: sticky;
+  top: 16px;
+  z-index: 5;
+  padding: 24px;
   text-align: center;
-  border-bottom: 1px solid #e5e5e5;
-  max-width: 900px;
-  margin: 0 auto;
-  width: 100%;
+  border: 1px solid #e5e5e5;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  max-width: 520px;
+  width: calc(100% - 32px);
+  margin: 0 auto 24px;
 }
 
 .publications-title {
@@ -62,7 +68,10 @@
 /* Mobile responsive */
 @media (max-width: 1024px) {
   .publications-header {
-    padding: 40px 32px;
+    position: static;
+    padding: 28px 24px;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
   }
 
   .publications-title {
@@ -84,8 +93,9 @@
   }
 
   .publications-header {
-    padding: 40px 24px;
-    border-bottom: 1px solid #e5e5e5;
+    padding: 24px 20px;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   }
 
   .publications-title {
@@ -107,7 +117,7 @@
   }
 
   .publications-header {
-    padding: 32px 16px;
+    padding: 20px 16px;
   }
 
   .publications-title {
