@@ -32,7 +32,7 @@
   stroke: var(--merath-blue);
   stroke-width: 4.5;
   opacity: 0;
-  transition: opacity 0.3s ease-in-out;
+  transition: opacity 0.3s ease-in-out, transform 0.4s ease;
 }
 
 .menu-toggle-snake-head--animated {
@@ -51,7 +51,7 @@
 .menu-toggle-snake-tail {
   fill: var(--merath-blue);
   opacity: 0;
-  transition: opacity 0.3s ease-in-out;
+  transition: opacity 0.3s ease-in-out, transform 0.4s ease;
 }
 
 .menu-toggle-snake-tail--animated {

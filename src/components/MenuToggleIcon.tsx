@@ -19,26 +19,56 @@ interface MenuToggleIconProps {
  * 
  * Toggle behavior: Morphs between closed (compact) and open (extended) states.
  */
-const MenuToggleIcon: React.FC<MenuToggleIconProps> = ({ 
-  isOpen, 
+const MenuToggleIcon: React.FC<MenuToggleIconProps> = ({
+  isOpen,
   variant = 'default',
-  className = ''
+  className = '',
 }) => {
-  const [hasAnimated, setHasAnimated] = useState(false);
-  const [headPos, setHeadPos] = useState<{x: number; y: number}>({x: 5, y: 38});
-  const [tailPos, setTailPos] = useState<{x: number; y: number}>({x: 18, y: 18});
+  const [introDone, setIntroDone] = useState(false);
+  const [headPos, setHeadPos] = useState<{x: number; y: number}>({x: 30, y: 10});
+  const [tailPos, setTailPos] = useState<{x: number; y: number}>({x: 30, y: 10});
   const pathRef = useRef<SVGPathElement>(null);
   const dashRef = useRef<number>();
   const rafRef = useRef<number>();
   
+  // Intro: perfect circle that draws on load, then morphs to body path.
+  const introCirclePath = 'M30 10a20 20 0 1 1 0 40a20 20 0 1 1 0-40';
   // Closed state: Compact zig-zag snake
   const closedBodyPath = 'M 18 18 L 42 18 L 42 32 L 52 32 L 52 48 L 28 48 L 28 38 L 10 38';
-  
   // Open state: Extended snake eating its tail (final ouroboros pose)
   const openBodyPath = 'M 18 18 L 45 18 L 45 28 L 55 28 L 55 50 L 20 50 L 20 40 L 5 40';
-  
-  const currentBodyPath = isOpen ? openBodyPath : closedBodyPath;
-  
+
+  const currentBodyPath = introDone ? (isOpen ? openBodyPath : closedBodyPath) : introCirclePath;
+
+  // Intro draw: circle draws in, then we mark intro complete.
+  useEffect(() => {
+    const path = pathRef.current;
+    if (!path || introDone) return;
+
+    const length = path.getTotalLength();
+    path.style.strokeDasharray = `${length}`;
+    path.style.strokeDashoffset = `${length}`;
+
+    const duration = 700;
+    const start = performance.now();
+
+    const frame = (now: number) => {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const offset = length * (1 - eased);
+      path.style.strokeDashoffset = `${offset}`;
+      if (t < 1) {
+        requestAnimationFrame(frame);
+      } else {
+        path.style.strokeDasharray = '';
+        path.style.strokeDashoffset = '';
+        setIntroDone(true);
+      }
+    };
+
+    requestAnimationFrame(frame);
+  }, [introDone]);
+
   // Initialize positions and tail anchor once the path is ready.
   useEffect(() => {
     const path = pathRef.current;
@@ -48,20 +78,19 @@ const MenuToggleIcon: React.FC<MenuToggleIconProps> = ({
     const tailPoint = path.getPointAtLength(0);
     setTailPos({x: tailPoint.x, y: tailPoint.y});
 
-    if (dashRef.current === undefined) {
+    if (dashRef.current === undefined && introDone) {
       dashRef.current = isOpen ? 0 : length;
       path.style.strokeDasharray = `${length}`;
       path.style.strokeDashoffset = `${dashRef.current}`;
       const headPoint = path.getPointAtLength(Math.max(0, length - dashRef.current));
       setHeadPos({x: headPoint.x, y: headPoint.y});
-      setHasAnimated(true);
     }
-  }, [currentBodyPath, isOpen]);
+  }, [currentBodyPath, isOpen, introDone]);
 
   // Animate head along the path on toggle while drawing the stroke behind it.
   useEffect(() => {
     const path = pathRef.current;
-    if (!path) return;
+    if (!path || !introDone) return;
     const length = path.getTotalLength();
     path.style.strokeDasharray = `${length}`;
 
@@ -100,7 +129,7 @@ const MenuToggleIcon: React.FC<MenuToggleIconProps> = ({
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [isOpen, currentBodyPath]);
+  }, [isOpen, currentBodyPath, introDone]);
   
   return (
     <svg
@@ -124,7 +153,7 @@ const MenuToggleIcon: React.FC<MenuToggleIconProps> = ({
         
         {/* Snake head - hollow circle that marks where the head meets the tail */}
         <circle
-          className={`menu-toggle-snake-head${hasAnimated ? ' menu-toggle-snake-head--animated' : ''}`}
+          className={`menu-toggle-snake-head${introDone ? ' menu-toggle-snake-head--animated' : ''}`}
           cx={headPos?.x ?? (isOpen ? 8 : 5)}
           cy={headPos?.y ?? 38}
           r="5"
@@ -132,7 +161,7 @@ const MenuToggleIcon: React.FC<MenuToggleIconProps> = ({
         
         {/* Tail tip - solid circle */}
         <circle
-          className={`menu-toggle-snake-tail${hasAnimated ? ' menu-toggle-snake-tail--animated' : ''}`}
+          className={`menu-toggle-snake-tail${introDone ? ' menu-toggle-snake-tail--animated' : ''}`}
           cx={tailPos?.x ?? (isOpen ? 14 : 18)}
           cy={tailPos?.y ?? (isOpen ? 38 : 18)}
           r="2.5"
