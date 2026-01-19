@@ -78,6 +78,22 @@ const LandingPage: React.FC<LandingPageProps> = ({ direction = 'rtl', language, 
     return <div className={className}>{value}</div>;
   };
 
+  const defaultHero = language === 'ar'
+    ? {
+        subtitle: 'مرحباً بكم في ميراث',
+        description: 'نحن نعمل لدعم صمود المجتمعات وبناء مستقبل أفضل للجميع.',
+        secondary: 'استكشفوا مشاريعنا ومنشوراتنا للتعرف أكثر على عملنا.',
+      }
+    : {
+        subtitle: 'Welcome to MERATH',
+        description: 'We support community resilience and help build a better future for all.',
+        secondary: 'Explore our projects and publications to learn more about our work.',
+      };
+
+  const heroSubtitleDisplay = heroSubtitle || defaultHero.subtitle;
+  const heroDescriptionDisplay = heroDescription || defaultHero.description;
+  const heroDescriptionSecondaryDisplay = heroDescriptionSecondary || defaultHero.secondary;
+
   return (
     <div className="landing-page" dir={direction}>
       <NavBar direction={direction} language={language} setLanguage={setLanguage} />
@@ -89,9 +105,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ direction = 'rtl', language, 
       
       <section className="hero-section">
         <div className="hero-content">
-          {renderContent(heroSubtitle, 'hero-subtitle')}
-          {renderContent(heroDescription, 'hero-description')}
-          {renderContent(heroDescriptionSecondary, 'hero-description-secondary')}
+          {renderContent(heroSubtitleDisplay, 'hero-subtitle')}
+          {renderContent(heroDescriptionDisplay, 'hero-description')}
+          {renderContent(heroDescriptionSecondaryDisplay, 'hero-description-secondary')}
           {error && <p className="hero-error">{error}</p>}
           {loading && <p className="hero-loading">Loading...</p>}
         </div>

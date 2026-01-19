@@ -92,6 +92,22 @@
   padding: 0;
 }
 
+.hero-error {
+  color: #c53030;
+  font-family: '29LT Riwaya', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 16px;
+  margin: 0;
+  text-align: center;
+}
+
+.hero-loading {
+  color: #4b5563;
+  font-family: '29LT Riwaya', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 16px;
+  margin: 0;
+  text-align: center;
+}
+
 
 
 .hero-subtitle {
