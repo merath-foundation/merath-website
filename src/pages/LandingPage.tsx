@@ -74,7 +74,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ direction = 'rtl', language, 
   const cardsToRender = cards;
 
   const renderContent = (value: any, className: string) => {
-    if (Array.isArray(value)) return <div className={className}><PortableTextRenderer value={value} /></div>;
+    const isBlock = value && typeof value === 'object' && value._type === 'block';
+    const blocks = Array.isArray(value) ? value : isBlock ? [value] : null;
+    if (blocks) return <div className={className}><PortableTextRenderer value={blocks} /></div>;
     return <div className={className}>{value}</div>;
   };
 

@@ -11,10 +11,12 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ title, description, ctaLabel, ctaHref }) => {
   const renderContent = (value: any, className: string, as: 'h3' | 'p' = 'p') => {
-    if (Array.isArray(value)) {
+    const isBlock = value && typeof value === 'object' && value._type === 'block';
+    const blocks = Array.isArray(value) ? value : isBlock ? [value] : null;
+    if (blocks) {
       return (
         <div className={className}>
-          <PortableTextRenderer value={value} />
+          <PortableTextRenderer value={blocks} />
         </div>
       );
     }
