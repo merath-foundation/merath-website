@@ -14,9 +14,9 @@ interface LandingPageProps {
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ direction = 'rtl', language, setLanguage }) => {
-  const [heroSubtitle, setHeroSubtitle] = useState<string>('merath operates between research and production.');
-  const [heroDescription, setHeroDescription] = useState<string>('It engages archives, exhibitions, and collective study as methods for approaching how art can document, translate, and transform lived experience.');
-  const [heroDescriptionSecondary, setHeroDescriptionSecondary] = useState<string>("The collective's work extends across Libya and its neighbouring countries.");
+  const [heroSubtitle, setHeroSubtitle] = useState<string>('');
+  const [heroDescription, setHeroDescription] = useState<string>('');
+  const [heroDescriptionSecondary, setHeroDescriptionSecondary] = useState<string>('');
   const [cards, setCards] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -24,28 +24,28 @@ const LandingPage: React.FC<LandingPageProps> = ({ direction = 'rtl', language, 
   useEffect(() => {
     const fetchHome = async () => {
       try {
-        const pageDoc = await sanityClient.fetch(`*[_type == "page" && slug.current == "home"] | order(_updatedAt desc)[0]{title, titleAr, body, bodyAr, sections[]{heading, headingAr, content, contentAr, images[]{asset->{url}}}}`);
+        const homeData = await sanityClient.fetch(`*[_type == "page" && slug.current == "home"] | order(_updatedAt desc)[0]{title, titleAr, body, bodyAr, sections[]{heading, headingAr, content, contentAr, images[]{asset->{url}}}}`);
 
-        let homeData = pageDoc;
-        if (!pageDoc) {
-          homeData = await sanityClient.fetch(`*[_type == "homePage" && (slug.current == "home" || slug.current == "landing")]| order(_updatedAt desc)[0]{heroSubtitle, heroSubtitleAr, heroDescription, heroDescriptionAr, heroDescriptionSecondary, heroDescriptionSecondaryAr, cards[]{title, titleAr, description, descriptionAr, ctaLabel, ctaLabelAr, ctaHref, order}}`);
+        if (!homeData) {
+          setError('Home page content is missing in Sanity (page slug "home")');
+          setLoading(false);
+          return;
         }
 
         const isArabic = language === 'ar';
+        const pickBlocks = (blocks?: any[]) =>
+          Array.isArray(blocks)
+            ? blocks
+                .map((b: any) => (b?.children || []).map((c: any) => c?.text || '').join(''))
+                .filter(Boolean)
+            : [];
 
-        if (homeData?.heroSubtitle) setHeroSubtitle(isArabic ? (homeData.heroSubtitleAr || homeData.heroSubtitle) : (homeData.heroSubtitle || homeData.heroSubtitleAr));
-        if (homeData?.heroDescription) setHeroDescription(isArabic ? (homeData.heroDescriptionAr || homeData.heroDescription) : (homeData.heroDescription || homeData.heroDescriptionAr));
-        if (homeData?.heroDescriptionSecondary) setHeroDescriptionSecondary(isArabic ? (homeData.heroDescriptionSecondaryAr || homeData.heroDescriptionSecondary) : (homeData.heroDescriptionSecondary || homeData.heroDescriptionSecondaryAr));
+        const bodyBlocks = pickBlocks(isArabic ? homeData?.bodyAr : homeData?.body);
+        setHeroDescription(bodyBlocks[0] || '');
+        setHeroSubtitle(bodyBlocks[1] || '');
+        setHeroDescriptionSecondary(bodyBlocks[2] || bodyBlocks[1] || '');
 
-        if (Array.isArray(homeData?.cards)) {
-          const sorted = [...homeData.cards].sort((a, b) => (a.order ?? 0) - (b.order ?? 0)).slice(0, 6).map((card) => ({
-            ...card,
-            title: isArabic ? (card.titleAr || card.title) : (card.title || card.titleAr),
-            description: isArabic ? (card.descriptionAr || card.description) : (card.description || card.descriptionAr),
-            ctaLabel: isArabic ? (card.ctaLabelAr || card.ctaLabel) : (card.ctaLabel || card.ctaLabelAr),
-          }));
-          setCards(sorted);
-        } else if (Array.isArray(homeData?.sections)) {
+        if (Array.isArray(homeData?.sections)) {
           const mapped = homeData.sections
             .filter((s: any) => s?.heading || s?.content)
             .map((s: any, idx: number) => ({
@@ -70,13 +70,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ direction = 'rtl', language, 
     fetchHome();
   }, [language]);
 
-  const fallbackCards = useMemo(() => ([
-    {title: 'Projects', description: "Body text for whatever you'd like to say. Add main takeaway points, quotes, anecdotes, or even a very very short story."},
-    {title: 'Archives/Exhibitions', description: "Body text for whatever you'd like to say. Add main takeaway points, quotes, anecdotes, or even a very very short story."},
-    {title: 'About Us', description: "Body text for whatever you'd like to say. Add main takeaway points, quotes, anecdotes, or even a very very short story."},
-  ]), []);
-
-  const cardsToRender = cards.length ? cards : fallbackCards;
+  const cardsToRender = cards;
 
   return (
     <div className="landing-page" dir={direction}>
