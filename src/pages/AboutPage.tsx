@@ -25,7 +25,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ direction, language, setLanguage 
       try {
         const [aboutData, teamData] = await Promise.all([
           sanityClient.fetch(`*[_type == "page" && slug.current == "about"] | order(_updatedAt desc)[0]{title, titleAr, body, bodyAr, sections[]{heading, headingAr, content, contentAr, images[]{asset->{url}}}}`),
-          sanityClient.fetch(`*[_type == "person"] | order(coalesce(formerMember, false) asc, name asc){_id, name, nameAr, role, roleAr, bio, bioAr, formerMember, "photoUrl": photo.asset->url}`),
+          sanityClient.fetch(`*[_type == "person"] | order(coalesce(formerMember, false) asc, coalesce(order, 9999) asc, name asc){_id, name, nameAr, role, roleAr, bio, bioAr, formerMember, order, "photoUrl": photo.asset->url}`),
         ]);
 
         const isArabic = language === 'ar';
@@ -94,6 +94,11 @@ const AboutPage: React.FC<AboutPageProps> = ({ direction, language, setLanguage 
               </div>
             </div>
           ))}
+          <p className="team-footnote">
+            {language === 'ar'
+              ? 'نواصل العمل مع شركاء ومتعاونين أوسع إلى جانب هذا الفريق الأساسي.'
+              : 'We continue to work with a broader network of partners and collaborators alongside this core team.'}
+          </p>
         </div>
       )}
       

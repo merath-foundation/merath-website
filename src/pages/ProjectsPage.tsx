@@ -133,6 +133,11 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ direction, language, setLan
             <h2 className="projects-section-title">
               {language === 'ar' ? 'المشاريع' : 'Projects'}
             </h2>
+            <p className="projects-description">
+              {language === 'ar'
+                ? 'نشارك هنا أبرز مشاريعنا التي تدعم صمود المجتمعات وتساعدها على بناء مستقبل أفضل.'
+                : 'Explore our key projects that strengthen community resilience and help people build a better future.'}
+            </p>
 
             {/* Featured projects rendered in a single-column list above the grid */}
             {projects.filter((p) => p.featured).length > 0 && (
@@ -143,7 +148,7 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ direction, language, setLan
                     .filter((p) => p.featured)
                     .map((p, idx) => (
                       <div key={`featured-${p.id}`} className="projects-featured-item">
-                        <ProjectTile project={p} direction={direction} variant="featured" onSelect={() => openOverlay(idx + 1)} />
+                        <ProjectTile project={p} direction={direction} language={language} variant="featured" onSelect={() => openOverlay(idx + 1)} />
                       </div>
                     ))}
                 </div>
@@ -153,6 +158,7 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ direction, language, setLan
             <ProjectsGrid
               projects={projects}
               direction={direction}
+              language={language}
               onSelect={(index) => openOverlay(index + 1)}
             />
             {projects.length === 0 && (

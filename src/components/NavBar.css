@@ -131,6 +131,10 @@
   display: block;
 }
 
+[dir="rtl"] .navbar-link {
+  font-size: 21px;
+}
+
 .navbar-link:hover {
   color: var(--merath-background);
   background: var(--merath-blue);
@@ -182,7 +186,7 @@
 
 .navbar-lang-button {
   font-family: '29LT Bukra Regular', 'IBM Plex Sans', sans-serif;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--merath-blue);
   background: transparent;

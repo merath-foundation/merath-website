@@ -50,7 +50,7 @@ const PublicationsPage: React.FC<PublicationsPageProps> = ({ direction, language
           summaryAr,
           body,
           bodyAr,
-          authors[]->{name},
+          authors,
           authorsAr,
           topics,
           topicsAr,
@@ -94,8 +94,14 @@ const PublicationsPage: React.FC<PublicationsPageProps> = ({ direction, language
       if (monthRaw && monthRaw.length === 2 && MONTH_REV[monthRaw]) month = MONTH_REV[monthRaw];
       const year = p.publishedYear || (p.publishedDate ? p.publishedDate.split('-')[0] : undefined);
 
-      const authorsEn = (p.authors || []).map((a: any) => a.name).join(', ');
-      const authorsAr = (p.authorsAr || []).filter(Boolean).join(', ');
+      const authorsEn = (p.authors || [])
+        .map((a: any) => (typeof a === 'string' ? a : a?.name))
+        .filter(Boolean)
+        .join(', ');
+      const authorsAr = (p.authorsAr || [])
+        .map((a: any) => (typeof a === 'string' ? a : a?.name))
+        .filter(Boolean)
+        .join(', ');
       const authors = isArabic && authorsAr ? authorsAr : authorsEn;
 
       const tags = isArabic && p.topicsAr?.length ? p.topicsAr : p.topics || [];

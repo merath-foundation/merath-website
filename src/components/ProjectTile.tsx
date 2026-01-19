@@ -6,12 +6,16 @@ import './ProjectTile.css';
 interface ProjectTileProps {
   project: Project;
   direction: 'rtl' | 'ltr';
+  language: 'ar' | 'en';
   variant?: 'standard' | 'featured';
   onSelect?: () => void;
 }
 
-const ProjectTile: React.FC<ProjectTileProps> = ({ project, direction, variant = 'standard', onSelect }) => {
+const ProjectTile: React.FC<ProjectTileProps> = ({ project, direction, language, variant = 'standard', onSelect }) => {
   const { titleEn, titleAr, excerptEn, excerptAr, categoryEn, categoryAr, imageUrl } = project;
+
+  // Strict pick: only show the current language; do not fall back to the other language to avoid double-language rendering
+  const pickByLanguage = (enVal: any, arVal: any) => (language === 'ar' ? (arVal ?? '') : (enVal ?? ''));
 
   const renderText = (
     value: any,
@@ -34,6 +38,11 @@ const ProjectTile: React.FC<ProjectTileProps> = ({ project, direction, variant =
       </Tag>
     );
   };
+
+  const titleValue = pickByLanguage(titleEn, titleAr);
+  const categoryValue = pickByLanguage(categoryEn, categoryAr);
+  const excerptValue = pickByLanguage(excerptEn, excerptAr);
+  const dirOverride = language === 'ar' ? 'rtl' : undefined;
 
   const classes = ['project-tile'];
   if (variant === 'featured') classes.push('project-tile--featured');
@@ -63,18 +72,15 @@ const ProjectTile: React.FC<ProjectTileProps> = ({ project, direction, variant =
 
       <div className="project-tile-text-col">
         <div className="project-tile-titles">
-          {renderText(titleEn, 'project-tile-title-en', 'h3')}
-          {renderText(titleAr, 'project-tile-title-ar', 'h3', 'rtl')}
+          {renderText(titleValue, language === 'ar' ? 'project-tile-title-ar' : 'project-tile-title-en', 'h3', dirOverride)}
         </div>
 
         <div className="project-tile-categories">
-          {renderText(categoryEn, 'project-tile-category-en')}
-          {renderText(categoryAr, 'project-tile-category-ar', 'p', 'rtl')}
+          {renderText(categoryValue, language === 'ar' ? 'project-tile-category-ar' : 'project-tile-category-en', 'p', dirOverride)}
         </div>
 
         <div className="project-tile-excerpts">
-          {renderText(excerptEn, 'project-tile-excerpt-en')}
-          {renderText(excerptAr, 'project-tile-excerpt-ar', 'p', 'rtl')}
+          {renderText(excerptValue, language === 'ar' ? 'project-tile-excerpt-ar' : 'project-tile-excerpt-en', 'p', dirOverride)}
         </div>
       </div>
     </article>

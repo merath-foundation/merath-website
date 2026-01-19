@@ -10,6 +10,7 @@ export const person = defineType({
     defineField({name: 'slug', type: 'slug', title: 'Slug', options: {source: 'name', maxLength: 96}}),
     defineField({name: 'role', type: 'string', title: 'Role'}),
     defineField({name: 'roleAr', type: 'string', title: 'Role (Arabic)'}),
+    defineField({name: 'order', type: 'number', title: 'Order', description: 'Lower numbers show first'}),
     defineField({name: 'formerMember', type: 'boolean', title: 'Former Member', initialValue: false}),
     defineField({name: 'bio', type: 'array', title: 'Bio', of: [{type: 'block'}]}),
     defineField({name: 'bioAr', type: 'array', title: 'Bio (Arabic)', of: [{type: 'block'}]}),

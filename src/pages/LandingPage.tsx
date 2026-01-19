@@ -3,6 +3,7 @@ import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import Card from '../components/Card';
 import { sanityClient } from '../lib/sanityClient';
+import { PortableTextRenderer } from '../components/PortableTextRenderer';
 import './LandingPage.css';
 import logo from '../assets/merath_logo_transparent.png';
 
@@ -14,9 +15,9 @@ interface LandingPageProps {
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ direction = 'rtl', language, setLanguage }) => {
-  const [heroSubtitle, setHeroSubtitle] = useState<string>('');
-  const [heroDescription, setHeroDescription] = useState<string>('');
-  const [heroDescriptionSecondary, setHeroDescriptionSecondary] = useState<string>('');
+  const [heroSubtitle, setHeroSubtitle] = useState<any>('');
+  const [heroDescription, setHeroDescription] = useState<any>('');
+  const [heroDescriptionSecondary, setHeroDescriptionSecondary] = useState<any>('');
   const [cards, setCards] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -33,14 +34,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ direction = 'rtl', language, 
         }
 
         const isArabic = language === 'ar';
-        const pickBlocks = (blocks?: any[]) =>
-          Array.isArray(blocks)
-            ? blocks
-                .map((b: any) => (b?.children || []).map((c: any) => c?.text || '').join(''))
-                .filter(Boolean)
-            : [];
+        const bodyBlocks = Array.isArray(isArabic ? homeData?.bodyAr : homeData?.body)
+          ? (isArabic ? homeData.bodyAr : homeData.body)
+          : [];
 
-        const bodyBlocks = pickBlocks(isArabic ? homeData?.bodyAr : homeData?.body);
         setHeroDescription(bodyBlocks[0] || '');
         setHeroSubtitle(bodyBlocks[1] || '');
         setHeroDescriptionSecondary(bodyBlocks[2] || bodyBlocks[1] || '');
@@ -50,9 +47,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ direction = 'rtl', language, 
             .filter((s: any) => s?.heading || s?.content)
             .map((s: any, idx: number) => ({
               title: isArabic ? (s.headingAr || s.heading || `Section ${idx + 1}`) : (s.heading || s.headingAr || `Section ${idx + 1}`),
-              description: Array.isArray(isArabic ? s.contentAr : s.content)
-                ? (isArabic ? s.contentAr : s.content).map((b: any) => (b.children || []).map((c: any) => c.text || '').join('')).join(' ')
-                : '',
+              description: (isArabic ? s.contentAr : s.content) || [],
               order: idx,
             }))
             .slice(0, 6);
@@ -72,6 +67,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ direction = 'rtl', language, 
 
   const cardsToRender = cards;
 
+  const renderContent = (value: any, className: string) => {
+    if (Array.isArray(value)) return <div className={className}><PortableTextRenderer value={value} /></div>;
+    return <div className={className}>{value}</div>;
+  };
+
   return (
     <div className="landing-page" dir={direction}>
       <NavBar direction={direction} language={language} setLanguage={setLanguage} />
@@ -83,17 +83,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ direction = 'rtl', language, 
       
       <section className="hero-section">
         <div className="hero-content">
-          <div className="hero-subtitle">
-            {heroSubtitle}
-          </div>
-          
-          <div className="hero-description">
-            {heroDescription}
-          </div>
-          
-          <div className="hero-description-secondary">
-            {heroDescriptionSecondary}
-          </div>
+          {renderContent(heroSubtitle, 'hero-subtitle')}
+          {renderContent(heroDescription, 'hero-description')}
+          {renderContent(heroDescriptionSecondary, 'hero-description-secondary')}
           {error && <p className="hero-error">{error}</p>}
           {loading && <p className="hero-loading">Loading...</p>}
         </div>
@@ -111,11 +103,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ direction = 'rtl', language, 
             />
           ))}
         </div>
-      </section>
-      
-      <section className="project-showcase">
-        <div className="showcase-image"></div>
-        <div className="showcase-image"></div>
       </section>
       
       <Footer language={language} />

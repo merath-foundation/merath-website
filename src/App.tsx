@@ -9,8 +9,21 @@ import { sanityClient } from './lib/sanityClient';
 
 
 function App() {
-  // Default language is Arabic
-  const [language, setLanguage] = useState<'ar' | 'en'>('ar');
+  // Default language is Arabic; hydrate from localStorage if available
+  const [language, setLanguageState] = useState<'ar' | 'en'>(() => {
+    if (typeof window !== 'undefined') {
+      const stored = window.localStorage.getItem('merath-lang');
+      if (stored === 'ar' || stored === 'en') return stored;
+    }
+    return 'ar';
+  });
+  const setLanguage = (lang: 'ar' | 'en') => {
+    setLanguageState(lang);
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem('merath-lang', lang);
+    }
+  };
+
   const direction = language === 'ar' ? 'rtl' : 'ltr';
   const [siteTitle, setSiteTitle] = useState<string>('Merath');
 

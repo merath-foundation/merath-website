@@ -38,6 +38,10 @@
   letter-spacing: -0.48px;
 }
 
+[dir="rtl"] .card-title {
+  font-size: 25px;
+}
+
 .card-description {
   align-self: stretch;
   color: var(--sds-color-text-default-secondary);
@@ -45,4 +49,8 @@
   font-size: 16px;
   font-weight: 400;
   line-height: 140%;
+}
+
+[dir="rtl"] .card-description {
+  font-size: 17px;
 }
