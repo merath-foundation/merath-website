@@ -74,6 +74,11 @@
   gap: 4px;
 }
 
+.team-member-former {
+  font-size: 20px;
+  opacity: 0.75;
+}
+
 .team-member-asterisk {
   font-size: 20px;
   color: var(--merath-blue);
@@ -131,6 +136,10 @@
     font-size: 18px;
   }
 
+  .team-member-former {
+    font-size: 14px;
+  }
+
   .team-member-note {
     font-size: 11px;
   }
@@ -168,6 +177,10 @@
   
   .team-member {
     font-size: 14px;
+  }
+
+  .team-member-former {
+    font-size: 12px;
   }
 
   .team-member-note {

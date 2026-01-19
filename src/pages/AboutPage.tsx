@@ -25,7 +25,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ direction, language, setLanguage 
       try {
         const [aboutData, teamData] = await Promise.all([
           sanityClient.fetch(`*[_type == "page" && slug.current == "about"] | order(_updatedAt desc)[0]{title, titleAr, body, bodyAr, sections[]{heading, headingAr, content, contentAr, images[]{asset->{url}}}}`),
-          sanityClient.fetch(`*[_type == "person"] | order(name asc){_id, name, nameAr, role, roleAr, bio, bioAr, "photoUrl": photo.asset->url}`),
+          sanityClient.fetch(`*[_type == "person"] | order(coalesce(formerMember, false) asc, name asc){_id, name, nameAr, role, roleAr, bio, bioAr, formerMember, "photoUrl": photo.asset->url}`),
         ]);
 
         const isArabic = language === 'ar';
@@ -85,10 +85,10 @@ const AboutPage: React.FC<AboutPageProps> = ({ direction, language, setLanguage 
           <h2 className="team-heading">{language === 'ar' ? 'الفريق' : 'Team'}</h2>
           {team.map((member: any) => (
             <div key={member._id} className="team-member-wrapper">
-              <div className="team-member">
+              <div className={`team-member${member.formerMember ? ' team-member-former' : ''}`}>
                 <div className="team-member-info">
                   <div className="team-member-name">{language === 'ar' ? (member.nameAr || member.name) : (member.name || member.nameAr)}</div>
-                  { (member.role || member.roleAr) && <div className="team-member-role">{language === 'ar' ? (member.roleAr || member.role) : (member.role || member.roleAr)}</div>}
+                  {(member.role || member.roleAr) && <div className="team-member-role">{language === 'ar' ? (member.roleAr || member.role) : (member.role || member.roleAr)}</div>}
                   {member.bio && <div className="team-member-bio"><PortableTextRenderer value={language === 'ar' ? (member.bioAr || member.bio) : (member.bio || member.bioAr)} /></div>}
                 </div>
               </div>
