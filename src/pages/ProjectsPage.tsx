@@ -37,37 +37,46 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ direction, language, setLan
           slug,
           titleEn,
           titleAr,
+          title,
+          subtitle,
           excerptEn,
           excerptAr,
+          shortDescription,
           categoryEn,
           categoryAr,
           bodyEn,
           bodyAr,
+          fullDescription,
           year,
           order,
           featured,
           sourceUrl,
           "imageUrl": image.asset->url,
-          "imageRef": image.asset->_ref
+          "imageRef": image.asset->_ref,
+          "imageUrlLegacy": imageUrl
         }`);
 
         const mapped: Project[] = data.map((p, idx) => {
           const id = p.slug?.current || p._id;
+          const shortEn = p.shortDescription?.en;
+          const shortAr = p.shortDescription?.ar;
+          const subEn = p.subtitle?.en;
+          const subAr = p.subtitle?.ar;
           return {
             id,
             slug: p.slug?.current,
             order: typeof p.order === 'number' ? p.order : idx + 1,
-            titleEn: p.titleEn,
-            titleAr: p.titleAr,
-            excerptEn: p.excerptEn,
-            excerptAr: p.excerptAr,
-            categoryEn: p.categoryEn,
-            categoryAr: p.categoryAr,
-            bodyEn: p.bodyEn,
-            bodyAr: p.bodyAr,
+            titleEn: p.titleEn || p.title || subEn || shortEn,
+            titleAr: p.titleAr || p.title || subAr || shortAr,
+            excerptEn: p.excerptEn || shortEn || subEn,
+            excerptAr: p.excerptAr || shortAr || subAr,
+            categoryEn: p.categoryEn || subEn,
+            categoryAr: p.categoryAr || subAr,
+            bodyEn: p.bodyEn || p.fullDescription?.en || shortEn,
+            bodyAr: p.bodyAr || p.fullDescription?.ar || shortAr,
             year: p.year,
             featured: Boolean(p.featured),
-            imageUrl: p.imageUrl || refToImageUrl(p.imageRef),
+            imageUrl: p.imageUrl || p.imageUrlLegacy || refToImageUrl(p.imageRef),
             sourceUrl: p.sourceUrl,
           };
         });

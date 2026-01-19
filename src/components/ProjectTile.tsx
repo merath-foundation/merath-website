@@ -1,5 +1,6 @@
 import React from 'react';
 import { Project } from '../types/project';
+import { PortableTextRenderer } from './PortableTextRenderer';
 import './ProjectTile.css';
 
 interface ProjectTileProps {
@@ -10,6 +11,28 @@ interface ProjectTileProps {
 
 const ProjectTile: React.FC<ProjectTileProps> = ({ project, direction, variant = 'standard' }) => {
   const { titleEn, titleAr, excerptEn, excerptAr, categoryEn, categoryAr, imageUrl } = project;
+
+  const renderText = (
+    value: any,
+    className: string,
+    as: 'p' | 'h3' = 'p',
+    dirOverride?: 'rtl' | 'ltr'
+  ) => {
+    if (!value) return null;
+    if (Array.isArray(value)) {
+      return (
+        <div className={className} dir={dirOverride}>
+          <PortableTextRenderer value={value} />
+        </div>
+      );
+    }
+    const Tag = as as any;
+    return (
+      <Tag className={className} dir={dirOverride}>
+        {value}
+      </Tag>
+    );
+  };
 
   const classes = ['project-tile'];
   if (variant === 'featured') classes.push('project-tile--featured');
@@ -26,30 +49,18 @@ const ProjectTile: React.FC<ProjectTileProps> = ({ project, direction, variant =
 
       <div className="project-tile-text-col">
         <div className="project-tile-titles">
-          {titleEn && <h3 className="project-tile-title-en">{titleEn}</h3>}
-          {titleAr && (
-            <h3 className="project-tile-title-ar" dir="rtl">
-              {titleAr}
-            </h3>
-          )}
+          {renderText(titleEn, 'project-tile-title-en', 'h3')}
+          {renderText(titleAr, 'project-tile-title-ar', 'h3', 'rtl')}
         </div>
 
         <div className="project-tile-categories">
-          {categoryEn && <p className="project-tile-category-en">{categoryEn}</p>}
-          {categoryAr && (
-            <p className="project-tile-category-ar" dir="rtl">
-              {categoryAr}
-            </p>
-          )}
+          {renderText(categoryEn, 'project-tile-category-en')}
+          {renderText(categoryAr, 'project-tile-category-ar', 'p', 'rtl')}
         </div>
 
         <div className="project-tile-excerpts">
-          {excerptEn && <p className="project-tile-excerpt-en">{excerptEn}</p>}
-          {excerptAr && (
-            <p className="project-tile-excerpt-ar" dir="rtl">
-              {excerptAr}
-            </p>
-          )}
+          {renderText(excerptEn, 'project-tile-excerpt-en')}
+          {renderText(excerptAr, 'project-tile-excerpt-ar', 'p', 'rtl')}
         </div>
       </div>
     </article>
