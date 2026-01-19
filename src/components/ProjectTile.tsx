@@ -7,9 +7,10 @@ interface ProjectTileProps {
   project: Project;
   direction: 'rtl' | 'ltr';
   variant?: 'standard' | 'featured';
+  onSelect?: () => void;
 }
 
-const ProjectTile: React.FC<ProjectTileProps> = ({ project, direction, variant = 'standard' }) => {
+const ProjectTile: React.FC<ProjectTileProps> = ({ project, direction, variant = 'standard', onSelect }) => {
   const { titleEn, titleAr, excerptEn, excerptAr, categoryEn, categoryAr, imageUrl } = project;
 
   const renderText = (
@@ -38,7 +39,20 @@ const ProjectTile: React.FC<ProjectTileProps> = ({ project, direction, variant =
   if (variant === 'featured') classes.push('project-tile--featured');
 
   return (
-    <article className={classes.join(' ')} dir={direction}>
+    <article
+      className={classes.join(' ')}
+      dir={direction}
+      onClick={onSelect}
+      role={onSelect ? 'button' : undefined}
+      tabIndex={onSelect ? 0 : -1}
+      onKeyDown={(e) => {
+        if (!onSelect) return;
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onSelect();
+        }
+      }}
+    >
       <div className="project-tile-image-col">
         {imageUrl ? (
           <img src={imageUrl} alt={titleEn || titleAr || 'Project image'} className="project-tile-image" />

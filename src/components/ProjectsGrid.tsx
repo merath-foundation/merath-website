@@ -6,13 +6,19 @@ import './ProjectsGrid.css';
 interface ProjectsGridProps {
   projects: Project[];
   direction: 'rtl' | 'ltr';
+  onSelect?: (index: number) => void;
 }
 
-const ProjectsGrid: React.FC<ProjectsGridProps> = ({ projects, direction }) => {
+const ProjectsGrid: React.FC<ProjectsGridProps> = ({ projects, direction, onSelect }) => {
   return (
     <div className="projects-grid-layout">
-      {projects.map((project) => (
-        <ProjectTile key={project.id} project={project} direction={direction} />
+      {projects.map((project, idx) => (
+        <ProjectTile
+          key={project.id}
+          project={project}
+          direction={direction}
+          onSelect={onSelect ? () => onSelect(idx) : undefined}
+        />
       ))}
     </div>
   );

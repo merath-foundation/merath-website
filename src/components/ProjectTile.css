@@ -9,6 +9,7 @@
   border-radius: 10px;
   padding: 16px;
   box-shadow: none;
+  cursor: pointer;
 }
 
 .project-tile--featured {

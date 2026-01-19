@@ -3,6 +3,7 @@ import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import ProjectsGrid from '../components/ProjectsGrid';
 import ProjectTile from '../components/ProjectTile';
+import ProjectOverlay from '../components/ProjectOverlay';
 import { sanityClient, sanityConfig } from '../lib/sanityClient';
 import { Project } from '../types/project';
 import logo from '../assets/merath_logo_transparent.png';
@@ -18,6 +19,8 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ direction, language, setLan
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [activeProjectNumber, setActiveProjectNumber] = useState<number | null>(null);
+  const [overlayOpen, setOverlayOpen] = useState(false);
 
   const refToImageUrl = (ref?: string) => {
     if (!ref) return undefined;
@@ -94,6 +97,20 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ direction, language, setLan
     fetchProjects();
   }, [language]);
 
+  const openOverlay = (projectNumber: number) => {
+    setActiveProjectNumber(projectNumber);
+    setOverlayOpen(true);
+  };
+
+  const closeOverlay = () => {
+    setOverlayOpen(false);
+  };
+
+  const goToProjectNumber = (projectNumber: number) => {
+    if (projectNumber < 1 || projectNumber > projects.length) return;
+    setActiveProjectNumber(projectNumber);
+  };
+
   return (
     <div className="projects-page" dir={direction}>
       <NavBar direction={direction} language={language} setLanguage={setLanguage} />
@@ -124,22 +141,39 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ direction, language, setLan
                 <div className="projects-featured-list">
                   {projects
                     .filter((p) => p.featured)
-                    .map((p) => (
+                    .map((p, idx) => (
                       <div key={`featured-${p.id}`} className="projects-featured-item">
-                        <ProjectTile project={p} direction={direction} variant="featured" />
+                        <ProjectTile project={p} direction={direction} variant="featured" onSelect={() => openOverlay(idx + 1)} />
                       </div>
                     ))}
                 </div>
               </div>
             )}
 
-            <ProjectsGrid projects={projects} direction={direction} />
+            <ProjectsGrid
+              projects={projects}
+              direction={direction}
+              onSelect={(index) => openOverlay(index + 1)}
+            />
             {projects.length === 0 && (
               <p className="projects-empty">{language === 'ar' ? 'لا توجد مشاريع منشورة بعد.' : 'No projects published yet.'}</p>
             )}
           </section>
         )}
       </main>
+
+      {overlayOpen && activeProjectNumber !== null && projects[activeProjectNumber - 1] && (
+        <ProjectOverlay
+          project={projects[activeProjectNumber - 1]}
+          projectNumber={activeProjectNumber}
+          isOpen={overlayOpen}
+          onClose={closeOverlay}
+          onProjectChange={goToProjectNumber}
+          language={language}
+          direction={direction}
+          totalProjects={projects.length}
+        />
+      )}
 
       <Footer language={language} />
     </div>
