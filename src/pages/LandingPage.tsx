@@ -34,9 +34,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ direction = 'rtl', language, 
         }
 
         const isArabic = language === 'ar';
-        const bodyBlocks = Array.isArray(isArabic ? homeData?.bodyAr : homeData?.body)
-          ? (isArabic ? homeData.bodyAr : homeData.body)
-          : [];
+        const bodyPreferred = isArabic ? homeData?.bodyAr : homeData?.body;
+        const bodyFallback = isArabic ? homeData?.body : homeData?.bodyAr;
+        const bodyBlocks = Array.isArray(bodyPreferred)
+          ? bodyPreferred
+          : Array.isArray(bodyFallback)
+            ? bodyFallback
+            : [];
 
         setHeroDescription(bodyBlocks[0] || '');
         setHeroSubtitle(bodyBlocks[1] || '');
@@ -47,7 +51,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ direction = 'rtl', language, 
             .filter((s: any) => s?.heading || s?.content)
             .map((s: any, idx: number) => ({
               title: isArabic ? (s.headingAr || s.heading || `Section ${idx + 1}`) : (s.heading || s.headingAr || `Section ${idx + 1}`),
-              description: (isArabic ? s.contentAr : s.content) || [],
+              description: (isArabic ? s.contentAr : s.content)
+                || (isArabic ? s.content : s.contentAr)
+                || [],
               order: idx,
             }))
             .slice(0, 6);
