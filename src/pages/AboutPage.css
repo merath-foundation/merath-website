@@ -14,10 +14,11 @@
   margin: 0 auto 60px;
   color: #000;
   text-align: center;
-  font-family: 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
+  font-family: '29LT Riwaya', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
 }
 
 .about-heading {
+  font-family: '29LT Bukra Regular', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
   font-size: 32px;
   font-weight: 700;
   line-height: 140%;
@@ -25,6 +26,7 @@
 }
 
 .about-paragraph {
+  font-family: '29LT Riwaya', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
   font-size: 24px;
   font-weight: 400;
   line-height: 140%;
@@ -46,7 +48,7 @@
   width: 100%;
   color: #000;
   text-align: center;
-  font-family: 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
+  font-family: '29LT Bukra Regular', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
   font-size: 32px;
   font-weight: 700;
   line-height: 140%;
@@ -64,7 +66,7 @@
 .team-member {
   color: #000;
   text-align: center;
-  font-family: 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
+  font-family: '29LT Riwaya', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
   font-size: 32px;
   font-weight: 400;
   line-height: 140%;
@@ -86,7 +88,7 @@
 }
 
 .team-member-note {
-  font-family: 'IBM Plex Mono', -apple-system, Roboto, Helvetica, sans-serif;
+  font-family: '29LT Riwaya', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
   font-size: 12px;
   color: #999;
   font-style: italic;
@@ -94,7 +96,7 @@
 }
 
 .team-footnote {
-  font-family: 'IBM Plex Mono', -apple-system, Roboto, Helvetica, sans-serif;
+  font-family: '29LT Riwaya', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
   font-size: 11px;
   color: #999;
   margin-top: 20px;

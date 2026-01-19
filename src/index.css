@@ -1,6 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=IBM+Plex+Sans+Condensed:wght@700&family=IBM+Plex+Sans:wght@400;700&family=Inter:wght@400;600&display=swap');
 @import './styles/shared.css';
 
+@font-face {
+  font-family: '29LT Riwaya';
+  src: local('29LT Riwaya'), local('29LT-Riwaya');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -8,7 +16,7 @@
 }
 
 body {
-  font-family: 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
+  font-family: '29LT Riwaya', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
   background: #F9F3E0;
   color: #000;
   -webkit-font-smoothing: antialiased;

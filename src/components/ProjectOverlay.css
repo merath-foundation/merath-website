@@ -131,7 +131,7 @@
 }
 
 .project-overlay-title {
-  font-family: 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
+  font-family: '29LT Riwaya', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
   font-size: 36px;
   font-weight: 700;
   color: var(--merath-blue);
@@ -140,7 +140,7 @@
 }
 
 .project-overlay-subtitle {
-  font-family: 'IBM Plex Mono', -apple-system, Roboto, Helvetica, sans-serif;
+  font-family: '29LT Riwaya', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
   font-size: 18px;
   font-weight: 400;
   color: #666;
@@ -160,7 +160,7 @@
 }
 
 .project-overlay-paragraph {
-  font-family: 'IBM Plex Mono', -apple-system, Roboto, Helvetica, sans-serif;
+  font-family: '29LT Riwaya', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
   font-size: 17px;
   font-weight: 400;
   color: #333;

@@ -20,12 +20,13 @@
 }
 
 .page-logo-title {
-  font-family: 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
+  font-family: '29LT Bukra Regular', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
   font-size: 24px;
   font-weight: 600;
   color: var(--merath-blue);
   margin: 0;
   letter-spacing: 0.05em;
+  display: none;
 }
 
 /* Responsive design */

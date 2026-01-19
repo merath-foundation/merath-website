@@ -31,7 +31,7 @@
 }
 
 .projects-title {
-  font-family: 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
+  font-family: '29LT Riwaya', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
   font-size: 24px;
   font-weight: 600;
   color: var(--merath-blue);
@@ -60,7 +60,7 @@
 }
 
 .projects-section-title {
-  font-family: 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
+  font-family: '29LT Riwaya', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
   font-size: 32px;
   font-weight: 700;
   color: var(--merath-blue);
@@ -76,7 +76,7 @@
 }
 
 .projects-featured-title {
-  font-family: 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
+  font-family: '29LT Riwaya', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
   font-size: 20px;
   font-weight: 700;
   color: #1f2937;
@@ -97,7 +97,7 @@
 .projects-error,
 .projects-empty {
   text-align: center;
-  font-family: 'IBM Plex Mono', -apple-system, Roboto, Helvetica, sans-serif;
+  font-family: '29LT Riwaya', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
   color: #444;
   margin: 12px 0 20px;
 }

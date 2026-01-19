@@ -117,7 +117,7 @@
 .navbar-link {
   text-decoration: none;
   color: var(--merath-blue);
-  font-family: 'IBM Plex Sans', sans-serif;
+  font-family: '29LT Bukra Regular', 'IBM Plex Sans', sans-serif;
   font-size: 20px;
   font-weight: 600;
   line-height: 140%;
@@ -181,7 +181,7 @@
 }
 
 .navbar-lang-button {
-  font-family: 'IBM Plex Sans', sans-serif;
+  font-family: '29LT Bukra Regular', 'IBM Plex Sans', sans-serif;
   font-size: 14px;
   font-weight: 600;
   color: var(--merath-blue);

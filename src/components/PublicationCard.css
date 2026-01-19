@@ -14,7 +14,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: '29LT Riwaya', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
   transition: all 0.25s ease-in-out;
   padding: 24px;
   text-align: center;
@@ -52,7 +52,7 @@
   line-height: 1;
   letter-spacing: -0.02em;
   color: var(--merath-blue);
-  font-family: 'IBM Plex Sans Condensed', sans-serif;
+  font-family: '29LT Riwaya', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
 }
 
 .publication-card-meta {

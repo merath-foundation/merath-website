@@ -4,6 +4,18 @@
   background: var(--merath-yellow);
   border-top: var(--sds-size-stroke-border) solid var(--sds-color-border-default-default);
   direction: inherit;
+  color: white;
+  padding: 40px 24px;
+  flex-direction: column;
+  gap: 24px;
+  font-family: '29LT Riwaya', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
+}
+.footer {
+  display: flex;
+  width: 100%;
+  background: var(--merath-yellow);
+  border-top: var(--sds-size-stroke-border) solid var(--sds-color-border-default-default);
+  direction: inherit;
 }
 
 .footer-content {
@@ -40,7 +52,7 @@
   padding-block: 16px;
   padding-inline: 0;
   color: var(--sds-color-text-default-default);
-  font-family: 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
+  font-family: '29LT Riwaya', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
   font-size: 16px;
   font-weight: 600;
   line-height: 140%;

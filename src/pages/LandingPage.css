@@ -59,7 +59,7 @@
   width: 135px;
   flex-shrink: 0;
   color: #000;
-  font-family: 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
+  font-family: '29LT Riwaya', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
   font-size: 15px;
   font-weight: 400;
   line-height: 1.6;
@@ -99,7 +99,7 @@
   max-width: 600px;
   color: var(--sds-color-text-utilities-text-on-overlay);
   text-align: center;
-  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-family: '29LT Riwaya', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
   font-size: 20px;
   font-weight: 400;
   line-height: 120%;
@@ -112,7 +112,7 @@
   max-width: 748px;
   color: #000;
   text-align: center;
-  font-family: 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
+  font-family: '29LT Riwaya', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
   font-size: 20px;
   font-weight: 400;
   line-height: normal;
@@ -125,7 +125,7 @@
   max-width: 748px;
   color: #000;
   text-align: center;
-  font-family: 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
+  font-family: '29LT Riwaya', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
   font-size: 20px;
   font-weight: 400;
   line-height: normal;
@@ -137,7 +137,7 @@
   width: 135px;
   flex-shrink: 0;
   color: #000;
-  font-family: 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
+  font-family: '29LT Riwaya', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
   font-size: 15px;
   font-weight: 400;
   line-height: 1.6;
@@ -154,14 +154,12 @@
 }
 
 .cards-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-  gap: 64px;
-  flex-shrink: 0;
-  align-self: stretch;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 32px 32px;
+  align-items: stretch;
+  align-content: start;
+  width: 100%;
 }
 
 .project-showcase {

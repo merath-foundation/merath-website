@@ -67,7 +67,7 @@
   border-bottom: var(--sds-size-stroke-border) solid var(--sds-color-border-neutral-tertiary);
   background: #FFF;
   color: var(--sds-color-text-neutral-tertiary);
-  font-family: 'IBM Plex Sans Condensed', -apple-system, Roboto, Helvetica, sans-serif;
+  font-family: '29LT Riwaya', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
   font-size: 16px;
   font-weight: 700;
   line-height: 140%;
@@ -121,7 +121,7 @@
   margin: 0 56px;
   color: #000;
   text-align: right;
-  font-family: 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
+  font-family: '29LT Riwaya', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
   font-size: 24px;
   font-weight: 400;
   line-height: 140%;
