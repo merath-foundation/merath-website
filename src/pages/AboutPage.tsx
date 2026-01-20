@@ -25,7 +25,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ direction, language, setLanguage 
       try {
         const [aboutData, teamData] = await Promise.all([
           sanityClient.fetch(`*[_type == "page" && slug.current == "about"] | order(_updatedAt desc)[0]{title, titleAr, body, bodyAr, sections[]{heading, headingAr, content, contentAr, images[]{asset->{url}}}}`),
-          sanityClient.fetch(`*[_type == "person"] | order(coalesce(formerMember, false) asc, coalesce(order, 9999) asc, name asc){_id, name, nameAr, role, roleAr, bio, bioAr, formerMember, order, "photoUrl": photo.asset->url}`),
+          sanityClient.fetch(`*[_type == "person"] | order(coalesce(order, 9999) asc, name asc){_id, name, nameAr, role, roleAr, bio, bioAr, formerMember, order, "photoUrl": photo.asset->url}`),
         ]);
 
         const isArabic = language === 'ar';

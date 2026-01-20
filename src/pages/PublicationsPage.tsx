@@ -6,6 +6,7 @@ import PublicationDetailPanel from '../components/PublicationDetailPanel';
 import { sanityClient, sanityConfig } from '../lib/sanityClient';
 import { Publication } from '../types/publication';
 import './PublicationsPage.css';
+import { PortableTextRenderer } from '../components/PortableTextRenderer';
 
 interface PublicationsPageProps {
   direction: 'rtl' | 'ltr';
@@ -33,11 +34,14 @@ const PublicationsPage: React.FC<PublicationsPageProps> = ({ direction, language
   const [selectedPublicationId, setSelectedPublicationId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [pageBody, setPageBody] = useState<any[] | null>(null);
 
   useEffect(() => {
     const fetchPubs = async () => {
       try {
-        const data: any[] = await sanityClient.fetch(`*[_type == "publication"]{
+        const [pageContent, data]: [any, any[]] = await Promise.all([
+          sanityClient.fetch(`*[_type == "page" && slug.current == "publications"][0]{body, bodyAr}`),
+          sanityClient.fetch(`*[_type == "publication"]{
           _id,
           title,
           titleAr,
@@ -62,8 +66,19 @@ const PublicationsPage: React.FC<PublicationsPageProps> = ({ direction, language
           pdfUrl,
           notes,
           notesAr
-        } | order(publishedYear desc, publishedMonth desc)`);
+        } | order(publishedYear desc, publishedMonth desc)`),
+        ]);
 
+        const isArabic = language === 'ar';
+        const bodyPreferred = isArabic ? pageContent?.bodyAr : pageContent?.body;
+        const bodyFallback = isArabic ? pageContent?.body : pageContent?.bodyAr;
+        const bodyBlocks = Array.isArray(bodyPreferred)
+          ? bodyPreferred
+          : Array.isArray(bodyFallback)
+            ? bodyFallback
+            : null;
+
+        setPageBody(bodyBlocks);
         setRawPublications(data);
         setLoading(false);
       } catch (err) {
@@ -148,7 +163,11 @@ const PublicationsPage: React.FC<PublicationsPageProps> = ({ direction, language
       <div className="publications-container">
         <div className="publications-header">
           <h1 className="publications-title">{language === 'ar' ? 'المنشورات' : 'Publications'}</h1>
-          <p className="publications-subtitle">{language === 'ar' ? 'مجموعة مختارة من الأعمال والأبحاث المتعلقة بالثقافة والمعرفة والمشاعات' : 'A curated collection of writings and research related to culture, knowledge, and commons'}</p>
+          {pageBody && (
+            <div className="publications-subtitle">
+              <PortableTextRenderer value={pageBody} />
+            </div>
+          )}
         </div>
 
         {loading && <p className="publications-loading">{language === 'ar' ? 'جاري التحميل...' : 'Loading publications...'}</p>}
