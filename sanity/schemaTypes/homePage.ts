@@ -39,6 +39,8 @@ export const homePage = defineType({
     }),
     defineField({name: 'projectShowcaseImages', type: 'array', title: 'Project Showcase Images', of: [{type: 'image'}]}),
     defineField({name: 'sourceUrl', type: 'url', title: 'Source URL'}),
+      defineField({name: 'footerNoteOverride', type: 'text', title: 'Footer Note Override'}),
+      defineField({name: 'footerNoteOverrideAr', type: 'text', title: 'Footer Note Override (Arabic)'}),
   ],
   preview: {
     select: {title: 'title', subtitle: 'slug.current'},

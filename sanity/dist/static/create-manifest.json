@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "createdAt": "2026-01-20T14:11:31.255Z",
+  "createdAt": "2026-01-20T14:44:16.000Z",
   "workspaces": [
     {
       "name": "merath-studio",
@@ -12,7 +12,7 @@
       "mediaLibrary": {
         "enabled": false
       },
-      "schema": "50966362.create-schema.json",
+      "schema": "ef4f4ce7.create-schema.json",
       "tools": "91fe70dd.create-tools.json"
     }
   ]
