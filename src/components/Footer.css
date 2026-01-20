@@ -4,11 +4,13 @@
   background: var(--merath-yellow);
   border-top: var(--sds-size-stroke-border) solid var(--sds-color-border-default-default);
   direction: inherit;
-  color: white;
+  color: var(--merath-text);
   padding: 40px 24px;
   flex-direction: column;
   gap: 24px;
   font-family: '29LT Riwaya', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 140%;
 }
 .footer {
   display: flex;
@@ -73,6 +75,13 @@
 .footer-logo {
   width: 99px;
   height: 111px;
+}
+
+.footer-note {
+  color: var(--merath-text);
+  font-size: 16px;
+  line-height: 140%;
+  text-align: center;
 }
 
 /* Mobile responsive */

@@ -19,6 +19,8 @@ export const project = defineType({
     defineField({name: 'order', type: 'number', title: 'Order'}),
     defineField({name: 'featured', type: 'boolean', title: 'Featured', initialValue: false, description: 'Show in featured section above the grid'}),
     defineField({name: 'sourceUrl', type: 'url', title: 'Source URL'}),
+    defineField({name: 'footerNoteOverride', type: 'text', title: 'Footer Note Override'}),
+    defineField({name: 'footerNoteOverrideAr', type: 'text', title: 'Footer Note Override (Arabic)'}),
   ],
   preview: {
     select: {title: 'titleEn', subtitle: 'categoryEn', media: 'image'},

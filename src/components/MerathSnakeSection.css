@@ -1,0 +1,82 @@
+.snake-section {
+  width: 100%;
+  background: var(--merath-background, #f9f3e0);
+  padding: 80px 24px;
+}
+
+.snake-section-inner {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 32px;
+  align-items: start;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.snake-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: #1f2937;
+}
+
+.snake-heading {
+  font-family: '29LT Bukra Regular', 'IBM Plex Sans', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--merath-blue, #2b4c7e);
+  margin: 0;
+}
+
+.snake-description {
+  font-family: '29LT Riwaya', 'IBM Plex Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #1f2937;
+}
+
+.snake-controls-hint {
+  font-family: '29LT Riwaya', 'IBM Plex Sans', sans-serif;
+  font-size: 14px;
+  color: #4b5563;
+  margin: 0;
+}
+
+.snake-controls-hint.subtle {
+  color: #6b7280;
+}
+
+.snake-status {
+  font-family: '29LT Riwaya', 'IBM Plex Sans', sans-serif;
+  font-size: 14px;
+  color: #374151;
+  margin: 0;
+}
+
+.snake-status.error {
+  color: #c53030;
+}
+
+.snake-game-panel {
+  width: 100%;
+}
+
+.snake-placeholder {
+  font-family: '29LT Riwaya', 'IBM Plex Sans', sans-serif;
+  font-size: 14px;
+  color: #6b7280;
+  text-align: center;
+  padding: 32px;
+  border: 1px dashed #d7d7d7;
+  border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+  .snake-section {
+    padding: 60px 20px;
+  }
+
+  .snake-heading {
+    font-size: 24px;
+  }
+}

@@ -11,6 +11,24 @@ export const page = defineType({
     defineField({name: 'body', type: 'array', title: 'Body', of: [{type: 'block'}]}),
     defineField({name: 'bodyAr', type: 'array', title: 'Body (Arabic)', of: [{type: 'block'}]}),
     defineField({
+      name: 'snakeArtifacts',
+      type: 'array',
+      title: 'Snake Artifacts (About page game)',
+      of: [
+        defineField({
+          name: 'artifact',
+          type: 'object',
+          title: 'Artifact',
+          fields: [
+            {name: 'label', type: 'string', title: 'Label'},
+            {name: 'labelAr', type: 'string', title: 'Label (Arabic)'},
+            {name: 'pageRef', type: 'reference', to: [{type: 'page'}], title: 'Link to page (optional)'},
+            {name: 'color', type: 'string', title: 'Color (hex)', description: 'Optional color for the artifact tile'},
+          ],
+        }),
+      ],
+    }),
+    defineField({
       name: 'sections',
       type: 'array',
       title: 'Sections',
@@ -30,6 +48,8 @@ export const page = defineType({
       ],
     }),
     defineField({name: 'sourceUrl', type: 'url', title: 'Source URL'}),
+    defineField({name: 'footerNoteOverride', type: 'text', title: 'Footer Note Override'}),
+    defineField({name: 'footerNoteOverrideAr', type: 'text', title: 'Footer Note Override (Arabic)'}),
   ],
   preview: {
     select: {title: 'title', subtitle: 'slug.current'},

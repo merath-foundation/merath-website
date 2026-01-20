@@ -40,6 +40,8 @@ export const publication = defineType({
     defineField({name: 'pdfUrl', type: 'url', title: 'PDF URL'}),
     defineField({name: 'externalUrl', type: 'url', title: 'External URL'}),
     defineField({name: 'sourceUrl', type: 'url', title: 'Source URL'}),
+    defineField({name: 'footerNoteOverride', type: 'text', title: 'Footer Note Override'}),
+    defineField({name: 'footerNoteOverrideAr', type: 'text', title: 'Footer Note Override (Arabic)'}),
   ],
   preview: {
     select: {title: 'title', subtitle: 'code', media: 'heroImage'},

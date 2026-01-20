@@ -3,6 +3,7 @@ import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import { PortableTextRenderer } from '../components/PortableTextRenderer';
 import { sanityClient } from '../lib/sanityClient';
+import MerathSnakeSection from '../components/MerathSnakeSection';
 import './AboutPage.css';
 import logo from '../assets/merath_logo_transparent.png';
 
@@ -104,6 +105,8 @@ const AboutPage: React.FC<AboutPageProps> = ({ direction, language, setLanguage 
           </p>
         </div>
       )}
+
+      <MerathSnakeSection direction={direction} language={language} />
       
       <Footer language={language} />
     </div>
