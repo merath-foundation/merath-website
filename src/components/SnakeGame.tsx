@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useId, useMemo, useRef, useState } from 'react';
 import './SnakeGame.css';
 
 // SnakeGame aligns with Merath's identity: the snake is a thread of memory across a grid of regions;
@@ -74,23 +74,51 @@ const SnakeGame: React.FC<SnakeGameProps> = ({
   const [specialTicks, setSpecialTicks] = useState(0);
   const [trail, setTrail] = useState<Position[]>([]);
   const [fragmentHint, setFragmentHint] = useState<string | null>(null);
-  const [isFocused, setIsFocused] = useState(false);
   const [speedMs, setSpeedMs] = useState(safeInitialSpeed);
+  const [speedMode, setSpeedMode] = useState<'normal' | 'rapid'>('normal');
+  const [paused, setPaused] = useState(false);
 
   const dirRef = useRef<Direction>('right');
   const queuedDirRef = useRef<Direction | null>(null);
   const runningRef = useRef<boolean>(true);
+  const overlayButtonRef = useRef<HTMLButtonElement | null>(null);
+  const frameRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     dirRef.current = direction;
   }, [direction]);
 
+  useEffect(() => {
+    if (frameRef.current && !gameOver) {
+      frameRef.current.focus();
+    }
+  }, [gameOver]);
+
   // Main loop
   useEffect(() => {
-    if (gameOver) return;
+    if (gameOver || paused) return;
     const interval = setInterval(() => step(), specialTicks > 0 ? Math.min(speedMs * 1.6, speedMs + 200) : speedMs);
     return () => clearInterval(interval);
-  }, [speedMs, specialTicks, gameOver]);
+  }, [speedMs, specialTicks, gameOver, paused]);
+
+  useEffect(() => {
+    const handleVisibility = () => {
+      if (document.hidden) setPaused(true);
+    };
+    const handleWindowBlur = () => setPaused(true);
+    window.addEventListener('blur', handleWindowBlur);
+    document.addEventListener('visibilitychange', handleVisibility);
+    return () => {
+      window.removeEventListener('blur', handleWindowBlur);
+      document.removeEventListener('visibilitychange', handleVisibility);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (gameOver && overlayButtonRef.current) {
+      overlayButtonRef.current.focus();
+    }
+  }, [gameOver]);
 
   // Keyboard controls
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -131,6 +159,7 @@ const SnakeGame: React.FC<SnakeGameProps> = ({
       if (nextHead.x < 0 || nextHead.y < 0 || nextHead.x >= size || nextHead.y >= size) {
         setGameOver(true);
         runningRef.current = false;
+        setPaused(true);
         return prev;
       }
 
@@ -138,6 +167,7 @@ const SnakeGame: React.FC<SnakeGameProps> = ({
       if (collides(nextHead, bodyToCheck)) {
         setGameOver(true);
         runningRef.current = false;
+        setPaused(true);
         return prev;
       }
 
@@ -195,6 +225,8 @@ const SnakeGame: React.FC<SnakeGameProps> = ({
     setTrail([]);
     setFragmentHint(null);
     setSpeedMs(safeInitialSpeed);
+    setSpeedMode('normal');
+    setPaused(false);
     runningRef.current = true;
   };
 
@@ -212,6 +244,9 @@ const SnakeGame: React.FC<SnakeGameProps> = ({
 
   const overlayTitle = labels.gameOverTitle || 'Game over';
   const overlaySubtitle = fragmentHint || labels.gameOverSubtitle || '';
+  const overlayTitleId = useId();
+  const overlaySubtitleId = useId();
+  const overlayScoreId = useId();
 
   return (
     <div className="snake-shell" style={themeVars}>
@@ -219,16 +254,43 @@ const SnakeGame: React.FC<SnakeGameProps> = ({
         className="snake-frame"
         tabIndex={0}
         aria-label="Snake game: use arrow keys or WASD to move"
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
+        ref={frameRef}
         onKeyDown={handleKeyDown}
       >
         <div className="snake-topbar">
           <div className="snake-score">{labels.scoreLabel}: {score}</div>
           <div className="snake-status-text">{labels.controlsHint}</div>
           <div className="snake-mode">
-            <button className="snake-chip" onClick={() => setSpeedMs(safeInitialSpeed)} aria-label="Normal speed">Normal</button>
-            <button className="snake-chip" onClick={() => setSpeedMs(Math.max(minSpeed, safeInitialSpeed * 0.75))} aria-label="Rapid recollection">Rapid</button>
+            <button
+              className={`snake-chip${speedMode === 'normal' ? ' is-active' : ''}`}
+              onClick={() => {
+                setSpeedMs(safeInitialSpeed);
+                setSpeedMode('normal');
+              }}
+              aria-pressed={speedMode === 'normal'}
+              aria-label="Normal speed"
+            >
+              Normal
+            </button>
+            <button
+              className={`snake-chip${speedMode === 'rapid' ? ' is-active' : ''}`}
+              onClick={() => {
+                setSpeedMs(Math.max(minSpeed, safeInitialSpeed * 0.75));
+                setSpeedMode('rapid');
+              }}
+              aria-pressed={speedMode === 'rapid'}
+              aria-label="Rapid recollection"
+            >
+              Rapid
+            </button>
+            <button
+              className={`snake-chip${paused ? ' is-active' : ''}`}
+              onClick={() => setPaused((p) => !p)}
+              aria-pressed={paused}
+              aria-label={paused ? 'Resume game' : 'Pause game'}
+            >
+              {paused ? 'Resume' : 'Pause'}
+            </button>
           </div>
         </div>
 
@@ -251,12 +313,19 @@ const SnakeGame: React.FC<SnakeGameProps> = ({
         {labels.caption && <div className="snake-caption">{labels.caption}</div>}
 
         {gameOver && (
-          <div className="snake-overlay" role="dialog" aria-live="assertive">
+          <div
+            className="snake-overlay"
+            role="dialog"
+            aria-modal="true"
+            aria-live="assertive"
+            aria-labelledby={overlayTitleId}
+            aria-describedby={`${overlaySubtitle ? overlaySubtitleId : ''} ${overlayScoreId}`.trim()}
+          >
             <div className="snake-overlay-card">
-              <h3 className="snake-overlay-title">{overlayTitle}</h3>
-              {overlaySubtitle && <p className="snake-overlay-subtitle">{overlaySubtitle}</p>}
-              <p className="snake-overlay-score">{labels.scoreLabel}: {score}</p>
-              <button className="snake-btn" onClick={reset}>{labels.playAgainLabel}</button>
+              <h3 className="snake-overlay-title" id={overlayTitleId}>{overlayTitle}</h3>
+              {overlaySubtitle && <p className="snake-overlay-subtitle" id={overlaySubtitleId}>{overlaySubtitle}</p>}
+              <p className="snake-overlay-score" id={overlayScoreId}>{labels.scoreLabel}: {score}</p>
+              <button className="snake-btn" onClick={reset} ref={overlayButtonRef}>{labels.playAgainLabel}</button>
             </div>
           </div>
         )}
@@ -276,6 +345,9 @@ const SnakeGame: React.FC<SnakeGameProps> = ({
       {labels.specialItemDescription && (
         <div className="snake-footnote">{labels.specialItemDescription}</div>
       )}
+
+      <div className="sr-only" aria-live="polite">{labels.scoreLabel}: {score}</div>
+      {gameOver && <div className="sr-only" aria-live="assertive">{overlayTitle} {overlaySubtitle}</div>}
     </div>
   );
 };

@@ -11,6 +11,7 @@
   align-items: start;
   max-width: 1100px;
   margin: 0 auto;
+  justify-items: center;
 }
 
 .snake-copy {
@@ -38,12 +39,12 @@
 .snake-controls-hint {
   font-family: '29LT Riwaya', 'IBM Plex Sans', sans-serif;
   font-size: 14px;
-  color: #4b5563;
+  color: #2f3b52;
   margin: 0;
 }
 
 .snake-controls-hint.subtle {
-  color: #6b7280;
+  color: #3b475e;
 }
 
 .snake-status {
@@ -59,6 +60,8 @@
 
 .snake-game-panel {
   width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .snake-placeholder {

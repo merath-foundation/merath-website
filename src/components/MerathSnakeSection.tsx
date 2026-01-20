@@ -76,12 +76,12 @@ const MerathSnakeSection: React.FC<MerathSnakeSectionProps> = ({ direction, lang
         setLoading(false);
       } catch (err: any) {
         console.error('Snake game fetch failed', err);
-        setError('Unable to load game content');
+        setError(language === 'ar' ? 'تعذر تحميل المحتوى التفاعلي' : 'Unable to load game content');
         setLoading(false);
       }
     };
     fetchData();
-  }, []);
+  }, [language]);
 
   const localized = (en?: string, ar?: string) => (language === 'ar' ? (ar || en || '') : (en || ar || ''));
   const localizedBlocks = (en?: any[], ar?: any[]) => (language === 'ar' ? (ar && Array.isArray(ar) ? ar : en) : (en && Array.isArray(en) ? en : ar)) || [];
