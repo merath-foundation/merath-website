@@ -28,6 +28,7 @@
   outline: none;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
   position: relative;
+  touch-action: manipulation;
 }
 
 .snake-frame:focus-visible {
@@ -96,6 +97,8 @@
   border: 1px solid var(--frame-border, #d7d7d7);
   border-radius: 8px;
   padding: 6px;
+  touch-action: none;
+  user-select: none;
 }
 
 .snake-cell {
@@ -215,6 +218,7 @@
   cursor: pointer;
   font-size: 20px;
   transition: all 0.15s ease;
+  touch-action: manipulation;
 }
 
 .snake-touch button:hover {
