@@ -148,7 +148,7 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ direction, language, setLan
                     .filter((p) => p.featured)
                     .map((p, idx) => (
                       <div key={`featured-${p.id}`} className="projects-featured-item">
-                        <ProjectTile project={p} direction={direction} language={language} variant="featured" onSelect={() => openOverlay(idx + 1)} />
+                        <ProjectTile project={p} direction={direction} language={language} variant="featured" onSelect={() => openOverlay(idx + 1)} index={idx} />
                       </div>
                     ))}
                 </div>

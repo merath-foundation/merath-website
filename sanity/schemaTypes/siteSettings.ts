@@ -28,7 +28,18 @@ export const siteSettings = defineType({
     defineField({name: 'footerNote', type: 'text', title: 'Footer Note'}),
     defineField({name: 'footerNoteAr', type: 'text', title: 'Footer Note (Arabic)'}),
     defineField({
-      name: 'defaultSeo',
+      name: 'socialMedia',
+      type: 'object',
+      title: 'Social Media Links',
+      fields: [
+        {name: 'instagram', type: 'url', title: 'Instagram URL'},
+        {name: 'twitter', type: 'url', title: 'X (Twitter) URL'},
+        {name: 'facebook', type: 'url', title: 'Facebook URL'},
+        {name: 'linkedin', type: 'url', title: 'LinkedIn URL'},
+        {name: 'youtube', type: 'url', title: 'YouTube URL'},
+      ],
+    }),
+    defineField({
       type: 'object',
       title: 'Default SEO',
       fields: [

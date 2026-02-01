@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
-import PublicationGrid from '../components/PublicationGrid';
+import PublicationCylinder from '../components/PublicationCylinder';
 import PublicationDetailPanel from '../components/PublicationDetailPanel';
 import { sanityClient, sanityConfig } from '../lib/sanityClient';
 import { Publication } from '../types/publication';
@@ -173,14 +173,16 @@ const PublicationsPage: React.FC<PublicationsPageProps> = ({ direction, language
         {loading && <p className="publications-loading">{language === 'ar' ? 'جاري التحميل...' : 'Loading publications...'}</p>}
         {error && <p className="publications-error">{error}</p>}
 
-        <div className="publications-main">
-          <PublicationGrid
-            publications={publications}
-            selectedId={selectedPublicationId}
-            onSelectPublication={(pub) => setSelectedPublicationId(pub.id)}
-            direction={direction}
-          />
-        </div>
+        {!loading && !error && publications.length > 0 && (
+          <div className="publications-main">
+            <PublicationCylinder
+              publications={publications}
+              selectedId={selectedPublicationId}
+              onSelectPublication={(pub) => setSelectedPublicationId(pub.id)}
+              direction={direction}
+            />
+          </div>
+        )}
 
         <PublicationDetailPanel
           publication={selectedPublication}

@@ -9,9 +9,10 @@ interface ProjectTileProps {
   language: 'ar' | 'en';
   variant?: 'standard' | 'featured';
   onSelect?: () => void;
+  index?: number;
 }
 
-const ProjectTile: React.FC<ProjectTileProps> = ({ project, direction, language, variant = 'standard', onSelect }) => {
+const ProjectTile: React.FC<ProjectTileProps> = ({ project, direction, language, variant = 'standard', onSelect, index = 0 }) => {
   const { titleEn, titleAr, excerptEn, excerptAr, categoryEn, categoryAr, imageUrl } = project;
 
   // Strict pick: only show the current language; do not fall back to the other language to avoid double-language rendering
@@ -54,6 +55,7 @@ const ProjectTile: React.FC<ProjectTileProps> = ({ project, direction, language,
       onClick={onSelect}
       role={onSelect ? 'button' : undefined}
       tabIndex={onSelect ? 0 : -1}
+      style={{ '--tile-index': index } as React.CSSProperties}
       onKeyDown={(e) => {
         if (!onSelect) return;
         if (e.key === 'Enter' || e.key === ' ') {

@@ -23,13 +23,14 @@ const PublicationGrid: React.FC<PublicationGridProps> = ({
 }) => {
   return (
     <div className="publication-grid">
-      {publications.map((publication) => (
+      {publications.map((publication, index) => (
         <PublicationCard
           key={publication.id}
           publication={publication}
           isSelected={selectedId === publication.id}
           onSelect={onSelectPublication}
           direction={direction}
+          index={index}
         />
       ))}
     </div>

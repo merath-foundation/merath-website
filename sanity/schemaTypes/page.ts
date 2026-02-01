@@ -48,8 +48,10 @@ export const page = defineType({
       ],
     }),
     defineField({name: 'sourceUrl', type: 'url', title: 'Source URL'}),
-    defineField({name: 'footerNoteOverride', type: 'text', title: 'Footer Note Override'}),
-    defineField({name: 'footerNoteOverrideAr', type: 'text', title: 'Footer Note Override (Arabic)'}),
+    defineField({name: 'teamSectionTitle', type: 'string', title: 'Team Section Title', description: 'Title for the team section (default: "Team")'}),
+    defineField({name: 'teamSectionTitleAr', type: 'string', title: 'Team Section Title (Arabic)', description: 'Title for the team section in Arabic (default: "الفريق")'}),
+    defineField({name: 'footerNoteOverride', type: 'text', title: 'Footer Note Override', description: 'Note displayed at the bottom of the page (e.g., team footnote)'}),
+    defineField({name: 'footerNoteOverrideAr', type: 'text', title: 'Footer Note Override (Arabic)', description: 'Note displayed at the bottom of the page in Arabic'}),
   ],
   preview: {
     select: {title: 'title', subtitle: 'slug.current'},

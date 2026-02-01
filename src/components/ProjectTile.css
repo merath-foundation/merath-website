@@ -4,17 +4,22 @@
   align-items: flex-start;
   gap: 12px;
   width: 100%;
-  background: #ffff00;
-  border: 1px solid #d7d7d7;
+  background: transparent;
+  border: none;
   border-radius: 0;
   padding: 12px;
   box-shadow: none;
   cursor: pointer;
+
+  /* Animation */
+  animation: fadeInUp 0.5s ease-out forwards;
+  animation-delay: calc(var(--tile-index, 0) * 80ms);
+  opacity: 0;
 }
 
 .project-tile--featured {
   padding: 16px;
-  border-color: var(--merath-blue, #2b4c7e);
+  border: none;
   box-shadow: none;
 }
 

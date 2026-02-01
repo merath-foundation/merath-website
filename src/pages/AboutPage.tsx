@@ -18,14 +18,21 @@ const AboutPage: React.FC<AboutPageProps> = ({ direction, language, setLanguage 
   const [body, setBody] = useState<any[] | null>(null);
   const [sections, setSections] = useState<any[]>([]);
   const [team, setTeam] = useState<any[]>([]);
+  const [teamSectionTitle, setTeamSectionTitle] = useState<string | null>(null);
+  const [footerNote, setFooterNote] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Scroll to top on mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     const fetchAboutPage = async () => {
       try {
         const [aboutData, teamData] = await Promise.all([
-          sanityClient.fetch(`*[_type == "page" && slug.current == "about"] | order(_updatedAt desc)[0]{title, titleAr, body, bodyAr, sections[]{heading, headingAr, content, contentAr, images[]{asset->{url}}}}`),
+          sanityClient.fetch(`*[_type == "page" && slug.current == "about"] | order(_updatedAt desc)[0]{title, titleAr, body, bodyAr, teamSectionTitle, teamSectionTitleAr, footerNoteOverride, footerNoteOverrideAr, sections[]{heading, headingAr, content, contentAr, images[]{asset->{url}}}}`),
           sanityClient.fetch(`*[_type == "person"] | order(coalesce(order, 9999) asc, name asc){_id, name, nameAr, role, roleAr, bio, bioAr, formerMember, order, "photoUrl": photo.asset->url}`),
         ]);
 
@@ -34,6 +41,8 @@ const AboutPage: React.FC<AboutPageProps> = ({ direction, language, setLanguage 
         setBody(isArabic ? (aboutData?.bodyAr || aboutData?.body || null) : (aboutData?.body || aboutData?.bodyAr || null));
         setSections(aboutData?.sections || []);
         setTeam(teamData || []);
+        setTeamSectionTitle(isArabic ? (aboutData?.teamSectionTitleAr || aboutData?.teamSectionTitle || null) : (aboutData?.teamSectionTitle || aboutData?.teamSectionTitleAr || null));
+        setFooterNote(isArabic ? (aboutData?.footerNoteOverrideAr || aboutData?.footerNoteOverride || null) : (aboutData?.footerNoteOverride || aboutData?.footerNoteOverrideAr || null));
         setLoading(false);
       } catch (err) {
         console.error(err);
@@ -83,7 +92,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ direction, language, setLanguage 
 
       {team.length > 0 && (
         <div className="team-section">
-          <h2 className="team-heading">{language === 'ar' ? 'الفريق' : 'Team'}</h2>
+          {teamSectionTitle && <h2 className="team-heading">{teamSectionTitle}</h2>}
           {team.map((member: any) => (
             <div key={member._id} className="team-member-wrapper">
               <div className={`team-member${member.formerMember ? ' team-member-former' : ''}`}>
@@ -99,9 +108,9 @@ const AboutPage: React.FC<AboutPageProps> = ({ direction, language, setLanguage 
             </div>
           ))}
           <p className="team-footnote">
-            {language === 'ar'
+            {footerNote || (language === 'ar'
               ? 'نواصل العمل مع شركاء ومتعاونين أوسع إلى جانب هذا الفريق الأساسي.'
-              : 'We continue to work with a broader network of partners and collaborators alongside this core team.'}
+              : 'We continue to work with a broader network of partners and collaborators alongside this core team.')}
           </p>
         </div>
       )}

@@ -8,6 +8,7 @@
   width: 100%;
   background: var(--merath-background);
   min-height: 100vh;
+  animation: fadeIn 0.5s ease-out;
 }
 
 /* ===========================

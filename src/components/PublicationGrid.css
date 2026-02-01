@@ -5,18 +5,18 @@
 
 .publication-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(280px, 1fr));
-  gap: 40px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
   width: 100%;
-  justify-items: center;
+  justify-items: stretch;
   align-content: start;
+  background: var(--merath-yellow);
 }
 
 /* Tablet: 2 columns */
 @media (max-width: 1024px) {
   .publication-grid {
-    grid-template-columns: repeat(2, minmax(200px, 1fr));
-    gap: 32px;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -24,7 +24,6 @@
 @media (max-width: 640px) {
   .publication-grid {
     grid-template-columns: 1fr;
-    gap: 24px;
     max-width: 100%;
   }
 }
@@ -33,6 +32,5 @@
 @media (max-width: 480px) {
   .publication-grid {
     grid-template-columns: 1fr;
-    gap: 20px;
   }
 }

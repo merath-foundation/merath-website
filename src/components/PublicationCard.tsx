@@ -12,6 +12,7 @@ interface PublicationCardProps {
   isSelected: boolean;
   onSelect: (publication: Publication) => void;
   direction: 'rtl' | 'ltr';
+  index?: number;
 }
 
 const PublicationCard: React.FC<PublicationCardProps> = ({
@@ -19,6 +20,7 @@ const PublicationCard: React.FC<PublicationCardProps> = ({
   isSelected,
   onSelect,
   direction,
+  index = 0,
 }) => {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -36,6 +38,7 @@ const PublicationCard: React.FC<PublicationCardProps> = ({
       aria-controls={`publication-detail-${publication.id}`}
       title={publication.title}
       dir={direction}
+      style={{ '--card-index': index } as React.CSSProperties}
     >
       <div className="publication-card-monogram">{publication.monogram}</div>
       <div className="publication-card-meta">

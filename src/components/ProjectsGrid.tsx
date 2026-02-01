@@ -20,6 +20,7 @@ const ProjectsGrid: React.FC<ProjectsGridProps> = ({ projects, direction, langua
           direction={direction}
           language={language}
           onSelect={onSelect ? () => onSelect(idx) : undefined}
+          index={idx}
         />
       ))}
     </div>

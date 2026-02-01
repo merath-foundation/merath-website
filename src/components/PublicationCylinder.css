@@ -1,0 +1,313 @@
+/**
+ * PublicationCylinder styles
+ * 3D cascading cylinder effect for publications
+ */
+
+.publication-cylinder-wrapper {
+  position: relative;
+  width: 100%;
+  height: 80vh;
+  min-height: 600px;
+  max-height: 900px;
+  overflow: hidden;
+}
+
+/* Invisible scroll container */
+.publication-cylinder-scroll {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 10;
+  
+  /* Hide scrollbar but keep functionality */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.publication-cylinder-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.publication-cylinder-spacer {
+  width: 100%;
+  pointer-events: none;
+}
+
+/* 3D Scene container */
+.publication-cylinder-scene {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+  perspective-origin: center center;
+  pointer-events: none;
+}
+
+/* Stage where items live */
+.publication-cylinder-stage {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  height: 100%;
+  transform-style: preserve-3d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Individual publication item */
+.publication-cylinder-item {
+  position: absolute;
+  width: 100%;
+  max-width: 500px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.4s ease-out;
+  pointer-events: auto;
+}
+
+.publication-cylinder-item:focus {
+  outline: none;
+}
+
+.publication-cylinder-item:focus-visible .publication-cylinder-card {
+  box-shadow: 0 0 0 3px var(--merath-blue);
+}
+
+/* Card inside each item */
+.publication-cylinder-card {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 32px 40px;
+  background: var(--merath-background);
+  border: 1px solid var(--merath-yellow);
+  border-radius: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backface-visibility: hidden;
+}
+
+.publication-cylinder-item:hover .publication-cylinder-card {
+  background: #fff;
+  border-color: var(--merath-blue);
+  transform: scale(1.02);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+.publication-cylinder-item--active .publication-cylinder-card {
+  border-color: var(--merath-blue);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.publication-cylinder-item--selected .publication-cylinder-card {
+  background: #fff;
+  border-color: var(--merath-blue);
+  border-width: 2px;
+}
+
+/* Monogram */
+.publication-cylinder-monogram {
+  flex-shrink: 0;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--merath-blue);
+  background: rgba(43, 76, 126, 0.05);
+  border-radius: 0;
+  font-family: '29LT Riwaya', 'IBM Plex Sans', sans-serif;
+  transition: all 0.3s ease;
+}
+
+.publication-cylinder-item:hover .publication-cylinder-monogram {
+  background: rgba(43, 76, 126, 0.1);
+  transform: scale(1.05);
+}
+
+/* Info section */
+.publication-cylinder-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: start;
+}
+
+[dir="rtl"] .publication-cylinder-info {
+  text-align: end;
+}
+
+.publication-cylinder-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--merath-text);
+  line-height: 1.4;
+  font-family: '29LT Riwaya', 'IBM Plex Sans', sans-serif;
+}
+
+.publication-cylinder-meta {
+  font-size: 13px;
+  color: #666;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Navigation dots */
+.publication-cylinder-nav {
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 20;
+}
+
+[dir="rtl"] .publication-cylinder-nav {
+  right: auto;
+  left: 24px;
+}
+
+.publication-cylinder-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid var(--merath-blue);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.publication-cylinder-dot:hover {
+  background: rgba(43, 76, 126, 0.3);
+  transform: scale(1.2);
+}
+
+.publication-cylinder-dot--active {
+  background: var(--merath-blue);
+  transform: scale(1.3);
+}
+
+/* Scroll hint */
+.publication-cylinder-hint {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--merath-blue);
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  transition: opacity 0.5s ease;
+  animation: bounceHint 2s ease-in-out infinite;
+  z-index: 20;
+}
+
+.publication-cylinder-hint--hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes bounceHint {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(8px);
+  }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .publication-cylinder-wrapper {
+    height: 70vh;
+    min-height: 500px;
+  }
+
+  .publication-cylinder-card {
+    flex-direction: column;
+    gap: 20px;
+    padding: 24px;
+    text-align: center;
+  }
+
+  .publication-cylinder-info {
+    text-align: center;
+  }
+
+  [dir="rtl"] .publication-cylinder-info {
+    text-align: center;
+  }
+
+  .publication-cylinder-monogram {
+    width: 80px;
+    height: 80px;
+    font-size: 36px;
+  }
+
+  .publication-cylinder-title {
+    font-size: 18px;
+  }
+
+  .publication-cylinder-nav {
+    right: 12px;
+  }
+
+  [dir="rtl"] .publication-cylinder-nav {
+    left: 12px;
+  }
+
+  .publication-cylinder-dot {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .publication-cylinder-wrapper {
+    height: 60vh;
+    min-height: 450px;
+  }
+
+  .publication-cylinder-stage {
+    max-width: 90%;
+  }
+
+  .publication-cylinder-card {
+    padding: 20px;
+    gap: 16px;
+  }
+
+  .publication-cylinder-monogram {
+    width: 64px;
+    height: 64px;
+    font-size: 28px;
+  }
+
+  .publication-cylinder-title {
+    font-size: 16px;
+  }
+
+  .publication-cylinder-meta {
+    font-size: 11px;
+  }
+}
