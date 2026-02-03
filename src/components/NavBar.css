@@ -8,6 +8,36 @@
   z-index: 999;
 }
 
+/* Meem decoration wrapper at top of header */
+.navbar-meem-wrapper {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 25%;
+  pointer-events: none;
+  z-index: 998;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-meem-decoration {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Extension bar that connects to the meem decoration */
+.navbar-meem-extension {
+  position: absolute;
+  /* Position at ~68% from top to align with the horizontal bar in the SVG */
+  top: 68%;
+  right: 100%;
+  width: 100vw;
+  height: 22.3%;
+  background: #dba923;
+  transform: translateY(-50%);
+}
+
 /* Mirror values for RTL */
 .navbar-root[dir="rtl"] {
   --navbar-panel-shadow: -8px 0 32px rgba(0, 0, 0, 0.15);

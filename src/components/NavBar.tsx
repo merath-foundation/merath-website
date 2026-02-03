@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import MenuToggleIcon from './MenuToggleIcon';
 import { sanityClient } from '../lib/sanityClient';
+import meemDecoration from '../assets/meem-decoration.svg';
 import './NavBar.css';
 
 interface NavBarProps {
@@ -67,6 +68,14 @@ const NavBar: React.FC<NavBarProps> = ({ variant = 'default', direction, languag
 
   return (
     <div className="navbar-root" dir={resolvedDirection}>
+      <div className="navbar-meem-wrapper" aria-hidden="true">
+        <div className="navbar-meem-extension" />
+        <img 
+          src={meemDecoration} 
+          alt="" 
+          className="navbar-meem-decoration" 
+        />
+      </div>
       <button
         type="button"
         className={`navbar-overlay${menuOpen ? ' navbar-overlay--visible' : ''}`}
