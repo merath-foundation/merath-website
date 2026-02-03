@@ -241,9 +241,10 @@
   flex-shrink: 0;
 }
 
-/* When showing Arabic "ع" character (English mode = LTR), use smaller font */
+/* When showing Arabic "ع" character (English mode = LTR), use consistent sizing */
 [dir="ltr"] .navbar-lang-button {
-  font-size: 10px;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .navbar-lang-button::before {
