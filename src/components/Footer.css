@@ -17,17 +17,34 @@
   box-sizing: border-box;
 }
 
-/* Yellow line at top of footer */
-.footer-top-line {
+/* Footer decoration at top */
+.footer-decoration-wrapper {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 4px;
-  background: #F5C54E;
-  transform: translateY(-50%);
+  width: 50%;
   pointer-events: none;
   z-index: 1;
+  display: flex;
+  align-items: center;
+  transform: translateY(-50%);
+}
+
+.footer-decoration {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Extension bar that connects to the footer decoration */
+.footer-decoration-extension {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 100vw;
+  height: 42%;
+  background: #dba923;
+  transform: translateY(-50%);
 }
 
 .footer-content {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Footer.css';
 import logo from '../assets/merath_logo_transparent.png';
+import footerDecoration from '../assets/footer-decoration.svg';
 import { sanityClient } from '../lib/sanityClient';
 
 interface SocialMedia {
@@ -39,7 +40,14 @@ const Footer: React.FC<FooterProps> = ({ language = 'en' }) => {
 
   return (
     <footer className="footer">
-      <div className="footer-top-line" aria-hidden="true" />
+      <div className="footer-decoration-wrapper" aria-hidden="true">
+        <div className="footer-decoration-extension" />
+        <img 
+          src={footerDecoration} 
+          alt="" 
+          className="footer-decoration" 
+        />
+      </div>
       <div className="footer-content">
         <div className="footer-logo-wrapper">
           <img src={logo} alt={`${siteTitle} Logo`} className="footer-logo" />
