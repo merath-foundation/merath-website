@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import './PasswordGate.css';
+import logo from '../assets/merath_logo_transparent.png';
 
 const SITE_PASSWORD = 'merath2026'; // Change this to your desired password
 const STORAGE_KEY = 'merath-site-access';
@@ -39,8 +40,10 @@ export default function PasswordGate({ children }: PasswordGateProps) {
   return (
     <div className="password-gate">
       <div className="password-gate-content">
-        <h1>🚧 Under Construction</h1>
-        <p>This site is currently under development.</p>
+        <img src={logo} alt="Merath" className="password-gate-logo" />
+        <p className="password-gate-tagline">
+          merath is a research and design studio working on projects across the Sahara and the Sea
+        </p>
         <form onSubmit={handleSubmit}>
           <input
             type="password"
@@ -52,6 +55,10 @@ export default function PasswordGate({ children }: PasswordGateProps) {
           <button type="submit">Enter</button>
         </form>
         {error && <p className="error">Incorrect password</p>}
+        <p className="password-gate-note">
+          for access please input the password provided by the team or reach out to{' '}
+          <a href="mailto:info@merath.ly">info@merath.ly</a>
+        </p>
       </div>
     </div>
   );
