@@ -36,14 +36,18 @@
   display: block;
 }
 
-/* Extension bar that connects to the footer decoration */
+/* Extension bar that connects to the footer decoration - pixel art stair-step style */
 .footer-decoration-extension {
   position: absolute;
   top: 50%;
   left: 100%;
   width: 100vw;
-  height: 42%;
-  background: #dba923;
+  height: 84%;
+  background: 
+    repeating-linear-gradient(to right, #dba923 0 80px, transparent 80px 160px) top,
+    repeating-linear-gradient(to right, transparent 0 80px, #dba923 80px 160px) bottom;
+  background-size: 100% 50%;
+  background-repeat: no-repeat;
   transform: translateY(-50%);
 }
 
