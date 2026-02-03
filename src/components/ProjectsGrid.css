@@ -3,10 +3,70 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
   width: 100%;
+  position: relative;
+  --gridline-color: #DBA923;
+  --gridline-thickness: 1px;
+  --gridline-offset: 32px;
+}
+
+/* Single continuous vertical line in the center (between columns) */
+.projects-grid-layout::before {
+  content: '';
+  position: absolute;
+  left: calc(50% - (var(--gridline-thickness) / 2));
+  top: var(--gridline-offset);
+  bottom: var(--gridline-offset);
+  width: var(--gridline-thickness);
+  background-color: var(--gridline-color);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.projects-grid-cell {
+  position: relative;
+}
+
+/* Horizontal line below cells that are not in the last row - spans full width with offset */
+/* Draw from first cell in visual order (col 0 in LTR, col 1 in RTL due to grid flip) */
+/* Using inset-inline properties for RTL support */
+.projects-grid-cell[data-last-row="false"][data-col="0"]::after {
+  content: '';
+  position: absolute;
+  inset-inline-start: var(--gridline-offset);
+  /* Width spans: cell width (100%) + gap (16px) + next cell width (100%) - 2*offset */
+  width: calc(200% + 16px - 2 * var(--gridline-offset));
+  bottom: calc(-8px - (var(--gridline-thickness) / 2));
+  height: var(--gridline-thickness);
+  background-color: var(--gridline-color);
+  pointer-events: none;
+  z-index: 1;
 }
 
 @media (max-width: 900px) {
   .projects-grid-layout {
     grid-template-columns: 1fr;
+  }
+  
+  /* Hide vertical gridline on mobile (single column) */
+  .projects-grid-layout::before {
+    display: none;
+  }
+  
+  /* Hide desktop horizontal lines on mobile */
+  .projects-grid-cell[data-last-row="false"][data-col="0"]::after {
+    display: none;
+  }
+  
+  /* On mobile, show horizontal line below every item except the last */
+  .projects-grid-cell[data-last-item="false"]::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: var(--gridline-offset);
+    inset-inline-end: var(--gridline-offset);
+    bottom: calc(-8px - (var(--gridline-thickness) / 2));
+    height: var(--gridline-thickness);
+    background-color: var(--gridline-color);
+    pointer-events: none;
+    z-index: 1;
   }
 }
