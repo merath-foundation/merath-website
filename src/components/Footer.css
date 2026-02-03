@@ -21,8 +21,8 @@
 .footer-decoration-wrapper {
   position: absolute;
   top: 0;
-  left: 0;
-  width: 50%;
+  left: 20px;
+  width: 12.5%;
   pointer-events: none;
   z-index: 1;
   display: flex;
@@ -42,7 +42,7 @@
   top: 50%;
   left: 100%;
   width: 100vw;
-  height: 84%;
+  height: 8px;
   background: 
     repeating-linear-gradient(to right, #dba923 0 80px, transparent 80px 160px) top,
     repeating-linear-gradient(to right, transparent 0 80px, #dba923 80px 160px) bottom;
