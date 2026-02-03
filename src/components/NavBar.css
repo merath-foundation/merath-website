@@ -12,8 +12,8 @@
 .navbar-meem-wrapper {
   position: fixed;
   top: 20px;
-  right: 20px;
-  width: 25%;
+  right: 80px;
+  width: 12.5%;
   pointer-events: none;
   z-index: 998;
   display: flex;
