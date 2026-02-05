@@ -178,11 +178,45 @@
 
 .cards-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 32px 32px;
   align-items: stretch;
   align-content: start;
   width: 100%;
+  position: relative;
+  --gridline-color: #DBA923;
+  --gridline-thickness: 1px;
+  --gridline-offset: 32px;
+}
+
+/* Single continuous vertical line in the center (between columns) */
+.cards-container::before {
+  content: '';
+  position: absolute;
+  left: calc(50% - (var(--gridline-thickness) / 2));
+  top: var(--gridline-offset);
+  bottom: var(--gridline-offset);
+  width: var(--gridline-thickness);
+  background-color: var(--gridline-color);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cards-grid-cell {
+  position: relative;
+}
+
+/* Horizontal line below cells that are not in the last row */
+.cards-grid-cell[data-last-row="false"][data-col="0"]::after {
+  content: '';
+  position: absolute;
+  inset-inline-start: var(--gridline-offset);
+  width: calc(200% + 32px - 2 * var(--gridline-offset));
+  bottom: calc(-16px - (var(--gridline-thickness) / 2));
+  height: var(--gridline-thickness);
+  background-color: var(--gridline-color);
+  pointer-events: none;
+  z-index: 1;
 }
 
 .project-showcase {
@@ -266,7 +300,31 @@
   }
 
   .cards-container {
+    grid-template-columns: 1fr;
     gap: 20px;
+  }
+
+  /* Hide vertical gridline on mobile (single column) */
+  .cards-container::before {
+    display: none;
+  }
+
+  /* Hide desktop horizontal lines on mobile */
+  .cards-grid-cell[data-last-row="false"][data-col="0"]::after {
+    display: none;
+  }
+
+  /* On mobile, show horizontal line below every item except the last */
+  .cards-grid-cell[data-last-item="false"]::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: var(--gridline-offset);
+    inset-inline-end: var(--gridline-offset);
+    bottom: calc(-10px - (var(--gridline-thickness) / 2));
+    height: var(--gridline-thickness);
+    background-color: var(--gridline-color);
+    pointer-events: none;
+    z-index: 1;
   }
 
   .project-showcase {
