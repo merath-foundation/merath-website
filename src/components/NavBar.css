@@ -26,7 +26,7 @@
   display: block;
 }
 
-/* Extension bar that connects to the meem decoration - pixel art stair-step style */
+/* Extension bar that connects to the meem decoration - irregular pixel art style */
 .navbar-meem-extension {
   position: absolute;
   /* Position at ~68% from top to align with the horizontal bar in the SVG */
@@ -35,8 +35,28 @@
   width: 100vw;
   height: 8px;
   background: 
-    repeating-linear-gradient(to left, #dba923 0 60px, transparent 60px 120px) top,
-    repeating-linear-gradient(to left, transparent 0 60px, #dba923 60px 120px) bottom;
+    linear-gradient(to left, 
+      #dba923 0, #dba923 120px,
+      transparent 120px, transparent 180px,
+      #dba923 180px, #dba923 280px,
+      transparent 280px, transparent 320px,
+      #dba923 320px, #dba923 500px,
+      transparent 500px, transparent 540px,
+      #dba923 540px, #dba923 700px,
+      transparent 700px, transparent 780px,
+      #dba923 780px, #dba923 100%
+    ) top,
+    linear-gradient(to left, 
+      transparent 0, transparent 120px,
+      #dba923 120px, #dba923 180px,
+      transparent 180px, transparent 280px,
+      #dba923 280px, #dba923 320px,
+      transparent 320px, transparent 500px,
+      #dba923 500px, #dba923 540px,
+      transparent 540px, transparent 700px,
+      #dba923 700px, #dba923 780px,
+      transparent 780px, transparent 100%
+    ) bottom;
   background-size: 100% 50%;
   background-repeat: no-repeat;
   transform: translateY(-50%);

@@ -36,7 +36,7 @@
   display: block;
 }
 
-/* Extension bar that connects to the footer decoration - pixel art stair-step style */
+/* Extension bar that connects to the footer decoration - irregular pixel art style */
 .footer-decoration-extension {
   position: absolute;
   top: 50%;
@@ -44,8 +44,24 @@
   width: 100vw;
   height: 8px;
   background: 
-    repeating-linear-gradient(to right, #dba923 0 80px, transparent 80px 160px) top,
-    repeating-linear-gradient(to right, transparent 0 80px, #dba923 80px 160px) bottom;
+    linear-gradient(to right, 
+      #dba923 0, #dba923 90px,
+      transparent 90px, transparent 140px,
+      #dba923 140px, #dba923 350px,
+      transparent 350px, transparent 400px,
+      #dba923 400px, #dba923 520px,
+      transparent 520px, transparent 600px,
+      #dba923 600px, #dba923 100%
+    ) top,
+    linear-gradient(to right, 
+      transparent 0, transparent 90px,
+      #dba923 90px, #dba923 140px,
+      transparent 140px, transparent 350px,
+      #dba923 350px, #dba923 400px,
+      transparent 400px, transparent 520px,
+      #dba923 520px, #dba923 600px,
+      transparent 600px, transparent 100%
+    ) bottom;
   background-size: 100% 50%;
   background-repeat: no-repeat;
   transform: translateY(-50%);
