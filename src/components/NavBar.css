@@ -10,7 +10,7 @@
 
 /* Meem decoration wrapper at top of header */
 .navbar-meem-wrapper {
-  position: fixed;
+  position: absolute;
   top: 20px;
   right: 80px;
   width: 12.5%;

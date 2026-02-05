@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './Footer.css';
-import logo from '../assets/merath_logo_transparent.png';
+import logo from '../assets/merath_logo_footer.png';
 import footerDecoration from '../assets/footer-decoration.svg';
 import { sanityClient } from '../lib/sanityClient';
 
