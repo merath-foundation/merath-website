@@ -22,7 +22,7 @@
   position: absolute;
   top: 0;
   left: 20px;
-  width: 12.5%;
+  width: 67px;
   pointer-events: none;
   z-index: 1;
   display: flex;
@@ -31,7 +31,7 @@
 }
 
 .footer-decoration {
-  width: 100%;
+  width: 67px;
   height: auto;
   display: block;
 }
@@ -204,5 +204,11 @@
   .footer-logo {
     width: 35px;
     height: 39px;
+  }
+  .footer-decoration-wrapper {
+    width: 35px;
+  }
+  .footer-decoration {
+    width: 35px;
   }
 }
