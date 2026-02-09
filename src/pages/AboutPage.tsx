@@ -64,18 +64,20 @@ const AboutPage: React.FC<AboutPageProps> = ({ direction, language, setLanguage 
       </header>
       
       <div className="about-text">
-        <h1 className="about-heading">{pageTitle || (language === 'ar' ? 'حول' : 'ABOUT')}</h1>
+        <div className="about-heading">
+          <PortableTextRenderer value={pageTitle} />
+        </div>
         {loading && (
-          <p className="about-paragraph">{language === 'ar' ? 'جاري التحميل...' : 'Loading...'}</p>
+          <div className="about-paragraph">{language === 'ar' ? 'جاري التحميل...' : 'Loading...'}</div>
         )}
-        {error && <p className="about-paragraph">{error}</p>}
+        {error && <div className="about-paragraph">{error}</div>}
         {!loading && !error && body && (
           <div className="about-paragraph">
             <PortableTextRenderer value={body} />
           </div>
         )}
         {!loading && !error && !body && (
-          <p className="about-paragraph">{language === 'ar' ? 'لم يتم نشر محتوى صفحة التعريف بعد.' : 'About page content is not published yet.'}</p>
+          <div className="about-paragraph">{language === 'ar' ? 'لم يتم نشر محتوى صفحة التعريف بعد.' : 'About page content is not published yet.'}</div>
         )}
       </div>
       
@@ -83,7 +85,11 @@ const AboutPage: React.FC<AboutPageProps> = ({ direction, language, setLanguage 
         <div className="team-section">
           {sections.map((section: any, idx: number) => (
             <div key={idx} className="team-member-wrapper">
-              {section.heading && <h2 className="team-heading">{language === 'ar' ? (section.headingAr || section.heading) : (section.heading || section.headingAr)}</h2>}
+              {section.heading && (
+                <div className="team-heading">
+                  <PortableTextRenderer value={language === 'ar' ? (section.headingAr || section.heading) : (section.heading || section.headingAr)} />
+                </div>
+              )}
               {section.content && <PortableTextRenderer value={language === 'ar' ? (section.contentAr || section.content) : (section.content || section.contentAr)} />}
             </div>
           ))}
@@ -92,26 +98,30 @@ const AboutPage: React.FC<AboutPageProps> = ({ direction, language, setLanguage 
 
       {team.length > 0 && (
         <div className="team-section">
-          {teamSectionTitle && <h2 className="team-heading">{teamSectionTitle}</h2>}
+          {teamSectionTitle && (
+            <div className="team-heading">
+              <PortableTextRenderer value={teamSectionTitle} />
+            </div>
+          )}
           {team.map((member: any) => (
             <div key={member._id} className="team-member-wrapper">
               <div className={`team-member${member.formerMember ? ' team-member-former' : ''}`}>
                 <div className="team-member-info">
                   <div className="team-member-name">
-                    {language === 'ar' ? (member.nameAr || member.name) : (member.name || member.nameAr)}
+                    <PortableTextRenderer value={language === 'ar' ? (member.nameAr || member.name) : (member.name || member.nameAr)} />
                     {member.formerMember && <span className="team-member-asterisk">*</span>}
                   </div>
-                  {(member.role || member.roleAr) && <div className="team-member-role">{language === 'ar' ? (member.roleAr || member.role) : (member.role || member.roleAr)}</div>}
+                  {(member.role || member.roleAr) && <div className="team-member-role"><PortableTextRenderer value={language === 'ar' ? (member.roleAr || member.role) : (member.role || member.roleAr)} /></div>}
                   {member.bio && <div className="team-member-bio"><PortableTextRenderer value={language === 'ar' ? (member.bioAr || member.bio) : (member.bio || member.bioAr)} /></div>}
                 </div>
               </div>
             </div>
           ))}
-          <p className="team-footnote">
-            {footerNote || (language === 'ar'
-              ? 'نواصل العمل مع شركاء ومتعاونين أوسع إلى جانب هذا الفريق الأساسي.'
-              : 'We continue to work with a broader network of partners and collaborators alongside this core team.')}
-          </p>
+          <div className="team-footnote">
+            <PortableTextRenderer value={footerNote || (language === 'ar'
+              ? [{type: 'block', children: [{text: 'نواصل العمل مع شركاء ومتعاونين أوسع إلى جانب هذا الفريق الأساسي.'}]}]
+              : [{type: 'block', children: [{text: 'We continue to work with a broader network of partners and collaborators alongside this core team.'}]}])} />
+          </div>
         </div>
       )}
 

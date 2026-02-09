@@ -25,11 +25,7 @@
   gap: 20px;
 }
 
-.projects-logo {
-  width: 240px;
-  height: auto;
-  object-fit: contain;
-}
+/* Remove old logo style, use .about-logo for scaling */
 
 .projects-title {
   font-family: '29LT Bukra Regular', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
@@ -144,9 +140,7 @@
     padding: 60px 20px 30px;
   }
 
-  .projects-logo {
-    width: 180px;
-  }
+  /* Remove tablet logo style, use .about-logo for scaling */
 
   .projects-title {
     font-size: 20px;
@@ -173,9 +167,7 @@
     padding: 40px 16px 20px;
   }
 
-  .projects-logo {
-    width: 140px;
-  }
+  /* Remove mobile logo style, use .about-logo for scaling */
 
   .projects-title {
     font-size: 18px;

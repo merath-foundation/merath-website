@@ -88,11 +88,7 @@ const SnakeGame: React.FC<SnakeGameProps> = ({
     dirRef.current = direction;
   }, [direction]);
 
-  useEffect(() => {
-    if (frameRef.current && !gameOver) {
-      frameRef.current.focus();
-    }
-  }, [gameOver]);
+  // Removed auto-focus to prevent unwanted scroll
 
   // Main loop
   useEffect(() => {

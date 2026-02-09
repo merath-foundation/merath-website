@@ -114,13 +114,11 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ direction, language, setLan
   return (
     <div className="projects-page" dir={direction}>
       <NavBar direction={direction} language={language} setLanguage={setLanguage} />
-      
       {/* Header with centered logo */}
       <header className="page-logo-header">
-        <img src={logo} alt="Merath Logo" className="page-logo" />
+        <img src={logo} alt="Merath Logo" className="about-logo" />
         <h1 className="page-logo-title">MERATH</h1>
       </header>
-      
       {/* Main content wrapper - ensures consistent max-width and centering */}
       <main className="projects-main">
         {loading && (
