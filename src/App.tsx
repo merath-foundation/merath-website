@@ -6,6 +6,7 @@ import AboutPage from './pages/AboutPage';
 import PublicationsPage from './pages/PublicationsPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { sanityClient } from './lib/sanityClient';
+import PasswordGate from './components/PasswordGate';
 
 
 function App() {
@@ -55,17 +56,19 @@ function App() {
   }, [language]);
 
   return (
-    <div style={{ minHeight: '100vh', background: '#F9F3E0' }} dir={direction}>
-      <Router>
-        <Routes>
-          <Route path="/" element={<LandingPage direction={direction} language={language} setLanguage={setLanguage} />} />
-          <Route path="/projects" element={<ProjectsPage direction={direction} language={language} setLanguage={setLanguage} />} />
-          <Route path="/about" element={<AboutPage direction={direction} language={language} setLanguage={setLanguage} />} />
-          <Route path="/publications" element={<PublicationsPage direction={direction} language={language} setLanguage={setLanguage} />} />
-          <Route path="/detail" element={<ProjectDetailPage direction={direction} language={language} setLanguage={setLanguage} />} />
-        </Routes>
-      </Router>
-    </div>
+    <PasswordGate>
+      <div style={{ minHeight: '100vh', background: '#F9F3E0' }} dir={direction}>
+        <Router>
+          <Routes>
+            <Route path="/" element={<LandingPage direction={direction} language={language} setLanguage={setLanguage} />} />
+            <Route path="/projects" element={<ProjectsPage direction={direction} language={language} setLanguage={setLanguage} />} />
+            <Route path="/about" element={<AboutPage direction={direction} language={language} setLanguage={setLanguage} />} />
+            <Route path="/publications" element={<PublicationsPage direction={direction} language={language} setLanguage={setLanguage} />} />
+            <Route path="/detail" element={<ProjectDetailPage direction={direction} language={language} setLanguage={setLanguage} />} />
+          </Routes>
+        </Router>
+      </div>
+    </PasswordGate>
   );
 }
 

@@ -1,4 +1,5 @@
 .footer {
+  position: relative;
   display: flex;
   width: 100vw;
   max-width: 100vw;
@@ -7,22 +8,72 @@
   border-top: none;
   direction: inherit;
   color: #ffffff;
-  padding: 40px 24px;
+  padding: 14px 16px;
   flex-direction: column;
-  gap: 24px;
+  gap: 8px;
   font-family: '29LT Riwaya', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
   font-size: 16px;
   line-height: 140%;
   box-sizing: border-box;
 }
 
+/* Footer decoration at top */
+.footer-decoration-wrapper {
+  position: absolute;
+  top: 0;
+  left: 20px;
+  width: 67px;
+  pointer-events: none;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  transform: translateY(-50%);
+}
+
+.footer-decoration {
+  width: 67px;
+  height: auto;
+  display: block;
+}
+
+/* Extension bar that connects to the footer decoration - irregular pixel art style */
+.footer-decoration-extension {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 100vw;
+  height: 8px;
+  background: 
+    linear-gradient(to right, 
+      #dba923 0, #dba923 90px,
+      transparent 90px, transparent 140px,
+      #dba923 140px, #dba923 350px,
+      transparent 350px, transparent 400px,
+      #dba923 400px, #dba923 520px,
+      transparent 520px, transparent 600px,
+      #dba923 600px, #dba923 100%
+    ) top,
+    linear-gradient(to right, 
+      transparent 0, transparent 90px,
+      #dba923 90px, #dba923 140px,
+      transparent 140px, transparent 350px,
+      #dba923 350px, #dba923 400px,
+      transparent 400px, transparent 520px,
+      #dba923 520px, #dba923 600px,
+      transparent 600px, transparent 100%
+    ) bottom;
+  background-size: 100% 50%;
+  background-repeat: no-repeat;
+  transform: translateY(-50%);
+}
+
 .footer-content {
   display: flex;
   flex-direction: column;
-  padding: 60px 24px;
+  padding: 20px 16px;
   justify-content: center;
   align-items: center;
-  gap: 24px;
+  gap: 8px;
   flex-wrap: wrap;
   width: 100%;
   max-width: 1000px;
@@ -38,8 +89,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 20px;
-  margin-top: 8px;
+  gap: 14px;
+  margin-top: 6px;
 }
 
 .footer-social-link {
@@ -53,20 +104,20 @@
 
 .footer-social-link:hover {
   opacity: 1;
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 .footer-social-link svg {
-  width: 24px;
-  height: 24px;
+  width: 16px;
+  height: 16px;
 }
 
 .footer-link-section {
   display: flex;
-  flex: 0 1 200px;
+  flex: 0 1 100px;
   flex-direction: column;
   align-items: flex-start;
-  gap: 12px;
+  gap: 6px;
   text-align: start;
 }
 
@@ -76,11 +127,11 @@
 }
 
 .footer-title {
-  padding-block: 16px;
+  padding-block: 8px;
   padding-inline: 0;
   color: var(--sds-color-text-default-default);
   font-family: '29LT Riwaya', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   line-height: 140%;
   text-align: start;
@@ -98,8 +149,8 @@
 }
 
 .footer-logo {
-  width: 99px;
-  height: 111px;
+  width: 67px;
+  height: 75px;
 }
 
 .footer-note {
@@ -112,8 +163,8 @@
 /* Mobile responsive */
 @media (max-width: 768px) {
   .footer-content {
-    padding: 40px 24px;
-    gap: 20px;
+    padding: 20px 12px;
+    gap: 10px;
     justify-content: center;
   }
   
@@ -122,7 +173,7 @@
   }
   
   .footer-link-section {
-    flex: 0 1 150px;
+    flex: 0 1 75px;
   }
   
   .footer-logo-wrapper {
@@ -134,8 +185,8 @@
 
 @media (max-width: 480px) {
   .footer-content {
-    padding: 30px 16px;
-    gap: 16px;
+    padding: 15px 8px;
+    gap: 8px;
     flex-direction: column;
     align-items: center;
   }
@@ -147,11 +198,17 @@
   }
 
   .footer-title {
-    font-size: 14px;
+    font-size: 12px;
   }
 
   .footer-logo {
-    width: 70px;
-    height: 78px;
+    width: 35px;
+    height: 39px;
+  }
+  .footer-decoration-wrapper {
+    width: 35px;
+  }
+  .footer-decoration {
+    width: 35px;
   }
 }

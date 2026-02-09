@@ -8,6 +8,60 @@
   z-index: 999;
 }
 
+/* Meem decoration wrapper at top of header */
+.navbar-meem-wrapper {
+  position: absolute;
+  top: 20px;
+  right: 80px;
+  width: 12.5%;
+  pointer-events: none;
+  z-index: 998;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-meem-decoration {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Extension bar that connects to the meem decoration - irregular pixel art style */
+.navbar-meem-extension {
+  position: absolute;
+  /* Position at ~68% from top to align with the horizontal bar in the SVG */
+  top: 68%;
+  right: 100%;
+  width: 100vw;
+  height: 8px;
+  background: 
+    linear-gradient(to left, 
+      #dba923 0, #dba923 120px,
+      transparent 120px, transparent 180px,
+      #dba923 180px, #dba923 280px,
+      transparent 280px, transparent 320px,
+      #dba923 320px, #dba923 500px,
+      transparent 500px, transparent 540px,
+      #dba923 540px, #dba923 700px,
+      transparent 700px, transparent 780px,
+      #dba923 780px, #dba923 100%
+    ) top,
+    linear-gradient(to left, 
+      transparent 0, transparent 120px,
+      #dba923 120px, #dba923 180px,
+      transparent 180px, transparent 280px,
+      #dba923 280px, #dba923 320px,
+      transparent 320px, transparent 500px,
+      #dba923 500px, #dba923 540px,
+      transparent 540px, transparent 700px,
+      #dba923 700px, #dba923 780px,
+      transparent 780px, transparent 100%
+    ) bottom;
+  background-size: 100% 50%;
+  background-repeat: no-repeat;
+  transform: translateY(-50%);
+}
+
 /* Mirror values for RTL */
 .navbar-root[dir="rtl"] {
   --navbar-panel-shadow: none;
@@ -211,9 +265,10 @@
   flex-shrink: 0;
 }
 
-/* When showing Arabic "ع" character (English mode = LTR), use smaller font */
+/* When showing Arabic "ع" character (English mode = LTR), use consistent sizing */
 [dir="ltr"] .navbar-lang-button {
-  font-size: 10px;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .navbar-lang-button::before {

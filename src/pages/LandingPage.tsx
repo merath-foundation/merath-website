@@ -105,15 +105,30 @@ const LandingPage: React.FC<LandingPageProps> = ({ direction = 'rtl', language, 
       
       <section className="cards-section">
         <div className="cards-container">
-          {cardsToRender.map((card, idx) => (
-            <Card
-              key={idx}
-              title={card.title}
-              description={card.description}
-              ctaLabel={card.ctaLabel}
-              ctaHref={card.ctaHref}
-            />
-          ))}
+          {cardsToRender.map((card, idx) => {
+            const col = idx % 2;
+            const row = Math.floor(idx / 2);
+            const totalRows = Math.ceil(cardsToRender.length / 2);
+            const isLastRow = row === totalRows - 1;
+            const isLastItem = idx === cardsToRender.length - 1;
+            
+            return (
+              <div 
+                key={idx}
+                className="cards-grid-cell"
+                data-col={col}
+                data-last-row={isLastRow ? "true" : "false"}
+                data-last-item={isLastItem ? "true" : "false"}
+              >
+                <Card
+                  title={card.title}
+                  description={card.description}
+                  ctaLabel={card.ctaLabel}
+                  ctaHref={card.ctaHref}
+                />
+              </div>
+            );
+          })}
         </div>
       </section>
       
