@@ -13,7 +13,7 @@
   position: absolute;
   top: 20px;
   right: 80px;
-  width: 240px;
+  width: 12.5%;
   pointer-events: none;
   z-index: 998;
   display: flex;
@@ -21,9 +21,8 @@
 }
 
 .navbar-meem-decoration {
-  width: 240px;
+  width: 100%;
   height: auto;
-  max-width: 100%;
   display: block;
 }
 

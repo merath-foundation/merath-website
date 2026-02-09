@@ -25,7 +25,21 @@
   gap: 20px;
 }
 
-/* Remove old logo style, use .about-logo for scaling */
+  .about-logo {
+    width: 200px;
+    height: 224px;
+    margin: 60px auto 30px;
+    display: block;
+    object-fit: contain;
+  }
+
+  @media (max-width: 768px) {
+    .about-logo {
+      width: 160px;
+      height: 179px;
+      margin: 40px auto 20px;
+    }
+  }
 
 .projects-title {
   font-family: '29LT Bukra Regular', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
