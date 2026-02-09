@@ -32,19 +32,30 @@
 
 /* Logo header with side text layout */
 .page-logo-header {
-  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  padding: 80px 24px 40px;
+  gap: 20px;
+  background: var(--merath-background);
+  animation: fadeInDown 0.6s ease-out;
 }
 
 /* Header logo scaling to match footer */
 .page-logo {
-  width: 67px;
+  width: 240px;
   height: auto;
-  display: block;
-  margin: 0 auto 12px auto;
+  object-fit: contain;
+  animation: scaleIn 0.7s ease-out 0.1s both;
+  font-family: '29LT Bukra Regular', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--merath-blue);
+  margin: 0;
+  letter-spacing: 0.05em;
+  display: none;
 }
 .page-logo-wrapper {
   display: flex;
@@ -242,6 +253,16 @@
 
 /* Mobile responsive */
 @media (max-width: 768px) {
+    .page-logo-header {
+      padding: 60px 20px 30px;
+    }
+    .page-logo {
+      width: 180px;
+    }
+    .page-logo-title {
+      font-size: 20px;
+    }
+  }
   .landing-page > * {
     padding-inline: 20px;
   }
@@ -346,6 +367,16 @@
 }
 
 @media (max-width: 480px) {
+    .page-logo-header {
+      padding: 40px 16px 20px;
+    }
+    .page-logo {
+      width: 140px;
+    }
+    .page-logo-title {
+      font-size: 18px;
+    }
+  }
   .landing-page > * {
     padding-inline: 16px;
   }
