@@ -36,35 +36,58 @@
   display: block;
 }
 
-/* Extension bar that connects to the footer decoration - irregular pixel art style */
-.footer-decoration-extension {
+/* Generated continuous line that starts right after the decoration and spans the footer. */
+.footer-decoration-line {
   position: absolute;
   top: 50%;
-  left: 100%;
-  width: 100vw;
+  left: 100%; /* start immediately after the decoration svg */
+  right: 0;
   height: 8px;
-  background: 
-    linear-gradient(to right, 
-      #dba923 0, #dba923 90px,
-      transparent 90px, transparent 140px,
-      #dba923 140px, #dba923 350px,
-      transparent 350px, transparent 400px,
-      #dba923 400px, #dba923 520px,
-      transparent 520px, transparent 600px,
-      #dba923 600px, #dba923 100%
-    ) top,
-    linear-gradient(to right, 
-      transparent 0, transparent 90px,
-      #dba923 90px, #dba923 140px,
-      transparent 140px, transparent 350px,
-      #dba923 350px, #dba923 400px,
-      transparent 400px, transparent 520px,
-      #dba923 520px, #dba923 600px,
-      transparent 600px, transparent 100%
-    ) bottom;
-  background-size: 100% 50%;
-  background-repeat: no-repeat;
+  pointer-events: none;
+  z-index: 1;
+
+  /* Create pixel-art breaks/offsets using repeated gradient stops so the pattern remains continuous
+     and scales horizontally independent from the decoration svg. Starting position is aligned with the
+     decoration because the element begins at left:100% inside the wrapper. */
+  background:
+    linear-gradient(to right,
+      #dba923 0 90px,
+      transparent 90px 140px,
+      #dba923 140px 350px,
+      transparent 350px 400px,
+      #dba923 400px 520px,
+      transparent 520px 600px,
+      #dba923 600px 100%
+    );
+  background-repeat: repeat-x;
+  background-size: auto 100%;
   transform: translateY(-50%);
+}
+
+/* Ensure the inlined SVG scales cleanly to the wrapper width */
+.footer-decoration-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Keep the wrapper width in sync with the logo sizing so the decoration and line match scale */
+.footer-decoration-wrapper {
+  position: absolute;
+  top: 0;
+  left: 20px;
+  width: 67px;
+  pointer-events: none;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  transform: translateY(-50%);
+}
+
+@media (max-width: 480px) {
+  .footer-decoration-wrapper {
+    width: 35px;
+  }
 }
 
 .footer-content {

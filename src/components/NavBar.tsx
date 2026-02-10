@@ -5,6 +5,9 @@ import { sanityClient } from '../lib/sanityClient';
 import meemDecoration from '../assets/meem-decoration.svg';
 import './NavBar.css';
 
+// Scale of the meem decoration. Change this value (e.g. 1.1 for 110%) to adjust scale.
+const MEEM_SCALE = 0.27;
+
 interface NavBarProps {
   variant?: 'default' | 'white';
   direction?: 'rtl' | 'ltr';
@@ -68,7 +71,7 @@ const NavBar: React.FC<NavBarProps> = ({ variant = 'default', direction, languag
 
   return (
     <div className="navbar-root" dir={resolvedDirection}>
-      <div className="navbar-meem-wrapper" aria-hidden="true">
+      <div className="navbar-meem-wrapper" aria-hidden="true" style={{ ['--meem-scale' as any]: MEEM_SCALE.toString() }}>
         <div className="navbar-meem-extension" />
         <img 
           src={meemDecoration} 
