@@ -81,7 +81,7 @@ const PublicationCylinder: React.FC<PublicationCylinderProps> = ({
       `,
       opacity: isVisible ? opacity : 0,
       zIndex: 100 - Math.abs(Math.round(relativePosition * 10)),
-      pointerEvents: isVisible && Math.abs(relativePosition) < 1.5 ? 'auto' : 'none',
+      pointerEvents: isVisible && Math.abs(relativePosition) < 4 ? 'auto' : 'none',
     } as React.CSSProperties;
   };
 

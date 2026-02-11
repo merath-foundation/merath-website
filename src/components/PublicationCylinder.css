@@ -44,6 +44,7 @@
   perspective: 1200px;
   perspective-origin: center center;
   pointer-events: none;
+  z-index: 15;
 }
 
 /* Stage where items live */
