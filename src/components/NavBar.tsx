@@ -69,6 +69,31 @@ const NavBar: React.FC<NavBarProps> = ({ variant = 'default', direction, languag
   const closeMenu = () => setMenuOpen(false);
   const toggleMenu = () => setMenuOpen((open) => !open);
 
+  // Compute and set a CSS variable that nudges the footer top-line so its pattern aligns to the same seam
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+
+    const computeFooterOffset = () => {
+      const wrapper = document.querySelector('.navbar-meem-wrapper') as HTMLElement | null;
+      if (!wrapper) return;
+      // We assume the left-most visible stroke of the SVG sits at the wrapper's left edge
+      const rect = wrapper.getBoundingClientRect();
+      const strokeX = rect.left;
+      const offsetPx = Math.round(window.innerWidth - strokeX);
+      // Write to root so Footer CSS can read it
+      document.documentElement.style.setProperty('--footer-line-offset', `${offsetPx}px`);
+    };
+
+    // initial compute and on resize
+    computeFooterOffset();
+    window.addEventListener('resize', computeFooterOffset);
+    window.addEventListener('orientationchange', computeFooterOffset);
+    return () => {
+      window.removeEventListener('resize', computeFooterOffset);
+      window.removeEventListener('orientationchange', computeFooterOffset);
+    };
+  }, []);
+
   return (
     <div className="navbar-root" dir={resolvedDirection}>
       <div className="navbar-meem-wrapper" aria-hidden="true" style={{ ['--meem-scale' as any]: MEEM_SCALE.toString() }}>

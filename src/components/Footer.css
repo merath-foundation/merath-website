@@ -44,12 +44,16 @@
 /* Full-width top edge line that sits on the footer and continues the navbar pixel-art extension across the page */
 .footer-top-line {
   position: absolute;
-  top: 0;
+  /* sit half-outside the footer so it visually overlaps the page above */
+  top: -4px;
   left: 0;
   right: 0;
   height: 8px;
   pointer-events: none;
-  z-index: 2;
+  z-index: 3;
+  /* CSS variable to nudge horizontal alignment; updated by NavBar component JS */
+  --footer-line-offset: 0px;
+
   /* Pixel-art breaks/offsets that align to the right edge and repeat across the width */
   background:
     linear-gradient(to left,
@@ -65,8 +69,10 @@
     );
   background-repeat: repeat-x;
   background-size: auto 100%;
-  background-position: right center;
+  /* position from right minus computed offset to match navbar seam */
+  background-position: calc(100% - var(--footer-line-offset)) center;
   transform: translateY(0);
+  image-rendering: auto;
 }
 
 /* Ensure the inlined SVG scales cleanly to the wrapper width */
