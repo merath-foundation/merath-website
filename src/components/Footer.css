@@ -54,9 +54,9 @@
   /* CSS variable to nudge horizontal alignment; updated by NavBar component JS */
   --footer-line-offset: 0px;
 
-  /* Pixel-art breaks/offsets that align to the right edge and repeat across the width */
-  background:
-    linear-gradient(to left,
+  /* Use same two-layer pixel-art gradient as the navbar extension so visuals match exactly. */
+  background: 
+    linear-gradient(to left, 
       #dba923 0, #dba923 120px,
       transparent 120px, transparent 180px,
       #dba923 180px, #dba923 280px,
@@ -66,11 +66,23 @@
       #dba923 540px, #dba923 700px,
       transparent 700px, transparent 780px,
       #dba923 780px, #dba923 100%
-    );
+    ) top,
+    linear-gradient(to left, 
+      transparent 0, transparent 120px,
+      #dba923 120px, #dba923 180px,
+      transparent 180px, transparent 280px,
+      #dba923 280px, #dba923 320px,
+      transparent 320px, transparent 500px,
+      #dba923 500px, #dba923 540px,
+      transparent 540px, transparent 700px,
+      #dba923 700px, #dba923 780px,
+      transparent 780px, transparent 100%
+    ) bottom;
+  /* Make the pattern repeat across the width but keep layer sizing consistent with the navbar */
+  background-size: auto 50%;
   background-repeat: repeat-x;
-  background-size: auto 100%;
-  /* position from right minus computed offset to match navbar seam */
-  background-position: calc(100% - var(--footer-line-offset)) center;
+  /* position from right minus computed offset to match navbar seam (applied to both layers) */
+  background-position: calc(100% - var(--footer-line-offset)) top, calc(100% - var(--footer-line-offset)) bottom;
   transform: translateY(0);
   image-rendering: auto;
 }
