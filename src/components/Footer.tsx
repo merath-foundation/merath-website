@@ -38,54 +38,13 @@ const Footer: React.FC<FooterProps> = ({ language = 'en' }) => {
     fetchFooter();
   }, [language]);
 
-  // Dynamically compute the left seam of the navbar decoration and set a CSS variable
-  // so the footer top-border gradient aligns perfectly with the decoration seam.
-  useEffect(() => {
-    if (typeof document === 'undefined') return;
-
-    const footerEl = document.querySelector('.footer') as HTMLElement | null;
-    if (!footerEl) return;
-
-    const updateOffset = () => {
-      const deco = document.querySelector('.navbar-meem-wrapper') as HTMLElement | null;
-      if (!deco) {
-        // remove custom offset if decoration isn't present
-        footerEl.style.removeProperty('--footer-line-offset');
-        return;
-      }
-
-      const rect = deco.getBoundingClientRect();
-      const footerRect = footerEl.getBoundingClientRect();
-      // Use the left edge of the decoration wrapper as the seam position, expressed
-      // as an x offset relative to the footer element's left edge. This ensures the
-      // footer background-position aligns with the extension's seam exactly.
-      const seamOffset = Math.round(rect.left - footerRect.left);
-      footerEl.style.setProperty('--footer-line-offset', `${seamOffset}px`);
-    };
-
-    updateOffset();
-
-    // Update on resize and when the decoration wrapper size/position changes
-    const resizeObserver = new (window as any).ResizeObserver(updateOffset);
-    const decoEl = document.querySelector('.navbar-meem-wrapper');
-    if (decoEl) resizeObserver.observe(decoEl);
-    window.addEventListener('resize', updateOffset);
-
-    // Watch for dir attribute changes (RTL/LTR) on the document and update offset
-    const mutationObserver = new MutationObserver(updateOffset);
-    mutationObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['dir'] });
-
-    return () => {
-      window.removeEventListener('resize', updateOffset);
-      resizeObserver.disconnect();
-      mutationObserver.disconnect();
-    };
-  }, []);
-
   const hasSocialLinks = socialMedia.instagram || socialMedia.twitter || socialMedia.facebook || socialMedia.linkedin || socialMedia.youtube;
 
   return (
-    <footer className="footer">      <div className="footer-content">
+    <footer className="footer">
+      {/* Top pixel-art extension line that spans the full footer width. No meem decoration here. */}
+      <div className="footer-top-line" aria-hidden="true" />
+      <div className="footer-content">
         <div className="footer-logo-wrapper">
           <img src={logo} alt={`${siteTitle} Logo`} className="footer-logo" />
         </div>

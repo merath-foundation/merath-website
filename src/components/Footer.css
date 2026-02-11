@@ -17,19 +17,32 @@
   box-sizing: border-box;
 }
 
+/* Footer decoration at top */
+.footer-decoration-wrapper {
+  position: absolute;
+  top: 0;
+  left: 20px;
+  width: 67px;
+  pointer-events: none;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  transform: translateY(-50%);
+}
 
-/* Generated continuous line that starts right after the decoration and spans the footer. */
-/* The visual line has been promoted to a full-width top border on the footer using :before.
-   Keep this selector hidden so any leftover DOM elements won't duplicate the border. */
-.footer-decoration-line {
+.footer-decoration {
+  width: 67px;
+  height: auto;
+  display: block;
+}
+
+/* Hide the old small decoration wrapper (we're using a full-width top line now) */
+.footer-decoration-wrapper {
   display: none;
 }
 
-/* Full-width top border that uses the same pixel-art gradient pattern. The starting position
-   is offset so the first block lines up with the decoration seam (left: 20px + decoration width: 67px).
-   For small screens the offset is adjusted in a media query below. */
-.footer::before {
-  content: "";
+/* Full-width top edge line that sits on the footer and continues the navbar pixel-art extension across the page */
+.footer-top-line {
   position: absolute;
   top: 0;
   left: 0;
@@ -37,112 +50,48 @@
   height: 8px;
   pointer-events: none;
   z-index: 2;
-  /* Match the navbar extension gradient exactly (two stacked gradients top/bottom) */
-  background:
-    linear-gradient(to right,
-      #dba923 0,
-      #dba923 120px,
-      transparent 120px,
-      transparent 180px,
-      #dba923 180px,
-      #dba923 280px,
-      transparent 280px,
-      transparent 320px,
-      #dba923 320px,
-      #dba923 500px,
-      transparent 500px,
-      transparent 540px,
-      #dba923 540px,
-      #dba923 700px,
-      transparent 700px,
-      transparent 780px,
-      #dba923 780px,
-      #dba923 100%
-    ) top,
-    linear-gradient(to right,
-      transparent 0,
-      transparent 120px,
-      #dba923 120px,
-      #dba923 180px,
-      transparent 180px,
-      transparent 280px,
-      #dba923 280px,
-      #dba923 320px,
-      transparent 320px,
-      transparent 500px,
-      #dba923 500px,
-      #dba923 540px,
-      transparent 540px,
-      transparent 700px,
-      #dba923 700px,
-      #dba923 780px,
-      transparent 780px,
-      transparent 100%
-    ) bottom;
-  background-size: 100% 50%;
-  background-repeat: no-repeat;
-  /* Use JS-provided offset when present, otherwise fall back to the previous calc */
-  background-position: var(--footer-line-offset, calc(20px + 67px)) 0;
-}
-
-@media (max-width: 480px) {
-  .footer::before {
-    background-position: var(--footer-line-offset, calc(20px + 35px)) 0; /* small-screen fallback */
-  }
-}
-
-/* RTL support: when dir="rtl" compute position from the right edge using the same variable */
-[dir="rtl"] .footer::before {
-  /* Mirror the gradients for RTL so breaks and offsets align from the right edge */
+  /* Pixel-art breaks/offsets that align to the right edge and repeat across the width */
   background:
     linear-gradient(to left,
-      #dba923 0,
-      #dba923 120px,
-      transparent 120px,
-      transparent 180px,
-      #dba923 180px,
-      #dba923 280px,
-      transparent 280px,
-      transparent 320px,
-      #dba923 320px,
-      #dba923 500px,
-      transparent 500px,
-      transparent 540px,
-      #dba923 540px,
-      #dba923 700px,
-      transparent 700px,
-      transparent 780px,
-      #dba923 780px,
-      #dba923 100%
-    ) top,
-    linear-gradient(to left,
-      transparent 0,
-      transparent 120px,
-      #dba923 120px,
-      #dba923 180px,
-      transparent 180px,
-      transparent 280px,
-      #dba923 280px,
-      #dba923 320px,
-      transparent 320px,
-      transparent 500px,
-      #dba923 500px,
-      #dba923 540px,
-      transparent 540px,
-      transparent 700px,
-      #dba923 700px,
-      #dba923 780px,
-      transparent 780px,
-      transparent 100%
-    ) bottom;
+      #dba923 0, #dba923 120px,
+      transparent 120px, transparent 180px,
+      #dba923 180px, #dba923 280px,
+      transparent 280px, transparent 320px,
+      #dba923 320px, #dba923 500px,
+      transparent 500px, transparent 540px,
+      #dba923 540px, #dba923 700px,
+      transparent 700px, transparent 780px,
+      #dba923 780px, #dba923 100%
+    );
   background-repeat: repeat-x;
   background-size: auto 100%;
-  background-position: calc(100% - var(--footer-line-offset, calc(20px + 67px))) 0;
+  background-position: right center;
+  transform: translateY(0);
+}
+
+/* Ensure the inlined SVG scales cleanly to the wrapper width */
+.footer-decoration-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Keep the wrapper width in sync with the logo sizing so the decoration and line match scale */
+.footer-decoration-wrapper {
+  position: absolute;
+  top: 0;
+  left: 20px;
+  width: 67px;
+  pointer-events: none;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  transform: translateY(-50%);
 }
 
 @media (max-width: 480px) {
-  [dir="rtl"] .footer::before {
-    background-position: calc(100% - var(--footer-line-offset, calc(20px + 35px))) 0;
+  .footer-decoration-wrapper {
+    width: 35px;
   }
 }
 
@@ -283,5 +232,11 @@
   .footer-logo {
     width: 35px;
     height: 39px;
+  }
+  .footer-decoration-wrapper {
+    width: 35px;
+  }
+  .footer-decoration {
+    width: 35px;
   }
 }
