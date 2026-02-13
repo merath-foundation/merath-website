@@ -16,7 +16,7 @@
 
 .project-detail-navbar {
   display: flex;
-  padding: 85.5px 0 0 59px;
+  padding: 0 0 0 59px;
 }
 
 .project-detail-grid {
@@ -140,7 +140,7 @@
   }
 
   .project-detail-navbar {
-    padding: 60px 20px 0;
+    padding: 0 20px 0;
   }
 
   .project-detail-hero {
@@ -226,7 +226,7 @@
   }
 
   .project-detail-navbar {
-    padding: 40px 16px 0;
+    padding: 0 16px 0;
   }
 
   .project-detail-hero {

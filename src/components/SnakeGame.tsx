@@ -112,7 +112,12 @@ const SnakeGame: React.FC<SnakeGameProps> = ({
 
   useEffect(() => {
     if (gameOver && overlayButtonRef.current) {
-      overlayButtonRef.current.focus();
+      // Only focus if button is visible in viewport
+      const rect = overlayButtonRef.current.getBoundingClientRect();
+      const inView = rect.top >= 0 && rect.bottom <= (window.innerHeight || document.documentElement.clientHeight);
+      if (inView) {
+        overlayButtonRef.current.focus();
+      }
     }
   }, [gameOver]);
 

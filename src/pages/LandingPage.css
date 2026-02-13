@@ -26,79 +26,16 @@
   padding-inline: 0;
 }
 
-.landing-page > *:nth-child(2) {
-  padding-inline: 0;
-}
 
-/* Adjust meem decoration position on landing page to match other pages */
-.landing-page .navbar-meem-wrapper {
-  right: 104px; /* 80px + 24px padding difference */
-}
 
-/* Logo header with side text layout */
-.page-logo-header {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
 
-/* Header logo scaling to match footer */
-.page-logo {
-  width: 67px;
-  height: auto;
-  display: block;
-  margin: 0 auto 12px auto;
-}
-.page-logo-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 60px;
-  width: 100%;
-  padding: 80px 24px 40px;
-  max-width: 1000px;
-  margin: 0 auto;
-}
 
-[dir="ltr"] .page-logo-wrapper {
-  flex-direction: row-reverse;
-}
-
-[dir="rtl"] .page-logo-wrapper {
-  flex-direction: row;
-}
-
-.page-logo-center {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-}
-
-.page-logo-side-text {
-  width: 135px;
-  flex-shrink: 0;
-  color: #000;
-  font-family: '29LT Riwaya', 'IBM Plex Sans', -apple-system, Roboto, Helvetica, sans-serif;
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 1.6;
-}
-
-/* Hide empty spacer on both directions */
-[dir="ltr"] .page-logo-side-text:last-child,
-[dir="rtl"] .page-logo-side-text:last-child {
-  visibility: hidden;
-}
 
 .hero-section {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 68px 24px;
+  padding: 0 24px 68px;
   background: var(--merath-background);
   width: 100%;
 }
@@ -267,7 +204,7 @@
   }
 
   .hero-section {
-    padding: 40px 0;
+    padding: 0 20px 40px;
   }
 
   .hero-content {
