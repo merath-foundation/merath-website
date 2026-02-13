@@ -27,6 +27,21 @@ interface PortableTextRendererProps {
 }
 
 export const PortableTextRenderer: React.FC<PortableTextRendererProps> = ({value}) => {
-  if (!value || (Array.isArray(value) && value.length === 0)) return null;
-  return <PortableText value={value} components={components} />;
+  if (!value) return null;
+  
+  // If it's a string, render it directly
+  if (typeof value === 'string') {
+    return <span>{value}</span>;
+  }
+  
+  // If it's an array but empty, return null
+  if (Array.isArray(value) && value.length === 0) return null;
+  
+  // If it's an array, use PortableText
+  if (Array.isArray(value)) {
+    return <PortableText value={value} components={components} />;
+  }
+  
+  // Fallback for other types
+  return <span>{String(value)}</span>;
 };
