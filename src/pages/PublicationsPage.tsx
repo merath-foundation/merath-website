@@ -161,11 +161,6 @@ const PublicationsPage: React.FC<PublicationsPageProps> = ({ direction, language
     <div className="publications-page" dir={direction}>
       <NavBar direction={direction} language={language} setLanguage={setLanguage} />
       
-      <header className="page-logo-header">
-        <img src={logo} alt="Merath Logo" className="page-logo" />
-        <h1 className="page-logo-title">MERATH</h1>
-      </header>
-      
       <div className="publications-container">
         <div className="publications-header">
           <h1 className="publications-title">{language === 'ar' ? 'المنشورات' : 'Publications'}</h1>

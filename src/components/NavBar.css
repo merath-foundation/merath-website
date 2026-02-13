@@ -10,7 +10,7 @@
 
 /* Meem decoration wrapper at top of header */
 .navbar-meem-wrapper {
-  position: fixed;
+  position: absolute;
   top: 20px;
   right: 80px;
   /* Use a fixed pixel width so the SVG scales precisely to match the extension gradient blocks (first block: 120px) */
