@@ -95,7 +95,7 @@ const NavBar: React.FC<NavBarProps> = ({ variant = 'default', direction, languag
   }, []);
 
   return (
-    <div className="navbar-root" dir={resolvedDirection}>
+    <div>
       <div className="navbar-meem-wrapper" aria-hidden="true" style={{ ['--meem-scale' as any]: MEEM_SCALE.toString() }}>
         <div className="navbar-meem-extension" />
         <img 
@@ -104,6 +104,7 @@ const NavBar: React.FC<NavBarProps> = ({ variant = 'default', direction, languag
           className="navbar-meem-decoration" 
         />
       </div>
+      <div className="navbar-root" dir={resolvedDirection}>
       <button
         type="button"
         className={`navbar-overlay${menuOpen ? ' navbar-overlay--visible' : ''}`}
@@ -160,6 +161,7 @@ const NavBar: React.FC<NavBarProps> = ({ variant = 'default', direction, languag
           ))}
         </ul>
       </aside>
+    </div>
     </div>
   );
 };
