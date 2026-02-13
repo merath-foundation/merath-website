@@ -40,6 +40,7 @@ export const siteSettings = defineType({
       ],
     }),
     defineField({
+      name: 'defaultSeo',
       type: 'object',
       title: 'Default SEO',
       fields: [

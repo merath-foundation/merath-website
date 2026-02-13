@@ -108,10 +108,10 @@ const AboutPage: React.FC<AboutPageProps> = ({ direction, language, setLanguage 
               <div className={`team-member${member.formerMember ? ' team-member-former' : ''}`}>
                 <div className="team-member-info">
                   <div className="team-member-name">
-                    <PortableTextRenderer value={language === 'ar' ? (member.nameAr || member.name) : (member.name || member.nameAr)} />
+                    {language === 'ar' ? (member.nameAr || member.name) : (member.name || member.nameAr)}
                     {member.formerMember && <span className="team-member-asterisk">*</span>}
                   </div>
-                  {(member.role || member.roleAr) && <div className="team-member-role"><PortableTextRenderer value={language === 'ar' ? (member.roleAr || member.role) : (member.role || member.roleAr)} /></div>}
+                  {(member.role || member.roleAr) && <div className="team-member-role">{language === 'ar' ? (member.roleAr || member.role) : (member.role || member.roleAr)}</div>}
                   {member.bio && <div className="team-member-bio"><PortableTextRenderer value={language === 'ar' ? (member.bioAr || member.bio) : (member.bio || member.bioAr)} /></div>}
                 </div>
               </div>
