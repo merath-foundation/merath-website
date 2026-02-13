@@ -30,6 +30,11 @@
   padding-inline: 0;
 }
 
+/* Adjust meem decoration position on landing page to match other pages */
+.landing-page .navbar-meem-wrapper {
+  right: 104px; /* 80px + 24px padding difference */
+}
+
 /* Logo header with side text layout */
 .page-logo-header {
   width: 100%;
