@@ -95,7 +95,7 @@ const NavBar: React.FC<NavBarProps> = ({ variant = 'default', direction, languag
   }, []);
 
   return (
-    <div>
+    <div className="navbar-container">
       <div className="navbar-meem-wrapper" aria-hidden="true" style={{ ['--meem-scale' as any]: MEEM_SCALE.toString() }}>
         <div className="navbar-meem-extension" />
         <img 

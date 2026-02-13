@@ -1,4 +1,8 @@
 ﻿/* Direction-aware navbar */
+.navbar-container {
+  position: relative;
+}
+
 .navbar-root {
   --navbar-panel-width: 260px;
   --navbar-panel-max-width: 70vw;
@@ -10,9 +14,10 @@
 
 /* Meem decoration wrapper at top of header */
 .navbar-meem-wrapper {
-  position: fixed;
+  position: absolute;
   top: 20px;
-  right: 80px;
+  /* position the meem relative to the centered content area so it's consistent across pages */
+  right: calc((100% - var(--content-max-width)) / 2 + 80px);
   /* Use a fixed pixel width so the SVG scales precisely to match the extension gradient blocks (first block: 120px) */
   width: 120px;
   /* CSS variable controlling the scale of the SVG decal. Change this in `src/components/NavBar.tsx` by editing `MEEM_SCALE`. */
@@ -22,6 +27,24 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
+}
+
+[dir="rtl"] .navbar-meem-wrapper {
+  right: auto;
+  left: calc((100% - var(--content-max-width)) / 2 + 80px);
+}
+
+/* Landing page override: place meem on the right to match other pages */
+.landing-page .navbar-meem-wrapper {
+  /* ensure landing page uses the same centered-content calculation (keeps responsive behavior) */
+  left: auto !important;
+  right: calc((100% - var(--content-max-width)) / 2 + 80px) !important;
+}
+
+/* higher-specificity fallback */
+.landing-page .navbar-container .navbar-meem-wrapper {
+  left: auto !important;
+  right: calc((100% - var(--content-max-width)) / 2 + 80px) !important;
 }
 
 .navbar-meem-decoration {
