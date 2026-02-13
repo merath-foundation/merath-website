@@ -248,7 +248,6 @@ const SnakeGame: React.FC<SnakeGameProps> = ({
     <div className="snake-shell" style={themeVars}>
       <div
         className="snake-frame"
-        tabIndex={0}
         aria-label="Snake game: use arrow keys or WASD to move"
         ref={frameRef}
         onKeyDown={handleKeyDown}
