@@ -37,9 +37,20 @@ export const PortableTextRenderer: React.FC<PortableTextRendererProps> = ({value
   // If it's an array but empty, return null
   if (Array.isArray(value) && value.length === 0) return null;
   
-  // If it's an array, use PortableText
+  // If it's an array, validate and use PortableText
   if (Array.isArray(value)) {
-    return <PortableText value={value} components={components} />;
+    // Filter out any invalid blocks
+    const validBlocks = value.filter(block => 
+      block && 
+      typeof block === 'object' && 
+      block._type && 
+      typeof block._type === 'string' &&
+      block._type !== 'undefined'
+    );
+    
+    if (validBlocks.length === 0) return null;
+    
+    return <PortableText value={validBlocks} components={components} />;
   }
   
   // Fallback for other types
