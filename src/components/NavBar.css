@@ -10,7 +10,7 @@
 
 /* Meem decoration wrapper at top of header */
 .navbar-meem-wrapper {
-  position: absolute;
+  position: fixed;
   top: 20px;
   right: 80px;
   /* Use a fixed pixel width so the SVG scales precisely to match the extension gradient blocks (first block: 120px) */
@@ -18,7 +18,7 @@
   /* CSS variable controlling the scale of the SVG decal. Change this in `src/components/NavBar.tsx` by editing `MEEM_SCALE`. */
   --meem-scale: 1;
   pointer-events: none;
-  z-index: 998;
+  z-index: 0;
   display: flex;
   align-items: center;
   justify-content: flex-start;

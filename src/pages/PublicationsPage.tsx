@@ -7,7 +7,6 @@ import { sanityClient, sanityConfig } from '../lib/sanityClient';
 import { Publication } from '../types/publication';
 import './PublicationsPage.css';
 import { PortableTextRenderer } from '../components/PortableTextRenderer';
-import logo from '../assets/merath_logo_transparent.png';
 
 interface PublicationsPageProps {
   direction: 'rtl' | 'ltr';
@@ -160,6 +159,10 @@ const PublicationsPage: React.FC<PublicationsPageProps> = ({ direction, language
   return (
     <div className="publications-page" dir={direction}>
       <NavBar direction={direction} language={language} setLanguage={setLanguage} />
+      
+      <header className="page-logo-header">
+        <h1 className="page-logo-title">MERATH</h1>
+      </header>
       
       <div className="publications-container">
         <div className="publications-header">

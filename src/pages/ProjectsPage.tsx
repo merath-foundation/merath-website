@@ -6,7 +6,6 @@ import ProjectTile from '../components/ProjectTile';
 import ProjectOverlay from '../components/ProjectOverlay';
 import { sanityClient, sanityConfig } from '../lib/sanityClient';
 import { Project } from '../types/project';
-import logo from '../assets/merath_logo_transparent.png';
 import './ProjectsPage.css';
 
 interface ProjectsPageProps {
@@ -114,6 +113,10 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ direction, language, setLan
   return (
     <div className="projects-page" dir={direction}>
       <NavBar direction={direction} language={language} setLanguage={setLanguage} />
+      {/* Header with centered logo */}
+      <header className="page-logo-header">
+        <h1 className="page-logo-title">MERATH</h1>
+      </header>
       {/* Main content wrapper - ensures consistent max-width and centering */}
       <main className="projects-main">
         {loading && (
