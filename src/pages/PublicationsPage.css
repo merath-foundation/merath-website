@@ -28,7 +28,7 @@
   background: transparent;
   border-radius: 0;
   box-shadow: none;
-  max-width: none;
+  max-width: var(--content-max-width);
   width: 100%;
   margin: 0 auto;
 }
@@ -63,8 +63,9 @@
 }
 
 .publications-page > * {
-  max-width: none;
+  max-width: var(--content-max-width);
   width: 100%;
+  margin-inline: auto;
 }
 
 /* Mobile responsive */
