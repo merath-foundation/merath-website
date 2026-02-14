@@ -14,10 +14,13 @@
 
 /* Meem decoration wrapper at top of header */
 .navbar-meem-wrapper {
-  position: absolute;
+  /* Anchor the meem to the viewport so page containers can't shift it */
+  position: fixed;
   top: 20px;
-  /* position the meem relative to the centered content area so it's consistent across pages */
-  right: calc(max((100% - var(--content-max-width)), 0px) / 2 + 80px);
+  /* position the meem relative to the centered content area so it's consistent across pages.
+     The actual pixel value is computed in JS and written to `--meem-right-px` for reliability.
+     Fallback uses the original calc expression. */
+  right: var(--meem-right-px, calc(max((100% - var(--content-max-width)), 0px) / 2 + 80px));
   /* Use a fixed pixel width so the SVG scales precisely to match the extension gradient blocks (first block: 120px) */
   width: 120px;
   /* Default scale for the meem decoration; responsive overrides will adjust this */
@@ -30,22 +33,11 @@
 }
 
 [dir="rtl"] .navbar-meem-wrapper {
-  right: auto;
-  left: calc(max((100% - var(--content-max-width)), 0px) / 2 + 80px);
+  left: auto;
+  right: calc(max((100% - var(--content-max-width)), 0px) / 2 + 80px);
 }
 
-/* Landing page override: place meem on the right to match other pages */
-.landing-page .navbar-meem-wrapper {
-  /* ensure landing page uses the same centered-content calculation (keeps responsive behavior) */
-  left: auto !important;
-  right: calc(max((100% - var(--content-max-width)), 0px) / 2 + 80px) !important;
-}
-
-/* higher-specificity fallback */
-.landing-page .navbar-container .navbar-meem-wrapper {
-  left: auto !important;
-  right: calc(max((100% - var(--content-max-width)), 0px) / 2 + 80px) !important;
-}
+/* No landing-page specific overrides — use the same centered-content calculation everywhere */
 
 .navbar-meem-decoration {
   width: 100%;
@@ -59,53 +51,41 @@
 /* Responsive adjustments for meem positioning and scale */
 @media (max-width: 1024px) {
   .navbar-meem-wrapper {
-    right: calc((100% - var(--content-max-width)) / 2 + 64px);
+    right: var(--meem-right-px, calc(max((100% - var(--content-max-width)), 0px) / 2 + 64px));
     --meem-scale: 0.24;
     top: 18px;
   }
 
   [dir="rtl"] .navbar-meem-wrapper {
-    left: calc((100% - var(--content-max-width)) / 2 + 64px);
-  }
-
-  .landing-page .navbar-meem-wrapper,
-  .landing-page .navbar-container .navbar-meem-wrapper {
-    right: calc((100% - var(--content-max-width)) / 2 + 64px) !important;
+    left: auto;
+    right: calc(max((100% - var(--content-max-width)), 0px) / 2 + 64px);
   }
 }
 
 @media (max-width: 768px) {
   .navbar-meem-wrapper {
-    right: calc((100% - var(--content-max-width)) / 2 + 48px);
+    right: var(--meem-right-px, calc(max((100% - var(--content-max-width)), 0px) / 2 + 48px));
     --meem-scale: 0.22;
     top: 16px;
   }
 
   [dir="rtl"] .navbar-meem-wrapper {
-    left: calc((100% - var(--content-max-width)) / 2 + 48px);
-  }
-
-  .landing-page .navbar-meem-wrapper,
-  .landing-page .navbar-container .navbar-meem-wrapper {
-    right: calc((100% - var(--content-max-width)) / 2 + 48px) !important;
+    left: auto;
+    right: calc(max((100% - var(--content-max-width)), 0px) / 2 + 48px);
   }
 }
 
 @media (max-width: 480px) {
   .navbar-meem-wrapper {
-    /* align to page padding (24px) plus small extra so it sits inside content area on narrow screens */
-    right: calc(24px + 12px);
+    /* align to page padding variable plus small extra so it sits inside content area on narrow screens */
+    right: var(--meem-right-px, calc(var(--page-side-padding, 24px) + 12px));
     --meem-scale: 0.18;
     top: 12px;
   }
 
   [dir="rtl"] .navbar-meem-wrapper {
-    left: calc(24px + 12px);
-  }
-
-  .landing-page .navbar-meem-wrapper,
-  .landing-page .navbar-container .navbar-meem-wrapper {
-    right: calc(24px + 12px) !important;
+    left: auto;
+    right: calc(var(--page-side-padding, 24px) + 12px);
   }
 }
 

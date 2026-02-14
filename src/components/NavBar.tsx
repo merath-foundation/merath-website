@@ -90,6 +90,32 @@ const NavBar: React.FC<NavBarProps> = ({ variant = 'default', direction, languag
         // expose to CSS so the extension can align exactly to image
         document.documentElement.style.setProperty('--meem-extension-join', `${joinOffset}px`);
       }
+
+      // Compute a reliable pixel `right` offset so the meem anchors to the centered content seam
+      // regardless of page containers or direction. This is written to --meem-right-px.
+      try {
+        const rootStyles = getComputedStyle(document.documentElement);
+        const contentMaxRaw = rootStyles.getPropertyValue('--content-max-width') || '1200px';
+        const contentMax = parseInt(contentMaxRaw, 10) || 1200;
+        const viewport = window.innerWidth;
+        const seam = Math.max(viewport - contentMax, 0) / 2;
+
+        let baseOffset = 80; // default desktop offset (matches original design)
+        if (viewport <= 480) {
+          const sidePaddingRaw = rootStyles.getPropertyValue('--page-side-padding') || '24px';
+          const sidePadding = parseInt(sidePaddingRaw, 10) || 24;
+          baseOffset = sidePadding + 12; // mobile offset uses page padding + small extra
+        } else if (viewport <= 768) {
+          baseOffset = 48;
+        } else if (viewport <= 1024) {
+          baseOffset = 64;
+        }
+
+        const meemRight = Math.round(seam + baseOffset);
+        document.documentElement.style.setProperty('--meem-right-px', `${meemRight}px`);
+      } catch (err) {
+        // silently ignore; CSS fallback calc will apply
+      }
     };
 
     // initial compute and on resize

@@ -33,4 +33,15 @@ html, body, #root {
   --merath-blue: #2B4C7E;
   --merath-text: #000000;
   --content-max-width: 1200px;
+  /* Page side padding (use this to keep header/footer decorations aligned)
+     Adjusted responsively below. */
+  --page-side-padding: 24px;
+}
+
+@media (max-width: 768px) {
+  :root { --page-side-padding: 20px; }
+}
+
+@media (max-width: 480px) {
+  :root { --page-side-padding: 16px; }
 }
