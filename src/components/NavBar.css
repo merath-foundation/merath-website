@@ -17,11 +17,11 @@
   position: absolute;
   top: 20px;
   /* position the meem relative to the centered content area so it's consistent across pages */
-  right: calc((100% - var(--content-max-width)) / 2 + 80px);
+  right: calc(max((100% - var(--content-max-width)), 0px) / 2 + 80px);
   /* Use a fixed pixel width so the SVG scales precisely to match the extension gradient blocks (first block: 120px) */
   width: 120px;
-  /* CSS variable controlling the scale of the SVG decal. Change this in `src/components/NavBar.tsx` by editing `MEEM_SCALE`. */
-  --meem-scale: 1;
+  /* Default scale for the meem decoration; responsive overrides will adjust this */
+  --meem-scale: 0.27;
   pointer-events: none;
   z-index: 0;
   display: flex;
@@ -31,20 +31,20 @@
 
 [dir="rtl"] .navbar-meem-wrapper {
   right: auto;
-  left: calc((100% - var(--content-max-width)) / 2 + 80px);
+  left: calc(max((100% - var(--content-max-width)), 0px) / 2 + 80px);
 }
 
 /* Landing page override: place meem on the right to match other pages */
 .landing-page .navbar-meem-wrapper {
   /* ensure landing page uses the same centered-content calculation (keeps responsive behavior) */
   left: auto !important;
-  right: calc((100% - var(--content-max-width)) / 2 + 80px) !important;
+  right: calc(max((100% - var(--content-max-width)), 0px) / 2 + 80px) !important;
 }
 
 /* higher-specificity fallback */
 .landing-page .navbar-container .navbar-meem-wrapper {
   left: auto !important;
-  right: calc((100% - var(--content-max-width)) / 2 + 80px) !important;
+  right: calc(max((100% - var(--content-max-width)), 0px) / 2 + 80px) !important;
 }
 
 .navbar-meem-decoration {
@@ -56,12 +56,67 @@
   will-change: transform;
 }
 
+/* Responsive adjustments for meem positioning and scale */
+@media (max-width: 1024px) {
+  .navbar-meem-wrapper {
+    right: calc((100% - var(--content-max-width)) / 2 + 64px);
+    --meem-scale: 0.24;
+    top: 18px;
+  }
+
+  [dir="rtl"] .navbar-meem-wrapper {
+    left: calc((100% - var(--content-max-width)) / 2 + 64px);
+  }
+
+  .landing-page .navbar-meem-wrapper,
+  .landing-page .navbar-container .navbar-meem-wrapper {
+    right: calc((100% - var(--content-max-width)) / 2 + 64px) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-meem-wrapper {
+    right: calc((100% - var(--content-max-width)) / 2 + 48px);
+    --meem-scale: 0.22;
+    top: 16px;
+  }
+
+  [dir="rtl"] .navbar-meem-wrapper {
+    left: calc((100% - var(--content-max-width)) / 2 + 48px);
+  }
+
+  .landing-page .navbar-meem-wrapper,
+  .landing-page .navbar-container .navbar-meem-wrapper {
+    right: calc((100% - var(--content-max-width)) / 2 + 48px) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-meem-wrapper {
+    /* align to page padding (24px) plus small extra so it sits inside content area on narrow screens */
+    right: calc(24px + 12px);
+    --meem-scale: 0.18;
+    top: 12px;
+  }
+
+  [dir="rtl"] .navbar-meem-wrapper {
+    left: calc(24px + 12px);
+  }
+
+  .landing-page .navbar-meem-wrapper,
+  .landing-page .navbar-container .navbar-meem-wrapper {
+    right: calc(24px + 12px) !important;
+  }
+}
+
 /* Extension bar that connects to the meem decoration - irregular pixel art style */
 .navbar-meem-extension {
   position: absolute;
   /* Position at ~68% from top to align with the horizontal bar in the SVG */
-  top: 68%;
-  right: 100%;
+  /* nudge up by 6px as requested (previously -2px) */
+  top: calc(68% - 8px);
+  /* Align right edge of extension to the left edge of the meem image (join) */
+  right: calc(100% - var(--meem-extension-join, 0px));
   width: 100vw;
   height: 8px;
   background: 

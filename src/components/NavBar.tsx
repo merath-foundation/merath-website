@@ -5,8 +5,7 @@ import { sanityClient } from '../lib/sanityClient';
 import meemDecoration from '../assets/meem-decoration.svg';
 import './NavBar.css';
 
-// Scale of the meem decoration. Change this value (e.g. 1.1 for 110%) to adjust scale.
-const MEEM_SCALE = 0.27;
+// The meem scale is now controlled by CSS variables and media queries in NavBar.css
 
 interface NavBarProps {
   variant?: 'default' | 'white';
@@ -82,6 +81,15 @@ const NavBar: React.FC<NavBarProps> = ({ variant = 'default', direction, languag
       const offsetPx = Math.round(window.innerWidth - strokeX);
       // Write to root so Footer CSS can read it
       document.documentElement.style.setProperty('--footer-line-offset', `${offsetPx}px`);
+      
+      // Also compute the pixel offset from the wrapper left to the visible left edge of the meem image
+      const img = wrapper.querySelector('.navbar-meem-decoration') as HTMLElement | null;
+      if (img) {
+        const imgRect = img.getBoundingClientRect();
+        const joinOffset = Math.round(imgRect.left - rect.left);
+        // expose to CSS so the extension can align exactly to image
+        document.documentElement.style.setProperty('--meem-extension-join', `${joinOffset}px`);
+      }
     };
 
     // initial compute and on resize
@@ -96,7 +104,7 @@ const NavBar: React.FC<NavBarProps> = ({ variant = 'default', direction, languag
 
   return (
     <div className="navbar-container">
-      <div className="navbar-meem-wrapper" aria-hidden="true" style={{ ['--meem-scale' as any]: MEEM_SCALE.toString() }}>
+      <div className="navbar-meem-wrapper" aria-hidden="true">
         <div className="navbar-meem-extension" />
         <img 
           src={meemDecoration} 
