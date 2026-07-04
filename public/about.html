@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>merath — about</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{overflow-x:clip;overflow-y:auto}
+  body{overflow-x:clip}
+  :root{--ink:#14181c;--lime:#D9F164;--cream:#F7F1E1;--saff:#E39B00;--dcream:#DCD2B5;--textL:8vw;--textR:8vw}
+  body{background:var(--cream);color:var(--ink);font-family:"29LT Bukra","IBM Plex Sans Arabic","Helvetica Neue",Arial,system-ui,sans-serif;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}
+  .ar{font-family:"29LT Bukra","IBM Plex Sans Arabic","Geeza Pro","Noto Naskh Arabic",serif}
+
+  /* field: floating archive codes + snakes, pinned to the page */
+  #snakes{position:absolute;top:0;left:0;z-index:1;pointer-events:none}
+  #snakes text{font-family:"29LT Bukra","IBM Plex Sans Arabic","Geeza Pro",serif}
+  #snakes polyline{fill:none;stroke-linecap:square;stroke-linejoin:miter}
+
+  header{position:fixed;top:0;left:var(--textL);right:var(--textR);z-index:10;display:flex;justify-content:space-between;align-items:baseline;padding-top:26px}
+  header .wm{font-size:19px;font-weight:500}
+  header .wm a{color:var(--ink);text-decoration:none}
+  nav{position:relative;z-index:1}
+  nav a{font-size:12px;margin-inline-start:24px;color:var(--cream);text-decoration:none;letter-spacing:.02em;cursor:pointer}
+  nav a:hover{border-bottom:1.5px solid var(--cream)}
+  #lang-btn{font-size:12px;line-height:1.4;letter-spacing:.02em;font-family:inherit}
+  #nav-strip{position:absolute;background:var(--ink);z-index:0;transition:left .9s steps(8,jump-none),width .9s steps(8,jump-none);
+    clip-path:polygon(8px 0,calc(100% - 6px) 0,100% 12%,calc(100% - 7px) 26%,100% 43%,calc(100% - 5px) 58%,100% 74%,calc(100% - 8px) 88%,calc(100% - 2px) 100%,6px 100%,0 86%,7px 70%,1px 55%,8px 40%,2px 24%,9px 10%)}
+  #nav-strip.tearing{animation:stripTear .9s steps(4,jump-none)}
+  @keyframes stripTear{0%{transform:translateY(0) rotate(0)}30%{transform:translateY(-1.6px) rotate(.4deg)}55%{transform:translateY(1.2px) rotate(-.35deg)}80%{transform:translateY(-.8px) rotate(.2deg)}100%{transform:translateY(0) rotate(0)}}
+  #m-head{display:none}
+  #m-head a{color:var(--ink);font-size:13px;letter-spacing:.04em;cursor:pointer;text-decoration:none}
+  #m-head #m-lang{font-family:"Geeza Pro","IBM Plex Sans Arabic","Noto Naskh Arabic",serif;font-size:15px}
+  #m-nav{position:fixed;top:0;left:0;right:0;z-index:14;background:var(--ink);padding:58px 28px 44px;transform:translateY(-104%);transition:transform .55s steps(6,jump-none);
+    clip-path:polygon(0 0,100% 0,100% calc(100% - 12px),96% 100%,91% calc(100% - 10px),84% calc(100% - 2px),77% calc(100% - 11px),69% calc(100% - 3px),61% calc(100% - 12px),52% calc(100% - 4px),44% calc(100% - 11px),36% calc(100% - 2px),28% calc(100% - 10px),20% calc(100% - 3px),12% calc(100% - 12px),5% calc(100% - 4px),0 calc(100% - 10px))}
+  body.mnav #m-nav{transform:none}
+  #m-nav a{display:block;color:var(--cream);text-decoration:none;font-size:19px;padding:11px 0;letter-spacing:.02em}
+  #m-nav .mn-x{position:absolute;top:16px;inset-inline-end:20px;font-size:16px;padding:6px;cursor:pointer}
+
+  #fold-wrap{position:absolute;top:0;inset-inline-start:0;width:0;height:0;z-index:11;opacity:0;transition:opacity .35s .85s}
+  #fold-wrap.on{opacity:1}
+  header.panel-open~#fold-wrap{opacity:0;pointer-events:none;transition:opacity .1s}
+  #mini-tree{position:absolute;top:0;inset-inline-start:0;overflow:visible;pointer-events:none}
+  #mini-tree path{fill:none;stroke:var(--ink);stroke-width:1;stroke-linecap:round}
+  #mini-tree .foldg{transition:transform .55s cubic-bezier(.34,1.18,.4,1)}
+  #mini-tree.pull .foldg{transform:scale(1.65)}
+  #mini-tree .flapg{transition:transform .55s cubic-bezier(.3,.9,.3,1.18)}
+  #mini-tree.pull .flapg{transform:rotate(var(--ca)) scaleY(1.16) rotate(var(--nca))}
+
+  #search-panel{position:fixed;top:0;left:0;right:0;z-index:9;background:#D9F164;padding:150px 8vw 34px;pointer-events:none;
+    clip-path:polygon(0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0);transition:clip-path .95s steps(9,jump-none)}
+  #search-panel::before{content:"";position:absolute;inset:0;background:#DCD2B5;pointer-events:none;
+    clip-path:polygon(0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0);transition:clip-path .95s steps(9,jump-none)}
+  #search-panel .sp-in{position:relative;z-index:1}
+  #search-panel::after{content:"";position:absolute;left:-1%;right:-1%;bottom:-26px;height:38px;background:#DCD2B5;pointer-events:none;
+    clip-path:polygon(0 0,100% 0,100% 52%,96% 74%,91% 46%,86% 66%,80% 90%,74% 56%,68% 76%,61% 44%,55% 68%,48% 92%,42% 60%,35% 42%,28% 78%,21% 50%,14% 70%,8% 44%,3% 76%,0 56%)}
+  #search-panel.open{pointer-events:auto;
+    clip-path:polygon(-40% 0%,300% 0%,261.2% 42.8%,203.2% 93.6%,149.4% 155.4%,87.4% 209%,36.8% 267.2%,-7.4% 304.6%,-40% 340%)}
+  #search-panel.open::before{
+    clip-path:polygon(300% 0%,261.2% 42.8%,203.2% 93.6%,149.4% 155.4%,87.4% 209%,36.8% 267.2%,-7.4% 304.6%,-40% 340%,-46% 334%,-13.4% 298.6%,30.8% 261.2%,81.4% 203%,143.4% 149.4%,197.2% 87.6%,255.2% 36.8%,294% -6%)}
+  [dir="rtl"] #search-panel{clip-path:polygon(100% 0,100% 0,100% 0,100% 0,100% 0,100% 0,100% 0,100% 0,100% 0)}
+  [dir="rtl"] #search-panel::before{clip-path:polygon(100% 0,100% 0,100% 0,100% 0,100% 0,100% 0,100% 0,100% 0,100% 0,100% 0,100% 0,100% 0,100% 0,100% 0,100% 0,100% 0)}
+  [dir="rtl"] #search-panel.open{
+    clip-path:polygon(140% 0%,-200% 0%,-161.2% 42.8%,-103.2% 93.6%,-49.4% 155.4%,12.6% 209%,63.2% 267.2%,107.4% 304.6%,140% 340%)}
+  [dir="rtl"] #search-panel.open::before{
+    clip-path:polygon(-200% 0%,-161.2% 42.8%,-103.2% 93.6%,-49.4% 155.4%,12.6% 209%,63.2% 267.2%,107.4% 304.6%,140% 340%,146% 334%,113.4% 298.6%,69.2% 261.2%,18.6% 203%,-43.4% 149.4%,-97.2% 87.6%,-155.2% 36.8%,-194% -6%)}
+  header.panel-open{pointer-events:none}
+  .sp-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:18px}
+  .sp-top .t .ar{font-size:26px;color:var(--saff)}
+  #sp-close{font-size:17px;cursor:pointer;padding:4px 8px}
+  #sp-close:hover{opacity:.6}
+  #sp-input{width:100%;font-size:18px;padding:12px 2px;background:none;border:none;border-bottom:2px solid var(--ink);outline:none;color:var(--ink);font-family:inherit;margin-bottom:24px}
+  #sp-input::placeholder{opacity:.45;color:var(--ink)}
+  #sp-tree{width:100%;display:block;overflow:visible}
+  #sp-tree path{fill:none;stroke:var(--ink);stroke-width:1.7;stroke-linecap:round}
+  #sp-tree text{fill:var(--ink);font-size:12px;letter-spacing:.04em;font-family:inherit}
+
+  main{position:relative;z-index:4;padding:18vh var(--textR) 12vh var(--textL)}
+  .blk{opacity:0;transform:translateY(16px);transition:opacity .75s cubic-bezier(.2,.6,.2,1),transform .75s cubic-bezier(.2,.6,.2,1)}
+  .blk.on{opacity:1;transform:none}
+  h1.pg{font-size:44px;font-weight:500;letter-spacing:.01em;margin-bottom:10px}
+  .pg-sub{color:var(--saff);font-size:15.5px;letter-spacing:.02em;margin-bottom:9vh;max-width:58ch;line-height:1.95}
+
+  .facets{position:relative;max-width:780px;margin-bottom:13vh}
+  .facets::before{content:"";position:absolute;top:8px;bottom:10px;inset-inline-start:8px;width:2px;background:var(--saff);
+    transform:scaleY(0);transform-origin:top;transition:transform 2s cubic-bezier(.2,.7,.2,1) .15s}
+  .facets.on::before{transform:scaleY(1)}
+  .facets::after{content:"";position:absolute;bottom:2px;inset-inline-start:4px;width:10px;height:10px;background:var(--saff);
+    transform:rotate(45deg) scale(0);transition:transform .5s cubic-bezier(.34,1.4,.4,1) 2s}
+  .facets.on::after{transform:rotate(45deg) scale(1)}
+  .facet{position:relative;padding:0 0 48px;padding-inline-start:46px;transition:transform .45s cubic-bezier(.2,.7,.2,1)}
+  .facet:last-child{padding-bottom:14px}
+  .facet::before{content:"";position:absolute;inset-inline-start:1px;top:5px;width:15px;height:15px;background:var(--mc,#106580);
+    transform:rotate(45deg) scale(0);transition:transform .55s cubic-bezier(.34,1.5,.4,1) .2s}
+  .facet.on::before{transform:rotate(45deg) scale(1)}
+  .facet:hover::before{animation:npulse .9s ease-in-out infinite alternate}
+  @keyframes npulse{from{transform:rotate(45deg) scale(1)}to{transform:rotate(45deg) scale(1.3)}}
+  .facet::after{content:"";position:absolute;inset-inline-start:19px;top:11px;width:0;height:2px;background:var(--mc,#106580);opacity:.7;
+    transition:width .5s cubic-bezier(.2,.7,.2,1) .45s}
+  .facet.on::after{width:19px}
+  .facet:hover{transform:translateX(5px)}
+  [dir="rtl"] .facet:hover{transform:translateX(-5px)}
+  .fidx{display:block;font-size:10px;letter-spacing:.34em;color:var(--saff);margin-bottom:5px}
+  .facet h3{font-size:17.5px;font-weight:500;margin-bottom:9px;transition:letter-spacing .5s cubic-bezier(.2,.7,.2,1)}
+  .facet:hover h3{letter-spacing:.035em}
+  .facet .zig{display:block;width:min(300px,60%);height:10px;margin-bottom:11px;overflow:hidden}
+  .facet .zig path{fill:none;stroke-width:2;animation:zm 7s linear infinite}
+  .facet:hover .zig path{animation-duration:1s}
+  @keyframes zm{to{stroke-dashoffset:-56}}
+  .facet p{font-size:13.5px;line-height:1.8;opacity:.92}
+
+  .qa{display:grid;grid-template-columns:1fr 1fr;gap:7vh 6vw;margin-bottom:13vh}
+  .qa section{transition:transform .45s cubic-bezier(.2,.7,.2,1)}
+  .qa section:hover{transform:translateY(-3px)}
+  .qa section h2{display:inline-block;font-size:21px;font-weight:500;background:var(--lime);padding:2px 10px 3px;margin-inline-start:-10px;margin-bottom:16px;transition:box-shadow .4s}
+  .qa section:hover h2{box-shadow:4px 4px 0 rgba(20,24,28,.16)}
+  .qa section p{font-size:15px;line-height:1.9;max-width:56ch}
+
+  .team-head h2{display:inline-block;font-size:28px;font-weight:500;background:var(--lime);padding:2px 12px 4px;margin-inline-start:-12px;margin-bottom:18px}
+  .team-intro{max-width:62ch;font-size:15px;line-height:1.9;margin-bottom:6vh}
+  .team-intro p+p{margin-top:1.1em}
+  .sect-h{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--saff);margin:0 0 20px}
+  .tlist{max-width:560px;margin-bottom:7vh}
+  .trow{display:flex;align-items:baseline;gap:14px;padding:9px 0;border-bottom:1px solid rgba(20,24,28,.14);position:relative;transition:padding-inline-start .35s cubic-bezier(.2,.7,.2,1)}
+  .trow:hover{padding-inline-start:10px}
+  .trow::before{content:"";width:16px;height:2px;background:var(--mc,#106580);flex:none;transition:width .35s cubic-bezier(.2,.7,.2,1)}
+  .trow:hover::before{width:30px}
+  .trow .nm{font-size:16.5px}
+  .trow .alt{opacity:.5;font-size:12.5px}
+  .tm-note{font-size:13.5px;line-height:1.85;max-width:56ch;opacity:.75;margin-bottom:3vh}
+  .ctx{margin-top:9vh;max-width:60ch;border-inline-start:3px solid var(--saff);padding-inline-start:20px}
+  .ctx h4{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--saff);margin-bottom:12px}
+  .ctx p{font-size:13.5px;line-height:1.95;opacity:.85}
+  .joinline{display:inline-block;font-size:17px;line-height:1.85;max-width:56ch;background:var(--lime);padding:12px 18px 14px;box-shadow:6px 6px 0 rgba(20,24,28,.16);position:relative;transition:transform .4s cubic-bezier(.2,.7,.2,1),box-shadow .4s}
+  .joinline:hover{transform:translate(-2px,-3px);box-shadow:9px 9px 0 rgba(20,24,28,.2)}
+  .joinline::after{content:"";position:absolute;left:14px;right:14px;bottom:6px;height:2px;
+    background:repeating-linear-gradient(90deg,var(--saff) 0 10px,transparent 10px 18px);animation:dashmove 1.1s linear infinite}
+  @keyframes dashmove{to{background-position:18px 0}}
+
+  #ticker{position:fixed;bottom:0;left:0;right:0;z-index:8;background:var(--ink);color:var(--cream);display:flex;align-items:stretch;height:42px;transform:translateY(140%);transition:transform .7s cubic-bezier(.2,.75,.2,1),height .35s cubic-bezier(.2,.7,.2,1);cursor:default}
+  #ticker.show{transform:none}
+  #ticker:hover,#ticker.xp{height:66px}
+  .tk-tear{position:absolute;top:-7px;left:0;right:0;height:8px;background:var(--ink);clip-path:polygon(0 100%,2% 20%,5% 90%,9% 10%,13% 80%,18% 25%,23% 95%,28% 15%,33% 75%,38% 30%,44% 90%,49% 10%,55% 85%,60% 20%,66% 95%,71% 25%,77% 80%,82% 12%,88% 90%,93% 22%,97% 75%,100% 100%)}
+  .tk-head{display:flex;align-items:center;gap:14px;padding:0 20px;flex:none;position:relative}
+  .tk-head::after{content:"";position:absolute;inset-inline-end:0;top:9px;height:24px;width:1px;background:rgba(247,241,225,.28)}
+  #tk-clock{font-size:13px;letter-spacing:.16em;color:#E39B00}
+  .tk-lbl{font-size:15px}
+  .tk-view{flex:1;overflow:hidden;height:42px}
+  #tk-list{list-style:none;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+  #tk-list li{height:42px;display:flex;align-items:center;gap:18px;padding:0 22px;font-size:13.5px;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
+  #tk-list .tk-date{color:#E39B00;font-size:10.5px;letter-spacing:.16em;min-width:66px;flex:none}
+  .tk-sub{position:absolute;inset-inline-start:20px;bottom:7px;font-size:9px;letter-spacing:.2em;opacity:0;transition:opacity .3s .1s;color:#E39B00}
+  #ticker:hover .tk-sub,#ticker.xp .tk-sub{opacity:.95}
+
+  footer{position:relative;z-index:5;background:#E39B00;color:var(--cream);padding:9vh var(--textR) calc(5vh + 74px) var(--textL);text-align:center}
+  footer .flogo{width:86px;display:block;margin:0 auto 22px}
+  footer .socials{display:flex;justify-content:center;gap:18px;margin-bottom:22px}
+  footer .socials a{color:var(--cream)}
+  footer .socials svg{width:19px;height:19px}
+  footer .fx{max-width:60ch;margin:0 auto;font-size:14px;line-height:1.9}
+  footer .fl{margin-top:26px;font-size:11.5px;letter-spacing:.14em}
+
+  @media (max-width:920px){
+    :root{--textL:32px;--textR:28px}
+    header{left:76px;right:18px;align-items:flex-start;padding-top:14px}
+    header .wm{font-size:17px}
+    nav,#nav-strip{display:none}
+    #m-head{display:flex;align-items:baseline;gap:20px}
+    main{padding:14vh var(--textR) 9vh var(--textL)}
+    h1.pg{font-size:32px}
+    .facet{padding-inline-start:36px}
+    .qa{grid-template-columns:1fr;gap:5vh}
+    #search-panel{padding:88px 6vw 30px}
+    #sp-input{font-size:15px}
+    #ticker{height:36px}
+    .tk-head{padding:0 12px;gap:8px}
+    #tk-clock{font-size:11px}
+    #tk-list .tk-date{min-width:52px;font-size:9.5px}
+    #ticker.xp{height:64px}
+    footer{padding:7vh var(--textR) calc(4vh + 60px) var(--textL)}
+  }
+
+</style>
+</head>
+<body>
+<svg id="snakes" aria-hidden="true"></svg>
+
+<header id="masthead">
+  <div class="hleft"><span class="wm"><a href="https://merath.ly/landing.html" data-i18n="wm">merath</a></span></div>
+  <div id="nav-strip" aria-hidden="true"></div>
+  <nav>
+    <a href="https://merath.ly/projects" data-i18n="nProjects">Projects</a><a href="https://merath.ly/publications" data-i18n="nPublications">Publications</a><a href="https://merath.ly/programmes" data-i18n="nProgrammes">Programmes</a><a href="https://merath.ly/art-production" data-i18n="nArt">Art &amp; Production</a><a href="https://merath.ly/studies" data-i18n="nStudies">Studies</a><a href="https://merath.ly/archives" data-i18n="nArchives">Archives</a><a href="https://merath.ly/about.html" data-i18n="nAbout">About</a><a id="lang-btn">ع</a>
+  </nav>
+  <div id="m-head"><a id="m-menu" data-i18n="mMenu">Menu</a><a id="m-lang">ع</a></div>
+</header>
+
+<div id="fold-wrap">
+  <svg id="mini-tree" width="300" height="200" viewBox="0 0 300 200" aria-hidden="true"></svg>
+</div>
+
+<div id="m-nav">
+  <a class="mn-x">✕</a>
+  <a href="https://merath.ly/projects" data-i18n="nProjects">Projects</a><a href="https://merath.ly/publications" data-i18n="nPublications">Publications</a><a href="https://merath.ly/programmes" data-i18n="nProgrammes">Programmes</a><a href="https://merath.ly/art-production" data-i18n="nArt">Art &amp; Production</a><a href="https://merath.ly/studies" data-i18n="nStudies">Studies</a><a href="https://merath.ly/archives" data-i18n="nArchives">Archives</a><a href="https://merath.ly/about.html" data-i18n="nAbout">About</a>
+</div>
+
+<div id="search-panel">
+  <div class="sp-in">
+    <div class="sp-top">
+      <div class="t"><span class="ar">مُفَهْرَس</span> <span data-i18n="spT" style="font-size:13px;letter-spacing:.22em;color:var(--saff)">INDEXED — THE CATALOGUE</span></div>
+      <a id="sp-close">✕</a>
+    </div>
+    <input id="sp-input" type="text" autocomplete="off" placeholder="Search the holdings — i196, currency, Ghadames…">
+    <svg id="sp-tree" height="240" viewBox="0 0 1200 240" preserveAspectRatio="none"></svg>
+  </div>
+</div>
+
+<main>
+  <div class="blk" id="c1">
+    <h1 class="pg" data-i18n="pgT">About</h1>
+    <div class="pg-sub" data-i18n="pgS"></div>
+  </div>
+  <div class="facets blk" id="facets"></div>
+  <div class="qa" id="qa"></div>
+  <div id="team">
+    <div class="team-head blk"><h2 data-i18n="tmT">Team</h2></div>
+    <div class="team-intro blk" id="team-intro"></div>
+    <div class="sect-h blk" data-i18n="tmCur">Current team — in the studio</div>
+    <div class="tlist blk" id="roster"></div>
+    <div class="sect-h blk" data-i18n="tmWider">Adjuncts &amp; advisors</div>
+    <div class="tlist blk" id="alist"></div>
+    <p class="tm-note blk" data-i18n="tmNote"></p>
+    <p class="joinline blk" data-i18n="join"></p>
+    <div class="ctx blk">
+      <h4 data-i18n="ctxT">A note on context and funding</h4>
+      <p data-i18n="ctxB"></p>
+    </div>
+  </div>
+</main>
+
+<div id="ticker">
+  <div class="tk-tear"></div>
+  <div class="tk-head">
+    <span id="tk-clock">00:00</span>
+    <span class="tk-lbl ar">مُذَكِّرات</span>
+  </div>
+  <div class="tk-view"><ul id="tk-list"></ul></div>
+  <div class="tk-sub" data-i18n="tkSub">MEMOIRS — THE LEDGER · WHAT HAPPENS, SET IN TIME</div>
+</div>
+
+<footer>
+  <svg class="flogo" viewBox="150 168 694 690" aria-label="merath">
+    <rect x="168" y="186" width="658" height="653" fill="none" stroke="#F7F1E1" stroke-width="14"/>
+    <path d="M464,530 L334,530 L334,484 L288,484 L288,640 L438,640 L438,691 L487,691 L487,744 L691,744 L691,431 L584,431 L584,298 L826,298 M168,316 L377,316 L377,362" fill="none" stroke="#F7F1E1" stroke-width="14"/>
+    <ellipse cx="497" cy="530" rx="33" ry="26" fill="none" stroke="#F7F1E1" stroke-width="14"/>
+  </svg>
+  <div class="socials">
+    <a href="https://www.instagram.com/merath_ly" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg></a>
+    <a href="https://ly.linkedin.com/company/merath" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.22 8h4.56v14H.22V8zm7.44 0h4.37v1.91h.06c.61-1.15 2.1-2.37 4.32-2.37 4.62 0 5.47 3.04 5.47 6.98V22h-4.56v-6.6c0-1.57-.03-3.6-2.19-3.6-2.2 0-2.53 1.71-2.53 3.48V22H7.66V8z"/></svg></a>
+    <a href="https://www.facebook.com/merath.ly" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.23.2 2.23.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12z"/></svg></a>
+  </div>
+  <p class="fx" data-i18n="footContact">For new projects, suggestions for archival analysis or general inquiries, connect with us: info [at] merath.ly</p>
+  <p class="fl" data-i18n="footRights">© merath 2026 · Tripoli, Libya · All rights reserved</p>
+</footer>
+
+<script>
+(function(){
+"use strict";
+const CONTENT={
+ en:{
+  wm:"merath",nProjects:"Projects",nPublications:"Publications",nProgrammes:"Programmes",nArt:"Art & Production",nStudies:"Studies",nArchives:"Archives",nAbout:"About",mMenu:"Menu",
+  pgT:"About",
+  pgS:"One practice, several bodies: what began as the wish to make work grew the systems that carry it across the Sahara and the Mediterranean.",
+  spT:"INDEXED — THE CATALOGUE",searchPh:"Search the holdings — i196, currency, Ghadames…",
+  tkSub:"MEMOIRS — THE LEDGER · WHAT HAPPENS, SET IN TIME",
+  footContact:"For new projects, suggestions for archival analysis or general inquiries, connect with us: info [at] merath.ly",
+  footRights:"© merath 2026 · Tripoli, Libya · All rights reserved",
+  tmT:"Team",tmCur:"Current team — in the studio",tmWider:"Adjuncts & advisors",
+  tmNote:"Everyone listed here has worked with merath over the long term, listed in order of joining. Many others joined us for shorter stretches — single projects, seasons of help — and we thank them all.",
+  join:"We are always interested in hearing from people whose questions touch ours — apply [at] merath.ly",
+  ctxT:"A note on context and funding",
+  ctxB:"merath works from Tripoli, in conditions where cultural infrastructure is mostly self-made. The practice is funded project by project — through commissions and advisory work, through the press and printing, and through grants from partners who are named on the page of each project they supported. Independence is kept by keeping the mix: no single funder shapes the practice, and every affiliation is declared where it applies.",
+  facets:[["The collective","It began with making: artworks, films and performance carried to audiences across the region — works staged in Tripoli and beyond, from house-museums to art centres. The collective is the studio's pulse: anthropologists, artists, writers and designers whose exhibition work keeps testing the systems the rest of merath builds."],
+          ["The press","To move the work, merath became its own publisher — and the press grew a life of its own: books, manuals and editions across eight series, set and printed as close to home as each edition allows, with the Print Rahba as its workshop."],
+          ["The research centre","Every project opens as a question, and the questions demanded method — fieldwork, oral history, cataloguing, long study. Research grew from inside the projects into a centre of its own, writing studies and visions both commissioned and self-initiated."],
+          ["The repository","What the work gathers has to live somewhere. Collections are organised, catalogued and kept alive — holdings indexed in مُفَهْرَس, their movements entered as they happen in مُذَكِّرات — an archive built because no one else was holding these things."],
+          ["The school","What the studio learns, it teaches. Workshops, talks and public events grew from the projects' own methods — training in research, cataloguing and print, learning opportunities and a space to think and experiment collectively, in the studio in Tripoli and well beyond it."],
+          ["Advisory & cultural development","Once built, the methods travel: institutions and individuals arrive with questions that touch ours, and merath answers with studies, visions and research briefs — and with the development of public space, architecture and museums — the practice offered outward, so the next effort starts from what exists, not from zero."]],
+  qa:[["Why we work this way","Cultural production in this region often creates its own conditions. At merath, we develop our own tools, build spaces for holding archives that are not held elsewhere, and pass on what we produce so that what follows can begin from what came before, not from zero."],
+      ["What we are open to","Partnerships, interventions, invitations, and ways of thinking that move beyond the default settings of the present, and explore other ways of understanding and producing knowledge."]],
+  teamIntro:["merath's team works in close quarters within an interconnected structure that extends from the production structure into the team's daily practice. Each project is understood as a shared process in which roles come together in a productive and collaborative way, with work passing between individuals as part of how the project itself takes shape.",
+    "The team is composed of individuals with diverse backgrounds and disciplines, including architecture, research, writing, graphic design, authorship, and art. Each discipline contributes to building the project from its own perspective, while remaining part of a shared vision."]
+ },
+ ar:{
+  wm:"ميراث",nProjects:"المشاريع",nPublications:"المنشورات",nProgrammes:"البرامج العامة",nArt:"الفن والإنتاج",nStudies:"الدراسات",nArchives:"الأرشيفات",nAbout:"من نحن",mMenu:"القائمة",
+  pgT:"عن ميراث",
+  pgS:"ممارسة واحدة بأجسادٍ عدة: ما بدأ برغبةٍ في صناعة العمل أنبت الأنظمة التي تحمله بين الصحراء والبحر الأبيض المتوسط.",
+  spT:"الكتالوج",searchPh:"ابحثوا في المقتنيات — i196، عملة، غدامس…",
+  tkSub:"مُذَكِّرات — السِّجل · ما يحدث، مُثبتاً في الزمن",
+  footContact:"بشأن المشاريع الجديدة أو مقترحات التحليل الأرشيفي أو الاستفسارات العامة، تواصلوا معنا: info [at] merath.ly",
+  footRights:"© ميراث 2026 · طرابلس، ليبيا · جميع الحقوق محفوظة",
+  tmT:"الفريق",tmCur:"الفريق الحالي — في الاستوديو",tmWider:"مساعدون ومستشارون",
+  tmNote:"كل من يَرِد اسمه هنا عمل مع ميراث على المدى الطويل، مرتَّبين بحسب تاريخ الانضمام، وهناك كثيرون آخرون رافقونا لفترات أقصر — في مشاريع مفردة أو مواسم عمل — لهم منا جميعاً الشكر.",
+  join:"يسعدنا دائماً أن نسمع ممن تلامس أسئلتُهم أسئلتَنا — apply [at] merath.ly",
+  ctxT:"كلمة في السياق والتمويل",
+  ctxB:"تعمل ميراث من طرابلس، في ظروفٍ تُبنى فيها البنية الثقافية غالباً باليد وبالمبادرة الذاتية. تُموَّل الممارسة مشروعاً بمشروع — من التكليفات والعمل الاستشاري، ومن دار النشر والطباعة، ومن مِنَح شركاء يُذكر اسمُهم في صفحة كل مشروع دعموه. ونحفظ استقلاليتنا بالحفاظ على هذا المزيج: لا مموِّل واحد يشكِّل الممارسة، وكل انتماء يُعلَن في موضعه.",
+  facets:[["الجماعة الفنية","بدأ الأمر بصناعة العمل: أعمال فنية وأفلام وعروض أدائية تصل إلى جمهورها عبر المنطقة — أعمال تُعرض في طرابلس وخارجها، من البيوت-المتاحف إلى مراكز الفنون. الجماعة نبضُ الاستوديو: متخصصون في علم الإنسان وفنانون وكتّاب ومصممون تختبر أعمالُهم المعروضة الأنظمةَ التي تبنيها بقية ميراث."],
+          ["دار النشر","لكي يتحرك العمل صارت ميراث ناشرةَ نفسها — ثم نمت للدار حياةٌ خاصة: كتب وأدلة وإصدارات عبر ثماني سلاسل، تُصفّ وتُطبع قريباً من البيت بقدر ما يسمح كل إصدار، ورحبةُ الطباعة ورشتُها."],
+          ["مركز الأبحاث","كل مشروع يُفتح بسؤال، والأسئلة فرضت منهجاً — عملاً ميدانياً وتاريخاً شفوياً وفهرسةً ودراسةً طويلة. نما البحث من داخل المشاريع حتى صار مركزاً قائماً بذاته، يكتب دراسات ورؤى بتكليفٍ وبمبادرةٍ منا."],
+          ["المستودع الأرشيفي","ما يجمعه العمل يحتاج مكاناً يعيش فيه. مجموعات تُنظَّم وتُفهرَس وتبقى حيّة — مقتنيات مفهرسة في «مُفَهْرَس» ووقائع تُدوَّن لحظة حدوثها في «مُذَكِّرات» — أرشيف بُني لأن لا أحد سوانا كان يحفظ هذه الأشياء."],
+          ["المدرسة","ما يتعلمه الاستوديو يُعلِّمه. نمت ورش العمل واللقاءات والفعاليات العامة من مناهج المشاريع نفسها — تدريب على البحث والفهرسة والطباعة، وفرص للتعلم ومساحة للتفكير والتجريب الجماعي، في الاستوديو بطرابلس وأبعد منه بكثير."],
+          ["الاستشارات والتنمية الثقافية","حين اكتملت المناهج بدأت تسافر: مؤسسات وأفراد يصلون بأسئلة تلامس أسئلتنا، وتجيب ميراث بدراسات ورؤى ومهام بحثية — وبتطوير الفضاء العام والعمارة والمتاحف — الممارسة معروضةً للخارج، ليبدأ الجهد التالي مما هو قائم لا من الصفر."]],
+  qa:[["لماذا نعمل بهذه الطريقة","الإنتاج الثقافي في هذه المنطقة غالباً ما يخلق شروطه بنفسه، لهذا، في ميراث نعمل على تطوير أدواتنا الخاصة، وبناء مساحات لحفظ أرشيفات لا يحفظها أحد في موضعٍ آخر، نمرر المعرفة التي ننتجها بحيث تُبنى المراحل التالية على ما سبقها، لا من نقطة الصفر."],
+      ["ما الذي نفتح له المجال","تعمل ميراث بصورة مفتوحة على الشراكات، والمداخلات، والدعوات، وعلى إنتاج مسارات تفكير تتجاوز الإعدادات التقليدية للحاضر، وتستكشف طرقاً أخرى لفهم المعرفة وإنتاجها."]],
+  teamIntro:["فريقُ ميراث مجموعة تعمل عن قُرب، ضمن نمط مترابط يمتد من مدار الإنتاج إلى طريقة العمل اليومية، يُنظر إلى كل مشروع بوصفه عملية مشتركة تتكامل فيها الأدوار بشكل إنتاجي متناغم، حيث يَنتقل العمل بين الأفراد باعتباره جزءاً من تكوّن المشروع نفسه.",
+    "يتكوّن الفريق من أفراد ذوي خلفيات وتخصصات متعددة تشمل الهندسة المعمارية، البحث، الكتابة، التصميم الجرافيكي، التأليف، الفن، بحيث يساهم كل تخصص في بناء المشروع من زاويته الخاصة ضمن رؤية واحدة متكاملة."]
+ }
+};
+/* names only, top-to-bottom, ordered by first joining; AR transliterations [Alla review] */
+const TEAM_CURRENT=[
+ {en:"Moad Musbahi",ar:"معاذ المصباحي"},
+ {en:"Hasan Issa",ar:"حسن عيسى"},
+ {en:"Alla Abu El-Nour Basher",ar:"الاء ابوالنور بشير"},
+ {en:"Lina Abuharrus",ar:"لينة ابوهروس"},
+ {en:"Fatima Abdullah Alwaer",ar:"فاطمة عبدالله الواعر"}
+];
+const TEAM_WIDER=[
+ {en:"Hala Ali",ar:"هلا علي قناوي"},
+ {en:"Amel Bensalim",ar:"أمل بن سالم"},
+ {en:"Rawand Alhares",ar:"راوند سليمان الحارس"},
+ {en:"Mlak Elbuzidi",ar:"ملاك البوزيدي"},
+ {en:"Malak L'Ajeli",ar:"ملك نجيب العجيلي"},
+ {en:"Halluma Seklani",ar:"حلومة السكلاني"},
+ {en:"Reda Tamtam",ar:"رضا تمتام"},
+ {en:"Amira Zurgani",ar:"أميرة الزرقاني"},
+ {en:"Alae El Ouazzani",ar:"آلاء الوزاني"},
+ {en:"Yousef El-Galabi",ar:"يوسف الجيلابي"}
+];
+const TKD={
+ en:[["02.2026","Staging at Beit Ali Khalifa Zaidi — Tripoli"],["12.2025","CEN wa SAD performed — Jameel Arts Centre, Dubai"],["10.2025","A Sun Dawned Over Algeria opens — Dar Nuwaiji, Tripoli"],["2026","m3 · A Framework for Private Archives — released"],["02.2026","i595 accessioned — Saharan Currency archive"],["04.2026","Alpha Stitch bindery run — the Print Rahba"]],
+ ar:[["02.2026","تجهيز في بيت علي خليفة الزائدي — طرابلس"],["12.2025","عرض «CEN wa SAD» — مركز جميل للفنون، دبي"],["10.2025","افتتاح «شمس أشرقت ع الجزائر» — دار نويجي"],["2026","صدور «م3: إطار عمل للأرشيفات الخاصة»"],["02.2026","ضمّ i595 إلى أرشيف العملة الصحراوية"],["04.2026","دورة غرزة ألفا — رحبة الطباعة"]]
+};
+const POOL=["001 Sarayan","002 Saharan Currency","003 Al Manahij","004 Research Methods","005 Archaeological Knowledge","006 Libya-Algeria","009 Publishing Field","010 The Print Rahba","013 Dispatch Discourse","LED01 Revolution Forged","LED02 Tahanin","LED03 Umm Al Saraya","m3 Framework","LED08 Fielding","i196","i483","i595","Ghadames","Tripoli","currency","oral history","paper","riso"];
+const CODES=["i3","i7","i12","i28","i45","i66","i91","i134","i173","i196","i215","i238","i262","i287","i306","i336","i357","i392","i427","i462","i483","i504","i540","i574","i595"];
+const MC=["#106580","#C9A227","#D85A30","#1D9E75","#7F77DD","#14181c"];
+const ZPAT=[
+ ()=>{let d="M0,7 ";for(let x=8;x<=260;x+=8)d+="L"+x+","+(x%16===8?2:7)+" ";return d;},
+ ()=>{let d="M0,5 ";for(let x=0;x<260;x+=16)d+="Q"+(x+8)+","+(x%32===0?-1:11)+" "+(x+16)+",5 ";return d;},
+ ()=>{let d="M0,8 ";for(let x=0;x<260;x+=16)d+="L"+x+",2 L"+(x+8)+",2 L"+(x+8)+",8 L"+(x+16)+",8 ";return d;},
+ ()=>{let d="";for(let x=0;x<=260;x+=14)d+="M"+x+",5 L"+(x+9)+",5 ";return d;},
+ ()=>{let d="M0,6 ";for(let x=0;x<260;x+=20)d+="C"+(x+5)+",0 "+(x+15)+",12 "+(x+20)+",6 ";return d;}
+];
+let lang="en";
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+function hydrate(D){if(!D)return;try{
+  ["en","ar"].forEach(l=>{const src=D[l];if(!src)return;Object.keys(src).forEach(k=>{CONTENT[l][k]=src[k];});});
+  if(D.teamCurrent&&D.teamCurrent.length){TEAM_CURRENT.length=0;D.teamCurrent.forEach(m=>TEAM_CURRENT.push(m));}
+  if(D.teamWider&&D.teamWider.length){TEAM_WIDER.length=0;D.teamWider.forEach(m=>TEAM_WIDER.push(m));}
+  if(D.searchPool&&D.searchPool.length){POOL.length=0;D.searchPool.forEach(t=>POOL.push(t));}
+  if(D.entries&&D.entries.length){TKD.en=D.entries.map(e=>[e.dateLabel,e.textEn]);TKD.ar=D.entries.map(e=>[e.dateLabel,e.textAr]);}
+  applyLang();
+}catch(e){console.warn("about hydration failed",e);}}
+
+function applyLang(){
+  const C=CONTENT[lang];
+  document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");
+  document.documentElement.setAttribute("lang",lang);
+  document.querySelectorAll("[data-i18n]").forEach(el=>{const v=C[el.dataset.i18n];if(v!=null)el.innerHTML=esc(v);});
+  document.getElementById("sp-input").placeholder=C.searchPh;
+  document.getElementById("facets").innerHTML=C.facets.map((f,i)=>{
+    const pat=ZPAT[i%ZPAT.length]();
+    return '<div class="facet blk" style="--mc:'+MC[i%MC.length]+'"><span class="fidx">0'+(i+1)+'</span><h3>'+esc(f[0])+'</h3><svg class="zig" viewBox="0 0 260 10" preserveAspectRatio="none"><path d="'+pat+'" stroke="'+MC[i%MC.length]+'" stroke-dasharray="8 6"/></svg><p>'+esc(f[1])+"</p></div>";
+  }).join("");
+  document.getElementById("qa").innerHTML=C.qa.map(q=>'<section class="blk"><h2>'+esc(q[0])+"</h2><p>"+esc(q[1])+"</p></section>").join("");
+  document.getElementById("team-intro").innerHTML=C.teamIntro.map(p=>"<p>"+esc(p)+"</p>").join("");
+  const row=(m,i)=>{const nm=lang==="ar"?(m.ar||m.en):m.en;const alt=lang==="ar"?m.en:(m.ar||"");
+    return '<div class="trow" style="--mc:'+MC[i%MC.length]+'"><span class="nm">'+esc(nm)+"</span>"+(alt?'<span class="alt">'+esc(alt)+"</span>":"")+"</div>";};
+  document.getElementById("roster").innerHTML=TEAM_CURRENT.map(row).join("");
+  document.getElementById("alist").innerHTML=TEAM_WIDER.map(row).join("");
+  tkBuild();
+  const lb=document.getElementById("lang-btn");lb.textContent=lang==="en"?"ع":"EN";
+  lb.style.fontFamily=lang==="en"?'"Geeza Pro","IBM Plex Sans Arabic",serif':"inherit";
+  lb.style.fontSize=lang==="en"?"14px":"12px";
+  document.getElementById("m-lang").textContent=lang==="en"?"ع":"EN";
+  observeBlocks();
+  requestAnimationFrame(stripPlace);
+}
+
+/* reveal on scroll */
+let IO=null;
+function observeBlocks(){
+  document.querySelectorAll(".blk").forEach(b=>b.classList.remove("on"));
+  if(IO)IO.disconnect();
+  if(!("IntersectionObserver" in window)){document.querySelectorAll(".blk").forEach(b=>b.classList.add("on"));return;}
+  let i=0;
+  IO=new IntersectionObserver(es=>{es.forEach(e2=>{if(e2.isIntersecting){const el=e2.target;setTimeout(()=>el.classList.add("on"),(i++%5)*90);IO.unobserve(el);}});},{threshold:0.12});
+  document.querySelectorAll(".blk").forEach(b=>IO.observe(b));
+}
+
+/* nav strip */
+const masthead=document.getElementById("masthead"),navEl=document.querySelector("header nav"),navStrip=document.getElementById("nav-strip");
+function stripPlace(){
+  if(getComputedStyle(navEl).display==="none")return;
+  const hr=masthead.getBoundingClientRect(), nr=navEl.getBoundingClientRect();
+  const pad=30, bleed=Math.round(innerWidth*0.085)+26;
+  const navLeftish=(nr.left+nr.right)/2 < (hr.left+hr.right)/2;
+  let left,width;
+  if(navLeftish){ left=-bleed; width=(nr.right-hr.left)+pad+bleed; }
+  else{ left=(nr.left-hr.left)-pad; width=(hr.width-(nr.left-hr.left))+pad+bleed; }
+  navStrip.style.left=Math.round(left)+"px";navStrip.style.width=Math.round(width)+"px";
+  navStrip.style.top=Math.round(nr.top-hr.top-13)+"px";navStrip.style.height=Math.round(nr.height+26)+"px";
+}
+
+/* corner fold */
+const miniTree=document.getElementById("mini-tree");
+let miniTL=120;
+function buildFold(){
+  miniTL=Math.max(52,Math.round(innerWidth*0.08));
+  const W=Math.min(miniTL+400,Math.max(300,innerWidth-8));
+  miniTree.setAttribute("viewBox","0 0 "+W+" 200");
+  miniTree.style.width=W+"px";miniTree.style.height="200px";
+  const rtl=document.documentElement.getAttribute("dir")==="rtl";
+  const FX=rtl?W:0, d2=rtl?-1:1;
+  const fx=Math.min(190,Math.max(58,miniTL-12)), fy=Math.round(fx*0.79);
+  const hx=FX+d2*fx, tipx=FX+d2*Math.round(fx*0.69), tipy=Math.round(fy*0.75);
+  const ca=(Math.atan2(fy,FX-hx)*180/Math.PI).toFixed(1);
+  let h='<g class="foldg" style="transform-origin:'+FX+'px 0px">';
+  h+='<path class="flap under" d="M'+FX+',0 L'+hx+',0 L'+FX+','+fy+' Z" style="fill:#D9F164;stroke:none;pointer-events:auto;cursor:pointer"/>';
+  h+='<g class="flapg" style="transform-origin:'+hx+'px 0px;--ca:'+ca+'deg;--nca:-'+ca+'deg">';
+  h+='<path class="flap" d="M'+hx+',0 L'+FX+','+fy+' L'+tipx+','+tipy+' Z" style="fill:#DCD2B5;stroke:none;pointer-events:auto;cursor:pointer"/>';
+  h+='<path d="M'+hx+',0 L'+tipx+','+tipy+' L'+FX+','+fy+'" style="stroke-width:1.2;pointer-events:auto;cursor:pointer"/></g>';
+  h+='<path d="M'+hx+',0 L'+FX+','+fy+'" style="pointer-events:auto;cursor:pointer"/></g>';
+  miniTree.innerHTML=h;
+}
+miniTree.addEventListener("mouseover",()=>miniTree.classList.add("pull"));
+miniTree.addEventListener("mouseout",e=>{if(!miniTree.contains(e.relatedTarget))miniTree.classList.remove("pull");});
+miniTree.addEventListener("click",e=>{if(!e.target.closest("path"))return;e.preventDefault();e.stopPropagation();openPanel();});
+
+/* search panel */
+const spanel=document.getElementById("search-panel"),spInput=document.getElementById("sp-input");
+const spTree=document.getElementById("sp-tree");
+function hashStr(t){let h=2166136261;for(let i=0;i<t.length;i++){h^=t.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+function mkRnd(h){return()=>{h^=h<<13;h^=h>>>17;h^=h<<5;h>>>=0;return (h%1000)/1000;};}
+function growPanelTree(seed,query){
+  const W=spTree.viewBox.baseVal.width,H=spTree.viewBox.baseVal.height;
+  const r=mkRnd(hashStr(seed+"|"+query)||7);
+  const q=(query||"").trim().toLowerCase();
+  let matches=q?POOL.filter(t=>t.toLowerCase().includes(q)):POOL.slice();
+  if(!matches.length)matches=["—"];
+  const n=Math.min(7,Math.max(3,matches.length));
+  const picked=[];for(let i=0;i<n;i++){let t=matches[Math.floor(r()*matches.length)];if(t.length>14)t=t.slice(0,13)+"…";picked.push(t);}
+  const rootX=W*0.5;let html2="";
+  picked.forEach((t,i)=>{
+    const lx=W*0.04+W*0.92*((i+0.5)/n);
+    const d="M"+rootX+",10 C"+rootX+","+(H*0.55)+" "+lx.toFixed(1)+","+(H*0.55-14)+" "+lx.toFixed(1)+","+(H-28);
+    html2+='<path d="'+d+'" style="stroke-dasharray:900;stroke-dashoffset:900;transition:stroke-dashoffset .6s cubic-bezier(.25,.6,.3,1) '+(0.1+i*0.06).toFixed(2)+'s"/>';
+    html2+='<text x="'+lx.toFixed(0)+'" y="'+(H-8)+'" text-anchor="middle" style="opacity:0;transition:opacity .45s '+(0.3+i*0.06).toFixed(2)+'s">'+esc(t)+"</text>";
+  });
+  spTree.innerHTML=html2;
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    spTree.querySelectorAll("path").forEach(p=>p.style.strokeDashoffset="0");
+    spTree.querySelectorAll("text").forEach(t=>t.style.opacity="0.9");
+  }));
+}
+function openPanel(){spanel.classList.add("open");masthead.classList.add("panel-open");growPanelTree("open"+Date.now(),spInput.value);setTimeout(()=>spInput.focus(),650);}
+document.getElementById("sp-close").addEventListener("click",e=>{e.preventDefault();spanel.classList.remove("open");masthead.classList.remove("panel-open");});
+window.addEventListener("keydown",e=>{if(e.key==="Escape"){spanel.classList.remove("open");masthead.classList.remove("panel-open");}});
+let spT;spInput.addEventListener("input",()=>{clearTimeout(spT);spT=setTimeout(()=>growPanelTree("q",spInput.value),150);});
+
+/* ===== field: floating accession codes, snakes hunt them ===== */
+const SNK=document.getElementById("snakes");
+let cell=28, cols=10, rowsN=10, prey=[], snakes=[], snkTimer=null, fieldH=0;
+const PCOL=["#106580","#C9A227","#D85A30","#1D9E75","#7F77DD","#E39B00"];
+let preyId=0;
+function preyMake(rnd){
+  return {id:++preyId,gx:2+Math.floor(rnd()*(cols-4)),gy:2+Math.floor(rnd()*(rowsN-4)),
+    code:CODES[Math.floor(rnd()*CODES.length)],
+    col:PCOL[Math.floor(rnd()*PCOL.length)],op:(0.38+rnd()*0.18).toFixed(2),
+    ox:0,oy:0,vx:(rnd()-0.5)*0.15,vy:(rnd()-0.5)*0.12,ph:rnd()*6.28,el:null};
+}
+function snakesInit(){
+  const W=innerWidth;
+  fieldH=Math.max(innerHeight,document.body.scrollHeight);
+  SNK.setAttribute("viewBox","0 0 "+W+" "+fieldH);SNK.setAttribute("width",W);SNK.setAttribute("height",fieldH);
+  cell=innerWidth<920?24:28;cols=Math.floor(W/cell);rowsN=Math.floor(fieldH/cell);
+  prey=[];snakes=[];
+  const area=Math.max(1,(W*fieldH)/(1400*900));
+  const nP=Math.round((innerWidth<920?16:34)*Math.min(2.8,area));
+  const nS=Math.min(9,Math.round((innerWidth<920?3:7)*Math.min(2.2,area)));
+  const rnd=mkRnd(20260705);
+  for(let i=0;i<nP;i++)prey.push(preyMake(rnd));
+  for(let s=0;s<nS;s++){
+    const x=3+Math.floor(rnd()*(cols-6)),y=3+Math.floor(rnd()*(rowsN-6));
+    snakes.push({body:[[x,y],[x-1,y],[x-2,y]],dir:[1,0],col:MC[s%MC.length],full:0,
+      speed:220+Math.floor(rnd()*260),acc:0,w:3.5+rnd()*3,op:0.36+rnd()*0.26,
+      wander:0.06+rnd()*0.22,maxLen:18+Math.floor(rnd()*26)});
+  }
+  snakesDrawAll();
+  if(snkTimer)clearInterval(snkTimer);
+  snkTimer=setInterval(snakesTick,100);
+}
+function snakesTick(){
+  const occ=new Set();
+  snakes.forEach(s=>s.body.forEach(c=>occ.add(c[0]+","+c[1])));
+  snakes.forEach(s=>{
+    const h=s.body[0];
+    /* target lock: keep chasing the same code until eaten */
+    if(!s.tgt||!prey.some(P=>P.id===s.tgt.id)){
+      let td=1e9;s.tgt=null;
+      prey.forEach(P=>{const d=Math.abs(P.gx-h[0])+Math.abs(P.gy-h[1]);if(d<td){td=d;s.tgt=P;}});
+    }
+    const tgt=s.tgt;
+    const dist=tgt?Math.abs(tgt.gx-h[0])+Math.abs(tgt.gy-h[1]):99;
+    const eff=dist<=3?s.speed*0.5:s.speed;   /* lunge when close */
+    s.acc+=100;if(s.acc<eff)return;s.acc=0;
+    if(dist>4&&Math.random()<s.wander){const R=[[1,0],[-1,0],[0,1],[0,-1]];const c2=R[Math.floor(Math.random()*4)];if(!(c2[0]===-s.dir[0]&&c2[1]===-s.dir[1]))s.dir=c2;}
+    const free=(x,y)=>x>=1&&x<cols-1&&y>=1&&y<rowsN-1&&!occ.has(x+","+y);
+    let cand=[];
+    if(tgt){
+      const dx=Math.sign(tgt.gx-h[0]),dy=Math.sign(tgt.gy-h[1]);
+      if(Math.abs(tgt.gx-h[0])>=Math.abs(tgt.gy-h[1])){if(dx)cand.push([dx,0]);if(dy)cand.push([0,dy]);}
+      else{if(dy)cand.push([0,dy]);if(dx)cand.push([dx,0]);}
+    }
+    cand.push(s.dir);
+    [[1,0],[-1,0],[0,1],[0,-1]].forEach(d3=>cand.push(d3));
+    let nd=null;
+    for(const c2 of cand){
+      if(c2[0]===-s.dir[0]&&c2[1]===-s.dir[1])continue;
+      const tx=h[0]+c2[0],ty=h[1]+c2[1];
+      if(tgt&&tx===tgt.gx&&ty===tgt.gy){nd=c2;break;}   /* stepping onto food beats avoidance */
+      if(free(tx,ty)){nd=c2;break;}
+    }
+    if(!nd)nd=s.dir;
+    s.dir=nd;
+    let nx=h[0]+s.dir[0], ny=h[1]+s.dir[1];
+    if(nx<0||nx>=cols||ny<0||ny>=rowsN){nx=h[0];ny=h[1];}
+    s.body.unshift([nx,ny]);
+    const bi=prey.findIndex(P=>P.gx===nx&&P.gy===ny);
+    if(bi>=0){
+      prey.splice(bi,1);s.full+=2;s.tgt=null;   /* ingest: grow two segments per code */
+      const r2=mkRnd((Date.now()>>>0)^bi);
+      prey.push(preyMake(r2));
+    }
+    else if(s.body.length>4+s.full)s.body.pop();
+    if(s.body.length>s.maxLen)s.body.length=s.maxLen;
+  });
+  snakesDrawAll();
+}
+function snakesDrawAll(){
+  let h="";
+  prey.forEach((P,i)=>{h+='<text data-p="'+i+'" font-size="11.5" fill="'+P.col+'" opacity="'+P.op+'" text-anchor="middle">'+esc(P.code)+"</text>";});
+  snakes.forEach(s=>{
+    const pts=s.body.map(p=>(p[0]*cell+cell/2)+","+(p[1]*cell+cell/2)).join(" ");
+    h+='<polyline points="'+pts+'" stroke="'+s.col+'" stroke-width="'+s.w.toFixed(1)+'" opacity="'+s.op.toFixed(2)+'"/>';
+    const hd=s.body[0],hw=4+s.w*0.8;
+    h+='<rect x="'+(hd[0]*cell+cell/2-hw/2)+'" y="'+(hd[1]*cell+cell/2-hw/2)+'" width="'+hw+'" height="'+hw+'" fill="'+s.col+'" opacity="'+Math.min(0.85,s.op+0.28).toFixed(2)+'"/>';
+  });
+  SNK.innerHTML=h;
+  const ts=SNK.querySelectorAll("text");
+  ts.forEach((el,i)=>{if(prey[i])prey[i].el=el;});
+  preyPlace(performance.now());
+}
+function preyPlace(t){
+  prey.forEach(P=>{
+    if(!P.el)return;
+    const sway=Math.sin(t/1400+P.ph)*5;
+    const bob=Math.cos(t/1700+P.ph*1.7)*4;
+    P.ox+=P.vx;P.oy+=P.vy;
+    if(Math.abs(P.ox)>10)P.vx*=-1;
+    if(Math.abs(P.oy)>8)P.vy*=-1;
+    P.el.setAttribute("x",(P.gx*cell+cell/2+P.ox+sway).toFixed(1));
+    P.el.setAttribute("y",(P.gy*cell+cell*0.68+P.oy+bob).toFixed(1));
+  });
+}
+function fieldLoop(t){preyPlace(t);requestAnimationFrame(fieldLoop);}
+
+/* ticker */
+const tkList=document.getElementById("tk-list");let tkI=0,tkTimer=null;
+function tkBuild(){
+  const E=TKD[lang];
+  tkList.innerHTML=E.concat([E[0]]).map(e2=>'<li><span class="tk-date">'+esc(e2[0])+'</span><span>'+esc(e2[1])+"</span></li>").join("");
+  tkI=0;tkList.style.transition="none";tkList.style.transform="translateY(0)";
+  if(tkTimer)clearInterval(tkTimer);
+  tkTimer=setInterval(()=>{
+    tkI++;tkList.style.transition="transform .6s cubic-bezier(.2,.7,.2,1)";
+    tkList.style.transform="translateY(-"+(tkI*42)+"px)";
+    if(tkI>=TKD[lang].length){setTimeout(()=>{tkList.style.transition="none";tkList.style.transform="translateY(0)";tkI=0;},650);}
+  },4200);
+}
+function clock(){
+  const d=new Date(Date.now()+ (2*60*60*1000) + (new Date().getTimezoneOffset()*60*1000));
+  document.getElementById("tk-clock").textContent=String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
+}
+setInterval(clock,20000);clock();
+document.getElementById("ticker").addEventListener("click",()=>document.getElementById("ticker").classList.toggle("xp"));
+
+/* menus / lang */
+document.getElementById("m-menu").addEventListener("click",e=>{e.preventDefault();document.body.classList.toggle("mnav");});
+document.getElementById("m-nav").addEventListener("click",e=>{if(e.target.tagName==="A"&&!e.target.id)document.body.classList.remove("mnav");});
+document.getElementById("m-lang").addEventListener("click",e=>{e.preventDefault();toggleLang();});
+document.getElementById("lang-btn").addEventListener("click",e=>{e.preventDefault();toggleLang();});
+function toggleLang(){
+  lang=lang==="en"?"ar":"en";
+  navStrip.classList.add("tearing");
+  applyLang();buildFold();
+  setTimeout(()=>{snakesInit();},60);
+  setTimeout(()=>navStrip.classList.remove("tearing"),980);
+}
+
+function boot(){
+  applyLang();buildFold();
+  masthead.classList.add("on");
+  document.getElementById("fold-wrap").classList.add("on");
+  document.getElementById("ticker").classList.add("show");
+  requestAnimationFrame(()=>{snakesInit();requestAnimationFrame(fieldLoop);});
+  if(window.__MERATH_ABOUT__){hydrate(window.__MERATH_ABOUT__);}
+  else{
+    fetch("https://ghjc1eyf.api.sanity.io/v2024-01-01/data/query/production?query="+encodeURIComponent('*[_id=="page-about"][0].about'))
+      .then(r=>r.json()).then(j=>{if(j&&j.result)hydrate(j.result);})
+      .catch(()=>{});
+  }
+}
+window.addEventListener("load",()=>{setTimeout(boot,40);});
+let rzt;window.addEventListener("resize",()=>{clearTimeout(rzt);rzt=setTimeout(()=>{buildFold();snakesInit();stripPlace();},250);});
+})();
+</script>
+</body>
+</html>
