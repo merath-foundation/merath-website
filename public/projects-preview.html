@@ -909,13 +909,13 @@ function seaInit(){
       const wv=Math.sign(sw)*Math.pow(Math.abs(sw),1+depth*1.1);
       const oy=A*wv;
       const ang=Math.max(-58,Math.min(58,Math.atan(A*k*Math.cos(k*x+phw))*57.3));
-      const crest=wv>0.55;                          /* foam at the top of the wave */
+      const crest=wv>0.4;                          /* foam at the top of the wave */
       let col,op,fs,ch; const r=rnd();
       if(crest){
         col=r<0.65?"#FCFAF3":(r<0.88?"#F3EBD9":"#E7B24A");
-        op=0.82; fs=6.6+rnd()*2; ch=rnd()<0.5?"\u0651":SEAMK[Math.floor(rnd()*SEAMK.length)];
+        op=0.9; fs=7.6+rnd()*2.6; ch=rnd()<0.5?"\u0651":SEAMK[Math.floor(rnd()*SEAMK.length)];
       }else{
-        col=lerpC("#94C1CB","#4C808F",depth); op=0.5+depth*0.2; fs=5.6+rnd()*1.5; ch=SEAMK[Math.floor(rnd()*SEAMK.length)];
+        col=lerpC("#6FA6B4","#2C5C6B",depth); op=0.44+depth*0.22; fs=5.8+rnd()*1.5; ch=SEAMK[Math.floor(rnd()*SEAMK.length)];
       }
       marks.push({x,oy,ch,fs,col,op,ang,ph:rnd()*6.28});
     }
