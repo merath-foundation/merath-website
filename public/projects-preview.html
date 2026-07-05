@@ -26,8 +26,8 @@
   .legend .lt{width:100%;font-size:9.5px;letter-spacing:.24em;color:var(--saff);margin-bottom:2px}
   .legend span{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;display:inline-block;color:var(--cream)}
   .legend .ab{font-weight:700}
-  .legend .lnote{width:100%;font-size:9px;letter-spacing:.04em;color:var(--cream);opacity:.72;margin-top:7px;text-transform:none}
-  .legend .lnum{opacity:.72;font-size:11px;margin-top:6px;max-width:72ch}
+  .legend .lnote{width:100%;font-size:12px;letter-spacing:.03em;color:var(--cream);opacity:.78;margin-top:9px;text-transform:none;line-height:1.5}
+  .legend .lnum{opacity:.72;font-size:13px;margin-top:7px;max-width:74ch}
   .legend i{width:11px;height:11px;background:var(--tc);display:inline-block;transform:rotate(45deg) scale(.85)}
   .pgrid{position:relative;z-index:4}
   .pbob{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .85s cubic-bezier(.3,.72,.24,1);animation:moor 7s ease-in-out infinite alternate}
@@ -49,11 +49,11 @@
     align-self:flex-start;padding:5px 10px 6px;clip-path:polygon(3px 0,100% 0,calc(100% - 3px) 50%,100% 100%,3px 100%,0 50%)}
   .dive .dv1 b{color:var(--lime);font-weight:500}
   /* ripples ring outward from the card's edges (anchored to .pf which fills the card) */
-  .ripples{position:absolute;left:8%;right:8%;bottom:-5px;height:8px;pointer-events:none;z-index:6}
+  .ripples{position:absolute;left:0;right:0;bottom:-4px;height:8px;pointer-events:none;z-index:6}
   .ripples i{position:absolute;bottom:0;width:20px;height:8px;margin-left:-10px;border:1.5px solid rgba(16,101,128,.75);border-radius:50%;opacity:0;transform:scale(.5);will-change:transform,opacity}
-  .ripples i:nth-child(1){left:5%}
-  .ripples i:nth-child(2){left:95%}
-  .ripples i:nth-child(3){left:5%}
+  .ripples i:nth-child(1){left:3%}
+  .ripples i:nth-child(2){left:97%}
+  .ripples i:nth-child(3){left:3%}
   .pcard:hover .ripples i{animation:brip 1.9s ease-out infinite}
   .pcard:hover .ripples i:nth-child(2){animation-delay:.6s}
   .pcard:hover .ripples i:nth-child(3){animation-delay:1.2s}
@@ -78,7 +78,7 @@
   /* the chart: a torn sea-map, in the page, proportional */
   .introrow{display:grid;grid-template-columns:minmax(0,1fr) clamp(220px,24vw,340px);gap:5vw;align-items:start}
   #chartdock{position:fixed;inset-inline-end:0;top:0;height:100vh;z-index:7;display:flex;align-items:center;justify-content:flex-end;pointer-events:none}
-  #chart{position:relative;background:var(--dcream);padding:27px 18px 76px 26px;width:clamp(214px,25vw,286px);pointer-events:auto;
+  #chart{position:relative;background:var(--dcream);padding:27px 4px 76px 26px;width:clamp(214px,25vw,286px);pointer-events:auto;
     filter:drop-shadow(-5px 4px 6px rgba(20,24,28,.14))}
   #chart .gtrack{fill:rgba(20,24,28,.13)}
   #chart .gfill{fill:var(--ink);opacity:.5;transform-box:fill-box;transform-origin:center top;transform:scaleY(0);transition:transform .85s .12s cubic-bezier(.3,.7,.2,1)}
@@ -263,7 +263,8 @@
   .pf{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--cream);box-shadow:inset 0 0 0 1.5px var(--ink);padding:17px 18px;display:flex;flex-direction:column;overflow:hidden;transition:box-shadow .55s ease}
   .pcard:hover .pf.front{box-shadow:none}
   .pcard:hover .pf.front{box-shadow:inset 0 0 0 1.5px transparent}
-  .pf::after{content:"";position:absolute;top:-1px;inset-inline-end:-1px;width:14px;height:14px;background:var(--dcream);border-inline-start:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);clip-path:polygon(100% 0,0 0,100% 100%)}
+  .pf::after{content:"";position:absolute;top:-1px;inset-inline-end:-1px;width:14px;height:14px;background:var(--dcream);border-inline-start:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);clip-path:polygon(100% 0,0 0,100% 100%);transition:opacity .45s ease}
+  .pcard:hover .pf.front::after{opacity:0}
   .pf.back{transform:rotateX(180deg);background:var(--lime)}
   .pnum{font-size:15px;letter-spacing:.3em;color:var(--saff);margin-bottom:10px}
   .par{font-size:24px;line-height:1.4;margin-bottom:6px}
@@ -877,13 +878,13 @@ function seaInit(){
     const r=c.getBoundingClientRect(), cy=r.top+scrollY, span=Math.max(1,seaEndY-shoreY);
     const dd=v=>Math.min(1,Math.max(0,(v-shoreY)/span));
     const d0=dd(cy+r.height*0.12), d1=dd(cy+r.height*0.95);
-    c.style.setProperty("--wtop",seaSurface(Math.min(1,d1+0.4)));
-    c.style.setProperty("--wmid",seaSurface((d0+d1)/2));
-    c.style.setProperty("--wbot",seaSurface(Math.max(0,d0-0.3)));
+    c.style.setProperty("--wtop",seaSurface(Math.min(1,d1+0.78)));
+    c.style.setProperty("--wmid",seaSurface(Math.min(1,(d0+d1)/2+0.42)));
+    c.style.setProperty("--wbot",seaSurface(Math.max(0.32,d0+0.06)));
   });
   const rnd=mkRnd(20260711);
   const phone=innerWidth<920;
-  const rowGap=phone?80:74, stepX=phone?18:16;
+  const rowGap=phone?52:46, stepX=phone?18:16;
   fieldY=shoreY+rowGap*1.1+4;              /* where the water's edge laps the beach */
   seaRows=[];seaBoats=[];
   /* the water itself — the colour of a submerged card */
@@ -898,7 +899,7 @@ function seaInit(){
   fieldPath(0);
   for(let y=fieldY+16;y<seaEndY;y+=rowGap){
     const depth=Math.min(1,Math.max(0,(y-fieldY)/Math.max(1,(seaEndY-fieldY))));
-    const A=6+depth*11+rnd()*4;                        /* wave height */
+    const A=10+depth*8+rnd()*4;                        /* wave height */
     const wl=125-depth*65+rnd()*70, k=6.283/wl, phw=rnd()*6.28;   /* staggered phase per row */
     const marks=[];
     const off=rnd()*stepX;
@@ -1054,7 +1055,7 @@ function seaStep(t){
     const yy=Math.sin(t/1500*b.sp+b.ph)*b.sway, hx=b.x, hy=b.y+yy;
     const wxb=hx-Math.cos(b.heading)*14, wyb=hy-Math.sin(b.heading)*14;
     b.wt++;
-    if(b.wt%4===0){b.wake.push({x:wxb,y:wyb,ch:WAKENUM[(Math.random()*WAKENUM.length)|0],age:0,wob:Math.random()*6.28}); if(b.wake.length>22)b.wake.shift();}
+    if(b.wt%4===0){b.wake.push({x:wxb,y:wyb,ch:WAKENUM[(Math.random()*WAKENUM.length)|0],age:0,wob:Math.random()*6.28}); if(b.wake.length>36)b.wake.shift();}
     for(let i=0;i<b.wake.length;i++){const w=b.wake[i]; w.age++; const op=Math.max(0,0.58-w.age*0.024);
       if(op>0.03){const wx=(w.x+Math.sin(t/240+w.wob)*2).toFixed(1), wy=(w.y+Math.cos(t/280+w.wob)*1.6).toFixed(1);
       wk+='<text x="'+wx+'" y="'+wy+'" font-size="8" fill="#FFFEF8" opacity="'+op.toFixed(2)+'">'+w.ch+"</text>";}}
