@@ -30,9 +30,10 @@
     clip-path:polygon(8px 0,calc(100% - 6px) 0,100% 12%,calc(100% - 7px) 26%,100% 43%,calc(100% - 5px) 58%,100% 74%,calc(100% - 8px) 88%,calc(100% - 2px) 100%,6px 100%,0 86%,7px 70%,1px 55%,8px 40%,2px 24%,9px 10%)}
   #nav-strip.tearing{animation:stripTear .9s steps(4,jump-none)}
   @keyframes stripTear{0%{transform:translateY(0) rotate(0)}30%{transform:translateY(-1.6px) rotate(.4deg)}55%{transform:translateY(1.2px) rotate(-.35deg)}80%{transform:translateY(-.8px) rotate(.2deg)}100%{transform:translateY(0) rotate(0)}}
-  #m-head{display:none}
-  #m-head a{color:var(--ink);font-size:13px;letter-spacing:.04em;cursor:pointer;text-decoration:none}
-  #m-head #m-lang{font-family:"Geeza Pro","IBM Plex Sans Arabic","Noto Naskh Arabic",serif;font-size:15px}
+  #m-head{display:none;background:var(--ink);padding:8px 15px 10px;gap:18px;
+    clip-path:polygon(5px 0,100% 0,calc(100% - 4px) 28%,100% 52%,calc(100% - 5px) 100%,4px 100%,0 68%,5px 34%)}
+  #m-head a{color:var(--cream);font-size:13px;letter-spacing:.04em;cursor:pointer;text-decoration:none}
+  #m-head #m-lang{font-family:"Geeza Pro","IBM Plex Sans Arabic","Noto Naskh Arabic",serif;font-size:15px;color:var(--cream)}
   #m-nav{position:fixed;top:0;left:0;right:0;z-index:14;background:var(--ink);padding:58px 28px 44px;transform:translateY(-104%);transition:transform .55s steps(6,jump-none);
     clip-path:polygon(0 0,100% 0,100% calc(100% - 12px),96% 100%,91% calc(100% - 10px),84% calc(100% - 2px),77% calc(100% - 11px),69% calc(100% - 3px),61% calc(100% - 12px),52% calc(100% - 4px),44% calc(100% - 11px),36% calc(100% - 2px),28% calc(100% - 10px),20% calc(100% - 3px),12% calc(100% - 12px),5% calc(100% - 4px),0 calc(100% - 10px))}
   body.mnav #m-nav{transform:none}
@@ -129,6 +130,14 @@
   .trow:hover::before{width:30px}
   .trow .nm{font-size:16.5px}
   .trow .alt{opacity:.5;font-size:12.5px}
+  .star{color:var(--saff);margin-inline-start:3px}
+  .astnote{font-size:12.5px;color:var(--saff);margin:-3vh 0 6vh;letter-spacing:.02em}
+  .tlist.small{max-width:460px}
+  .tlist.small .trow{padding:5px 0;gap:10px}
+  .tlist.small .trow::before{width:10px}
+  .tlist.small .trow:hover::before{width:18px}
+  .tlist.small .nm{font-size:13px}
+  .tlist.small .alt{font-size:11px}
   .tm-note{font-size:13.5px;line-height:1.85;max-width:56ch;opacity:.75;margin-bottom:3vh}
   .ctx{margin-top:9vh;max-width:60ch;border-inline-start:3px solid var(--saff);padding-inline-start:20px}
   .ctx h4{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--saff);margin-bottom:12px}
@@ -145,11 +154,11 @@
   .tk-tear{position:absolute;top:-7px;left:0;right:0;height:8px;background:var(--ink);clip-path:polygon(0 100%,2% 20%,5% 90%,9% 10%,13% 80%,18% 25%,23% 95%,28% 15%,33% 75%,38% 30%,44% 90%,49% 10%,55% 85%,60% 20%,66% 95%,71% 25%,77% 80%,82% 12%,88% 90%,93% 22%,97% 75%,100% 100%)}
   .tk-head{display:flex;align-items:center;gap:14px;padding:0 20px;flex:none;position:relative}
   .tk-head::after{content:"";position:absolute;inset-inline-end:0;top:9px;height:24px;width:1px;background:rgba(247,241,225,.28)}
-  #tk-clock{font-size:13px;letter-spacing:.16em;color:#E39B00}
-  .tk-lbl{font-size:15px}
+  #tk-clock{font-size:11.5px;letter-spacing:.16em;color:#E39B00}
+  .tk-lbl{font-size:13.5px}
   .tk-view{flex:1;overflow:hidden;height:42px}
   #tk-list{list-style:none;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
-  #tk-list li{height:42px;display:flex;align-items:center;gap:18px;padding:0 22px;font-size:13.5px;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
+  #tk-list li{height:42px;display:flex;align-items:center;gap:14px;padding:0 20px;font-size:clamp(9.5px,0.65vw + 6px,12px);letter-spacing:.11em;text-transform:uppercase;white-space:nowrap}
   #tk-list .tk-date{color:#E39B00;font-size:10.5px;letter-spacing:.16em;min-width:66px;flex:none}
   .tk-sub{position:absolute;inset-inline-start:20px;bottom:7px;font-size:9px;letter-spacing:.2em;opacity:0;transition:opacity .3s .1s;color:#E39B00}
   #ticker:hover .tk-sub,#ticker.xp .tk-sub{opacity:.95}
@@ -160,8 +169,18 @@
   footer .socials a{color:var(--cream)}
   footer .socials svg{width:19px;height:19px}
   footer .fx{max-width:60ch;margin:0 auto;font-size:14px;line-height:1.9}
-  footer .fl{margin-top:26px;font-size:11.5px;letter-spacing:.14em}
+  footer .fcredit{margin:22px auto 0;max-width:64ch;font-size:11px;line-height:1.9;opacity:.85}
+  footer .fcredit a{color:var(--cream)}
+  footer .fl{margin-top:14px;font-size:11.5px;letter-spacing:.14em}
 
+  [dir="rtl"] .pg-sub{font-size:17px}
+  [dir="rtl"] .facet h3{font-size:19px}
+  [dir="rtl"] .facet p{font-size:15px}
+  [dir="rtl"] .qa section p{font-size:16.5px}
+  [dir="rtl"] .team-intro{font-size:16.5px}
+  [dir="rtl"] .trow .nm{font-size:18px}
+  [dir="rtl"] .tm-note,[dir="rtl"] .ctx p{font-size:15px}
+  [dir="rtl"] #tk-list li{font-size:clamp(11px,0.65vw + 7.5px,13.5px)}
   @media (max-width:920px){
     :root{--textL:32px;--textR:28px}
     header{left:76px;right:18px;align-items:flex-start;padding-top:14px}
@@ -226,10 +245,10 @@
   <div id="team">
     <div class="team-head blk"><h2 data-i18n="tmT">Team</h2></div>
     <div class="team-intro blk" id="team-intro"></div>
-    <div class="sect-h blk" data-i18n="tmCur">Current team — in the studio</div>
     <div class="tlist blk" id="roster"></div>
-    <div class="sect-h blk" data-i18n="tmWider">Adjuncts &amp; advisors</div>
-    <div class="tlist blk" id="alist"></div>
+    <p class="astnote blk" data-i18n="astNote">* full-time in the studio, Tripoli.</p>
+    <div class="sect-h blk" data-i18n="tmFormer">Former members</div>
+    <div class="tlist small blk" id="flist"></div>
     <p class="tm-note blk" data-i18n="tmNote"></p>
     <p class="joinline blk" data-i18n="join"></p>
     <div class="ctx blk">
@@ -261,6 +280,7 @@
     <a href="https://www.facebook.com/merath.ly" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.23.2 2.23.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12z"/></svg></a>
   </div>
   <p class="fx" data-i18n="footContact">For new projects, suggestions for archival analysis or general inquiries, connect with us: info [at] merath.ly</p>
+  <p class="fcredit"><span data-i18n="footBuilt">Designed and built in-house at merath — running on Sanity, deployed in the open from a public GitHub repository.</span> <a href="https://github.com/merath-foundation/merath-website" target="_blank" rel="noopener">github.com/merath-foundation</a></p>
   <p class="fl" data-i18n="footRights">© merath 2026 · Tripoli, Libya · All rights reserved</p>
 </footer>
 
@@ -276,7 +296,8 @@ const CONTENT={
   tkSub:"MEMOIRS — THE LEDGER · WHAT HAPPENS, SET IN TIME",
   footContact:"For new projects, suggestions for archival analysis or general inquiries, connect with us: info [at] merath.ly",
   footRights:"© merath 2026 · Tripoli, Libya · All rights reserved",
-  tmT:"Team",tmCur:"Current team — in the studio",tmWider:"Adjuncts & advisors",
+  footBuilt:"Designed and built in-house at merath — running on Sanity, deployed in the open from a public GitHub repository.",
+  tmT:"Team",tmFormer:"Former members",astNote:"* full-time in the studio, Tripoli.",
   tmNote:"Everyone listed here has worked with merath over the long term, listed in order of joining. Many others joined us for shorter stretches — single projects, seasons of help — and we thank them all.",
   join:"We are always interested in hearing from people whose questions touch ours — apply [at] merath.ly",
   ctxT:"A note on context and funding",
@@ -290,7 +311,8 @@ const CONTENT={
   qa:[["Why we work this way","Cultural production in this region often creates its own conditions. At merath, we develop our own tools, build spaces for holding archives that are not held elsewhere, and pass on what we produce so that what follows can begin from what came before, not from zero."],
       ["What we are open to","Partnerships, interventions, invitations, and ways of thinking that move beyond the default settings of the present, and explore other ways of understanding and producing knowledge."]],
   teamIntro:["merath's team works in close quarters within an interconnected structure that extends from the production structure into the team's daily practice. Each project is understood as a shared process in which roles come together in a productive and collaborative way, with work passing between individuals as part of how the project itself takes shape.",
-    "The team is composed of individuals with diverse backgrounds and disciplines, including architecture, research, writing, graphic design, authorship, and art. Each discipline contributes to building the project from its own perspective, while remaining part of a shared vision."]
+    "The team is composed of individuals with diverse backgrounds and disciplines, including architecture, research, writing, graphic design, authorship, and art. Each discipline contributes to building the project from its own perspective, while remaining part of a shared vision.",
+    "We do not attach roles to names. Methods are swapped, each of us works across practices distinct from our own, and the work is shared in collective sessions — the authorship between us is difficult to disentangle, and purposefully so."]
  },
  ar:{
   wm:"ميراث",nProjects:"المشاريع",nPublications:"المنشورات",nProgrammes:"البرامج العامة",nArt:"الفن والإنتاج",nStudies:"الدراسات",nArchives:"الأرشيفات",nAbout:"من نحن",mMenu:"القائمة",
@@ -300,7 +322,8 @@ const CONTENT={
   tkSub:"مُذَكِّرات — السِّجل · ما يحدث، مُثبتاً في الزمن",
   footContact:"بشأن المشاريع الجديدة أو مقترحات التحليل الأرشيفي أو الاستفسارات العامة، تواصلوا معنا: info [at] merath.ly",
   footRights:"© ميراث 2026 · طرابلس، ليبيا · جميع الحقوق محفوظة",
-  tmT:"الفريق",tmCur:"الفريق الحالي — في الاستوديو",tmWider:"مساعدون ومستشارون",
+  footBuilt:"صُمّم هذا الموقع وبُني داخلياً في ميراث — يعمل على Sanity ويُنشر علناً من مستودع GitHub عام.",
+  tmT:"الفريق",tmFormer:"أعضاء سابقون",astNote:"* متفرّغون في الاستوديو، طرابلس.",
   tmNote:"كل من يَرِد اسمه هنا عمل مع ميراث على المدى الطويل، مرتَّبين بحسب تاريخ الانضمام، وهناك كثيرون آخرون رافقونا لفترات أقصر — في مشاريع مفردة أو مواسم عمل — لهم منا جميعاً الشكر.",
   join:"يسعدنا دائماً أن نسمع ممن تلامس أسئلتُهم أسئلتَنا — apply [at] merath.ly",
   ctxT:"كلمة في السياق والتمويل",
@@ -314,27 +337,30 @@ const CONTENT={
   qa:[["لماذا نعمل بهذه الطريقة","الإنتاج الثقافي في هذه المنطقة غالباً ما يخلق شروطه بنفسه، لهذا، في ميراث نعمل على تطوير أدواتنا الخاصة، وبناء مساحات لحفظ أرشيفات لا يحفظها أحد في موضعٍ آخر، نمرر المعرفة التي ننتجها بحيث تُبنى المراحل التالية على ما سبقها، لا من نقطة الصفر."],
       ["ما الذي نفتح له المجال","تعمل ميراث بصورة مفتوحة على الشراكات، والمداخلات، والدعوات، وعلى إنتاج مسارات تفكير تتجاوز الإعدادات التقليدية للحاضر، وتستكشف طرقاً أخرى لفهم المعرفة وإنتاجها."]],
   teamIntro:["فريقُ ميراث مجموعة تعمل عن قُرب، ضمن نمط مترابط يمتد من مدار الإنتاج إلى طريقة العمل اليومية، يُنظر إلى كل مشروع بوصفه عملية مشتركة تتكامل فيها الأدوار بشكل إنتاجي متناغم، حيث يَنتقل العمل بين الأفراد باعتباره جزءاً من تكوّن المشروع نفسه.",
-    "يتكوّن الفريق من أفراد ذوي خلفيات وتخصصات متعددة تشمل الهندسة المعمارية، البحث، الكتابة، التصميم الجرافيكي، التأليف، الفن، بحيث يساهم كل تخصص في بناء المشروع من زاويته الخاصة ضمن رؤية واحدة متكاملة."]
+    "يتكوّن الفريق من أفراد ذوي خلفيات وتخصصات متعددة تشمل الهندسة المعمارية، البحث، الكتابة، التصميم الجرافيكي، التأليف، الفن، بحيث يساهم كل تخصص في بناء المشروع من زاويته الخاصة ضمن رؤية واحدة متكاملة.",
+    "لا نُلحق الأدوار بالأسماء؛ نتبادل المناهج، ويعمل كلٌّ منا عبر ممارساتٍ غير ممارسته، ونتقاسم العمل في جلساتٍ جماعية — حيث يصعب فكُّ تشابك التأليف بيننا، وذلك عن قصد."]
  }
 };
 /* names only, top-to-bottom, ordered by first joining; AR transliterations [Alla review] */
-const TEAM_CURRENT=[
- {en:"Moad Musbahi",ar:"معاذ المصباحي"},
- {en:"Hasan Issa",ar:"حسن عيسى"},
- {en:"Alla Abu El-Nour Basher",ar:"الاء ابوالنور بشير"},
- {en:"Lina Abuharrus",ar:"لينة ابوهروس"},
- {en:"Fatima Abdullah Alwaer",ar:"فاطمة عبدالله الواعر"}
+/* one team list — 'add online' minus former; join order; * = full-time in the studio (Office Team) */
+/* one team list — 'add online'; join order; * = full-time in the studio */
+const TEAM_MAIN=[
+ {en:"Moad Musbahi",ar:"معاذ المصباحي",st:true},
+ {en:"Amel Bensalim",ar:"أمل بن سالم",st:false},
+ {en:"Rawand Alhares",ar:"راوند سليمان الحارس",st:false},
+ {en:"Mlak Elbuzidi",ar:"ملاك البوزيدي",st:false},
+ {en:"Malak L'Ajeli",ar:"ملك نجيب العجيلي",st:false},
+ {en:"Halluma Seklani",ar:"حلومة السكلاني",st:false},
+ {en:"Reda Tamtam",ar:"رضا تمتام",st:false},
+ {en:"Amira Zurgani",ar:"أميرة الزرقاني",st:false},
+ {en:"Alae El Ouazzani",ar:"آلاء الوزاني",st:false},
+ {en:"Hasan Issa",ar:"حسن عيسى",st:true},
+ {en:"Alla Abu El-Nour Basher",ar:"الاء ابوالنور بشير",st:true},
+ {en:"Lina Abuharrus",ar:"لينة ابوهروس",st:true},
+ {en:"Fatima Abdullah Alwaer",ar:"فاطمة عبدالله الواعر",st:true}
 ];
-const TEAM_WIDER=[
+const TEAM_FORMER=[
  {en:"Hala Ali",ar:"هلا علي قناوي"},
- {en:"Amel Bensalim",ar:"أمل بن سالم"},
- {en:"Rawand Alhares",ar:"راوند سليمان الحارس"},
- {en:"Mlak Elbuzidi",ar:"ملاك البوزيدي"},
- {en:"Malak L'Ajeli",ar:"ملك نجيب العجيلي"},
- {en:"Halluma Seklani",ar:"حلومة السكلاني"},
- {en:"Reda Tamtam",ar:"رضا تمتام"},
- {en:"Amira Zurgani",ar:"أميرة الزرقاني"},
- {en:"Alae El Ouazzani",ar:"آلاء الوزاني"},
  {en:"Yousef El-Galabi",ar:"يوسف الجيلابي"}
 ];
 const TKD={
@@ -355,8 +381,8 @@ let lang="en";
 function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");}
 function hydrate(D){if(!D)return;try{
   ["en","ar"].forEach(l=>{const src=D[l];if(!src)return;Object.keys(src).forEach(k=>{CONTENT[l][k]=src[k];});});
-  if(D.teamCurrent&&D.teamCurrent.length){TEAM_CURRENT.length=0;D.teamCurrent.forEach(m=>TEAM_CURRENT.push(m));}
-  if(D.teamWider&&D.teamWider.length){TEAM_WIDER.length=0;D.teamWider.forEach(m=>TEAM_WIDER.push(m));}
+  if(D.teamMain&&D.teamMain.length){TEAM_MAIN.length=0;D.teamMain.forEach(m=>TEAM_MAIN.push(m));}
+  if(D.teamFormer&&D.teamFormer.length){TEAM_FORMER.length=0;D.teamFormer.forEach(m=>TEAM_FORMER.push(m));}
   if(D.searchPool&&D.searchPool.length){POOL.length=0;D.searchPool.forEach(t=>POOL.push(t));}
   if(D.entries&&D.entries.length){TKD.en=D.entries.map(e=>[e.dateLabel,e.textEn]);TKD.ar=D.entries.map(e=>[e.dateLabel,e.textAr]);}
   applyLang();
@@ -375,9 +401,9 @@ function applyLang(){
   document.getElementById("qa").innerHTML=C.qa.map(q=>'<section class="blk"><h2>'+esc(q[0])+"</h2><p>"+esc(q[1])+"</p></section>").join("");
   document.getElementById("team-intro").innerHTML=C.teamIntro.map(p=>"<p>"+esc(p)+"</p>").join("");
   const row=(m,i)=>{const nm=lang==="ar"?(m.ar||m.en):m.en;const alt=lang==="ar"?m.en:(m.ar||"");
-    return '<div class="trow" style="--mc:'+MC[i%MC.length]+'"><span class="nm">'+esc(nm)+"</span>"+(alt?'<span class="alt">'+esc(alt)+"</span>":"")+"</div>";};
-  document.getElementById("roster").innerHTML=TEAM_CURRENT.map(row).join("");
-  document.getElementById("alist").innerHTML=TEAM_WIDER.map(row).join("");
+    return '<div class="trow" style="--mc:'+MC[i%MC.length]+'"><span class="nm">'+esc(nm)+(m.st?'<span class="star">*</span>':"")+"</span>"+(alt?'<span class="alt">'+esc(alt)+"</span>":"")+"</div>";};
+  document.getElementById("roster").innerHTML=TEAM_MAIN.map(row).join("");
+  document.getElementById("flist").innerHTML=TEAM_FORMER.map(row).join("");
   tkBuild();
   const lb=document.getElementById("lang-btn");lb.textContent=lang==="en"?"ع":"EN";
   lb.style.fontFamily=lang==="en"?'"Geeza Pro","IBM Plex Sans Arabic",serif':"inherit";
