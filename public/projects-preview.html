@@ -28,6 +28,8 @@
   .legend .ab{font-weight:700}
   .legend .lnote{width:100%;font-size:12px;letter-spacing:.03em;color:var(--cream);opacity:.78;margin-top:9px;text-transform:none;line-height:1.5}
   .legend .lnum{opacity:.72;font-size:13px;margin-top:7px;max-width:74ch}
+  .legend span[data-ty]{cursor:pointer;transition:opacity .25s}
+  .legend span[data-ty].on .ab{text-decoration:underline;text-underline-offset:3px}
   .legend i{width:11px;height:11px;background:var(--tc);display:inline-block;transform:rotate(45deg) scale(.85)}
   .pgrid{position:relative;z-index:4}
   .pbob{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .85s cubic-bezier(.3,.72,.24,1);animation:moor 7s ease-in-out infinite alternate}
@@ -118,7 +120,7 @@
   .cnote-top{color:var(--saff);font-size:15.5px;letter-spacing:.02em;line-height:1.95;max-width:58ch;margin-top:.9em;margin-bottom:0}
   
   [dir="rtl"] .pg-sub{font-size:17px}
-  [dir="rtl"] .par{font-size:25.5px}
+  [dir="rtl"] .par{font-size:32px}
   [dir="rtl"] .pen{font-size:14px}
   [dir="rtl"] .abst{font-size:12.5px}
   [dir="rtl"] .dive .dv1{font-size:12.5px}
@@ -261,13 +263,13 @@
   .pgrid>*:nth-child(4n+3){margin-top:14px}
   .pgrid>*:nth-child(4n){margin-top:52px}
   .pf{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--cream);box-shadow:inset 0 0 0 1.5px var(--ink);padding:17px 18px;display:flex;flex-direction:column;overflow:hidden;transition:box-shadow .55s ease}
-  .pcard:hover .pf.front{box-shadow:none}
+  .pcard:hover .pf.front{box-shadow:inset 0 1.6px 0 0 var(--ink)}
   .pcard:hover .pf.front{box-shadow:inset 0 0 0 1.5px transparent}
   .pf::after{content:"";position:absolute;top:-1px;inset-inline-end:-1px;width:14px;height:14px;background:var(--dcream);border-inline-start:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);clip-path:polygon(100% 0,0 0,100% 100%);transition:opacity .45s ease}
   .pcard:hover .pf.front::after{opacity:0}
   .pf.back{transform:rotateX(180deg);background:var(--lime)}
   .pnum{font-size:15px;letter-spacing:.3em;color:var(--saff);margin-bottom:10px}
-  .par{font-size:24px;line-height:1.4;margin-bottom:6px}
+  .par{font-size:30px;line-height:1.35;margin-bottom:6px}
   .pen{font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;opacity:.8;margin-top:auto}
   .pzig{display:block;width:78%;height:9px;overflow:hidden;margin-top:10px}
   .pzig path{fill:none;stroke-width:2;animation:zm 8s linear infinite}
@@ -530,9 +532,8 @@ function applyLang(){
      +'<svg class="pzig" viewBox="0 0 260 10" preserveAspectRatio="none"><path d="'+pat+'" stroke="'+MC[i%MC.length]+'" stroke-dasharray="8 6"/></svg>'
      +'<div class="pen">'+esc(t2)+'</div>'
      +'<div class="water"></div>'
-     +'<div class="ripples"><i></i><i></i><i></i></div>'
      +'<div class="dive"><div class="abst">'+esc((ABST[p.n]||{})[lang]||"")+'</div><div class="dv1"><b>→</b> '+esc(C.openLbl)+' '+p.n+'</div></div>'
-     +'</div></div></a>'
+     +'</div><div class="ripples"><i></i><i></i><i></i></div></div></a>'
      +((postAfter[i]!=null&&innerWidth>920)?'<div class="postcell">'+postAfter[i].map(pi=>TAGS[pi]?tagHTML(TAGS[pi]):"").join("")+"</div>":"");
   }).join("");
   applyTag();
@@ -710,6 +711,15 @@ function applyTag(){
     if(activeTag){ if(tl.includes(activeTag))c.classList.add("risen"); else c.classList.add("sunk"); }
   });
 }
+let activeType=null;
+document.addEventListener("click",e=>{
+  const sp=e.target.closest("#legend span[data-ty]");if(!sp)return;
+  const ty=sp.dataset.ty; activeType=activeType===ty?null:ty; activeTag=null;
+  document.querySelectorAll(".tag").forEach(x=>x.classList.remove("on"));
+  document.querySelectorAll("#legend span[data-ty]").forEach(x=>x.classList.toggle("on",x.dataset.ty===activeType));
+  const proj=new Set(OUT.filter(o=>o.ty===activeType).map(o=>o.p));
+  document.querySelectorAll(".pcard").forEach(c=>{c.classList.remove("sunk","risen"); if(activeType){ if(proj.has(c.dataset.n))c.classList.add("risen"); else c.classList.add("sunk"); }});
+});
 let postTies=[];
 function buildPosts(){
   const posts=document.getElementById("posts");
@@ -776,8 +786,8 @@ function legendRender(){
   const ab={"Publication":"Pub","Exhibition":"Exh","Artwork":"Art","Archival Records":"Arc","Training/Workshop":"Tra","Digital Production":"Dig","Single Event":"Sin"};
   const C=CONTENT[lang];
   document.getElementById("legend").innerHTML='<div class="lt">'+(lang==="ar"?"أنواع المخرجات":"OUTPUT TYPES")+"</div>"
-   +TYPEL.map(T=>{ if(lang==="ar"){return '<span><b class="ab" style="color:'+T[1]+'">'+(ab[T[0]]||"")+'</b> '+esc(T[2])+"</span>";}
-     const nm=T[0]; return '<span><b class="ab" style="color:'+T[1]+'">'+esc(nm.slice(0,3))+'</b>'+esc(nm.slice(3))+"</span>";}).join("")
+   +TYPEL.map(T=>{ if(lang==="ar"){return '<span data-ty="'+T[0]+'"><b class="ab" style="color:'+T[1]+'">'+(ab[T[0]]||"")+'</b> '+esc(T[2])+"</span>";}
+     const nm=T[0]; return '<span data-ty="'+T[0]+'"><b class="ab" style="color:'+T[1]+'">'+esc(nm.slice(0,3))+'</b>'+esc(nm.slice(3))+"</span>";}).join("")
    +'<div class="lnote">'+(lang==="ar"?"يُفهرَس كل مخرج بالمشروع ونوعه ورقمه — مثال 02_Pub_12":"every output is indexed by project · type · number — e.g. 02_Pub_12")+"</div>"
    +'<div class="lnote lnum">'+esc(C.chartNote)+"</div>";
 }
@@ -878,13 +888,13 @@ function seaInit(){
     const r=c.getBoundingClientRect(), cy=r.top+scrollY, span=Math.max(1,seaEndY-shoreY);
     const dd=v=>Math.min(1,Math.max(0,(v-shoreY)/span));
     const d0=dd(cy+r.height*0.12), d1=dd(cy+r.height*0.95);
-    c.style.setProperty("--wtop",seaSurface(Math.min(1,d1+0.78)));
-    c.style.setProperty("--wmid",seaSurface(Math.min(1,(d0+d1)/2+0.42)));
-    c.style.setProperty("--wbot",seaSurface(Math.max(0.32,d0+0.06)));
+    c.style.setProperty("--wtop",seaSurface(Math.max(0.14,d0-0.08)));
+    c.style.setProperty("--wmid",seaSurface(Math.min(1,(d0+d1)/2+0.3)));
+    c.style.setProperty("--wbot",seaSurface(Math.min(1,d1+0.72)));
   });
   const rnd=mkRnd(20260711);
   const phone=innerWidth<920;
-  const rowGap=phone?52:46, stepX=phone?18:16;
+  const rowGap=phone?54:48, stepX=phone?13:11;
   fieldY=shoreY+rowGap*1.1+4;              /* where the water's edge laps the beach */
   seaRows=[];seaBoats=[];
   /* the water itself — the colour of a submerged card */
@@ -897,14 +907,14 @@ function seaInit(){
    +'<path id="shoreB2" fill="#DED0AC" opacity="0.8"/>'
    +'<path id="shoreB1" fill="#CABC94" opacity="0.72"/>';
   fieldPath(0);
-  for(let y=fieldY+16;y<seaEndY;y+=rowGap){
+  for(let y=fieldY+50;y<seaEndY;y+=rowGap){
     const depth=Math.min(1,Math.max(0,(y-fieldY)/Math.max(1,(seaEndY-fieldY))));
     const A=10+depth*8+rnd()*4;                        /* wave height */
     const wl=125-depth*65+rnd()*70, k=6.283/wl, phw=rnd()*6.28;   /* staggered phase per row */
     const marks=[];
     const off=rnd()*stepX;
     for(let x=off;x<seaW;x+=stepX){
-      if((x<236&&y<fieldY+60)||cardInside(x,y))continue;
+      if((x<236&&y<fieldY+90)||cardInside(x,y))continue;
       const sw=Math.sin(k*x+phw);
       const wv=Math.sign(sw)*Math.pow(Math.abs(sw),1+depth*1.1);
       const oy=A*wv;
@@ -912,10 +922,10 @@ function seaInit(){
       const crest=wv>0.4;                          /* foam at the top of the wave */
       let col,op,fs,ch; const r=rnd();
       if(crest){
-        col=r<0.65?"#FCFAF3":(r<0.88?"#F3EBD9":"#E7B24A");
-        op=0.9; fs=7.6+rnd()*2.6; ch=rnd()<0.5?"\u0651":SEAMK[Math.floor(rnd()*SEAMK.length)];
+        col=r<0.55?"#FCFAF6":(r<0.85?"#E9EDED":"#CDD5D6");
+        op=0.92; fs=6.8+rnd()*2; ch=rnd()<0.5?"\u0651":SEAMK[Math.floor(rnd()*SEAMK.length)];
       }else{
-        col=lerpC("#6FA6B4","#2C5C6B",depth); op=0.44+depth*0.22; fs=5.8+rnd()*1.5; ch=SEAMK[Math.floor(rnd()*SEAMK.length)];
+        col=lerpC("#EBEFEF","#9EAAAD",depth); op=0.62+depth*0.16; fs=5.6+rnd()*1.4; ch=SEAMK[Math.floor(rnd()*SEAMK.length)];
       }
       marks.push({x,oy,ch,fs,col,op,ang,ph:rnd()*6.28});
     }
