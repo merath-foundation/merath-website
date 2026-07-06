@@ -86,6 +86,7 @@
   #chart .gfill{fill:var(--ink);opacity:.5;transform-box:fill-box;transform-origin:center top;transform:scaleY(0);transition:transform .85s .12s cubic-bezier(.3,.7,.2,1)}
   #chart:hover .gfill{transform:scaleY(1)}
   [dir="rtl"] #chartdock{justify-content:flex-start}
+  [dir="rtl"] #chart{padding:27px 26px 76px 4px;filter:drop-shadow(5px 4px 6px rgba(20,24,28,.14))}
   #chart .ct{display:none}
   #chart .ctop{font-size:10px;letter-spacing:.1em;color:var(--ink);opacity:0;text-transform:uppercase;text-align:center;line-height:1.5;margin-bottom:8px;transition:opacity .45s .2s}
   #chart:hover .ctop{opacity:.82}
@@ -121,8 +122,8 @@
   
   [dir="rtl"] .pg-sub{font-size:17px}
   [dir="rtl"] .par{font-size:32px}
-  [dir="rtl"] .pen{font-size:14px}
-  [dir="rtl"] .abst{font-size:12.5px}
+  [dir="rtl"] .pen{font-size:8px}
+  [dir="rtl"] .abst{font-size:15.5px}
   [dir="rtl"] .dive .dv1{font-size:12.5px}
   [dir="rtl"] .slip{font-size:11px}
   [dir="rtl"] .slip.pub{font-size:8px}
@@ -894,7 +895,7 @@ function seaInit(){
   });
   const rnd=mkRnd(20260711);
   const phone=innerWidth<920;
-  const rowGap=phone?54:48, stepX=phone?13:11;
+  const rowGap=phone?72:64, stepX=phone?13:11;
   fieldY=shoreY+rowGap*1.1+4;              /* where the water's edge laps the beach */
   seaRows=[];seaBoats=[];
   /* the water itself — the colour of a submerged card */
@@ -922,10 +923,10 @@ function seaInit(){
       const crest=wv>0.4;                          /* foam at the top of the wave */
       let col,op,fs,ch; const r=rnd();
       if(crest){
-        col=r<0.55?"#FCFAF6":(r<0.85?"#E9EDED":"#CDD5D6");
-        op=0.92; fs=6.8+rnd()*2; ch=rnd()<0.5?"\u0651":SEAMK[Math.floor(rnd()*SEAMK.length)];
+        col=r<0.55?"#FCFAF6":(r<0.85?"#EEF1F1":"#D8DEDF");
+        op=0.78; fs=6.8+rnd()*2; ch=rnd()<0.5?"\u0651":SEAMK[Math.floor(rnd()*SEAMK.length)];
       }else{
-        col=lerpC("#EBEFEF","#9EAAAD",depth); op=0.62+depth*0.16; fs=5.6+rnd()*1.4; ch=SEAMK[Math.floor(rnd()*SEAMK.length)];
+        col=lerpC("#F4F6F6","#C6CFD0",depth); op=0.5+depth*0.1; fs=5.6+rnd()*1.4; ch=SEAMK[Math.floor(rnd()*SEAMK.length)];
       }
       marks.push({x,oy,ch,fs,col,op,ang,ph:rnd()*6.28});
     }
@@ -1112,6 +1113,7 @@ function chartRender(){
   cs.innerHTML=h;
   cs.onmouseover=e=>{const g=e.target.closest(".isl");const cb=document.querySelector("#chart .cbot");if(g&&cb){cb.textContent=g.dataset.n+" \u2014 "+g.dataset.t1;cb.classList.add("lit");}};
   cs.onmouseleave=()=>{const cb=document.querySelector("#chart .cbot");if(cb){cb.textContent="";cb.classList.remove("lit");}};
+  const _cd=document.getElementById("chart"); if(_cd)_cd.style.clipPath=chartClip(chartOpen);
 }
 document.addEventListener("click",e=>{
   const g=e.target.closest(".isl");if(!g)return;
@@ -1130,7 +1132,8 @@ function chartClip(open){
   for(let i=CHART_BOT.length-1;i>=0;i--)if(CHART_BOT[i][0]>L)pts.push(CHART_BOT[i]);
   pts.push([L,by]);
   const ln=9, jg=Math.min(1,open+0.12); for(let i=1;i<ln;i++)pts.push([L+(((i*23)%7)/7*3.2)*jg,by-(by-ty)*i/ln]);
-  return "polygon("+pts.map(p=>p[0].toFixed(1)+"% "+p[1].toFixed(1)+"%").join(",")+")";
+  const _ar=(typeof lang!=="undefined"&&lang==="ar");
+  return "polygon("+pts.map(p=>(_ar?100-p[0]:p[0]).toFixed(1)+"% "+p[1].toFixed(1)+"%").join(",")+")";
 }
 let chartOpen=0, chartTimer=null;
 function tearTo(target){
