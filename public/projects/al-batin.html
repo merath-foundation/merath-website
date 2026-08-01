@@ -473,8 +473,8 @@ function setLang(l){
   const strands=document.querySelectorAll('#nav .strand');
   strands.forEach((s,i)=>{s.textContent=ar?(LANG.ar.strand[i]||s.textContent):enHTML['strand'+i];});
   /* status band */
-  _qs('#bstatus .tnode.now').innerHTML=ar?('<i></i>'+LANG.ar.st_now_line):enHTML.st_now_line;
-  _qs('#bstatus .tnode.next').innerHTML=ar?(LANG.ar.st_next_line+' <b>→</b><i></i>'):enHTML.st_next_line;
+  if(_qs('#bstatus .tnode.now'))_qs('#bstatus .tnode.now').innerHTML=ar?('<i></i>'+LANG.ar.st_now_line):enHTML.st_now_line;
+  if(_qs('#bstatus .tnode.next'))_qs('#bstatus .tnode.next').innerHTML=ar?(LANG.ar.st_next_line+' <b>→</b><i></i>'):enHTML.st_next_line;
   const stNow=_qs('#bstatus .st.now'), stNext=_qs('#bstatus .st.next');
   if(stNow){stNow.querySelector('.stk').textContent=ar?LANG.ar.st_now_k:enHTML.st_now_k;
     stNow.querySelector('.stx').textContent=ar?LANG.ar.st_now_x:enHTML.st_now_x;
@@ -515,13 +515,13 @@ function _captureEN(){
   document.querySelectorAll('nav.nav a.full').forEach((a,i)=>enHTML['navfull'+i]=a.textContent);
   document.querySelectorAll('#nav a').forEach((a,i)=>{const sp=a.querySelector('span:last-child');enHTML['side'+i]=sp?sp.textContent:'';});
   document.querySelectorAll('#nav .strand').forEach((s,i)=>enHTML['strand'+i]=s.textContent);
-  enHTML.st_now_line=_qs('#bstatus .tnode.now').innerHTML;
-  enHTML.st_next_line=_qs('#bstatus .tnode.next').innerHTML;
-  const sN=_qs('#bstatus .st.now'), sX=_qs('#bstatus .st.next');
-  enHTML.st_now_k=sN.querySelector('.stk').textContent; enHTML.st_now_x=sN.querySelector('.stx').textContent;
-  enHTML.st_now_h=sN.querySelector('.sth').textContent; enHTML.st_now=sN.querySelector('.h').textContent;
-  enHTML.st_next_k=sX.querySelector('.stk').textContent; enHTML.st_next_x=sX.querySelector('.stx').textContent;
-  enHTML.st_next_h=sX.querySelector('.sth').textContent; enHTML.st_next=sX.querySelector('.h').textContent;
+  const _tnN=_qs('#bstatus .tnode.now'), _tnX=_qs('#bstatus .tnode.next');
+  enHTML.st_now_line=_tnN?_tnN.innerHTML:''; enHTML.st_next_line=_tnX?_tnX.innerHTML:'';
+  const sN=_qs('#bstatus .st.now')||document.createElement('div'), sX=_qs('#bstatus .st.next')||document.createElement('div');
+  enHTML.st_now_k=(sN.querySelector('.stk')||{}).textContent; enHTML.st_now_x=(sN.querySelector('.stx')||{}).textContent;
+  enHTML.st_now_h=(sN.querySelector('.sth')||{}).textContent; enHTML.st_now=(sN.querySelector('.h')||{}).textContent;
+  enHTML.st_next_k=(sX.querySelector('.stk')||{}).textContent; enHTML.st_next_x=(sX.querySelector('.stx')||{}).textContent;
+  enHTML.st_next_h=(sX.querySelector('.sth')||{}).textContent; enHTML.st_next=(sX.querySelector('.h')||{}).textContent;
   const u1c=sN.querySelector('.updated'),u2c=sX.querySelector('.updated');
   enHTML.updated_now=u1c?u1c.innerHTML:''; enHTML.updated_next=u2c?u2c.innerHTML:'';
   const hint=_qs('#net .hint');enHTML.net_hint=hint?hint.textContent:'';
