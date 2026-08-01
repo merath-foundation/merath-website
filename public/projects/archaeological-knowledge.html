@@ -275,6 +275,25 @@ footer.site-foot .fl{margin-top:26px;font-size:11.5px;letter-spacing:.14em}
       threw the wordmark and nav to the same side. */
 [dir="rtl"] .wm{font-family:inherit;font-size:19px;line-height:inherit}
 </style>
+<style>/* merath — the side index and the text keep out of each other's way */
+@media(min-width:1041px){
+  :root{--rail:270px;--rail-gap:24px}
+  #nav{
+    width:var(--rail);box-sizing:border-box;
+    max-height:100vh;overflow-y:auto;overscroll-behavior:contain;
+    justify-content:safe center;
+  }
+  #nav::-webkit-scrollbar{width:0;height:0}
+  #nav{scrollbar-width:none}
+  #nav a{align-items:flex-start}
+  #nav a span:last-child{overflow-wrap:anywhere}
+  #scene{
+    margin-inline-start:max(calc(var(--rail) + var(--rail-gap)), calc((100% - 1180px)/2));
+    margin-inline-end:auto;
+    max-width:min(1180px, calc(100% - var(--rail) - var(--rail-gap) - 24px));
+  }
+}
+</style>
 </head>
 <body>
 <div id="deep"></div><div class="ray r1"></div><div class="ray r2"></div><div class="ray r3"></div><div id="parts"></div>
@@ -4519,5 +4538,89 @@ body.leaving #chartdock,body.leaving #ticker{transition:opacity 320ms ease-in;op
     if(document.body.classList.contains('mopen')&&!e.target.closest('nav.nav')&&e.target!==b)
       document.body.classList.remove('mopen');});
 })();</script>
+<script>/* merath — remember the reader's language */
+(function(){
+  var KEY='merath.lang';
+
+  /* Read the stored choice FIRST, before anything else in this script runs.
+   * Every page calls its own applyLang() during boot, which writes
+   * <html lang="en">. If the recorder were listening by then it would save
+   * that "en" over the reader's stored "ar", and the restore below would
+   * find nothing to do — the preference would be erased by the very code
+   * meant to honour it. Capturing it here closes that window. */
+  var want=null; try{want=localStorage.getItem(KEY);}catch(e){}
+
+  /* …and stay silent until the restore has settled, so the page's own boot
+   * cannot be mistaken for the reader changing their mind. */
+  var armed=false;
+
+  function cur(){
+    var l=(document.documentElement.getAttribute('lang')||'en').toLowerCase();
+    return l.indexOf('ar')===0?'ar':'en';
+  }
+  function save(v){ if(!armed)return; try{localStorage.setItem(KEY,v);}catch(e){} }
+
+  /* Record every change once armed, however it was made. */
+  try{
+    new MutationObserver(function(){save(cur());})
+      .observe(document.documentElement,{attributes:true,attributeFilter:['lang','dir']});
+  }catch(e){}
+
+  /* A real click from the reader always counts, whenever it happens. */
+  document.addEventListener('click',function(e){
+    var t=e.target;
+    if(t&&t.closest&&t.closest('#lang-btn,#lang,#m-lang')){armed=true;save(cur());}
+  },true);
+
+  /* The control differs per page: the section pages use #lang-btn (with
+   * #m-lang in the mobile drawer), the project detail shell uses #lang. */
+  function control(){
+    return document.getElementById('lang-btn')
+        || document.getElementById('lang')
+        || document.getElementById('m-lang');
+  }
+  var tries=0;
+  function restore(){
+    if(!want||want===cur()){armed=true;return;}
+    var b=control();
+    if(!b){ if(tries++<20)return setTimeout(restore,100); armed=true; return; }
+    b.click();
+    /* If the page finishes booting after us and resets to English, put it
+     * back — but only a few times, so a page that genuinely refuses Arabic
+     * cannot spin. */
+    if(tries++<4)return setTimeout(restore,250);
+    armed=true;
+  }
+  if(document.readyState==='complete')setTimeout(restore,60);
+  else addEventListener('load',function(){setTimeout(restore,60);});
+})();
+</script>
+<script>/* merath — keep the painted ground as tall as the page */
+(function(){
+  if(!window.ResizeObserver)return;
+  var last=0,timer=null,fired=0;
+  function height(){
+    return Math.max(document.body?document.body.scrollHeight:0,
+                    document.documentElement.scrollHeight);
+  }
+  function settle(){
+    var h=height();
+    if(Math.abs(h-last)<8)return;      /* ignore sub-pixel churn */
+    last=h;
+    if(fired>12)return;                /* never oscillate forever */
+    clearTimeout(timer);
+    timer=setTimeout(function(){
+      fired++;
+      window.dispatchEvent(new Event('resize'));
+    },140);                            /* longer than the pages' own debounce */
+  }
+  try{new ResizeObserver(settle).observe(document.body);}catch(e){}
+  addEventListener('load',function(){last=height();setTimeout(settle,300);});
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){setTimeout(settle,50);});
+  /* Mobile browsers collapse the address bar mid-scroll, which changes the
+   * visual viewport without always firing a window resize. */
+  if(window.visualViewport)visualViewport.addEventListener('resize',settle);
+})();
+</script>
 </body>
 </html>
