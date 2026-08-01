@@ -523,12 +523,12 @@ function setLang(l){
   if(stNow){stNow.querySelector('.stk').textContent=ar?LANG.ar.st_now_k:enHTML.st_now_k;
     stNow.querySelector('.stx').textContent=ar?LANG.ar.st_now_x:enHTML.st_now_x;
     stNow.querySelector('.sth').textContent=ar?LANG.ar.st_now_h:enHTML.st_now_h;
-    stNow.querySelector('.h').textContent=ar?LANG.ar.st_now:enHTML.st_now;
+    stNow.querySelector('.h').innerHTML=ar?LANG.ar.st_now:enHTML.st_now;
     const u1=stNow.querySelector('.updated');if(u1)u1.innerHTML=ar?LANG.ar.updated_now:enHTML.updated_now;}
   if(stNext){stNext.querySelector('.stk').textContent=ar?LANG.ar.st_next_k:enHTML.st_next_k;
     stNext.querySelector('.stx').textContent=ar?LANG.ar.st_next_x:enHTML.st_next_x;
     stNext.querySelector('.sth').textContent=ar?LANG.ar.st_next_h:enHTML.st_next_h;
-    stNext.querySelector('.h').textContent=ar?LANG.ar.st_next:enHTML.st_next;
+    stNext.querySelector('.h').innerHTML=ar?LANG.ar.st_next:enHTML.st_next;
     const u2=stNext.querySelector('.updated');if(u2)u2.innerHTML=ar?LANG.ar.updated_next:enHTML.updated_next;}
   /* network core visible UI strings */
   const nof=document.getElementById('nof');if(nof)nof.textContent=ar?LANG.ar.openfile:'Open the file';
@@ -563,9 +563,9 @@ function _captureEN(){
   enHTML.st_now_line=_tnN?_tnN.innerHTML:''; enHTML.st_next_line=_tnX?_tnX.innerHTML:'';
   const sN=_qs('#bstatus .st.now')||document.createElement('div'), sX=_qs('#bstatus .st.next')||document.createElement('div');
   enHTML.st_now_k=(sN.querySelector('.stk')||{}).textContent; enHTML.st_now_x=(sN.querySelector('.stx')||{}).textContent;
-  enHTML.st_now_h=(sN.querySelector('.sth')||{}).textContent; enHTML.st_now=(sN.querySelector('.h')||{}).textContent;
+  enHTML.st_now_h=(sN.querySelector('.sth')||{}).textContent; enHTML.st_now=(sN.querySelector('.h')||{}).innerHTML;
   enHTML.st_next_k=(sX.querySelector('.stk')||{}).textContent; enHTML.st_next_x=(sX.querySelector('.stx')||{}).textContent;
-  enHTML.st_next_h=(sX.querySelector('.sth')||{}).textContent; enHTML.st_next=(sX.querySelector('.h')||{}).textContent;
+  enHTML.st_next_h=(sX.querySelector('.sth')||{}).textContent; enHTML.st_next=(sX.querySelector('.h')||{}).innerHTML;
   const u1c=sN.querySelector('.updated'),u2c=sX.querySelector('.updated');
   enHTML.updated_now=u1c?u1c.innerHTML:''; enHTML.updated_next=u2c?u2c.innerHTML:'';
   const hint=_qs('#net .hint');enHTML.net_hint=hint?hint.textContent:'';
