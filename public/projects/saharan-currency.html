@@ -275,6 +275,27 @@ footer.site-foot .fl{margin-top:26px;font-size:11.5px;letter-spacing:.14em}
       threw the wordmark and nav to the same side. */
 [dir="rtl"] .wm{font-family:inherit;font-size:19px;line-height:inherit}
 </style>
+<meta name="description" content="The Archive of Equivalence">
+<link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+<meta name="theme-color" content="#D9F164">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="merath">
+<meta property="og:locale" content="en_GB">
+<meta property="og:locale:alternate" content="ar_LY">
+<meta property="og:title" content="002 Saharan Currency — merath">
+<meta property="og:description" content="The Archive of Equivalence">
+<meta property="og:url" content="https://merath.ly/projects/saharan-currency">
+<meta property="og:image" content="https://merath.ly/assets/merath-share.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="merath">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="002 Saharan Currency — merath">
+<meta name="twitter:description" content="The Archive of Equivalence">
+<meta name="twitter:image" content="https://merath.ly/assets/merath-share.png">
+<link rel="canonical" href="https://merath.ly/projects/saharan-currency">
 <style>/* merath — the side index and the text keep out of each other's way */
 @media(min-width:1041px){
   :root{--rail:270px;--rail-gap:24px}
@@ -4626,7 +4647,7 @@ body.leaving #chartdock,body.leaving #ticker{transition:opacity 320ms ease-in;op
 <script>/* merath — keep the painted ground as tall as the page */
 (function(){
   if(!window.ResizeObserver)return;
-  var last=0,timer=null,fired=0;
+  var last=0,timer=null,burst=0,lastFire=0;
   function height(){
     return Math.max(document.body?document.body.scrollHeight:0,
                     document.documentElement.scrollHeight);
@@ -4635,10 +4656,19 @@ body.leaving #chartdock,body.leaving #ticker{transition:opacity 320ms ease-in;op
     var h=height();
     if(Math.abs(h-last)<8)return;      /* ignore sub-pixel churn */
     last=h;
-    if(fired>12)return;                /* never oscillate forever */
     clearTimeout(timer);
     timer=setTimeout(function(){
-      fired++;
+      var now=Date.now();
+      /* Guard against a relayout that itself changes the height and calls us
+       * straight back — but ONLY against that. An earlier version counted
+       * every dispatch for the life of the page, and normal boot churn (cards
+       * rendering, the chart drawing, fonts swapping) used the whole budget
+       * within the first second, muting the observer before the reader had
+       * scrolled anywhere. A gap of a couple of seconds means the page has
+       * settled and the next change is a real one. */
+      if(now-lastFire>2000)burst=0;
+      if(burst++>6)return;
+      lastFire=now;
       window.dispatchEvent(new Event('resize'));
     },140);                            /* longer than the pages' own debounce */
   }
