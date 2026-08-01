@@ -1,0 +1,4534 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>012 Musical Manuscripts — merath</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#F3EEDF;--dcream:#ECE4CD;--ink:#14181c;--saff:#E39B00;--teal:#5DCAA5;--lime:#D9F164;--depth:0;
+  --font:"29LT Bukra","IBM Plex Sans Arabic","Helvetica Neue",Arial,system-ui,sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}html,body{margin:0}
+body{background:#0a1f28;color:#EAF2F0;font-family:var(--font);font-weight:300;overflow-x:hidden}
+#deep{position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,#2b6270 0%,#164450 22%,#0c2b36 48%,#071d26 72%,#04121a 100%)}
+#deep::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 0,#020a0f calc(58% + var(--depth)*42%));transition:background .2s linear}
+.ray{position:fixed;top:-20%;width:44vw;height:150vh;z-index:1;pointer-events:none;mix-blend-mode:screen;opacity:.13;
+  background:linear-gradient(100deg,transparent 44%,rgba(180,230,225,.5) 50%,transparent 56%);transform-origin:top center;animation:sway 16s ease-in-out infinite}
+.ray.r1{left:6vw;transform:rotate(9deg)}.ray.r2{left:52vw;transform:rotate(-7deg);animation-delay:-6s;opacity:.09}.ray.r3{left:80vw;transform:rotate(13deg);animation-delay:-10s;opacity:.07}
+@keyframes sway{0%,100%{transform:rotate(9deg) translateX(0)}50%{transform:rotate(6deg) translateX(-30px)}}
+#parts{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.pt{position:absolute;font-size:11px;color:#bfe4dd;opacity:.13;animation:rise linear infinite}
+@keyframes rise{0%{transform:translateY(20px)}100%{transform:translateY(-115vh)}}
+
+/* header — the exact masthead of every merath page: merath at 8vw with فهرس beside it, nav on a torn ink strip bled off the edge */
+header{position:fixed;top:0;left:8vw;right:8vw;z-index:12;display:flex;justify-content:space-between;align-items:baseline;padding-top:26px}
+.hleft{display:flex;flex-direction:column;gap:6px}
+.hrow{display:flex;align-items:baseline;gap:15px}
+.wm{font-weight:500;font-size:19px;color:#EAF2F0}
+[dir="rtl"] .wm{font-family:"Geeza Pro","IBM Plex Sans Arabic","Noto Naskh Arabic",serif;font-size:23px;line-height:1}
+/* black menu — the shared torn strip: empty, sized by stripPlace(), slides in stop-motion on language toggle */
+#nav-strip{position:absolute;background:var(--ink);z-index:0;transition:left .9s steps(8,jump-none),width .9s steps(8,jump-none);
+  clip-path:polygon(8px 0,calc(100% - 6px) 0,100% 12%,calc(100% - 7px) 26%,100% 43%,calc(100% - 5px) 58%,100% 74%,calc(100% - 8px) 88%,calc(100% - 2px) 100%,6px 100%,0 86%,7px 70%,1px 55%,8px 40%,2px 24%,9px 10%)}
+#nav-strip.tearing{animation:stripTear .9s steps(4,jump-none)}
+@keyframes stripTear{0%{transform:translateY(0) rotate(0)}30%{transform:translateY(-1.6px) rotate(.4deg)}55%{transform:translateY(1.2px) rotate(-.35deg)}80%{transform:translateY(-.8px) rotate(.2deg)}100%{transform:translateY(0) rotate(0)}}
+.fidx{font-size:12px;color:var(--saff);text-decoration:none;cursor:pointer;letter-spacing:.02em}
+.fidx:hover{color:#fff}
+.back{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#8fb3ac;text-decoration:none}
+.back:hover{color:#fff}.back::before{content:"\2191 ";opacity:.7}
+nav.nav{position:relative;align-self:flex-start;padding:13px 0 14px;z-index:1}
+nav.nav a{position:relative;z-index:1;font-size:12px;margin-inline-start:24px;color:var(--cream);text-decoration:none;letter-spacing:.02em;cursor:pointer;white-space:nowrap}
+nav.nav a:first-of-type{margin-inline-start:4px}
+nav.nav a:hover{border-bottom:1.5px solid var(--cream)}
+nav.nav .lang{font-size:15px;font-family:"Geeza Pro","IBM Plex Sans Arabic","Noto Naskh Arabic",serif;line-height:1;align-self:center}
+#mtoggle{display:none}
+/* legibility via a tight text halo + a light top scrim — no heavy block that darkens the page */
+header::before{content:"";position:absolute;inset:-26px -8vw auto -8vw;height:104px;z-index:-1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(8,19,25,.7) 0%,rgba(8,19,25,.32) 60%,rgba(8,19,25,0) 100%)}
+.wm,.back{text-shadow:0 0 2px #0b2029,0 0 5px #0b2029,0 0 9px #0b2029,0 1px 2px #0b2029}
+nav.nav a{text-shadow:0 1px 5px rgba(6,14,18,.55)}
+@media(max-width:860px){header{left:28px;right:22px}nav.nav .full{display:none}#mtoggle{display:inline}}
+
+/* mufaharas — the physical folded-paper corner (the dog-ear affordance on every merath page); pull it to open the index */
+#fold-wrap{position:fixed;top:0;inset-inline-start:0;width:0;height:0;z-index:16;opacity:0;transition:opacity .35s .85s}
+#fold-wrap.on{opacity:1}
+header.panel-open~#fold-wrap{opacity:0;pointer-events:none;transition:opacity .1s}
+#mini-tree{position:absolute;top:0;inset-inline-start:0;overflow:visible;pointer-events:none}
+#mini-tree path{fill:none;stroke:var(--ink);stroke-width:1;stroke-linecap:round}
+#mini-tree .foldg{transition:transform .55s cubic-bezier(.34,1.18,.4,1)}
+#mini-tree.pull .foldg{transform:scale(1.65)}
+#mini-tree .flapg{transition:transform .55s cubic-bezier(.3,.9,.3,1.18)}
+#mini-tree.pull .flapg{transform:rotate(var(--ca)) scaleY(1.16) rotate(var(--nca))}
+@media(max-width:860px){#fold-wrap{display:none}}
+
+/* mufaharas — the real fold-out search panel (ported from the shared merath pages), lifted above the underwater scene */
+#search-panel{position:fixed;top:0;left:0;right:0;z-index:15;background:#D9F164;color:var(--ink);padding:150px 8vw 34px;pointer-events:none;
+  clip-path:polygon(0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0);transition:clip-path .95s steps(9,jump-none)}
+#search-panel::before{content:"";position:absolute;inset:0;background:#DCD2B5;pointer-events:none;
+  clip-path:polygon(0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0);transition:clip-path .95s steps(9,jump-none)}
+#search-panel .sp-in{position:relative;z-index:1}
+#search-panel::after{content:"";position:absolute;left:-1%;right:-1%;bottom:-26px;height:38px;background:#DCD2B5;pointer-events:none;
+  clip-path:polygon(0 0,100% 0,100% 52%,96% 74%,91% 46%,86% 66%,80% 90%,74% 56%,68% 76%,61% 44%,55% 68%,48% 92%,42% 60%,35% 42%,28% 78%,21% 50%,14% 70%,8% 44%,3% 76%,0 56%)}
+#search-panel.open{pointer-events:auto;
+  clip-path:polygon(-40% 0%,300% 0%,261.2% 42.8%,203.2% 93.6%,149.4% 155.4%,87.4% 209%,36.8% 267.2%,-7.4% 304.6%,-40% 340%)}
+#search-panel.open::before{
+  clip-path:polygon(300% 0%,261.2% 42.8%,203.2% 93.6%,149.4% 155.4%,87.4% 209%,36.8% 267.2%,-7.4% 304.6%,-40% 340%,-46% 334%,-13.4% 298.6%,30.8% 261.2%,81.4% 203%,143.4% 149.4%,197.2% 87.6%,255.2% 36.8%,294% -6%)}
+/* mufaharas peels from the top-right corner in Arabic (where the fold sits) */
+[dir="rtl"] #search-panel{clip-path:polygon(100% 0,100% 0,100% 0,100% 0,100% 0,100% 0,100% 0,100% 0,100% 0)}
+[dir="rtl"] #search-panel::before{clip-path:polygon(100% 0,100% 0,100% 0,100% 0,100% 0,100% 0,100% 0,100% 0,100% 0,100% 0,100% 0,100% 0,100% 0,100% 0,100% 0,100% 0)}
+[dir="rtl"] #search-panel.open{clip-path:polygon(140% 0%,-200% 0%,-161.2% 42.8%,-103.2% 93.6%,-49.4% 155.4%,12.6% 209%,63.2% 267.2%,107.4% 304.6%,140% 340%)}
+[dir="rtl"] #search-panel.open::before{clip-path:polygon(-200% 0%,-161.2% 42.8%,-103.2% 93.6%,-49.4% 155.4%,12.6% 209%,63.2% 267.2%,107.4% 304.6%,140% 340%,146% 334%,113.4% 298.6%,69.2% 261.2%,18.6% 203%,-43.4% 149.4%,-97.2% 87.6%,-155.2% 36.8%,-194% -6%)}
+header.panel-open{pointer-events:none}
+.sp-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:18px}
+.sp-top .t .ar{font-size:26px;color:var(--saff)}
+#sp-close{font-size:17px;cursor:pointer;padding:4px 8px;color:var(--ink)}
+#sp-close:hover{opacity:.6}
+#sp-input{width:100%;font-size:18px;padding:12px 2px;background:none;border:none;border-bottom:2px solid var(--ink);outline:none;color:var(--ink);font-family:var(--font);margin-bottom:24px}
+#sp-input::placeholder{opacity:.45;color:var(--ink)}
+#sp-tree{width:100%;display:block;overflow:visible}
+#sp-tree path{fill:none;stroke:var(--ink);stroke-width:1.7;stroke-linecap:round}
+#sp-tree text{fill:var(--ink);font-size:12px;letter-spacing:.04em;font-family:var(--font)}
+
+#nav{position:fixed;top:0;inset-inline-start:0;height:100vh;z-index:8;display:flex;flex-direction:column;justify-content:center;gap:3px;padding:0 18px;font-size:13px;pointer-events:none}
+#nav a{position:relative;pointer-events:auto;text-decoration:none;color:#d2eae3;display:flex;gap:9px;align-items:baseline;padding:5px 12px 5px 10px;margin:1px 0;border-radius:5px;background:rgba(10,22,28,.6);transition:background .2s,color .2s}
+#nav a:hover{color:#fff;background:rgba(13,29,37,.78)}
+#nav a.on{color:#fff;background:rgba(13,32,40,.92);box-shadow:inset 3px 0 0 var(--saff)}
+[dir="rtl"] #nav a.on{box-shadow:inset -3px 0 0 var(--saff)}
+#nav a.on .code{color:#fff}
+#nav .code{font-size:11px;color:var(--saff);letter-spacing:.04em;min-width:50px}
+#nav .strand{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#a9c6bf;margin:12px 0 3px;padding:2px 10px;align-self:flex-start;background:rgba(10,22,28,.5);border-radius:3px}
+[dir="rtl"] #nav{font-size:16px}
+[dir="rtl"] #nav a{font-size:16px}
+[dir="rtl"] #nav .code{font-size:13.5px}
+[dir="rtl"] #nav .strand{font-size:11px}
+@media(max-width:1040px){#nav{display:none}}
+#nav a,#nav .code,#nav .strand{text-shadow:0 1px 3px rgba(6,14,18,.5)}
+#gauge{position:fixed;inset-inline-end:18px;bottom:80px;z-index:14;font-size:12.5px;font-weight:500;letter-spacing:.06em;color:var(--saff);pointer-events:none}
+#gauge::before{content:"\00B6\00A0";opacity:.55;font-size:11px}
+#backlink{position:fixed;top:92px;inset-inline-end:8vw;z-index:11;max-width:250px;text-align:end;line-height:1.5}
+[dir="rtl"] #backlink{font-size:13px;letter-spacing:.04em;line-height:1.7;max-width:300px}
+@media(max-width:860px){#backlink{top:88px;inset-inline-end:22px}}
+
+#scene{position:relative;z-index:3;max-width:1180px;margin:0 auto;padding:15vh 6vw 8vh}
+/* mudakarat ticker — the shared fixed bottom bar (ported), lifted above the underwater scene */
+#ticker{position:fixed;bottom:0;left:0;right:0;z-index:13;background:var(--ink);color:var(--cream);display:flex;align-items:stretch;height:42px;transform:translateY(140%);transition:transform .7s cubic-bezier(.2,.75,.2,1),height .35s cubic-bezier(.2,.7,.2,1);cursor:default}
+#ticker.show{transform:none}
+#ticker:hover,#ticker.xp{height:66px}
+.tk-tear{position:absolute;top:-7px;left:0;right:0;height:8px;background:var(--ink);clip-path:polygon(0 100%,2% 20%,5% 90%,9% 10%,13% 80%,18% 25%,23% 95%,28% 15%,33% 75%,38% 30%,44% 90%,49% 10%,55% 85%,60% 20%,66% 95%,71% 25%,77% 80%,82% 12%,88% 90%,93% 22%,97% 75%,100% 100%)}
+.tk-head{display:flex;align-items:center;gap:14px;padding:0 20px;flex:none;position:relative}
+.tk-head::after{content:"";position:absolute;inset-inline-end:0;top:9px;height:24px;width:1px;background:rgba(247,241,225,.28)}
+#tk-clock{font-size:11.5px;letter-spacing:.16em;color:#E39B00}
+.tk-lbl{font-size:13.5px}
+.tk-view{flex:1;overflow:hidden;height:42px}
+#tk-list{list-style:none;margin:0;padding:0;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+#tk-list li{height:42px;display:flex;align-items:center;gap:14px;padding:0 20px;font-size:clamp(9.5px,0.65vw + 6px,12px);letter-spacing:.11em;text-transform:uppercase;white-space:nowrap}
+#tk-list .tk-date{color:#E39B00;font-size:10.5px;letter-spacing:.16em;min-width:66px;flex:none}
+.tk-sub{position:absolute;inset-inline-start:20px;bottom:7px;font-size:9px;letter-spacing:.2em;opacity:0;transition:opacity .3s .1s;color:#E39B00}
+#ticker:hover .tk-sub,#ticker.xp .tk-sub{opacity:.95}
+
+/* the real orange brand footer (ported) — kept as-is, in normal flow at the foot of the file */
+footer.site-foot{position:relative;z-index:5;background:#E39B00;color:#F7F1E1;padding:9vh 8vw calc(5vh + 74px) 8vw;text-align:center}
+footer.site-foot .flogo{width:86px;display:block;margin:0 auto 22px}
+footer.site-foot .socials{display:flex;justify-content:center;gap:18px;margin-bottom:22px}
+footer.site-foot .socials a{color:#F7F1E1}
+footer.site-foot .socials svg{width:19px;height:19px}
+footer.site-foot .fx{max-width:60ch;margin:0 auto;font-size:14px;line-height:1.9}
+footer.site-foot .fl{margin-top:26px;font-size:11.5px;letter-spacing:.14em}
+@media(max-width:860px){
+  #search-panel{padding:88px 6vw 30px}
+  #sp-input{font-size:15px}
+  #ticker{height:36px}
+  .tk-head{padding:0 12px;gap:8px}
+  #tk-clock{font-size:11px}
+  #tk-list .tk-date{min-width:52px;font-size:9.5px}
+  #ticker.xp{height:64px}
+  footer.site-foot{padding:7vh 6vw calc(4vh + 60px) 6vw}
+}
+/* marginalia — outputs named in the text, pinned to the page edge opposite the index rail, each roped to its mention */
+#marglines{position:absolute;top:0;left:0;pointer-events:none;z-index:5;overflow:visible}
+#marglines path,#marglines circle{transition:stroke-width .2s,opacity .2s,r .2s}
+.margout{position:absolute;transform:translateY(-50%);cursor:pointer;z-index:6;opacity:.72;transition:opacity .25s}
+.margout:hover,.margout.lit{opacity:1}
+.margout.right{inset-inline-end:14px}
+.margout.left{inset-inline-start:14px}
+.margout .mcard{display:inline-block;position:relative;background:#F0E9D6;color:var(--ink);border-inline-start:3px solid var(--mc);
+  padding:5px 13px 6px;border-radius:2px;box-shadow:0 7px 20px rgba(0,8,12,.62);white-space:nowrap}
+.margout.lit .mcard{background:#fbf6e8}
+.margout .mcard::before{content:"";position:absolute;top:50%;inset-inline-start:-3px;width:8px;height:8px;border-radius:50%;
+  background:var(--mc);transform:translate(-50%,-50%);box-shadow:0 0 9px var(--mc);transition:width .2s,height .2s}
+.margout.lit .mcard::before{width:11px;height:11px}
+.margout .mcard b{display:block;font-size:11px;color:var(--ink);letter-spacing:.03em;font-weight:600}
+.margout .mcard em{display:block;font-size:8px;color:#8a7d5f;text-transform:uppercase;letter-spacing:.11em;font-style:normal;margin-top:2px}
+[dir="rtl"] .margout .mcard em{font-size:10.5px;letter-spacing:.03em}
+[dir="rtl"] .margout .mcard b{font-size:12.5px}
+.chip.net.src-lit{outline:2px solid var(--c,#C9A227);outline-offset:2px;border-radius:2px}
+@media(max-width:1040px){.margout,#marglines{display:none}}
+.sheet{position:relative;background:var(--cream);color:var(--ink);padding:30px 38px 30px;margin-bottom:6vh;max-width:580px;scroll-margin-top:90px;
+  border-radius:0 0 3px 3px;box-shadow:0 22px 46px rgba(0,10,16,.46);animation:drift 12s ease-in-out infinite}
+.sheet.mast::after,.sheet.torn::after{content:"";position:absolute;left:0;right:0;bottom:-8px;height:8px;background:var(--cream);
+  clip-path:polygon(0 0,4% 90%,10% 10%,17% 90%,24% 10%,32% 90%,40% 10%,48% 90%,56% 10%,64% 90%,72% 10%,80% 90%,88% 10%,95% 90%,100% 0)}
+@keyframes drift{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.sheet .tab{position:absolute;top:-27px;inset-inline-start:0;height:28px;display:flex;align-items:center;gap:10px;padding:0 18px 0 15px;
+  background:var(--tc,var(--saff));color:#fff;font-size:12px;font-weight:500;letter-spacing:.08em;clip-path:polygon(0 0,100% 0,calc(100% - 12px) 100%,0 100%)}
+.sheet .tab b{font-weight:600;letter-spacing:.14em}
+.sheet.r{margin-inline-start:auto}.sheet.c{margin-inline:auto}.sheet.wide{max-width:700px}.sheet.narrow{max-width:460px}
+.mast{max-width:720px;margin-inline:auto;padding:36px 40px 30px;border-top:4px solid var(--ink)}
+.mnum{font-size:14px;letter-spacing:.34em;color:var(--saff);direction:ltr;text-align:start}
+[dir="rtl"] .mnum{text-align:right}
+.mtitle{font-size:56px;font-weight:400;line-height:1;margin:6px 0 0;font-synthesis:none}
+.msub{font-size:16px;opacity:.62;margin-top:8px}
+.mar{margin-top:14px;font-size:30px;font-weight:500;text-align:right;font-synthesis:none}.mar small{display:block;font-size:15px;font-weight:300;opacity:.6;margin-top:4px}
+/* Arabic mast — everything right-aligned to the Arabic title; the English mirror sits on the opposite (left) side, like the reverse of the EN page */
+[dir="rtl"] .mast{text-align:right}
+[dir="rtl"] .mnum{text-align:right;direction:ltr}
+[dir="rtl"] .mar{text-align:left}
+.lbl{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--saff);margin-bottom:11px}.lbl .s{color:var(--ink);opacity:.4;margin-inline-start:6px}
+.h{font-size:14px;line-height:1.82;opacity:.92}.h.big{font-size:16.5px}.h+.h{margin-top:11px}.h em{font-style:italic}
+
+/* SPECIAL status — a review→future pairing set on a time axis, deliberately staggered */
+.status{position:relative;max-width:1000px;margin:3vh auto 8vh;padding-top:6px}
+.stline{display:flex;align-items:center;margin:0 3% 24px;font-size:10px;letter-spacing:.18em;text-transform:uppercase}
+.stline .tnode{display:flex;align-items:center;gap:10px;color:#cfe6e1;white-space:nowrap}
+.stline .tnode i{width:11px;height:11px;border-radius:50%;background:var(--teal);box-shadow:0 0 12px var(--teal)}
+.stline .tnode.next{color:var(--saff)}
+.stline .tnode.next i{background:var(--saff);box-shadow:0 0 12px var(--saff)}
+.stline .tnode.next b{color:var(--saff);font-size:14px;font-weight:400}
+.stline .trail{flex:1;height:0;border-top:2px dashed rgba(148,190,183,.5);margin:0 16px;position:relative;top:1px}
+.stcards{display:flex;gap:32px;align-items:flex-start}
+.st{flex:1;position:relative;background:#11333d;color:#EAF2F0;padding:26px 28px 28px;border-top:3px solid var(--stc,var(--saff));box-shadow:0 22px 46px rgba(0,10,16,.4)}
+.st.next{margin-top:52px}                       /* staggered — the future sits lower / deeper */
+.st .stk{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--stc,var(--saff));margin-bottom:6px}
+.st .stx{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#7fb3ab;margin-bottom:15px}
+.st .sth{font-size:20px;font-weight:400;margin-bottom:12px;color:var(--cream)}
+.st .h{font-size:13.5px;line-height:1.74;opacity:.87}
+.st .updated{margin-top:16px;padding-top:11px;border-top:1px solid rgba(233,242,240,.15);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#8fb7b0}
+.st .updated b{color:var(--stc,var(--saff));font-weight:600}
+.st::before{content:"";position:absolute;top:-3px;inset-inline-start:0;width:46px;height:3px;background:var(--stc,var(--saff));box-shadow:0 0 12px var(--stc,var(--saff))}
+@media(max-width:680px){.stcards{flex-direction:column}.st.next{margin-top:0}.stline{display:none}}
+
+.chip{display:inline-flex;align-items:center;background:var(--cream);border:1px solid rgba(20,24,28,.25);border-inline-start:3px solid var(--c,#106580);
+  padding:1px 7px 2px 6px;font-size:12.5px;cursor:pointer;box-shadow:1px 1px 0 rgba(20,24,28,.09);white-space:nowrap;transition:transform .12s;font-family:var(--font)}
+.chip:hover{transform:translateY(-1px)}
+.chip.net::after{content:"\29C9";font-size:11px;opacity:.5;margin-inline-start:5px}
+.chip.jump::after{content:"\2193";font-size:11px;opacity:.5;margin-inline-start:5px}
+.plate{position:relative;background:var(--cream);padding:7px;box-shadow:0 22px 46px rgba(0,10,16,.5);animation:drift 13s ease-in-out infinite;margin-bottom:6vh}
+.plate .im{aspect-ratio:4/3;background:linear-gradient(135deg,#7fa39d,#b7ac86);position:relative;overflow:hidden}
+.plate .im::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(46deg,rgba(255,255,255,.06) 0 13px,transparent 13px 26px),radial-gradient(circle at 34% 40%,rgba(10,20,26,.2),transparent 60%)}
+.plate .cap{font-size:11.5px;color:#33474d;opacity:.92;margin-top:9px;display:flex;gap:8px;line-height:1.5}.plate .cap .n{color:#b9791a;font-weight:500}
+.p1{width:300px;margin-inline-start:3vw;transform:rotate(-2deg)}
+.p2{width:400px;margin-inline-start:auto;margin-inline-end:3vw;transform:rotate(1.4deg);animation-delay:-3s}
+.p3{width:250px;margin-inline:auto;transform:rotate(-1deg);animation-delay:-6s}
+@media(max-width:720px){.sheet,.plate,.p1,.p2,.p3{max-width:none;width:auto;margin-inline:0 !important;transform:none}.mtitle{font-size:38px}}
+
+/* NETWORK — redesigned */
+#net{position:fixed;inset:0;z-index:20;opacity:0;pointer-events:none;transition:opacity .55s ease;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);background:radial-gradient(circle at 50% 44%,rgba(6,26,34,.55),rgba(2,12,18,.92))}
+#net.on{opacity:1;pointer-events:auto}
+#net svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+#net .edge-lbl{position:absolute;transform:translate(-50%,-50%) rotate(var(--rot,0deg));font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:#0a1f28;background:var(--elc,#5DCAA5);padding:2px 8px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .5s;border-radius:2px}
+#net .node{position:absolute;transform:translate(-50%,-50%);opacity:0;transition:opacity .5s}
+#net .node .dot{width:12px;height:12px;border-radius:50%;background:var(--nc,#5DCAA5);box-shadow:0 0 14px var(--nc,#5DCAA5),0 0 0 4px rgba(93,202,165,.12)}
+#net .node .lab{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) translate(0,var(--ly,-27px));text-align:center;white-space:normal;max-width:172px;line-height:1.18;pointer-events:none}
+#net .node .nl{font-size:12.5px;color:#eaf6f3}
+#net .node .ns{font-size:8.5px;color:#8fb7b0;text-transform:uppercase;letter-spacing:.11em;margin-top:3px}
+#net .node .ns b{font-weight:500;color:#cfe6df;letter-spacing:.04em}
+#net .node.clk{cursor:pointer}#net .node.clk .lab::after{content:"\29C9";display:block;font-size:8px;color:#8fb7b0;margin-top:3px;opacity:.7}
+#net .node.clk:hover .nl{color:var(--saff)}
+#net .node.halo .nl{font-size:10px;color:#9fc4bd}
+#net .node.halo .lab::after{display:none}
+#net .node.halo{transition:opacity .5s}
+#net .node.halo:hover{opacity:.95 !important}#net .node.halo:hover .nl{color:var(--saff)}
+#net .core{position:absolute;left:50%;top:44%;transform:translate(-50%,-46%);width:340px;max-width:86vw;opacity:0;transition:opacity .5s .15s,transform .5s .15s}
+#net.on .core{opacity:1;transform:translate(-50%,-50%)}
+#net .core .card{background:var(--cream);color:var(--ink);box-shadow:0 30px 70px rgba(0,8,14,.7)}
+#net .core .hd{background:var(--cc,#5DCAA5);color:#08181c;padding:9px 20px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center}
+#net .core .hd .ec{background:rgba(8,24,28,.18);padding:2px 8px;border-radius:9px;font-size:9px}
+#net .core .bd{padding:16px 20px 18px}
+#net .core .kh{font-size:22px;line-height:1.14;margin-bottom:9px}
+#net .core .kb{font-size:12.5px;line-height:1.6;opacity:.85;margin-bottom:15px}
+#net .core .of{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--cream);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;padding:10px 15px;text-decoration:none;cursor:pointer}
+#net .core .of:hover{background:#20262c}#net .core .of::after{content:"\2197"}
+#net .hint{position:absolute;left:0;right:0;bottom:24px;text-align:center;font-size:10.5px;letter-spacing:.14em;color:#8fb7b0;text-transform:uppercase}
+</style>
+<style>
+/* ── build fixes ────────────────────────────────────────────────────────── */
+/* 1. Chips must stay dark-on-cream. They were only ever used inside .sheet
+      (cream, dark text); in the Review/Horizon band (.st — dark, light text)
+      they inherited light text on a cream chip and rendered blank. */
+.chip{color:var(--ink)}
+.st .chip,.status .chip{color:var(--ink)}
+
+/* 2. Side index: long block headings must not overrun into the page body,
+      and a project with many blocks must not overflow the viewport. */
+#nav{max-height:100vh;overflow-y:auto;overscroll-behavior:contain;justify-content:safe center;scrollbar-width:none}
+#nav::-webkit-scrollbar{display:none}
+#nav a{max-width:min(24vw,290px)}
+#nav a>span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+
+/* 3. DETAIL DELTA (MERATH_SHARED_COMPONENTS.md §1) — the Arabic wordmark must
+      NOT be bumped: same 19px as every sibling page, inheriting the Arabic
+      stack from dir=rtl. The shell carried a bogus 23px/Geeza override.
+
+      NOTE: the masthead INSET is deliberately not touched. §1 defines it as
+      header{left:var(--textL);right:var(--textR)} — a per-page text column,
+      not a fixed value. Overriding it collapsed the header to auto width and
+      threw the wordmark and nav to the same side. */
+[dir="rtl"] .wm{font-family:inherit;font-size:19px;line-height:inherit}
+</style>
+</head>
+<body>
+<div id="deep"></div><div class="ray r1"></div><div class="ray r2"></div><div class="ray r3"></div><div id="parts"></div>
+
+<header>
+  <div class="hleft">
+    <div class="hrow"><span class="wm">merath</span></div>
+  </div>
+  <div id="nav-strip" aria-hidden="true"></div>
+  <nav class="nav">
+    <a class="full" href="/projects">Projects</a><a class="full" href="/publications">Publications</a><a class="full" href="/programmes">Programmes</a><a class="full" href="/art-production">Art &amp; Production</a><a class="full" href="/studies">Studies</a><a class="full" href="/archives">Archives</a><a class="full" href="/about">About</a><a id="mtoggle">Menu</a><a class="lang" id="lang">ع</a>
+  </nav>
+</header>
+<div id="fold-wrap"><svg id="mini-tree" width="300" height="200" viewBox="0 0 300 200" aria-hidden="true"></svg></div>
+<div id="search-panel">
+  <div class="sp-in">
+    <div class="sp-top">
+      <div class="t"><span class="ar">مُفَهْرَس</span> <span style="font-size:13px;letter-spacing:.22em;color:var(--saff)">INDEXED — THE CATALOGUE</span></div>
+      <a id="sp-close">✕</a>
+    </div>
+    <input id="sp-input" type="text" autocomplete="off" placeholder="Search the holdings — i196, currency, Ghadames…">
+    <svg id="sp-tree" height="240" viewBox="0 0 1200 240" preserveAspectRatio="none"></svg>
+  </div>
+</div>
+
+<nav id="nav">
+  <a href="#b10"><span class="code">012.10</span><span>Overview</span></a>
+  <a href="#bstatus"><span class="code">012.01</span><span>Now / Next</span></a>
+  <a href="#b40"><span class="code">012.40</span><span>Why a music is written down</span></a>
+  <a href="#b50"><span class="code">012.50</span><span>Music as spheres of influence</span></a>
+  <a href="#b60"><span class="code">012.60</span><span>Instrument research</span></a>
+  <a href="#b70"><span class="code">012.70</span><span>The work and its form</span></a>
+</nav>
+<div id="gauge">words</div>
+<a class="back" id="backlink" href="/projects">Surface — back to the sea of projects</a>
+
+<div id="scene">
+  <div class="sheet mast">
+    <div class="mnum">0 1 2</div><div class="mtitle">Musical Manuscripts</div><div class="msub"></div>
+    <div class="mar" dir="rtl">مخطوطات الموسيقى<small>الموسيقى المكتوبة والتقليد الشفوي عبر الصحراء</small></div>
+  </div>
+
+  <div class="sheet c" id="b10" style="--tc:var(--ink)"><span class="tab" style="--tc:var(--ink)"><b>012.10</b> Overview</span>
+    <p class="h">Musical Manuscripts studies the production of <span class="chip net" style="--c:#9A93EC" data-net="S012-written-materials">written material</span> on music in the Sahara — the treatises, anthologies, and song-books in which a music made for the ear was set down on the page. Across the desert, the sheer variety of musical tradition is a product of orality: each region, order, and lineage has carried its own repertoire in memory, the rules living in voices and hands rather than in writing. And yet, again and again, there has been a motivation to write that music down — to hold it against loss, to order it, to claim it, to teach it. The project takes that impulse as its central question: why, and how, does an oral music become a written one, and what changes in the crossing? It pursues this through two registers — the written material itself, and the <span class="chip net" style="--c:#9A93EC" data-net="S012-instruments">instruments</span> through which the music is made — and under a single larger lens: music as a map of spheres of influence across the Sahara, the desert's modes, tunings, and instruments marking the overlapping worlds whose meeting-place it has always been.</p>
+  </div>
+
+  <div class="status" id="bstatus">
+    <div class="stline">
+      <span class="tnode now"><i></i>Where it stands</span>
+      <span class="trail"></span>
+      <span class="tnode next">What comes next <b>→</b><i></i></span>
+    </div>
+    <div class="stcards">
+      <div class="st now" style="--stc:var(--teal)">
+        <div class="stk">012.20 · The review</div>
+        <div class="stx">Where it stands now</div>
+        <div class="sth">Where the work is at the moment</div>
+        <p class="h">The project is under way on both its registers. The written register reads the Saharan production of written music — the song-anthologies (kunnāsh, safīna), the classical Arabic science of music, the Sufi literature of samāʿ — against the question of what is gained and lost when an oral music is written down; <span class="chip net" style="--c:#C9A227" data-net="12_Pub_69">Merath Manuals 6, on Tuning</span>, is in production. The instrument register builds the <span class="chip net" style="--c:#C9A227" data-net="12_Pub_48">Saharan Instruments Organology</span> from within, with the makers and hereditary musicians who carry the knowledge, paired with recorded instrument stories. Field research connects the written record to living practice. The whole is read under one lens: music as a map of the Sahara's spheres of influence.</p>
+        
+      </div>
+      <div class="st next" style="--stc:var(--saff)">
+        <div class="stk">012.30 · The horizon</div>
+        <div class="stx">What is coming next</div>
+        <div class="sth">What is coming next</div>
+        <p class="h">The work issues in written and printed material of merath's own: critical editions and studies of the music's texts, the instrument catalogue, recorded instrument stories, and commissioned essays placing the whole in the histories of written music. Field research deepens — documenting instruments and their makers, recording the music and those who carry it — and the atlas form drawn from <span class="chip net" style="--c:#C9A227" data-net="09_Pub_33">Tahanin</span> is developed toward a navigable shape for a knowledge organised by rule and route.</p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="sheet wide torn" id="b40" style="--tc:#106580"><span class="tab" style="--tc:#106580"><b>012.40</b> Why a music is written down</span>
+    <p class="h">The forms this writing takes are several. The richest is the song-anthology — the kunnāsh or safīna — which sets down not a notation but an order: the modes, the rhythmic cycles, the sequence in which a repertoire must unfold, so that the book instructs performance without a single note on a staff. The clearest case lies close to home: in early-twentieth-century Algiers, Edmond Yafil gathered the Andalusian nūba from the last holders of its manuscripts and committed it to print, fearing the collections would otherwise die with their keepers — an act of writing-down driven by exactly the motivation the project examines. Behind such anthologies stands a longer tradition of writing music: the classical Arabic science of music, from al-Fārābī to al-Urmawī, with its letter-and-number notations and its diagrams of rhythmic cycles; and the Sufi literature of samāʿ and dhikr, in which the place of sound in devotional life was argued and set down. The project reads the Saharan production of written music against these lineages — and keeps, at its far edge, a single distant comparative: an inherited manuscript that, elsewhere in the desert, wrote down another oral tradition entire. Across all of them runs one question: what is gained, and what is lost, when the unwritten is finally written.</p>
+  </div>
+
+  <div class="sheet wide r torn" id="b50" style="--tc:#1D9E75"><span class="tab" style="--tc:#1D9E75"><b>012.50</b> Music as spheres of influence</span>
+    <p class="h">To map the music of the Sahara is to map the worlds that crossed it. Its modes and tunings carry, audibly, the inheritances that met in the desert — the Arab and Andalusian art music descending from the north and west, the deep traditions of the Sahel and the Sudanic belt to the south, and the syntheses worked out where they met. The instruments tell the same story of movement, their forms and names tracing lines of descent across great distances. Written material is where these spheres are named and ordered — where a tradition decides which influences it claims and which it holds apart, sometimes codifying them outright, as one manuscript does in dividing its very tunings into distinct paths of northern and southern descent. Read this way, a mode or an instrument becomes a small map of the Sahara's connections, and the writing-down of music becomes an act of saying where a music — and the people who make it — belong.</p>
+  </div>
+
+  <div class="sheet wide torn" id="b60" style="--tc:#106580"><span class="tab" style="--tc:#106580"><b>012.60</b> Instrument research</span>
+    <p class="h">The second register is the instrument. The project builds <span class="chip net" style="--c:#C9A227" data-net="12_Pub_48">an organology</span> — a study of the instruments through which the music is made, read as documents in their own right, holding a music's rules and lineages in wood, string, and skin. It pairs this with recorded instrument stories: the makers and players, the genealogy of a particular lute or harp or drum, the lives an instrument gathers as it passes from hand to hand — caught as oral history rather than as a museum label. This matters because organology carries a history the project works against: the instruments of the South were long collected, recorded, and classified by and for the institutions of the North. Here the catalogue is built from within — with the people who make and play these instruments, and alongside the hereditary musicians through whom the knowledge has passed — so that the instrument is documented as a living thing and a carrier of influence, never a specimen.</p>
+  </div>
+
+  <div class="sheet wide r torn" id="b70" style="--tc:#1D9E75"><span class="tab" style="--tc:#1D9E75"><b>012.70</b> The work and its form</span>
+    <p class="h">The work issues in written and printed material of merath's own: critical editions and studies of the music's texts; a catalogue of its instruments; recorded instrument stories; and commissioned essays placing the whole in the histories above. Field research connects the written record to living practice — documenting instruments and their makers, recording the music and those who carry it. In its design the project draws on <span class="chip net" style="--c:#C9A227" data-net="09_Pub_33">Tahanin</span> — the book for which merath developed a musical-atlas form for the rihla, the journey-genre of song, using letters as the geography of its aurality. The instinct is the same here: to give a navigable, systematic shape to a knowledge organised by rule and route. And it shares the concerns of <span class="chip net" style="--c:#5DCAA5" data-net="P001">001 Sarayān</span>: oral transmission, the Sahara, and the notation of what memory carries.</p>
+  </div>
+
+</div>
+</div>
+
+<div id="net">
+  <svg id="nsvg"></svg>
+  <div class="core"><div class="card"><div class="hd"><span id="nct"></span><span class="ec" id="nec"></span></div><div class="bd"><div class="kh" id="nch"></div><div class="kb" id="ncb"></div><a class="of" id="nof" href="#">Open the file</a></div></div></div>
+  <div class="hint">click a node to follow its edge · click away to surface</div>
+</div>
+
+<div id="ticker">
+  <div class="tk-tear"></div>
+  <div class="tk-head">
+    <span id="tk-clock">00:00</span>
+    <span class="tk-lbl ar">مُذَكِّرات</span>
+  </div>
+  <div class="tk-view"><ul id="tk-list"></ul></div>
+  <div class="tk-sub">MEMOIRS — THE LEDGER · WHAT HAPPENS, SET IN TIME</div>
+</div>
+
+<footer class="site-foot">
+  <svg class="flogo" viewBox="150 168 694 690" aria-label="merath">
+    <rect x="168" y="186" width="658" height="653" fill="none" stroke="#F7F1E1" stroke-width="14"/>
+    <path d="M464,530 L334,530 L334,484 L288,484 L288,640 L438,640 L438,691 L487,691 L487,744 L691,744 L691,431 L584,431 L584,298 L826,298 M168,316 L377,316 L377,362" fill="none" stroke="#F7F1E1" stroke-width="14"/>
+    <ellipse cx="497" cy="530" rx="33" ry="26" fill="none" stroke="#F7F1E1" stroke-width="14"/>
+  </svg>
+  <div class="socials">
+    <a href="https://www.instagram.com/merath_ly" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg></a>
+    <a href="https://ly.linkedin.com/company/merath" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.22 8h4.56v14H.22V8zm7.44 0h4.37v1.91h.06c.61-1.15 2.1-2.37 4.32-2.37 4.62 0 5.47 3.04 5.47 6.98V22h-4.56v-6.6c0-1.57-.03-3.6-2.19-3.6-2.2 0-2.53 1.71-2.53 3.48V22H7.66V8z"/></svg></a>
+    <a href="https://www.facebook.com/merath.ly" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.23.2 2.23.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12z"/></svg></a>
+  </div>
+  <p class="fx">For new projects, suggestions for archival analysis or general inquiries, connect with us: info [at] merath.ly</p>
+  <p class="fl">© merath 2026 · Tripoli, Libya · All rights reserved</p>
+</footer>
+
+<script>
+const marks=["i483","i196","i287","i392","i595","i134","ʿ","ٓ"],pc=document.getElementById('parts');
+for(let i=0;i<38;i++){const s=document.createElement('span');s.className='pt';s.textContent=marks[i%marks.length];
+  s.style.left=Math.random()*100+'vw';s.style.top=(60+Math.random()*60)+'vh';const d=8+Math.random()*15;
+  s.style.animationDuration=d+'s';s.style.animationDelay=-Math.random()*d+'s';s.style.fontSize=(8+Math.random()*7)+'px';pc.appendChild(s);}
+const gauge=document.getElementById('gauge');
+const _foot=document.querySelector('footer.site-foot'), _scene=document.getElementById('scene'), _nav=document.getElementById('nav');
+function wordCount(){return (((_scene&&_scene.innerText)||'').trim().match(/\S+/g)||[]).length;}
+let totalWords=wordCount();
+const fmtW=n=>n.toLocaleString('en-US');
+function setGauge(){const max=document.body.scrollHeight-innerHeight,p=max>0?Math.min(1,Math.max(0,scrollY/max)):0;
+  document.documentElement.style.setProperty('--depth',p.toFixed(3));
+  gauge.textContent=fmtW(Math.round(p*totalWords))+' / '+fmtW(totalWords)+' '+(document.documentElement.getAttribute('dir')==='rtl'?(LANG.ar.words||'كلمة'):'words');
+  if(_foot){const gh=42;                                   /* stop the counter at the top of the footer, don't run over it */
+    if(scrollY+innerHeight-54 > _foot.offsetTop){gauge.style.position='absolute';gauge.style.bottom='auto';gauge.style.top=(_foot.offsetTop-gh)+'px';}
+    else{gauge.style.position='fixed';gauge.style.top='auto';gauge.style.bottom='80px';}}
+  if(_foot&&_nav){const ftv=_foot.getBoundingClientRect().top;_nav.style.height=Math.max(200,Math.min(innerHeight,ftv)).toFixed(0)+'px';}   /* the index rail stops at the top of the footer */
+  const ids=['b00','bstatus','b10','b20','b30','b40','b50'];let cur='b00';ids.forEach(id=>{const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<170)cur=id;});
+  document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+cur));}
+addEventListener('scroll',setGauge,{passive:true});
+addEventListener('load',()=>{totalWords=wordCount();setGauge();});setGauge();
+document.getElementById('mtoggle').onclick=()=>alert('Projects · Publications · Programmes · Art & Production · Studies · Archives · About');
+
+/* ===== i18n — full Arabic (RTL) mirror + language toggle =====
+   Each translatable block stores BOTH languages. English originals are read from the
+   live DOM on load (enHTML) so toggling back restores them exactly; Arabic lives in LANG.ar.
+   Chips keep the SAME data-net / data-jump values (network keys unchanged) with Arabic labels. */
+const I18N_IDS=["b10","b40","b50","b60","b70"];   /* prose blocks swapped by innerHTML */
+const enHTML={};                                        /* filled on load from the DOM */
+const LANG={"ar":{"nav_projects":"المشاريع","nav_publications":"المنشورات","nav_programmes":"البرامج العامة","nav_art":"الفن والإنتاج","nav_studies":"الدراسات","nav_archives":"الأرشيفات","nav_about":"من نحن","wm":"ميراث","back":"السطح — العودة إلى محيط المشاريع","sp_sub":"فهرس المقتنيات","sp_ph":"ابحث في المقتنيات — i196، عملة، غدامس…","tk_sub":"مُذكِّرات — السِّجل · ما يحدث، مُثبَّتاً في الزمن","words":"كلمة","tk":[["02.2026","عرض في بيت علي خليفة الزائدي — طرابلس"],["12.2025","أداء «سين وصاد» — مركز جميل للفنون، دبي"],["10.2025","افتتاح «شمسٌ أشرقت على الجزائر» — دار النويجي، طرابلس"],["2026","m3 · إطارٌ للأرشيفات الخاصة — صدر"],["02.2026","i595 مُقتنى — أرشيف العملة الصحراوية"],["04.2026","تجليد ألفا ستيتش — رحبة الطباعة"]],"openfile":"افتح الملف","net_hint":"انقر عُقدة لتَتبَع حافّتها · انقر بعيداً لتَطفوَ","mtitle":"مخطوطات الموسيقى","msub":"الموسيقى المكتوبة والتقليد الشفوي عبر الصحراء","nav":["نظرة عامة","الآن / التالي","لماذا تُكتَب الموسيقى","الموسيقى بوصفها مجالاتِ نفوذ","بحث الآلات","العمل وشكله"],"strand":[],"tab_b10":"نظرة عامة","tab_b40":"لماذا تُكتَب الموسيقى","tab_b50":"الموسيقى بوصفها مجالاتِ نفوذ","tab_b60":"بحث الآلات","tab_b70":"العمل وشكله","b10":"<p class=\"h\">تدرس \"مخطوطات الموسيقى\" إنتاج <span class=\"chip net\" style=\"--c:#9A93EC\" data-net=\"S012-written-materials\">المادة المكتوبة</span> عن الموسيقى في الصحراء: الرسائل، المجاميع، وكتب الأغاني التي دُوِّنت فيها موسيقى صُنعت أساساً للأذن. فعبر الصحراء، تعود أغلب التقاليد الموسيقية الهائلة إلى الشفوية؛ إذ حملت كلٌّ منطقة، طريقة، سلالة، ذخيرتها في الذاكرة، وعاشت قواعدها في الأصوات والأيدي أكثر مما عاشت في الكتابة. ومع ذلك، مرّة بعد مرّة، كان ثمّة دائماً دافع لتدوين الموسيقى؛ لحفظها من الضياع، ترتيبها، المطالبة بها، وتعليمها. يتّخذ المشروع هذا الدافع سؤالاً رئيسياً: لماذا، وكيف، تتحول موسيقى شفوية إلى موسيقى مكتوبة، وما الذي يتغير في هذا الانتقال؟ وما يلاحقه عبر سجلين: المادة المكتوبة نفسها، <span class=\"chip net\" style=\"--c:#9A93EC\" data-net=\"S012-instruments\">الآلات</span> التي تُصنع بها الموسيقى، وتحت عدسة أوسع تُرى الموسيقى بوصفها خريطة لمجالات النفوذ والصِّلات عبر الصحراء، حيث تَسِمُ مقاماتُ الصحراء ودوزناتُها وآلاتُها العوالمَ المتداخلة التي طالما كانت ملتقاها.</p>","b40":"<p class=\"h\">للكتابة هنا أشكالٌ عدّة. أبرزها مجموعات الأغاني، مثل الكُنّاش أو السَّفينة، التي لا تُدوِّن الموسيقى بالنوتة بينما تحفظ ترتيب المقامات، والأدوار الإيقاعية، وتسلسل الذخيرة الموسيقية، بحيث يُرشد الكتاب الأداء من دون الحاجة إلى تدوين نغمي كامل. وأوضحُ مثال قريب منّا: في مطلع القرن العشرين في الجزائر، إدمون يافيل جمع النوبة الأندلسية من آخر حَمَلة مخطوطاتها وأودعها المطبعة، خشية ضياعها مع أصحابها. فعلُ تدوينٍ مدفوعٌ بالدافع نفسِه الذي يدرسه المشروع. وخلف هذه المجاميع يقف تقليد أطول في كتابة الموسيقى، يمتد من علم الموسيقى العربي الكلاسيكي عند الفارابي وصفي الدين الأرموي، بتدويناته الحرفية-العددية ورسوم أدواره الإيقاعية، إلى أدب السماع والذكر الصوفي الذي ناقش مكانة الصوت في الحياة الروحية ودوّنها. ويقرأ المشروع الإنتاج الصحراوي للموسيقى المكتوبة في ضوء هذه السلالات، ويُبقي مقارنة واحدة بعيدة؛ مخطوطٌ موروثٌ دوّن، في مكانٍ آخر من الصحراء، تقليداً شفوياً آخرَ بأكمله. وسؤال واحد في المركز: ما الذي يُكسبه التدوين للموسيقى، وما الذي قد يفقده منها؟</p>","b50":"<p class=\"h\">أن ترسم خريطة موسيقى الصحراء يعني أن ترسم خريطة العوالم التي عبرتها. فمقاماتها ودوزناتها تحمل على نحوٍ مسموع الموروثات التي التقت في الصحراء: الموسيقى العربية والأندلسية القادمة من الشمال والغرب، تقاليد الساحل وحزام السودان القادمة من الجنوب، والتوليفات التي نشأت بينهما. والآلات تروي القصة نفسها عن الحركة؛ إذ تكشف أشكالها وأسماؤها عن خطوط نسب وحركة عبر مسافات شاسعة. أمّا المادة المكتوبة فهي المكان الذي تُسمّى فيه هذه المجالات وتُرتَّب، حيث يحدد كل تقليد التأثيرات التي ينسب نفسه إليها، مُقيِّداً إيّاها أحياناً صراحةً.</p>\n    <p class=\"h\">كما يفعل أحدُ المخطوطات إذ يقسم دوزناته نفسَها إلى مساراتٍ متمايزةٍ من نسبٍ شماليٍّ وجنوبيّ. وعلى هذا النحو يغدو المقامُ أو الآلةُ خريطةً صغيرةً لصِلات الصحراء، ويغدو تدوينُ الموسيقى فعلاً يقول أين تنتمي موسيقى ومن يصنعونها.</p>","b60":"<p class=\"h\">السجلُ الثاني هو الآلة الموسيقية. يبني المشروع دراسة <span class=\"chip net\" style=\"--c:#C9A227\" data-net=\"12_Pub_48\">علم للآلات</span> (أورغانولوجيا) التي تُصنع بها الموسيقى، تُقرأ بوصفها وثائق قائمة بذاتها تحمل قواعد الموسيقى وأنسابها في الخشب، الوتر، الجلد. ويقترن ذلك بجمع حكايات الآلات المُسجلة: الصُّنّاعُ والعازفون، أنساب بعض الآلات، الحيوات التي تعبرها وهي تنتقل من يد إلى أخرى. وتُسجَّل هذه الحكايات بوصفها تاريخاً شفوياً، لا مجرد معلومات متحفية. وهذا مُهمٌّ لأنّ علمَ الآلات يحمل تاريخاً يشتغل المشروعُ ضدّه: فآلاتُ الجنوب طالما جُمِعت وسُجِّلت وصُنِّفت من قِبَل مؤسسات الشمال ولأجلها. لذلك يُبنى الفهرسُ من الداخل، بالتعاون من يصنعون هذه الآلات ويعزفون عليها، وإلى جانب الموسيقيين الوراثيين الذين انتقلت المعرفةُ عبرهم؛ حتّى تُوثَّق الآلةُ بوصفها شيئاً حيّاً وحاملاً للتأثير، لا عيّنةً.</p>","b70":"<p class=\"h\">يُثمر العملُ مادةً مكتوبةً ومطبوعةً خاصّةً بميراث: طبعاتٍ نقديةً ودراساتٍ لنصوص الموسيقى؛ وفهرساً لآلاتها؛ وحكاياتِ آلاتٍ مُسجَّلة؛ ومقالاتٍ مُكلَّفةً تضع الكلَّ في التواريخ أعلاه. ويصل البحثُ الميدانيُّ السِّجلَّ المكتوب بالممارسة الحيّة — بتوثيق الآلات وصُنّاعها، وتسجيل الموسيقى ومن يحملونها. وفي تصميمه يستند المشروعُ إلى «<span class=\"chip net\" style=\"--c:#C9A227\" data-net=\"09_Pub_33\">تحانين</span>» — الكتابِ الذي طوّرت له ميراث شكلَ الأطلس الموسيقيّ لنظام الرحلة الغنائيّ، مستخدِمةً الحروفَ بوصفها جغرافيا سماعِه. والدافعُ هنا هو نفسُه: منحُ معرفةٍ منظَّمةٍ بالقاعدة والمسار شكلاً قابلاً للتصفّح. ويتقاسم المشروعُ هموم (001 | <span class=\"chip net\" style=\"--c:#5DCAA5\" data-net=\"P001\">سَرَيان</span>): النقلَ الشفوي، والصحراء، وتدوينَ ما تحمله الذاكرة.</p>","st_now":"المشروع جارٍ على سجليه معاً. يقرأ السجلُّ المكتوب الإنتاجَ الصحراويَّ للموسيقى المكتوبة — مجموعات الأغاني (الكُنّاش، السَّفينة)، وعلم الموسيقى العربي الكلاسيكي، وأدب السماع الصوفي — في ضوء سؤال ما الذي يُكتسب وما الذي يُفقد حين تُدوَّن موسيقى شفوية؛ و<span class=\"chip net\" style=\"--c:#C9A227\" data-net=\"12_Pub_69\">مراجع ميراث 6، في الدوزنة</span>، قيد الإنتاج. ويبني السجلُّ الآليُّ <span class=\"chip net\" style=\"--c:#C9A227\" data-net=\"12_Pub_48\">أورغانولوجيا الآلات الصحراوية</span> من الداخل — مع الصُّنّاع والموسيقيين الوراثيين الذين يحملون المعرفة — مقترناً بحكايات آلاتٍ مُسجَّلة. ويصل البحثُ الميدانيُّ السجلَّ المكتوب بالممارسة الحيّة. ويُقرأ الكلُّ تحت عدسة واحدة: الموسيقى بوصفها خريطةً لمجالات النفوذ عبر الصحراء.","st_next":"يُثمر العملُ مادةً مكتوبةً ومطبوعةً خاصّةً بميراث: طبعاتٍ نقديةً ودراساتٍ لنصوص الموسيقى، وفهرسَ آلاتها، وحكاياتِ آلاتٍ مُسجَّلة، ومقالاتٍ مُكلَّفة تضع الكلَّ في تواريخ الموسيقى المكتوبة. ويتعمّق البحثُ الميدانيُّ — بتوثيق الآلات وصُنّاعها، وتسجيل الموسيقى ومن يحملونها — ويُطوَّر شكلُ الأطلس المستمدُّ من «<span class=\"chip net\" style=\"--c:#C9A227\" data-net=\"09_Pub_33\">تحانين</span>» نحو صيغةٍ قابلةٍ للتصفّح لمعرفةٍ منظَّمةٍ بالقاعدة والمسار.","st_now_h":"الوضع الراهن للعمل","st_next_h":"ما هو قادم","st_now_k":"012.20 · المراجعة","st_next_k":"012.30 · الأفق","st_now_x":"أين يقف العمل الآن","st_next_x":"ما الذي يأتي تالياً","st_now_line":"أين يقف","st_next_line":"ما يأتي تالياً","updated_now":"","updated_next":"","cap":[]}};
+let lang='en';
+function _qs(s){return document.querySelector(s);}
+function setLang(l){
+  lang=l;
+  const ar=(l==='ar');
+  const root=document.documentElement;
+  root.setAttribute('dir',ar?'rtl':'ltr');
+  root.setAttribute('lang',ar?'ar':'en');
+  /* prose blocks */
+  I18N_IDS.forEach(id=>{const el=document.getElementById(id);if(!el)return;
+    const tab=el.querySelector('.tab'), lbl=el.querySelector('.lbl');
+    const tabHTML=tab?tab.outerHTML:'', lblHTML=lbl?lbl.outerHTML:'';
+    if(ar){el.innerHTML=tabHTML+lblHTML+LANG.ar[id];}
+    else{el.innerHTML=enHTML[id];}
+    /* swap the tab label text (keep the <b> code) */
+    const t2=el.querySelector('.tab');
+    if(t2){const b=t2.querySelector('b'), code=b?b.outerHTML:'';
+      const key=ar?LANG.ar['tab_'+id]:enHTML['tabtxt_'+id];
+      t2.innerHTML=code+' '+key;}
+    const l2=el.querySelector('.lbl');
+    if(l2){l2.textContent=ar?(LANG.ar['lbl_'+id]||l2.textContent):enHTML['lbl_'+id];}
+  });
+  /* masthead */
+  _qs('.wm').textContent=ar?LANG.ar.wm:enHTML.wm;
+  _qs('.mtitle').textContent=ar?LANG.ar.mtitle:enHTML.mtitle;
+  _qs('.msub').textContent=ar?LANG.ar.msub:enHTML.msub;
+  /* the "other language" block under the title — the mirror of the English page (Arabic on top, English below in AR) */
+  {const m=_qs('.mar');if(m){if(ar){m.setAttribute('dir','ltr');m.innerHTML=(window.__MERATH_MAR__?__MERATH_MAR__.en+'<small>'+__MERATH_MAR__.sub+'</small>':m.innerHTML);}else{m.setAttribute('dir','rtl');m.innerHTML=(window.__MERATH_MAR__?__MERATH_MAR__.ar+'<small>'+__MERATH_MAR__.subAr+'</small>':m.innerHTML);}}}
+  /* plate captions */
+  document.querySelectorAll('.plate .cap span:last-child').forEach((s,i)=>{s.textContent=ar?((LANG.ar.cap||[])[i]||s.textContent):enHTML['cap'+i];});
+  /* mufaharas — subtitle + search placeholder */
+  {const spSub=document.querySelector('.sp-top .t span:last-child');if(spSub)spSub.textContent=ar?LANG.ar.sp_sub:enHTML.sp_sub;
+   const spI=document.getElementById('sp-input');if(spI)spI.placeholder=ar?LANG.ar.sp_ph:enHTML.sp_ph;}
+  /* mudakarat subtitle */
+  {const ts=document.querySelector('.tk-sub');if(ts)ts.textContent=ar?LANG.ar.tk_sub:enHTML.tk_sub;}
+  /* black menu — the shared stop-motion: shudder + slide the strip to its new side on language swap */
+  {const strip=document.getElementById('nav-strip');if(strip){strip.classList.add('tearing');requestAnimationFrame(()=>{if(typeof stripPlace==='function')stripPlace();});setTimeout(()=>strip.classList.remove('tearing'),980);}}
+  /* header — back link + nav labels + lang button */
+  _qs('.back').textContent=ar?LANG.ar.back:enHTML.back;
+  const navFull=document.querySelectorAll('nav.nav a.full');
+  const navKeys=['nav_projects','nav_publications','nav_programmes','nav_art','nav_studies','nav_archives','nav_about'];
+  navFull.forEach((a,i)=>{a.textContent=ar?LANG.ar[navKeys[i]]:enHTML['navfull'+i];});
+  {const _lb=document.getElementById('lang');_lb.textContent=ar?'EN':'ع';
+   _lb.style.fontFamily=ar?'inherit':'"Geeza Pro","IBM Plex Sans Arabic","Noto Naskh Arabic",serif';
+   _lb.style.fontSize=ar?'12px':'15px';}
+  /* side nav — section names + strand labels */
+  const sideLinks=document.querySelectorAll('#nav a');
+  sideLinks.forEach((a,i)=>{const sp=a.querySelector('span:last-child');if(sp)sp.textContent=ar?(LANG.ar.nav[i]||sp.textContent):enHTML['side'+i];});
+  const strands=document.querySelectorAll('#nav .strand');
+  strands.forEach((s,i)=>{s.textContent=ar?(LANG.ar.strand[i]||s.textContent):enHTML['strand'+i];});
+  /* status band */
+  _qs('#bstatus .tnode.now').innerHTML=ar?('<i></i>'+LANG.ar.st_now_line):enHTML.st_now_line;
+  _qs('#bstatus .tnode.next').innerHTML=ar?(LANG.ar.st_next_line+' <b>→</b><i></i>'):enHTML.st_next_line;
+  const stNow=_qs('#bstatus .st.now'), stNext=_qs('#bstatus .st.next');
+  if(stNow){stNow.querySelector('.stk').textContent=ar?LANG.ar.st_now_k:enHTML.st_now_k;
+    stNow.querySelector('.stx').textContent=ar?LANG.ar.st_now_x:enHTML.st_now_x;
+    stNow.querySelector('.sth').textContent=ar?LANG.ar.st_now_h:enHTML.st_now_h;
+    stNow.querySelector('.h').textContent=ar?LANG.ar.st_now:enHTML.st_now;
+    const u1=stNow.querySelector('.updated');if(u1)u1.innerHTML=ar?LANG.ar.updated_now:enHTML.updated_now;}
+  if(stNext){stNext.querySelector('.stk').textContent=ar?LANG.ar.st_next_k:enHTML.st_next_k;
+    stNext.querySelector('.stx').textContent=ar?LANG.ar.st_next_x:enHTML.st_next_x;
+    stNext.querySelector('.sth').textContent=ar?LANG.ar.st_next_h:enHTML.st_next_h;
+    stNext.querySelector('.h').textContent=ar?LANG.ar.st_next:enHTML.st_next;
+    const u2=stNext.querySelector('.updated');if(u2)u2.innerHTML=ar?LANG.ar.updated_next:enHTML.updated_next;}
+  /* network core visible UI strings */
+  const nof=document.getElementById('nof');if(nof)nof.textContent=ar?LANG.ar.openfile:'Open the file';
+  const hint=_qs('#net .hint');if(hint)hint.textContent=ar?LANG.ar.net_hint:enHTML.net_hint;
+  /* recompute word gauge + re-lay marginalia after the DOM text changed */
+  if(typeof totalWords!=='undefined')totalWords=wordCount();
+  if(typeof setGauge==='function')setGauge();
+  if(typeof tkBuild==='function'){TKD_CUR=ar?LANG.ar.tk:TKD;tkBuild();}
+  {const _n=document.getElementById('net');if(_n&&_n.classList.contains('on')&&window._curNet)openNet(window._curNet);}
+  buildMarginalia();
+}
+/* capture the English originals from the live DOM, then wire the toggle */
+function _captureEN(){
+  I18N_IDS.forEach(id=>{const el=document.getElementById(id);if(!el)return;
+    enHTML[id]=el.innerHTML;
+    const tab=el.querySelector('.tab');
+    if(tab){const b=tab.querySelector('b');enHTML['tabtxt_'+id]=(b?tab.innerHTML.replace(b.outerHTML,'').trim():tab.innerHTML.trim());}
+    const lbl=el.querySelector('.lbl');if(lbl)enHTML['lbl_'+id]=lbl.textContent;
+  });
+  enHTML.wm=_qs('.wm').textContent;
+  enHTML.mtitle=_qs('.mtitle').textContent;
+  enHTML.msub=_qs('.msub').textContent;
+  enHTML.back=_qs('.back').textContent;
+  document.querySelectorAll('.plate .cap span:last-child').forEach((s,i)=>enHTML['cap'+i]=s.textContent);
+  {const spSub=document.querySelector('.sp-top .t span:last-child');enHTML.sp_sub=spSub?spSub.textContent:'';
+   const spI=document.getElementById('sp-input');enHTML.sp_ph=spI?spI.getAttribute('placeholder'):'';
+   const ts=document.querySelector('.tk-sub');enHTML.tk_sub=ts?ts.textContent:'';}
+  document.querySelectorAll('nav.nav a.full').forEach((a,i)=>enHTML['navfull'+i]=a.textContent);
+  document.querySelectorAll('#nav a').forEach((a,i)=>{const sp=a.querySelector('span:last-child');enHTML['side'+i]=sp?sp.textContent:'';});
+  document.querySelectorAll('#nav .strand').forEach((s,i)=>enHTML['strand'+i]=s.textContent);
+  enHTML.st_now_line=_qs('#bstatus .tnode.now').innerHTML;
+  enHTML.st_next_line=_qs('#bstatus .tnode.next').innerHTML;
+  const sN=_qs('#bstatus .st.now'), sX=_qs('#bstatus .st.next');
+  enHTML.st_now_k=sN.querySelector('.stk').textContent; enHTML.st_now_x=sN.querySelector('.stx').textContent;
+  enHTML.st_now_h=sN.querySelector('.sth').textContent; enHTML.st_now=sN.querySelector('.h').textContent;
+  enHTML.st_next_k=sX.querySelector('.stk').textContent; enHTML.st_next_x=sX.querySelector('.stx').textContent;
+  enHTML.st_next_h=sX.querySelector('.sth').textContent; enHTML.st_next=sX.querySelector('.h').textContent;
+  const u1c=sN.querySelector('.updated'),u2c=sX.querySelector('.updated');
+  enHTML.updated_now=u1c?u1c.innerHTML:''; enHTML.updated_next=u2c?u2c.innerHTML:'';
+  const hint=_qs('#net .hint');enHTML.net_hint=hint?hint.textContent:'';
+}
+_captureEN();
+document.getElementById('lang').onclick=()=>setLang(lang==='ar'?'en':'ar');
+/* black menu — the shared torn strip, sized to wrap the nav and bleed off the outer edge (matches landing/about/projects) */
+const _masthead=document.querySelector('header'),_navEl=document.querySelector('header nav.nav'),_navStrip=document.getElementById('nav-strip');
+function stripPlace(){
+  if(!_navEl||!_navStrip||getComputedStyle(_navEl).display==='none')return;
+  const hr=_masthead.getBoundingClientRect(), nr=_navEl.getBoundingClientRect();
+  const pad=30, bleed=Math.round(innerWidth*0.085)+26;
+  const navLeftish=(nr.left+nr.right)/2 < (hr.left+hr.right)/2;
+  let left,width;
+  if(navLeftish){ left=-bleed; width=(nr.right-hr.left)+pad+bleed; }
+  else{ left=(nr.left-hr.left)-pad; width=(hr.width-(nr.left-hr.left))+pad+bleed; }
+  _navStrip.style.left=Math.round(left)+'px';_navStrip.style.width=Math.round(width)+'px';
+  _navStrip.style.top=Math.round(nr.top-hr.top-13)+'px';_navStrip.style.height=Math.round(nr.height+26)+'px';
+}
+addEventListener('load',()=>setTimeout(stripPlace,60));
+let _srz;addEventListener('resize',()=>{clearTimeout(_srz);_srz=setTimeout(stripPlace,120);});
+stripPlace();
+
+/* ===== shared components ported from the other merath pages ===== */
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+
+/* mufaharas — the real fold-out search panel; #fbtn opens it, #sp-close / Escape close it */
+const spanel=document.getElementById("search-panel"),spInput=document.getElementById("sp-input");
+const spTree=document.getElementById("sp-tree"),siteHeader=document.querySelector("header");
+const POOL=["001 Sarayan","002 Saharan Currency","003 Al Manahij","004 Research Methods","005 Archaeological Knowledge","006 Libya-Algeria","009 Publishing Field","010 The Print Rahba","013 Dispatch Discourse","LED01 Revolution Forged","LED02 Tahanin","LED03 Umm Al Saraya","m3 Framework","LED08 Fielding","i196","i483","i595","Ghadames","Tripoli","currency","oral history","paper","riso"];
+function hashStr(t){let h=2166136261;for(let i=0;i<t.length;i++){h^=t.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+function mkRnd(h){return()=>{h^=h<<13;h^=h>>>17;h^=h<<5;h>>>=0;return (h%1000)/1000;};}
+function growPanelTree(seed,query){
+  const W=spTree.viewBox.baseVal.width,H=spTree.viewBox.baseVal.height;
+  const r=mkRnd(hashStr(seed+"|"+query)||7);
+  const q=(query||"").trim().toLowerCase();
+  let matches=q?POOL.filter(t=>t.toLowerCase().includes(q)):POOL.slice();
+  if(!matches.length)matches=["—"];
+  const n=Math.min(7,Math.max(3,matches.length));
+  const picked=[];for(let i=0;i<n;i++){let t=matches[Math.floor(r()*matches.length)];if(t.length>14)t=t.slice(0,13)+"…";picked.push(t);}
+  const rootX=W*0.5;let html2="";
+  picked.forEach((t,i)=>{
+    const lx=W*0.04+W*0.92*((i+0.5)/n);
+    const d="M"+rootX+",10 C"+rootX+","+(H*0.55)+" "+lx.toFixed(1)+","+(H*0.55-14)+" "+lx.toFixed(1)+","+(H-28);
+    html2+='<path d="'+d+'" style="stroke-dasharray:900;stroke-dashoffset:900;transition:stroke-dashoffset .6s cubic-bezier(.25,.6,.3,1) '+(0.1+i*0.06).toFixed(2)+'s"/>';
+    html2+='<text x="'+lx.toFixed(0)+'" y="'+(H-8)+'" text-anchor="middle" style="opacity:0;transition:opacity .45s '+(0.3+i*0.06).toFixed(2)+'s">'+esc(t)+"</text>";
+  });
+  spTree.innerHTML=html2;
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    spTree.querySelectorAll("path").forEach(p=>p.style.strokeDashoffset="0");
+    spTree.querySelectorAll("text").forEach(t=>t.style.opacity="0.9");
+  }));
+}
+function openPanel(){spanel.classList.add("open");if(siteHeader)siteHeader.classList.add("panel-open");growPanelTree("open"+Date.now(),spInput.value);setTimeout(()=>spInput.focus(),650);}
+function closePanel(){spanel.classList.remove("open");if(siteHeader)siteHeader.classList.remove("panel-open");}
+const _fb=document.getElementById("fbtn");if(_fb)_fb.onclick=e=>{e.preventDefault();e.stopPropagation();if(spanel.classList.contains("open"))closePanel();else openPanel();};
+document.getElementById("sp-close").addEventListener("click",e=>{e.preventDefault();closePanel();});
+window.addEventListener("keydown",e=>{if(e.key==="Escape")closePanel();});
+let spT;spInput.addEventListener("input",()=>{clearTimeout(spT);spT=setTimeout(()=>growPanelTree("q",spInput.value),150);});
+
+/* mufaharas — physical folded-paper corner: pull the dog-ear to open the index */
+const miniTree=document.getElementById("mini-tree");
+let miniTL=120;
+function buildFold(){
+  if(!miniTree)return;
+  miniTL=Math.max(52,Math.round(innerWidth*0.08));
+  const W=Math.min(miniTL+400,Math.max(300,innerWidth-8));
+  miniTree.setAttribute("viewBox","0 0 "+W+" 200");
+  miniTree.style.width=W+"px";miniTree.style.height="200px";
+  const rtl=document.documentElement.getAttribute("dir")==="rtl";
+  const FX=rtl?W:0, d2=rtl?-1:1;
+  const fx=Math.min(190,Math.max(58,miniTL-12)), fy=Math.round(fx*0.79);
+  const hx=FX+d2*fx, tipx=FX+d2*Math.round(fx*0.69), tipy=Math.round(fy*0.75);
+  const ca=(Math.atan2(fy,FX-hx)*180/Math.PI).toFixed(1);
+  let h='<g class="foldg" style="transform-origin:'+FX+'px 0px">';
+  h+='<path class="flap under" d="M'+FX+',0 L'+hx+',0 L'+FX+','+fy+' Z" style="fill:#D9F164;stroke:none;pointer-events:auto;cursor:pointer"/>';
+  h+='<g class="flapg" style="transform-origin:'+hx+'px 0px;--ca:'+ca+'deg;--nca:-'+ca+'deg">';
+  h+='<path class="flap" d="M'+hx+',0 L'+FX+','+fy+' L'+tipx+','+tipy+' Z" style="fill:#DCD2B5;stroke:none;pointer-events:auto;cursor:pointer"/>';
+  h+='<path d="M'+hx+',0 L'+tipx+','+tipy+' L'+FX+','+fy+'" style="stroke-width:1.2;pointer-events:auto;cursor:pointer"/></g>';
+  h+='<path d="M'+hx+',0 L'+FX+','+fy+'" style="pointer-events:auto;cursor:pointer"/></g>';
+  miniTree.innerHTML=h;
+}
+if(miniTree){
+  buildFold();
+  miniTree.addEventListener("mouseover",()=>miniTree.classList.add("pull"));
+  miniTree.addEventListener("mouseout",e=>{if(!miniTree.contains(e.relatedTarget))miniTree.classList.remove("pull");});
+  miniTree.addEventListener("click",e=>{if(!e.target.closest("path"))return;e.preventDefault();e.stopPropagation();openPanel();});
+  const _fw=document.getElementById("fold-wrap");
+  setTimeout(()=>{if(_fw)_fw.classList.add("on");},400);
+  new MutationObserver(()=>{buildFold();setTimeout(buildMarginalia,120);}).observe(document.documentElement,{attributes:true,attributeFilter:["dir"]});
+  let _frz;window.addEventListener("resize",()=>{clearTimeout(_frz);_frz=setTimeout(buildFold,200);});
+}
+
+/* mudakarat — the shared ticker: running clock + scrolling dispatch list */
+const TKD=[["02.2026","Staging at Beit Ali Khalifa Zaidi — Tripoli"],["12.2025","CEN wa SAD performed — Jameel Arts Centre, Dubai"],["10.2025","A Sun Dawned Over Algeria opens — Dar Nuwaiji, Tripoli"],["2026","m3 · A Framework for Private Archives — released"],["02.2026","i595 accessioned — Saharan Currency archive"],["04.2026","Alpha Stitch bindery run — the Print Rahba"]];
+const tkList=document.getElementById("tk-list");let tkI=0,tkTimer=null,TKD_CUR=TKD;
+function tkBuild(){
+  tkList.innerHTML=TKD_CUR.concat([TKD_CUR[0]]).map(e2=>'<li><span class="tk-date">'+esc(e2[0])+'</span><span>'+esc(e2[1])+"</span></li>").join("");
+  tkI=0;tkList.style.transition="none";tkList.style.transform="translateY(0)";
+  if(tkTimer)clearInterval(tkTimer);
+  tkTimer=setInterval(()=>{
+    tkI++;tkList.style.transition="transform .6s cubic-bezier(.2,.7,.2,1)";
+    tkList.style.transform="translateY(-"+(tkI*42)+"px)";
+    if(tkI>=TKD.length){setTimeout(()=>{tkList.style.transition="none";tkList.style.transform="translateY(0)";tkI=0;},650);}
+  },4200);
+}
+function clock(){
+  const d=new Date(Date.now()+ (2*60*60*1000) + (new Date().getTimezoneOffset()*60*1000));
+  document.getElementById("tk-clock").textContent=String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
+}
+setInterval(clock,1000);clock();tkBuild();
+document.getElementById("ticker").addEventListener("click",()=>document.getElementById("ticker").classList.toggle("xp"));
+setTimeout(()=>document.getElementById("ticker").classList.add("show"),200);
+
+/* one graph, traversable: project → strand → output → venue / partner / archive; click any node to re-centre on it */
+const TYPE={
+  project:{c:"#5DCAA5",n:"Project",n_ar:"مشروع"}, strand:{c:"#57C8D6",n:"Strand",n_ar:"خيط"}, output:{c:"#C9A227",n:"Output",n_ar:"مُخرَج"},
+  publication:{c:"#3E8FB0",n:"Publication",n_ar:"منشور"}, partner:{c:"#9A93EC",n:"Partner",n_ar:"شريك"}, venue:{c:"#E88A5E",n:"Venue",n_ar:"مكان"},
+  archive:{c:"#D07A46",n:"Archive",n_ar:"أرشيف"}, series:{c:"#7F77DD",n:"Series",n_ar:"سلسلة"}
+};
+/* edges: [relation word, target key, direction]  — dir "rev" makes the arrow point back into this node (the source) */
+const NET={
+ "ENT-afac": {
+  "type": "institution",
+  "kt": "Institution",
+  "kh": "AFAC",
+  "kb": "",
+  "kt_ar": "مؤسسة",
+  "kh_ar": "الصندوق العربي للثقافة والفنون",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "Produced with",
+    "S003-fellowship",
+    "rev"
+   ]
+  ]
+ },
+ "PER-anabosi": {
+  "type": "person",
+  "kt": "Person",
+  "kh": "Adam Anabosi",
+  "kb": "",
+  "kt_ar": "شخص",
+  "kh_ar": "آدم عنبوسي",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "authored by",
+    "09_Pub_33",
+    "rev"
+   ]
+  ]
+ },
+ "S004-performing": {
+  "type": "strand",
+  "kt": "Strand",
+  "kh": "Performing · 004",
+  "kb": "",
+  "kt_ar": "خيط",
+  "kh_ar": "الأداء · 004",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P004",
+    "fwd"
+   ],
+   [
+    "feeds",
+    "04_Arc_60",
+    "rev"
+   ]
+  ]
+ },
+ "S004-mr2": {
+  "type": "strand",
+  "kt": "Strand",
+  "kh": "mR²",
+  "kb": "",
+  "kt_ar": "خيط",
+  "kh_ar": "مR²",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P004",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "04_Tra_17",
+    "rev"
+   ]
+  ]
+ },
+ "S012-instruments": {
+  "type": "strand",
+  "kt": "Strand",
+  "kh": "Instruments",
+  "kb": "",
+  "kt_ar": "خيط",
+  "kh_ar": "الآلات",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P012",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "12_Pub_48",
+    "rev"
+   ]
+  ]
+ },
+ "01_Med_66": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "Fifteen films",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "خمسة عشر فيلماً",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "Produced with",
+    "ENT-raw-material-company",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "S001-taught-to-travel",
+    "fwd"
+   ]
+  ]
+ },
+ "ENT-dar-al-fergiani": {
+  "type": "institution",
+  "kt": "Institution",
+  "kh": "Dar Al-Fergiani",
+  "kb": "",
+  "kt_ar": "مؤسسة",
+  "kh_ar": "دار الفرجاني",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "Produced with",
+    "SER-natamashou",
+    "rev"
+   ],
+   [
+    "Produced with",
+    "05_Pub_23",
+    "rev"
+   ]
+  ]
+ },
+ "03_Sin_13": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "Launching Publication Fellowship",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "Launching Publication Fellowship",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "S003-fellowship",
+    "fwd"
+   ]
+  ]
+ },
+ "S009-book-trade": {
+  "type": "strand",
+  "kt": "Strand",
+  "kh": "Trans-Saharan–Mediterranean Book Trade",
+  "kb": "",
+  "kt_ar": "خيط",
+  "kh_ar": "تجارة الكتاب عبر الصحراء والمتوسط",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P009",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "09_Exh_31",
+    "rev"
+   ],
+   [
+    "As part of",
+    "09_Exh_41",
+    "rev"
+   ]
+  ]
+ },
+ "S009-editorial-methodology": {
+  "type": "strand",
+  "kt": "Strand",
+  "kh": "Editorial Methodology",
+  "kb": "",
+  "kt_ar": "خيط",
+  "kh_ar": "منهجية التحرير",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P009",
+    "fwd"
+   ]
+  ]
+ },
+ "09_Pub_38": {
+  "type": "publication",
+  "kt": "Publication",
+  "kh": "Display Distribute",
+  "kb": "",
+  "kt_ar": "منشور",
+  "kh_ar": "Display Distribute",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "S009-publication-design",
+    "fwd"
+   ]
+  ]
+ },
+ "P009": {
+  "type": "project",
+  "kt": "Project · 009",
+  "kh": "Publishing Field",
+  "kb": "The field the press stands in — eight series and the trade that moves them.",
+  "kt_ar": "مشروع · 009",
+  "kh_ar": "ميدان النشر",
+  "kb_ar": "الميدان الذي تقف فيه الدار — ثماني سلاسل وتجارةٌ تحرّكها.",
+  "file": "/projects/publishing-field",
+  "edges": [
+   [
+    "Produced with",
+    "P010",
+    "fwd"
+   ],
+   [
+    "feeds",
+    "04_Dig_61",
+    "rev"
+   ],
+   [
+    "feeds",
+    "P010",
+    "rev"
+   ],
+   [
+    "As part of",
+    "SER-collections",
+    "rev"
+   ],
+   [
+    "As part of",
+    "S009-publication-design",
+    "rev"
+   ],
+   [
+    "As part of",
+    "S009-book-trade",
+    "rev"
+   ],
+   [
+    "As part of",
+    "S009-editorial-methodology",
+    "rev"
+   ],
+   [
+    "As part of",
+    "SER-monologues",
+    "rev"
+   ]
+  ]
+ },
+ "09_Exh_41": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "Focal Point Art Fair",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "Focal Point Art Fair",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "held at",
+    "ENT-sharjah-art-foundation",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "S009-book-trade",
+    "fwd"
+   ]
+  ]
+ },
+ "02_Pub_3": {
+  "type": "publication",
+  "kt": "Publication",
+  "kh": "Book on Currency",
+  "kb": "",
+  "kt_ar": "منشور",
+  "kh_ar": "Book on Currency",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "S002-ghadames",
+    "fwd"
+   ]
+  ]
+ },
+ "P008": {
+  "type": "project",
+  "kt": "Project · 008",
+  "kh": "Held in Common",
+  "kb": "What culture holds in common — shared ownership, availability and proof, with film as its first ground.",
+  "kt_ar": "مشروع · 008",
+  "kh_ar": "في المُشاع",
+  "kb_ar": "ما تملكه الثقافة في المُشاع — الملكية المشتركة والإتاحة والإثبات، والفيلم أرضُها الأولى.",
+  "file": "/projects/held-in-common",
+  "edges": [
+   [
+    "Based on",
+    "P005",
+    "fwd"
+   ],
+   [
+    "Based on",
+    "P003",
+    "fwd"
+   ],
+   [
+    "Based on",
+    "P002",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "08_Dig_30",
+    "rev"
+   ]
+  ]
+ },
+ "P006": {
+  "type": "project",
+  "kt": "Project · 006",
+  "kh": "Libya-Algeria",
+  "kb": "A shared history across a border — Libyan voices of the Algerian revolution.",
+  "kt_ar": "مشروع · 006",
+  "kh_ar": "ليبيا - الجزائر",
+  "kb_ar": "تاريخ مشترك عبر حدود — أصوات ليبية من الثورة الجزائرية.",
+  "file": "/projects/libya-algeria",
+  "edges": [
+   [
+    "Based on",
+    "ENT-libyan-scouts-archives",
+    "fwd"
+   ],
+   [
+    "Derived from",
+    "04_Arc_19",
+    "rev"
+   ],
+   [
+    "As part of",
+    "S006-exhibition-practice",
+    "rev"
+   ],
+   [
+    "Derived from",
+    "04_Arc_60",
+    "rev"
+   ],
+   [
+    "Based on",
+    "S007-across-the-mediterranean",
+    "rev"
+   ],
+   [
+    "As part of",
+    "06_Art_27",
+    "rev"
+   ],
+   [
+    "feeds",
+    "04_Dig_61",
+    "rev"
+   ],
+   [
+    "As part of",
+    "S006-oral-history",
+    "rev"
+   ],
+   [
+    "As part of",
+    "S006-archival-research",
+    "rev"
+   ],
+   [
+    "As part of",
+    "06_Art_40",
+    "rev"
+   ]
+  ]
+ },
+ "03_Dig_58": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "syllabi database",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "syllabi database",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P003",
+    "fwd"
+   ]
+  ]
+ },
+ "02_Tra_70": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "Relational Database Training",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "Relational Database Training",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "Produced with",
+    "ENT-qadous-research-center",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "S002-ghadames",
+    "fwd"
+   ]
+  ]
+ },
+ "09_Pub_34": {
+  "type": "publication",
+  "kt": "Publication",
+  "kh": "Umm Al Saraya",
+  "kb": "",
+  "kt_ar": "منشور",
+  "kh_ar": "طبعة أم السرايا",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "S009-publication-design",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "SER-ledger-uncatalogued",
+    "fwd"
+   ]
+  ]
+ },
+ "S004-listening": {
+  "type": "strand",
+  "kt": "Strand",
+  "kh": "Listening · 004",
+  "kb": "",
+  "kt_ar": "خيط",
+  "kh_ar": "الإصغاء · 004",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P004",
+    "fwd"
+   ],
+   [
+    "feeds",
+    "04_Arc_19",
+    "rev"
+   ],
+   [
+    "feeds",
+    "04_Arc_60",
+    "rev"
+   ],
+   [
+    "feeds",
+    "04_Sin_63",
+    "rev"
+   ]
+  ]
+ },
+ "09_Pub_55": {
+  "type": "publication",
+  "kt": "Publication",
+  "kh": "Architecture series — first title",
+  "kb": "",
+  "kt_ar": "منشور",
+  "kh_ar": "سلسلة العمارة — أول العناوين",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "S009-publication-design",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "SER-architecture",
+    "fwd"
+   ]
+  ]
+ },
+ "01_Exh_8": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "Educational Web",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "الشبكة التعليمية",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "S001-taught-to-travel",
+    "fwd"
+   ]
+  ]
+ },
+ "SER-merath-manuals": {
+  "type": "series",
+  "kt": "Series",
+  "kh": "merath manuals",
+  "kb": "",
+  "kt_ar": "سلسلة",
+  "kh_ar": "مراجع ميراث",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P004",
+    "fwd"
+   ],
+   [
+    "feeds",
+    "P004",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "04_Pub_21",
+    "rev"
+   ],
+   [
+    "As part of",
+    "04_Pub_20",
+    "rev"
+   ],
+   [
+    "As part of",
+    "02_Pub_12",
+    "rev"
+   ],
+   [
+    "As part of",
+    "05_Pub_25",
+    "rev"
+   ],
+   [
+    "As part of",
+    "12_Pub_69",
+    "rev"
+   ]
+  ]
+ },
+ "04_Dig_61": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "Bilingual Catalogue Schema",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "Bilingual Catalogue Schema",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "feeds",
+    "S004-measuring",
+    "fwd"
+   ],
+   [
+    "feeds",
+    "P009",
+    "fwd"
+   ],
+   [
+    "feeds",
+    "S004-translating",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "P004",
+    "fwd"
+   ],
+   [
+    "feeds",
+    "P006",
+    "fwd"
+   ],
+   [
+    "feeds",
+    "P010",
+    "fwd"
+   ],
+   [
+    "Derived from",
+    "P002",
+    "fwd"
+   ],
+   [
+    "feeds",
+    "S004-mapping",
+    "fwd"
+   ]
+  ]
+ },
+ "P002": {
+  "type": "project",
+  "kt": "Project · 002",
+  "kh": "Saharan Currency",
+  "kb": "An archive of Saharan trade currencies — money as a record of routes, values and hands.",
+  "kt_ar": "مشروع · 002",
+  "kh_ar": "العملة الصحراوية",
+  "kb_ar": "أرشيف لعملات التجارة الصحراوية — النقود سجلاً للطرق والقيم والأيادي.",
+  "file": "/projects/saharan-currency",
+  "edges": [
+   [
+    "Based on",
+    "REF-princeton-geniza-lab",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "S002-ghadames",
+    "rev"
+   ],
+   [
+    "Based on",
+    "09_Art_32",
+    "rev"
+   ],
+   [
+    "feeds",
+    "10_Arc_74",
+    "rev"
+   ],
+   [
+    "feeds",
+    "P003",
+    "rev"
+   ],
+   [
+    "Derived from",
+    "04_Dig_61",
+    "rev"
+   ],
+   [
+    "Based on",
+    "P008",
+    "rev"
+   ]
+  ]
+ },
+ "S002-ghadames": {
+  "type": "strand",
+  "kt": "Strand",
+  "kh": "Ghadames",
+  "kb": "",
+  "kt_ar": "خيط",
+  "kh_ar": "غدامس",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P002",
+    "fwd"
+   ],
+   [
+    "Produced with",
+    "ENT-qadous-research-center",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "02_Tra_70",
+    "rev"
+   ],
+   [
+    "As part of",
+    "02_Arc_1",
+    "rev"
+   ],
+   [
+    "As part of",
+    "02_Pub_3",
+    "rev"
+   ],
+   [
+    "As part of",
+    "02_Pub_12",
+    "rev"
+   ],
+   [
+    "As part of",
+    "02_Exh_2",
+    "rev"
+   ],
+   [
+    "As part of",
+    "02_Dig_57",
+    "rev"
+   ]
+  ]
+ },
+ "REF-princeton-geniza-lab": {
+  "type": "reference",
+  "kt": "Reference",
+  "kh": "Princeton Geniza Lab",
+  "kb": "",
+  "kt_ar": "مرجع",
+  "kh_ar": "مختبر الجنيزة برينستون",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "Based on",
+    "P002",
+    "rev"
+   ]
+  ]
+ },
+ "SER-feminist-oral-history": {
+  "type": "series",
+  "kt": "Series",
+  "kh": "Feminist Oral History",
+  "kb": "",
+  "kt_ar": "سلسلة",
+  "kh_ar": "التاريخ الشفوي للمرأة",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "feeds",
+    "06_Arc_26",
+    "rev"
+   ],
+   [
+    "As part of",
+    "06_Pub_28",
+    "rev"
+   ]
+  ]
+ },
+ "ENT-arete-foundation": {
+  "type": "institution",
+  "kt": "Institution",
+  "kh": "Arete Foundation",
+  "kb": "",
+  "kt_ar": "مؤسسة",
+  "kh_ar": "مؤسسة آريتي",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "Produced with",
+    "S003-fellowship",
+    "rev"
+   ]
+  ]
+ },
+ "ENT-accademia-firenze": {
+  "type": "institution",
+  "kt": "Institution",
+  "kh": "Accademia di Belle Arti di Firenze",
+  "kb": "",
+  "kt_ar": "مؤسسة",
+  "kh_ar": "أكاديمية الفنون الجميلة في فلورنسا",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "Based on",
+    "S007-across-the-mediterranean",
+    "rev"
+   ]
+  ]
+ },
+ "06_Pub_28": {
+  "type": "publication",
+  "kt": "Publication",
+  "kh": "A Revolution Forged in Silver and Gold",
+  "kb": "",
+  "kt_ar": "منشور",
+  "kh_ar": "ثورةٌ سُبكت بالفضة والذهب",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "SER-feminist-oral-history",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "S006-exhibition-practice",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "SER-ledger-uncatalogued",
+    "fwd"
+   ]
+  ]
+ },
+ "04_Dig_59": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "mAktoob — the story bank",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "mAktoob — the story bank",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "feeds",
+    "S004-writing",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "S004-maktoob",
+    "fwd"
+   ],
+   [
+    "Derived from",
+    "04_Art_51",
+    "rev"
+   ]
+  ]
+ },
+ "S004-maktoob": {
+  "type": "strand",
+  "kt": "Strand",
+  "kh": "mAktoob",
+  "kb": "",
+  "kt_ar": "خيط",
+  "kh_ar": "مَكتوب",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P004",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "04_Dig_59",
+    "rev"
+   ]
+  ]
+ },
+ "08_Dig_30": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "Film Database in Libya",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "قاعدة بيانات الأفلام في ليبيا",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P008",
+    "fwd"
+   ],
+   [
+    "feeds",
+    "ENT-mufahras",
+    "fwd"
+   ]
+  ]
+ },
+ "S004-moving": {
+  "type": "strand",
+  "kt": "Strand",
+  "kh": "Moving · 004",
+  "kb": "",
+  "kt_ar": "خيط",
+  "kh_ar": "التَنقُّل · 004",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "Derived from",
+    "P001",
+    "fwd"
+   ],
+   [
+    "Derived from",
+    "P005",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "P004",
+    "fwd"
+   ]
+  ]
+ },
+ "01_Exh_9": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "May our song be worthy of those who listen",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "عسى أُغنيتُنا أن تَليقَ بمن يُصغون",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "S001-taught-to-travel",
+    "fwd"
+   ]
+  ]
+ },
+ "09_Pub_33": {
+  "type": "publication",
+  "kt": "Publication",
+  "kh": "Tahanin, Trace of a Poem from Palestine to Mecca",
+  "kb": "",
+  "kt_ar": "منشور",
+  "kh_ar": "تحانين: أثر نشيد من فلسطين إلى مكة",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "SER-ledger-uncatalogued",
+    "fwd"
+   ],
+   [
+    "authored by",
+    "PER-anabosi",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "S009-publication-design",
+    "fwd"
+   ],
+   [
+    "Based on",
+    "P012",
+    "rev"
+   ]
+  ]
+ },
+ "S006-oral-history": {
+  "type": "strand",
+  "kt": "Strand",
+  "kh": "Oral History",
+  "kb": "",
+  "kt_ar": "خيط",
+  "kh_ar": "التاريخ الشفوي",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P006",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "06_Arc_26",
+    "rev"
+   ]
+  ]
+ },
+ "S009-publication-design": {
+  "type": "strand",
+  "kt": "Strand",
+  "kh": "Publication Design",
+  "kb": "",
+  "kt_ar": "خيط",
+  "kh_ar": "تصميم النشر",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P009",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "09_Pub_34",
+    "rev"
+   ],
+   [
+    "As part of",
+    "09_Pub_37",
+    "rev"
+   ],
+   [
+    "As part of",
+    "09_Pub_46",
+    "rev"
+   ],
+   [
+    "As part of",
+    "09_Pub_38",
+    "rev"
+   ],
+   [
+    "As part of",
+    "09_Art_32",
+    "rev"
+   ],
+   [
+    "As part of",
+    "09_Pub_50",
+    "rev"
+   ],
+   [
+    "As part of",
+    "09_Pub_33",
+    "rev"
+   ],
+   [
+    "As part of",
+    "09_Pub_35",
+    "rev"
+   ],
+   [
+    "As part of",
+    "09_Pub_55",
+    "rev"
+   ],
+   [
+    "As part of",
+    "09_Pub_36",
+    "rev"
+   ],
+   [
+    "As part of",
+    "09_Pub_56",
+    "rev"
+   ]
+  ]
+ },
+ "PER-bischoff": {
+  "type": "person",
+  "kt": "Person",
+  "kh": "Christian Bischoff",
+  "kb": "",
+  "kt_ar": "شخص",
+  "kh_ar": "كريستيان بيسشوف",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "authored by",
+    "09_Pub_36",
+    "rev"
+   ]
+  ]
+ },
+ "04_Tra_18": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "Scouts Archival Training",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "Scouts Archival Training",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P004",
+    "fwd"
+   ],
+   [
+    "feeds",
+    "ENT-libyan-scouts-archives",
+    "fwd"
+   ]
+  ]
+ },
+ "P005": {
+  "type": "project",
+  "kt": "Project · 005",
+  "kh": "Archaeological Knowledge",
+  "kb": "Who holds archaeological knowledge — custodianship, missions and the verbs of the field.",
+  "kt_ar": "مشروع · 005",
+  "kh_ar": " المعرفة الأثرية",
+  "kb_ar": "من يحمل المعرفة الأثرية — الوصاية والبعثات وأفعال الميدان.",
+  "file": "/projects/archaeological-knowledge",
+  "edges": [
+   [
+    "Based on",
+    "ENT-libyan-studies-center",
+    "fwd"
+   ],
+   [
+    "Based on",
+    "ENT-department-of-antiquities",
+    "fwd"
+   ],
+   [
+    "cited by",
+    "P003",
+    "fwd"
+   ],
+   [
+    "Based on",
+    "ENT-saraya-al-hamra",
+    "fwd"
+   ],
+   [
+    "Based on",
+    "ENT-university-of-benghazi",
+    "fwd"
+   ],
+   [
+    "Based on",
+    "P008",
+    "rev"
+   ],
+   [
+    "Derived from",
+    "S004-moving",
+    "rev"
+   ],
+   [
+    "As part of",
+    "05_Pub_23",
+    "rev"
+   ],
+   [
+    "As part of",
+    "05_Pub_25",
+    "rev"
+   ],
+   [
+    "feeds",
+    "SER-natamashou",
+    "rev"
+   ],
+   [
+    "Based on",
+    "P007",
+    "rev"
+   ],
+   [
+    "As part of",
+    "S005-custodians",
+    "rev"
+   ],
+   [
+    "As part of",
+    "05_Dig_24",
+    "rev"
+   ],
+   [
+    "feeds",
+    "P011",
+    "rev"
+   ]
+  ]
+ },
+ "ENT-sharjah-art-foundation": {
+  "type": "institution",
+  "kt": "Institution",
+  "kh": "Sharjah Art Foundation",
+  "kb": "",
+  "kt_ar": "مؤسسة",
+  "kh_ar": "مؤسسة الشارقة للفنون",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "held at",
+    "09_Exh_31",
+    "rev"
+   ],
+   [
+    "held at",
+    "09_Exh_41",
+    "rev"
+   ]
+  ]
+ },
+ "ENT-qadous-research-center": {
+  "type": "institution",
+  "kt": "Institution",
+  "kh": "Qadous Research Center",
+  "kb": "",
+  "kt_ar": "مؤسسة",
+  "kh_ar": "مركز قادوس البحثي",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "Produced with",
+    "02_Tra_70",
+    "rev"
+   ],
+   [
+    "Produced with",
+    "S002-ghadames",
+    "rev"
+   ]
+  ]
+ },
+ "S010-craft-research": {
+  "type": "strand",
+  "kt": "Strand",
+  "kh": "Craft Research",
+  "kb": "",
+  "kt_ar": "خيط",
+  "kh_ar": "البحث الحرفي",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P010",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "10_Pub_76",
+    "rev"
+   ],
+   [
+    "As part of",
+    "10_Arc_75",
+    "rev"
+   ]
+  ]
+ },
+ "09_Pub_46": {
+  "type": "publication",
+  "kt": "Publication",
+  "kh": "A Fielding and the Field Test",
+  "kb": "",
+  "kt_ar": "منشور",
+  "kh_ar": "A Fielding and the Field Test",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "S009-publication-design",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "SER-ledger-uncatalogued",
+    "fwd"
+   ],
+   [
+    "Based on",
+    "P001",
+    "rev"
+   ]
+  ]
+ },
+ "S010-craft-methodology": {
+  "type": "strand",
+  "kt": "Strand",
+  "kh": "Craft Methodology",
+  "kb": "",
+  "kt_ar": "خيط",
+  "kh_ar": "منهجية الحرفة",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P010",
+    "fwd"
+   ]
+  ]
+ },
+ "S004-measuring": {
+  "type": "strand",
+  "kt": "Strand",
+  "kh": "Measuring · 004",
+  "kb": "",
+  "kt_ar": "خيط",
+  "kh_ar": "القياس · 004",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P004",
+    "fwd"
+   ],
+   [
+    "feeds",
+    "04_Dig_61",
+    "rev"
+   ],
+   [
+    "feeds",
+    "02_Pub_12",
+    "rev"
+   ]
+  ]
+ },
+ "06_Arc_26": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "Libyan Oral History of the Algerian Revolution",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "التاريخ الشفوي الليبي للثورة الجزائرية",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "feeds",
+    "SER-feminist-oral-history",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "S006-oral-history",
+    "fwd"
+   ]
+  ]
+ },
+ "S004-writing": {
+  "type": "strand",
+  "kt": "Strand",
+  "kh": "Writing · 004",
+  "kb": "",
+  "kt_ar": "خيط",
+  "kh_ar": "الكتابة · 004",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P004",
+    "fwd"
+   ],
+   [
+    "feeds",
+    "04_Dig_59",
+    "rev"
+   ]
+  ]
+ },
+ "09_Pub_56": {
+  "type": "publication",
+  "kt": "Publication",
+  "kh": "Folklore series — first title",
+  "kb": "",
+  "kt_ar": "منشور",
+  "kh_ar": "سلسلة المأثورات الشعبية — أول العناوين",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "SER-folklore",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "S009-publication-design",
+    "fwd"
+   ]
+  ]
+ },
+ "ENT-liminal": {
+  "type": "institution",
+  "kt": "Institution",
+  "kh": "Liminal, University of Bologna",
+  "kb": "",
+  "kt_ar": "مؤسسة",
+  "kh_ar": "ليمينال، جامعة بولونيا",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "Produced with",
+    "01_Exh_10",
+    "rev"
+   ],
+   [
+    "Produced with",
+    "S001-radiographic-reverb",
+    "rev"
+   ]
+  ]
+ },
+ "S005-custodians": {
+  "type": "strand",
+  "kt": "Strand",
+  "kh": "The Custodians",
+  "kb": "",
+  "kt_ar": "خيط",
+  "kh_ar": "الحُرّاس",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P005",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "05_Exh_22",
+    "rev"
+   ]
+  ]
+ },
+ "SER-folklore": {
+  "type": "series",
+  "kt": "Series",
+  "kh": "Folklore",
+  "kb": "",
+  "kt_ar": "سلسلة",
+  "kh_ar": "المأثورات الشعبية",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "09_Pub_56",
+    "rev"
+   ]
+  ]
+ },
+ "04_Sin_65": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "MESAAS presentation (Columbia University)",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "MESAAS presentation (Columbia University)",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P004",
+    "fwd"
+   ]
+  ]
+ },
+ "ENT-beit-zaidi": {
+  "type": "institution",
+  "kt": "Institution",
+  "kh": "Beit Ali Khalifa Zaidi",
+  "kb": "",
+  "kt_ar": "مؤسسة",
+  "kh_ar": "بيت علي خليفة الزائدي",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "held at",
+    "06_Exh_29",
+    "rev"
+   ],
+   [
+    "held at",
+    "09_Exh_31",
+    "rev"
+   ]
+  ]
+ },
+ "ENT-libyan-studies-center": {
+  "type": "institution",
+  "kt": "Institution",
+  "kh": "Libyan Center for Archives and Historical Studies",
+  "kb": "",
+  "kt_ar": "مؤسسة",
+  "kh_ar": "المركز الليبي للمحفوظات والدراسات التاريخية",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "Based on",
+    "P005",
+    "rev"
+   ]
+  ]
+ },
+ "05_Pub_23": {
+  "type": "publication",
+  "kt": "Publication",
+  "kh": "Guidebooks",
+  "kb": "",
+  "kt_ar": "منشور",
+  "kh_ar": "Guidebooks",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P005",
+    "fwd"
+   ],
+   [
+    "Produced with",
+    "ENT-dar-al-fergiani",
+    "fwd"
+   ]
+  ]
+ },
+ "10_Arc_73": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "Working Print Specimen Library",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "مكتبة عاملة لعينات الطباعة",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "S010-infrastructure",
+    "fwd"
+   ]
+  ]
+ },
+ "ENT-department-of-antiquities": {
+  "type": "institution",
+  "kt": "Institution",
+  "kh": "Department of Antiquities",
+  "kb": "",
+  "kt_ar": "مؤسسة",
+  "kh_ar": "دائرة الآثار",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "Based on",
+    "P005",
+    "rev"
+   ]
+  ]
+ },
+ "P010": {
+  "type": "project",
+  "kt": "Project · 010",
+  "kh": "The Print Rahba",
+  "kb": "The print workshop — paper, riso and craft close to home.",
+  "kt_ar": "مشروع · 010",
+  "kh_ar": "رحبة الطباعة",
+  "kb_ar": "رحبة الطباعة — ورقٌ وريزو وحِرفة قريبة من البيت.",
+  "file": "/projects/the-print-rahba",
+  "edges": [
+   [
+    "feeds",
+    "P009",
+    "fwd"
+   ],
+   [
+    "feeds",
+    "P012",
+    "rev"
+   ],
+   [
+    "As part of",
+    "S010-infrastructure",
+    "rev"
+   ],
+   [
+    "As part of",
+    "S010-courtyard",
+    "rev"
+   ],
+   [
+    "feeds",
+    "04_Dig_61",
+    "rev"
+   ],
+   [
+    "As part of",
+    "S010-craft-methodology",
+    "rev"
+   ],
+   [
+    "Produced with",
+    "P009",
+    "rev"
+   ],
+   [
+    "As part of",
+    "S010-craft-research",
+    "rev"
+   ]
+  ]
+ },
+ "P011": {
+  "type": "project",
+  "kt": "Project · 011",
+  "kh": "Al-Batin",
+  "kb": "Under the surface of the land — geology, extraction and the ledger of the rift.",
+  "kt_ar": "مشروع · 011",
+  "kh_ar": "الباطن",
+  "kb_ar": "تحت سطح الأرض — جيولوجيا واستخراج وسجلّ الصدع.",
+  "file": "/projects/al-batin",
+  "edges": [
+   [
+    "feeds",
+    "P004",
+    "fwd"
+   ],
+   [
+    "Based on",
+    "SER-ledger-uncatalogued",
+    "fwd"
+   ],
+   [
+    "feeds",
+    "P005",
+    "fwd"
+   ]
+  ]
+ },
+ "06_Exh_6": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "A Sun Dawned Over Algeria 01",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "شمس أشرقت ع الجزائر 01",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "S006-exhibition-practice",
+    "fwd"
+   ],
+   [
+    "held at",
+    "ENT-dar-nuwaiji",
+    "fwd"
+   ]
+  ]
+ },
+ "02_Pub_12": {
+  "type": "publication",
+  "kt": "Publication",
+  "kh": "m1. Navigating Cultural Economics",
+  "kb": "",
+  "kt_ar": "منشور",
+  "kh_ar": "m1 · أرشيف العملة",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "feeds",
+    "S004-measuring",
+    "fwd"
+   ],
+   [
+    "Derived from",
+    "02_Arc_1",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "SER-merath-manuals",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "S002-ghadames",
+    "fwd"
+   ],
+   [
+    "cited by",
+    "P004",
+    "fwd"
+   ]
+  ]
+ },
+ "ENT-university-of-benghazi": {
+  "type": "institution",
+  "kt": "Institution",
+  "kh": "University of Benghazi",
+  "kb": "",
+  "kt_ar": "مؤسسة",
+  "kh_ar": "جامعة بنغازي",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "Based on",
+    "P005",
+    "rev"
+   ]
+  ]
+ },
+ "P004": {
+  "type": "project",
+  "kt": "Project · 004",
+  "kh": "Research Methods Workshop",
+  "kb": "Where the studio builds its methods — fieldwork, oral history and cataloguing, tested in practice.",
+  "kt_ar": "مشروع · 004",
+  "kh_ar": "ورشة الأساليب البحثيّة",
+  "kb_ar": "حيث يبني الاستوديو أساليبه — عمل ميداني وتاريخ شفوي وفهرسة تُختبَر في الممارسة.",
+  "file": "/projects/research-methods-workshop",
+  "edges": [
+   [
+    "As part of",
+    "04_Sin_63",
+    "rev"
+   ],
+   [
+    "As part of",
+    "SER-merath-manuals",
+    "rev"
+   ],
+   [
+    "feeds",
+    "P011",
+    "rev"
+   ],
+   [
+    "As part of",
+    "04_Arc_19",
+    "rev"
+   ],
+   [
+    "As part of",
+    "04_Art_51",
+    "rev"
+   ],
+   [
+    "As part of",
+    "S004-maktoob",
+    "rev"
+   ],
+   [
+    "As part of",
+    "S004-mapping",
+    "rev"
+   ],
+   [
+    "As part of",
+    "04_Tra_18",
+    "rev"
+   ],
+   [
+    "As part of",
+    "04_Dig_61",
+    "rev"
+   ],
+   [
+    "cited by",
+    "05_Pub_25",
+    "rev"
+   ],
+   [
+    "As part of",
+    "04_Dig_62",
+    "rev"
+   ],
+   [
+    "feeds",
+    "SER-merath-manuals",
+    "rev"
+   ],
+   [
+    "As part of",
+    "04_Sin_65",
+    "rev"
+   ],
+   [
+    "As part of",
+    "04_Pub_64",
+    "rev"
+   ],
+   [
+    "As part of",
+    "S004-mr2",
+    "rev"
+   ],
+   [
+    "As part of",
+    "S004-listening",
+    "rev"
+   ],
+   [
+    "As part of",
+    "S004-moving",
+    "rev"
+   ],
+   [
+    "Derived from",
+    "P003",
+    "rev"
+   ],
+   [
+    "As part of",
+    "04_Arc_60",
+    "rev"
+   ],
+   [
+    "As part of",
+    "S004-performing",
+    "rev"
+   ],
+   [
+    "cited by",
+    "02_Pub_12",
+    "rev"
+   ],
+   [
+    "As part of",
+    "S004-measuring",
+    "rev"
+   ],
+   [
+    "As part of",
+    "S004-translating",
+    "rev"
+   ],
+   [
+    "As part of",
+    "S004-writing",
+    "rev"
+   ]
+  ]
+ },
+ "09_Pub_37": {
+  "type": "publication",
+  "kt": "Publication",
+  "kh": "Chewing Gum",
+  "kb": "",
+  "kt_ar": "منشور",
+  "kh_ar": "العلكة",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "S009-publication-design",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "SER-ledger-uncatalogued",
+    "fwd"
+   ]
+  ]
+ },
+ "P003": {
+  "type": "project",
+  "kt": "Project · 003",
+  "kh": "Al Manahij",
+  "kb": "Curricula for cultural work — how method is written, taught and handed on.",
+  "kt_ar": "مشروع · 003",
+  "kh_ar": "المناهج",
+  "kb_ar": "مناهج للعمل الثقافي — كيف يُكتب المنهج ويُدرَّس ويُورَّث.",
+  "file": "/projects/al-manahij",
+  "edges": [
+   [
+    "feeds",
+    "ENT-libyan-scouts-archives",
+    "fwd"
+   ],
+   [
+    "feeds",
+    "P002",
+    "fwd"
+   ],
+   [
+    "Derived from",
+    "P004",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "03_Dig_58",
+    "rev"
+   ],
+   [
+    "cited by",
+    "P005",
+    "rev"
+   ],
+   [
+    "As part of",
+    "S003-fellowship",
+    "rev"
+   ],
+   [
+    "Based on",
+    "P008",
+    "rev"
+   ],
+   [
+    "cited by",
+    "S001-taught-to-travel",
+    "rev"
+   ],
+   [
+    "cited by",
+    "P007",
+    "rev"
+   ]
+  ]
+ },
+ "05_Exh_22": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "The Custodians",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "The Custodians",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "S005-custodians",
+    "fwd"
+   ],
+   [
+    "Based on",
+    "04_Arc_60",
+    "fwd"
+   ]
+  ]
+ },
+ "01_Art_68": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "A Libyan History of the Noise Floor",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "تاريخٌ ليبيٌّ لأرضية الضجيج",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "S001-radiographic-reverb",
+    "fwd"
+   ]
+  ]
+ },
+ "02_Arc_1": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "Catalogue of Currency Online",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "Catalogue of Currency Online",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "feeds",
+    "02_Dig_57",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "S002-ghadames",
+    "fwd"
+   ],
+   [
+    "Derived from",
+    "02_Pub_12",
+    "rev"
+   ],
+   [
+    "Derived from",
+    "02_Exh_2",
+    "rev"
+   ]
+  ]
+ },
+ "10_Arc_72": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "Tripoli Paper Database",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "قاعدة بيانات الورق في طرابلس",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "S010-infrastructure",
+    "fwd"
+   ]
+  ]
+ },
+ "ENT-jameel-arts-centre": {
+  "type": "institution",
+  "kt": "Institution",
+  "kh": "Jameel Arts Centre",
+  "kb": "",
+  "kt_ar": "مؤسسة",
+  "kh_ar": "مركز جميل للفنون",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "held at",
+    "09_Art_32",
+    "rev"
+   ]
+  ]
+ },
+ "S010-courtyard": {
+  "type": "strand",
+  "kt": "Strand",
+  "kh": "The Working Courtyard",
+  "kb": "",
+  "kt_ar": "خيط",
+  "kh_ar": "فناء العمل",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P010",
+    "fwd"
+   ]
+  ]
+ },
+ "S001-taught-to-travel": {
+  "type": "strand",
+  "kt": "Strand",
+  "kh": "Taught to Travel",
+  "kb": "",
+  "kt_ar": "خيط",
+  "kh_ar": "Taught to Travel",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P001",
+    "fwd"
+   ],
+   [
+    "Produced with",
+    "ENT-goethe-institut",
+    "fwd"
+   ],
+   [
+    "Produced with",
+    "ENT-arab-image-foundation",
+    "fwd"
+   ],
+   [
+    "cited by",
+    "P003",
+    "fwd"
+   ],
+   [
+    "Produced with",
+    "ENT-raw-material-company",
+    "fwd"
+   ],
+   [
+    "Produced with",
+    "ENT-harun-farocki-institut",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "01_Exh_8",
+    "rev"
+   ],
+   [
+    "As part of",
+    "01_Med_66",
+    "rev"
+   ],
+   [
+    "As part of",
+    "01_Exh_9",
+    "rev"
+   ]
+  ]
+ },
+ "05_Pub_25": {
+  "type": "publication",
+  "kt": "Publication",
+  "kh": "m2. An Index for Archaeological Practices",
+  "kb": "",
+  "kt_ar": "منشور",
+  "kh_ar": "م2. فهرس الممارسات الأثرية",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "cited by",
+    "P004",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "SER-merath-manuals",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "P005",
+    "fwd"
+   ]
+  ]
+ },
+ "ENT-raw-material-company": {
+  "type": "institution",
+  "kt": "Institution",
+  "kh": "RAW Material Company",
+  "kb": "",
+  "kt_ar": "مؤسسة",
+  "kh_ar": "رو ماتيريال كومباني",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "Produced with",
+    "01_Med_66",
+    "rev"
+   ],
+   [
+    "Produced with",
+    "S001-taught-to-travel",
+    "rev"
+   ]
+  ]
+ },
+ "07_Exh_4": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "Libyan Artists 50-70s in Italy",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "الفنانون الليبيون في إيطاليا (الخمسينيات–السبعينيات)",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "S007-across-the-mediterranean",
+    "fwd"
+   ]
+  ]
+ },
+ "ENT-centrale-fies": {
+  "type": "institution",
+  "kt": "Institution",
+  "kh": "Centrale Fies",
+  "kb": "",
+  "kt_ar": "مؤسسة",
+  "kh_ar": "تشينترالي فيس",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "held at",
+    "01_Exh_10",
+    "rev"
+   ]
+  ]
+ },
+ "10_Pub_76": {
+  "type": "publication",
+  "kt": "Publication",
+  "kh": "Colour Catalogue",
+  "kb": "",
+  "kt_ar": "منشور",
+  "kh_ar": "كتالوج الألوان لثقافة الطباعة الليبية والإقليمية الحديثة",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "S010-craft-research",
+    "fwd"
+   ]
+  ]
+ },
+ "04_Arc_19": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "Oral Database Design",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "Oral Database Design",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "Derived from",
+    "P006",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "P004",
+    "fwd"
+   ],
+   [
+    "feeds",
+    "S004-listening",
+    "fwd"
+   ]
+  ]
+ },
+ "04_Sin_63": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "Fractured Orality: Methodologies of Listening in Libyan Studies (OHA panel)",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "Fractured Orality: Methodologies of Listening in Libyan Studies (OHA panel)",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P004",
+    "fwd"
+   ],
+   [
+    "feeds",
+    "S004-listening",
+    "fwd"
+   ]
+  ]
+ },
+ "03_Pub_16": {
+  "type": "publication",
+  "kt": "Publication",
+  "kh": "Single editions of publications by each fellow",
+  "kb": "",
+  "kt_ar": "منشور",
+  "kh_ar": "Single editions of publications by each fellow",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "S003-fellowship",
+    "fwd"
+   ]
+  ]
+ },
+ "ENT-arab-image-foundation": {
+  "type": "institution",
+  "kt": "Institution",
+  "kh": "Arab Image Foundation",
+  "kb": "",
+  "kt_ar": "مؤسسة",
+  "kh_ar": "المؤسسة العربية للصورة",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "Produced with",
+    "S001-taught-to-travel",
+    "rev"
+   ]
+  ]
+ },
+ "07_Pub_5": {
+  "type": "publication",
+  "kt": "Publication",
+  "kh": "Modernism in Libya",
+  "kb": "",
+  "kt_ar": "منشور",
+  "kh_ar": "الحداثة في ليبيا",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P007",
+    "fwd"
+   ]
+  ]
+ },
+ "ENT-libyan-scouts-archives": {
+  "type": "institution",
+  "kt": "Institution",
+  "kh": "Libyan scouts movement ",
+  "kb": "",
+  "kt_ar": "مؤسسة",
+  "kh_ar": "الحركة العامة للكشافة والمرشدات الليبية",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "feeds",
+    "P003",
+    "rev"
+   ],
+   [
+    "Based on",
+    "P006",
+    "rev"
+   ],
+   [
+    "feeds",
+    "04_Tra_18",
+    "rev"
+   ]
+  ]
+ },
+ "12_Pub_69": {
+  "type": "publication",
+  "kt": "Publication",
+  "kh": "m6. On Tuning",
+  "kb": "",
+  "kt_ar": "منشور",
+  "kh_ar": "مراجع ميراث 6؛ في الدوزنة",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "S012-written-materials",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "SER-merath-manuals",
+    "fwd"
+   ]
+  ]
+ },
+ "04_Art_51": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "The Open Heel",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "The Open Heel",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P004",
+    "fwd"
+   ],
+   [
+    "Derived from",
+    "04_Dig_59",
+    "fwd"
+   ]
+  ]
+ },
+ "04_Tra_17": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "mR^2 Internal Presentations",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "mR^2 Internal Presentations",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "S004-mr2",
+    "fwd"
+   ]
+  ]
+ },
+ "09_Exh_31": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "Trans-Saharan Sea Circulation",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "Trans-Saharan Sea Circulation",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "held at",
+    "ENT-sharjah-art-foundation",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "S009-book-trade",
+    "fwd"
+   ],
+   [
+    "held at",
+    "ENT-beit-zaidi",
+    "fwd"
+   ]
+  ]
+ },
+ "P001": {
+  "type": "project",
+  "kt": "Project · 001",
+  "kh": "Sarayān",
+  "kb": "Movement as method — memory, people and things in transit between the Sahara and the sea.",
+  "kt_ar": "مشروع · 001",
+  "kh_ar": "سَرَيان",
+  "kb_ar": "الحركة منهجاً — الذاكرة والناس والأشياء في عبورها بين الصحراء والبحر.",
+  "file": "/projects/sarayan",
+  "edges": [
+   [
+    "Based on",
+    "09_Pub_46",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "S001-radiographic-reverb",
+    "rev"
+   ],
+   [
+    "feeds",
+    "P012",
+    "rev"
+   ],
+   [
+    "Derived from",
+    "S004-moving",
+    "rev"
+   ],
+   [
+    "As part of",
+    "S001-taught-to-travel",
+    "rev"
+   ],
+   [
+    "Based on",
+    "P007",
+    "rev"
+   ]
+  ]
+ },
+ "10_Arc_74": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "History of Paper & the Paper Trade",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "تاريخ الورق واقتصاديات تجارة الورق",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "feeds",
+    "P002",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "S010-infrastructure",
+    "fwd"
+   ]
+  ]
+ },
+ "09_Pub_35": {
+  "type": "publication",
+  "kt": "Publication",
+  "kh": "Disca — Not Imported",
+  "kb": "",
+  "kt_ar": "منشور",
+  "kh_ar": "دسكة غير مستوردة",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "S009-publication-design",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "SER-ledger-uncatalogued",
+    "fwd"
+   ]
+  ]
+ },
+ "ENT-dar-nuwaiji": {
+  "type": "institution",
+  "kt": "Institution",
+  "kh": "Dar Nuwaiji",
+  "kb": "",
+  "kt_ar": "مؤسسة",
+  "kh_ar": "دار نويجي",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "held at",
+    "06_Exh_6",
+    "rev"
+   ]
+  ]
+ },
+ "01_Pub_67": {
+  "type": "publication",
+  "kt": "Publication",
+  "kh": "The Noise Floor",
+  "kb": "",
+  "kt_ar": "منشور",
+  "kh_ar": "أرضية الضجيج",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "S001-radiographic-reverb",
+    "fwd"
+   ]
+  ]
+ },
+ "02_Exh_2": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "Exhibition of Saharan Currency",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "Exhibition of Saharan Currency",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "Derived from",
+    "02_Arc_1",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "S002-ghadames",
+    "fwd"
+   ]
+  ]
+ },
+ "05_Dig_24": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "Platform for Repatriation",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "Platform for Repatriation",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P005",
+    "fwd"
+   ]
+  ]
+ },
+ "04_Pub_64": {
+  "type": "publication",
+  "kt": "Publication",
+  "kh": "Lamma — special issue (Unwritten Archives), guest-edited",
+  "kb": "",
+  "kt_ar": "منشور",
+  "kh_ar": "Lamma — special issue (Unwritten Archives), guest-edited",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P004",
+    "fwd"
+   ]
+  ]
+ },
+ "09_Pub_50": {
+  "type": "publication",
+  "kt": "Publication",
+  "kh": "Balga, The Open Heel: The Ledger of the Unfixed",
+  "kb": "",
+  "kt_ar": "منشور",
+  "kh_ar": "بَلْغة / الكَعب المفتوح: دفتر اللاثابت",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "S009-publication-design",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "SER-short-stories",
+    "fwd"
+   ]
+  ]
+ },
+ "ENT-accademia-roma": {
+  "type": "institution",
+  "kt": "Institution",
+  "kh": "Accademia di Belle Arti di Roma",
+  "kb": "",
+  "kt_ar": "مؤسسة",
+  "kh_ar": "أكاديمية الفنون الجميلة في روما",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "Based on",
+    "S007-across-the-mediterranean",
+    "rev"
+   ]
+  ]
+ },
+ "ENT-mufahras": {
+  "type": "institution",
+  "kt": "Institution",
+  "kh": "Indexed (Mufahras)",
+  "kb": "",
+  "kt_ar": "مؤسسة",
+  "kh_ar": "مُفَهْرَس",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "feeds",
+    "08_Dig_30",
+    "rev"
+   ]
+  ]
+ },
+ "S004-translating": {
+  "type": "strand",
+  "kt": "Strand",
+  "kh": "Translating · 004",
+  "kb": "",
+  "kt_ar": "خيط",
+  "kh_ar": "الترجمة · 004",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P004",
+    "fwd"
+   ],
+   [
+    "feeds",
+    "04_Dig_61",
+    "rev"
+   ]
+  ]
+ },
+ "S001-radiographic-reverb": {
+  "type": "strand",
+  "kt": "Strand",
+  "kh": "Radiographic Reverb",
+  "kb": "",
+  "kt_ar": "خيط",
+  "kh_ar": "Radiographic Reverb",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P001",
+    "fwd"
+   ],
+   [
+    "Produced with",
+    "ENT-liminal",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "01_Pub_67",
+    "rev"
+   ],
+   [
+    "As part of",
+    "01_Art_68",
+    "rev"
+   ],
+   [
+    "As part of",
+    "01_Exh_10",
+    "rev"
+   ]
+  ]
+ },
+ "SER-natamashou": {
+  "type": "series",
+  "kt": "Series",
+  "kh": "Natamashou",
+  "kb": "",
+  "kt_ar": "سلسلة",
+  "kh_ar": "نَتَمَشُّوا ",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "Produced with",
+    "ENT-dar-al-fergiani",
+    "fwd"
+   ],
+   [
+    "feeds",
+    "P005",
+    "fwd"
+   ]
+  ]
+ },
+ "SER-architecture": {
+  "type": "series",
+  "kt": "Series",
+  "kh": "Architecture",
+  "kb": "",
+  "kt_ar": "سلسلة",
+  "kh_ar": "العمارة",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "09_Pub_55",
+    "rev"
+   ]
+  ]
+ },
+ "ENT-islamic-arts-crafts-school": {
+  "type": "institution",
+  "kt": "Institution",
+  "kh": "Islamic Arts and Crafts School",
+  "kb": "",
+  "kt_ar": "مؤسسة",
+  "kh_ar": "مدرسة الفنون والصنائع الإسلامية",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "Based on",
+    "P007",
+    "rev"
+   ]
+  ]
+ },
+ "S003-fellowship": {
+  "type": "strand",
+  "kt": "Strand",
+  "kh": "Art-Publication Fellowship",
+  "kb": "",
+  "kt_ar": "خيط",
+  "kh_ar": "منحة ميراث للمطبوعات الفنية",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "Produced with",
+    "ENT-arete-foundation",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "P003",
+    "fwd"
+   ],
+   [
+    "Produced with",
+    "ENT-afac",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "03_Sin_15",
+    "rev"
+   ],
+   [
+    "As part of",
+    "03_Tra_14",
+    "rev"
+   ],
+   [
+    "As part of",
+    "03_Pub_16",
+    "rev"
+   ],
+   [
+    "As part of",
+    "03_Sin_13",
+    "rev"
+   ]
+  ]
+ },
+ "04_Arc_60": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "Oral-History Method",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "Oral-History Method",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "Derived from",
+    "P006",
+    "fwd"
+   ],
+   [
+    "feeds",
+    "S004-performing",
+    "fwd"
+   ],
+   [
+    "feeds",
+    "S004-listening",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "P004",
+    "fwd"
+   ],
+   [
+    "Based on",
+    "05_Exh_22",
+    "rev"
+   ]
+  ]
+ },
+ "09_Pub_36": {
+  "type": "publication",
+  "kt": "Publication",
+  "kh": "The Salt Meadows",
+  "kb": "",
+  "kt_ar": "منشور",
+  "kh_ar": "ذا سولت ميدوز",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "authored by",
+    "PER-bischoff",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "S009-publication-design",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "SER-ledger-uncatalogued",
+    "fwd"
+   ]
+  ]
+ },
+ "03_Sin_15": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "Public Presentation of Publication Fellowship",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "Public Presentation of Publication Fellowship",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "S003-fellowship",
+    "fwd"
+   ]
+  ]
+ },
+ "S006-archival-research": {
+  "type": "strand",
+  "kt": "Strand",
+  "kh": "Archival Research",
+  "kb": "",
+  "kt_ar": "خيط",
+  "kh_ar": "البحث الأرشيفي",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P006",
+    "fwd"
+   ]
+  ]
+ },
+ "ENT-harun-farocki-institut": {
+  "type": "institution",
+  "kt": "Institution",
+  "kh": "Harun Farocki Institut",
+  "kb": "",
+  "kt_ar": "مؤسسة",
+  "kh_ar": "معهد هارون فاروقي",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "Produced with",
+    "S001-taught-to-travel",
+    "rev"
+   ]
+  ]
+ },
+ "P007": {
+  "type": "project",
+  "kt": "Project · 007",
+  "kh": "Art Formation",
+  "kb": "How art was taught and formed in Libya — academies, salons and a record still being written.",
+  "kt_ar": "مشروع · 007",
+  "kh_ar": "التكوين الفني",
+  "kb_ar": "كيف تكوَّن الفن وتعلَّمه الليبيون — أكاديميات وصالونات وسجلٌّ ما زال يُكتب.",
+  "file": "/projects/art-formation",
+  "edges": [
+   [
+    "Based on",
+    "ENT-islamic-arts-crafts-school",
+    "fwd"
+   ],
+   [
+    "Based on",
+    "P001",
+    "fwd"
+   ],
+   [
+    "Based on",
+    "P005",
+    "fwd"
+   ],
+   [
+    "cited by",
+    "P003",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "S007-across-the-mediterranean",
+    "rev"
+   ],
+   [
+    "As part of",
+    "07_Pub_5",
+    "rev"
+   ],
+   [
+    "As part of",
+    "07_Exh_39",
+    "rev"
+   ]
+  ]
+ },
+ "07_Exh_39": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "Art Modernism in Libya",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "الحداثة الفنية في ليبيا",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P007",
+    "fwd"
+   ]
+  ]
+ },
+ "04_Pub_21": {
+  "type": "publication",
+  "kt": "Publication",
+  "kh": "m3. A Framework for Private Arcives in Constrained Contexts",
+  "kb": "",
+  "kt_ar": "منشور",
+  "kh_ar": "م3. إطار عمل للأرشيفات الخاصة في ظل القيود",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "SER-merath-manuals",
+    "fwd"
+   ],
+   [
+    "Derived from",
+    "04_Pub_20",
+    "fwd"
+   ]
+  ]
+ },
+ "06_Art_40": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "Theatrical Interpretation of Mu'tamir Trabulus",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "التَّفسير المسرحي لمؤتمر طرابلس",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P006",
+    "fwd"
+   ]
+  ]
+ },
+ "P012": {
+  "type": "project",
+  "kt": "Project · 012",
+  "kh": "Musical Manuscripts",
+  "kb": "Musical manuscripts read again — notation, instruments and their keepers.",
+  "kt_ar": "مشروع · 012",
+  "kh_ar": "مخطوطات الموسيقى",
+  "kb_ar": "مخطوطات الموسيقى تُقرأ من جديد — تدوينٌ وآلات وحُرّاسها.",
+  "file": "/projects/musical-manuscripts",
+  "edges": [
+   [
+    "feeds",
+    "P010",
+    "fwd"
+   ],
+   [
+    "feeds",
+    "P001",
+    "fwd"
+   ],
+   [
+    "Based on",
+    "09_Pub_33",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "S012-instruments",
+    "rev"
+   ],
+   [
+    "As part of",
+    "S012-written-materials",
+    "rev"
+   ]
+  ]
+ },
+ "09_Art_32": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "CEN wa SAD: On Weights and Wobbles between the Sahara and the Sea",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "سين وَصاد: عن الأوزان والاهتزازات بين الصحراء والبحر",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "Based on",
+    "P002",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "S009-publication-design",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "SER-ledger-uncatalogued",
+    "fwd"
+   ],
+   [
+    "held at",
+    "ENT-jameel-arts-centre",
+    "fwd"
+   ]
+  ]
+ },
+ "SER-collections": {
+  "type": "series",
+  "kt": "Series",
+  "kh": "Collections",
+  "kb": "",
+  "kt_ar": "سلسلة",
+  "kh_ar": "تحصيلة فنية ",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P009",
+    "fwd"
+   ]
+  ]
+ },
+ "03_Tra_14": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "Workshops",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "Workshops",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "S003-fellowship",
+    "fwd"
+   ]
+  ]
+ },
+ "S010-infrastructure": {
+  "type": "strand",
+  "kt": "Strand",
+  "kh": "Print & Paper Infrastructure",
+  "kb": "",
+  "kt_ar": "خيط",
+  "kh_ar": "البنية التحتية للطباعة والورق",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P010",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "10_Dig_71",
+    "rev"
+   ],
+   [
+    "As part of",
+    "10_Arc_73",
+    "rev"
+   ],
+   [
+    "As part of",
+    "10_Arc_74",
+    "rev"
+   ],
+   [
+    "As part of",
+    "10_Arc_72",
+    "rev"
+   ]
+  ]
+ },
+ "S012-written-materials": {
+  "type": "strand",
+  "kt": "Strand",
+  "kh": "Written Materials",
+  "kb": "",
+  "kt_ar": "خيط",
+  "kh_ar": "المادة المكتوبة",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P012",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "12_Pub_69",
+    "rev"
+   ]
+  ]
+ },
+ "SER-short-stories": {
+  "type": "series",
+  "kt": "Series",
+  "kh": "Short Stories ",
+  "kb": "",
+  "kt_ar": "سلسلة",
+  "kh_ar": "الأقصوصة ",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "09_Pub_50",
+    "rev"
+   ]
+  ]
+ },
+ "06_Exh_29": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "A Sun Dawned Over Algeria 02",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "شمس أشرقت ع الجزائر 02",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "S006-exhibition-practice",
+    "fwd"
+   ],
+   [
+    "held at",
+    "ENT-beit-zaidi",
+    "fwd"
+   ]
+  ]
+ },
+ "01_Exh_10": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "Overhead",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "Overhead",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "held at",
+    "ENT-centrale-fies",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "S001-radiographic-reverb",
+    "fwd"
+   ],
+   [
+    "Produced with",
+    "ENT-liminal",
+    "fwd"
+   ]
+  ]
+ },
+ "S004-mapping": {
+  "type": "strand",
+  "kt": "Strand",
+  "kh": "Mapping · 004",
+  "kb": "",
+  "kt_ar": "خيط",
+  "kh_ar": "المَسح · 004",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P004",
+    "fwd"
+   ],
+   [
+    "feeds",
+    "04_Dig_62",
+    "rev"
+   ],
+   [
+    "feeds",
+    "04_Dig_61",
+    "rev"
+   ]
+  ]
+ },
+ "04_Pub_20": {
+  "type": "publication",
+  "kt": "Publication",
+  "kh": "m3. A Framework for Private Arcives in Constrained Contexts",
+  "kb": "",
+  "kt_ar": "منشور",
+  "kh_ar": "م3. إطار عمل للأرشيفات الخاصة في ظل القيود",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "SER-merath-manuals",
+    "fwd"
+   ],
+   [
+    "Derived from",
+    "04_Pub_21",
+    "rev"
+   ]
+  ]
+ },
+ "02_Dig_57": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "19th Century Saraf Platform",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "19th Century Saraf Platform",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "S002-ghadames",
+    "fwd"
+   ],
+   [
+    "feeds",
+    "02_Arc_1",
+    "rev"
+   ]
+  ]
+ },
+ "S006-exhibition-practice": {
+  "type": "strand",
+  "kt": "Strand",
+  "kh": "Exhibition Practice",
+  "kb": "",
+  "kt_ar": "خيط",
+  "kh_ar": "ممارسة المعرض",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P006",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "06_Exh_6",
+    "rev"
+   ],
+   [
+    "As part of",
+    "06_Pub_28",
+    "rev"
+   ],
+   [
+    "As part of",
+    "06_Exh_29",
+    "rev"
+   ]
+  ]
+ },
+ "SER-ledger-uncatalogued": {
+  "type": "series",
+  "kt": "Series",
+  "kh": "Ledger of the Uncatalogued",
+  "kb": "",
+  "kt_ar": "سلسلة",
+  "kh_ar": "دفتر غير مفهرس",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "09_Pub_33",
+    "rev"
+   ],
+   [
+    "Based on",
+    "P011",
+    "rev"
+   ],
+   [
+    "As part of",
+    "09_Art_32",
+    "rev"
+   ],
+   [
+    "As part of",
+    "09_Pub_35",
+    "rev"
+   ],
+   [
+    "As part of",
+    "09_Pub_46",
+    "rev"
+   ],
+   [
+    "As part of",
+    "09_Pub_37",
+    "rev"
+   ],
+   [
+    "As part of",
+    "09_Pub_34",
+    "rev"
+   ],
+   [
+    "As part of",
+    "06_Pub_28",
+    "rev"
+   ],
+   [
+    "As part of",
+    "09_Pub_36",
+    "rev"
+   ]
+  ]
+ },
+ "06_Art_27": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "Libya–Algeria Documentary Film",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "الفيلم الوثائقي ليبيا-الجزائر",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P006",
+    "fwd"
+   ]
+  ]
+ },
+ "04_Dig_62": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "Institutional Landscape",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "Institutional Landscape",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "feeds",
+    "S004-mapping",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "P004",
+    "fwd"
+   ]
+  ]
+ },
+ "10_Arc_75": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "Natural Pigment Library",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "مكتبة الأصبغة الطبيعية",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "S010-craft-research",
+    "fwd"
+   ]
+  ]
+ },
+ "ENT-goethe-institut": {
+  "type": "institution",
+  "kt": "Institution",
+  "kh": "Goethe-Institut",
+  "kb": "",
+  "kt_ar": "مؤسسة",
+  "kh_ar": "معهد غوته",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "Produced with",
+    "S001-taught-to-travel",
+    "rev"
+   ]
+  ]
+ },
+ "S007-across-the-mediterranean": {
+  "type": "strand",
+  "kt": "Strand",
+  "kh": "Across the Mediterranean",
+  "kb": "",
+  "kt_ar": "خيط",
+  "kh_ar": "عبر المتوسّط",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "Based on",
+    "ENT-cairo-fine-arts",
+    "fwd"
+   ],
+   [
+    "Based on",
+    "P006",
+    "fwd"
+   ],
+   [
+    "Based on",
+    "ENT-accademia-firenze",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "P007",
+    "fwd"
+   ],
+   [
+    "Based on",
+    "ENT-accademia-roma",
+    "fwd"
+   ],
+   [
+    "As part of",
+    "07_Exh_4",
+    "rev"
+   ]
+  ]
+ },
+ "ENT-cairo-fine-arts": {
+  "type": "institution",
+  "kt": "Institution",
+  "kh": "Cairo School of Fine Arts",
+  "kb": "",
+  "kt_ar": "مؤسسة",
+  "kh_ar": "مدرسة الفنون الجميلة بالقاهرة",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "Based on",
+    "S007-across-the-mediterranean",
+    "rev"
+   ]
+  ]
+ },
+ "10_Dig_71": {
+  "type": "output",
+  "kt": "Output",
+  "kh": "Tripoli Print-Shop Database",
+  "kb": "",
+  "kt_ar": "مُخرَج",
+  "kh_ar": "قاعدة بيانات محلات الطباعة في طرابلس",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "S010-infrastructure",
+    "fwd"
+   ]
+  ]
+ },
+ "SER-monologues": {
+  "type": "series",
+  "kt": "Series",
+  "kh": "Monologues ",
+  "kb": "",
+  "kt_ar": "سلسلة",
+  "kh_ar": "المُناجاة ",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "P009",
+    "fwd"
+   ]
+  ]
+ },
+ "ENT-saraya-al-hamra": {
+  "type": "institution",
+  "kt": "Institution",
+  "kh": "Saraya-Al Hamra Museum",
+  "kb": "",
+  "kt_ar": "مؤسسة",
+  "kh_ar": "متحف السرايا الحمراء",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "Based on",
+    "P005",
+    "rev"
+   ]
+  ]
+ },
+ "12_Pub_48": {
+  "type": "publication",
+  "kt": "Publication",
+  "kh": "Saharan Instruments Organology",
+  "kb": "",
+  "kt_ar": "منشور",
+  "kh_ar": "أورغانولوجيا الآلات الصحراوية",
+  "kb_ar": "",
+  "file": "",
+  "edges": [
+   [
+    "As part of",
+    "S012-instruments",
+    "fwd"
+   ]
+  ]
+ }
+};
+/* one canonical edge list — every relationship is defined once, so its word and direction never change, whichever node is centred */
+const E=[
+ ["Radiographic Reverb","As part of","Sarayān"],
+ ["Taught to Travel","As part of","Sarayān"],
+ ["Sarayān","Derived from","06 Libya-Algeria"],
+ ["Sarayān","Derived from","04 Research Methods"],
+ ["Sarayān","Based on","LED08 Fielding"],
+ ["Overhead","As part of","Radiographic Reverb"],
+ ["Radiographic Reverb","Derived from","06 Libya-Algeria"],
+ ["Radiographic Reverb","Derived from","04 Research Methods"],
+ ["The Educational Web","As part of","Taught to Travel"],
+ ["May our song","As part of","Taught to Travel"],
+ ["Fifteen films","As part of","Taught to Travel"],
+ ["Taught to Travel","Produced with","Harun Farocki Institut"],
+ ["Overhead","Commissioned for","Centrale Fies"],
+ ["Overhead","Produced with","LIMINAL"],
+ ["Fifteen films","Formed as","The Educational Web"],
+ ["Fifteen films","Produced with","RAW Material Company"],
+ ["The Educational Web","Produced with","RAW Material Company"],
+ ["04 Research Methods","Derived from","06 Libya-Algeria"],
+ ["04 Research Methods","Produced with","LIMINAL"],
+ ["06 Libya-Algeria","Formed as","A Sun Dawned Over Algeria"],
+ ["06 Libya-Algeria","Based on","Libyan scouts archives"],
+ ["LED08 Fielding","As part of","Daftar"],
+ ["LED08 Fielding","Commissioned for","Princeton Lewis Center"]
+];
+const REL_AR={"Formed as":"تبلور في","As part of":"جزء من","Derived from":"مُشتق من","Based on":"مبني على","feeds":"يُغذّي","Produced with":"أُنتج مع","Commissioned for":"كُلِّف لأجل","cited by":"مُستشهَد به في"};
+const AR=()=>document.documentElement.getAttribute('dir')==='rtl';
+function edgesOf(k){const o=[];E.forEach(e=>{if(e[0]===k)o.push({word:e[1],peer:e[2],into:false});else if(e[2]===k)o.push({word:e[1],peer:e[0],into:true});});return o;}
+const net=document.getElementById('net'),nsvg=document.getElementById('nsvg'),NS='http://www.w3.org/2000/svg';
+function openNet(key){
+  window._curNet=key;
+  const d=NET[key];if(!d)return;
+  nsvg.innerHTML="";net.querySelectorAll('.node,.edge-lbl').forEach(n=>n.remove());
+  const dc=(TYPE[d.type]||{}).c||"#5DCAA5";
+  net.style.setProperty('--cc',dc);
+  document.getElementById('nct').textContent=AR()?(d.kt_ar||d.kt):d.kt;document.getElementById('nch').textContent=AR()?(d.kh_ar||d.kh):d.kh;document.getElementById('ncb').textContent=AR()?(d.kb_ar||d.kb):d.kb;
+  const r1=edgesOf(key);
+  document.getElementById('nec').textContent=AR()?(r1.length+' حواف'):(r1.length+' edges');document.getElementById('nof').setAttribute('href',d.file||'#');
+  net.classList.add('on');
+  const W=innerWidth,H=innerHeight,cx=W/2,cy=H*0.44,n=r1.length;
+  const hw=178,hh=118,pad=128;
+  const spread=Math.PI*1.5, step=spread/Math.max(2,n-1);
+  const used={};used[key]=1;r1.forEach(e=>used[e.peer]=1);
+  r1.forEach((e,i)=>{
+    const {word,peer,into}=e;
+    const tgt=NET[peer]||{}, label=(AR()?(tgt.kh_ar||tgt.kh):tgt.kh)||peer, type=tgt.type||"project", code=tgt.code||"";
+    const T=TYPE[type]||{c:"#5DCAA5",n:type}, c=T.c, rev=into;   // "into" → the arrow points back into the centre
+    const ang=-Math.PI/2 + (i-(n-1)/2)*step + (i%2?0.045:-0.045);
+    const dx=Math.cos(ang),dy=Math.sin(ang),px=-dy,py=dx;
+    const te=Math.min(Math.abs((hw+10)/(dx||1e-6)),Math.abs((hh+10)/(dy||1e-6)));
+    const sx=cx+dx*te, sy=cy+dy*te;
+    let maxD=1e9;
+    if(dx>0.02)maxD=Math.min(maxD,(W-pad-cx)/dx);else if(dx<-0.02)maxD=Math.min(maxD,(pad-cx)/dx);
+    if(dy>0.02)maxD=Math.min(maxD,(H-pad-cy)/dy);else if(dy<-0.02)maxD=Math.min(maxD,(pad-cy)/dy);
+    const far=i%3, sc=1-far*0.1;
+    let dist=Math.min(maxD, Math.min(W,H)*(0.34+far*0.04));      // a touch closer, to leave room for the halo
+    dist=Math.max(dist, Math.min(te+126, maxD));
+    const nx=cx+dx*dist, ny=cy+dy*dist;
+    // ring 2 — this peer's own connections, dim and small, radiating beyond it (the web continues)
+    const r2=edgesOf(peer).filter(x=>!used[x.peer]).slice(0,3);
+    r2.forEach((x,j)=>{
+      used[x.peer]=2;
+      const t2=NET[x.peer]||{}, c2=(TYPE[t2.type]||{}).c||"#5DCAA5";
+      const a2=ang+(j-(r2.length-1)/2)*0.28;
+      let d2=Math.min(dist+170, Math.min(W,H)*0.54);
+      let hx=Math.max(74,Math.min(W-74,cx+Math.cos(a2)*d2)), hy=Math.max(96,Math.min(H-74,cy+Math.sin(a2)*d2));
+      const hl=document.createElementNS(NS,'path');hl.setAttribute('d','M'+nx.toFixed(1)+' '+ny.toFixed(1)+'L'+hx.toFixed(1)+' '+hy.toFixed(1));
+      hl.setAttribute('stroke',c2);hl.setAttribute('stroke-width','1');hl.setAttribute('fill','none');hl.setAttribute('opacity','0');nsvg.appendChild(hl);
+      setTimeout(()=>{hl.style.transition='opacity .6s';hl.setAttribute('opacity','0.15');},300+i*70);
+      const hn=document.createElement('div');hn.className='node halo clk';hn.style.left=hx.toFixed(1)+'px';hn.style.top=hy.toFixed(1)+'px';hn.style.setProperty('--nc',c2);hn.style.setProperty('--ly',(hy<cy?-28:24)+'px');
+      hn.innerHTML='<div class="dot" style="transform:scale(.6)"></div><div class="lab"><div class="nl">'+((AR()?(t2.kh_ar||t2.kh):t2.kh)||x.peer)+'</div></div>';
+      hn.onclick=ev=>{ev.stopPropagation();openNet(x.peer);};
+      net.appendChild(hn);setTimeout(()=>hn.style.opacity='0.42',440+i*70);
+    });
+    // ring 1 — bright immediate connection, with its consistent word + direction
+    let tx,ty,abx,aby;
+    if(rev){ tx=sx+dx*6; ty=sy+dy*6; abx=tx+dx*11; aby=ty+dy*11; }
+    else   { tx=nx-dx*16; ty=ny-dy*16; abx=tx-dx*11; aby=ty-dy*11; }
+    const arw=document.createElementNS(NS,'path');
+    arw.setAttribute('d','M'+tx.toFixed(1)+' '+ty.toFixed(1)+'L'+(abx+px*5.5).toFixed(1)+' '+(aby+py*5.5).toFixed(1)+'L'+(abx-px*5.5).toFixed(1)+' '+(aby-py*5.5).toFixed(1)+'Z');
+    arw.setAttribute('fill',c);arw.setAttribute('opacity','0');nsvg.appendChild(arw);
+    const lsx=rev?abx:sx, lsy=rev?aby:sy, lex=rev?(nx-dx*16):abx, ley=rev?(ny-dy*16):aby;
+    const ln=document.createElementNS(NS,'path');ln.setAttribute('d','M'+lsx.toFixed(1)+' '+lsy.toFixed(1)+'L'+lex.toFixed(1)+' '+ley.toFixed(1));
+    ln.setAttribute('stroke',c);ln.setAttribute('stroke-width',(1.8*sc).toFixed(2));ln.setAttribute('fill','none');ln.setAttribute('opacity','0');ln.setAttribute('stroke-linecap','round');
+    const len=Math.hypot(lex-lsx,ley-lsy);ln.setAttribute('stroke-dasharray',len);ln.setAttribute('stroke-dashoffset',len);nsvg.appendChild(ln);
+    setTimeout(()=>{ln.style.transition='stroke-dashoffset .7s ease,opacity .6s';ln.setAttribute('opacity',(0.5+sc*0.2).toFixed(2));ln.setAttribute('stroke-dashoffset','0');
+      arw.style.transition='opacity .5s .25s';arw.setAttribute('opacity','0.95');},90+i*80);
+    let rot=Math.atan2(ley-lsy,lex-lsx)*57.3;if(rot>90)rot-=180;if(rot<-90)rot+=180;
+    const el=document.createElement('div');el.className='edge-lbl';el.textContent=AR()?(REL_AR[word]||word):word;
+    el.style.setProperty('--elc',c);el.style.setProperty('--rot',rot.toFixed(1)+'deg');
+    el.style.left=((lsx+lex)/2).toFixed(1)+'px';el.style.top=((lsy+ley)/2).toFixed(1)+'px';net.appendChild(el);
+    setTimeout(()=>el.style.opacity='1',430+i*80);
+    const nd=document.createElement('div');nd.className='node clk';
+    nd.style.left=nx.toFixed(1)+'px';nd.style.top=ny.toFixed(1)+'px';nd.style.setProperty('--nc',c);nd.style.setProperty('--ly',(ny<cy?-46:40)+'px');
+    nd.innerHTML='<div class="dot" style="transform:scale('+sc.toFixed(2)+')"></div><div class="lab"><div class="nl">'+label+'</div><div class="ns">'+((AR()?(T.n_ar||T.n):T.n)||type)+(code?' · <b>'+code+'</b>':'')+'</div></div>';
+    nd.onclick=ev=>{ev.stopPropagation();openNet(peer);};
+    net.appendChild(nd);setTimeout(()=>{nd.style.opacity='1';},340+i*80);
+  });
+}
+/* marginalia — every output named in the text gets a mark + card out in the block's wider margin (a depth-gauge of outputs) */
+function buildMarginalia(){
+  const scene=document.getElementById('scene');if(!scene)return;
+  document.querySelectorAll('.margout').forEach(m=>m.remove());
+  let svg=document.getElementById('marglines');
+  if(!svg){svg=document.createElementNS(NS,'svg');svg.id='marglines';document.body.appendChild(svg);}
+  svg.innerHTML='';
+  if(innerWidth<=1040){svg.style.display='none';return;} svg.style.display='';
+  const docW=document.documentElement.clientWidth;
+  /* measure true content bottom from the footer, NOT scrollHeight (which includes this SVG — a feedback loop that would keep the page tall and leave dark space under the footer) */
+  const _ffoot=document.querySelector('footer.site-foot');
+  const docH=_ffoot?Math.round(_ffoot.getBoundingClientRect().bottom+scrollY):document.documentElement.scrollHeight;
+  svg.setAttribute('viewBox','0 0 '+docW+' '+docH);svg.setAttribute('width',docW);svg.setAttribute('height',docH);
+  const rtl=document.documentElement.getAttribute('dir')==='rtl';
+  const railEl=document.getElementById('nav');
+  const RAILW=(railEl&&getComputedStyle(railEl).display!=='none')?190:8;   /* keep cards clear of the index rail */
+  const CARDW=160, GAP=32;
+  const seen={}, list=[];                                     /* each output card sits just outside its own sheet, on the roomier side */
+  scene.querySelectorAll('.sheet .chip.net').forEach(chip=>{
+    const key=chip.dataset.net, d=NET[key]; if(!d||!(d.type==='output'||d.type==='publication'))return;
+    if(seen[key])return; seen[key]=1;                         /* one card per unique output, tied to its first mention */
+    const cr=chip.getBoundingClientRect(), sh=chip.closest('.sheet'), shr=sh?sh.getBoundingClientRect():cr;
+    const c=chip.style.getPropertyValue('--c').trim()||(TYPE[d.type]||{}).c||'#C9A227';
+    const sL=shr.left+scrollX, sR=shr.right+scrollX;
+    const rightRoom=(docW-(rtl?RAILW:0))-sR, leftRoom=sL-(rtl?0:RAILW);
+    list.push({key,d,chip,c, chipY:cr.top+scrollY+cr.height/2, sL,sR, side:(rightRoom>=leftRoom?'right':'left')});
+  });
+  if(!list.length)return;
+  const bySide={left:[],right:[]}; list.forEach(it=>bySide[it.side].push(it));   /* collision only within a side — a left card and a right card never shove each other */
+  ['left','right'].forEach(sd=>{const a=bySide[sd];a.sort((x,y)=>x.chipY-y.chipY);let prev=-1e9;a.forEach(it=>{it.cy=Math.max(it.chipY,prev+36);prev=it.cy;});});
+  list.forEach(it=>{                                          /* compact card: index (code) leads, output type below */
+    if(it.side==='right'){ it.edgeX=it.sR; it.innerX=Math.min(it.sR+GAP, docW-8-CARDW); if(it.innerX<it.sR+6)it.innerX=it.sR+GAP; }
+    else { it.edgeX=it.sL; it.innerX=Math.max(it.sL-GAP, RAILW+8+CARDW); if(it.innerX>it.sL-6)it.innerX=it.sL-GAP; }
+    const el=document.createElement('div');el.className='margout';el.style.setProperty('--mc',it.c);
+    el.style.top=it.cy.toFixed(0)+'px';el.title=AR()?(it.d.kh_ar||it.d.kh):it.d.kh;el.dataset.key=it.key;
+    if(it.side==='right') el.style.left=it.innerX.toFixed(0)+'px'; else el.style.right=(docW-it.innerX).toFixed(0)+'px';
+    el.innerHTML='<span class="mcard"><b>'+esc(it.d.code||it.d.kh)+'</b><em>'+esc(AR()?(it.d.kt_ar||it.d.kt||(TYPE[it.d.type]||{}).n_ar||(TYPE[it.d.type]||{}).n||it.d.type):(it.d.kt||(TYPE[it.d.type]||{}).n||it.d.type))+'</em></span>';
+    el.onclick=ev=>{ev.stopPropagation();openNet(it.key);};
+    document.body.appendChild(el); it.el=el;
+  });
+  list.forEach(it=>{                                          /* short connector: sheet edge -> card, never across the text */
+    const sx=it.edgeX, cardX=it.innerX, cardY=it.cy, mx=(sx+cardX)/2;
+    const p=document.createElementNS(NS,'path');
+    p.setAttribute('d','M'+sx.toFixed(1)+','+it.chipY.toFixed(1)+' C'+mx.toFixed(1)+','+it.chipY.toFixed(1)+' '+mx.toFixed(1)+','+cardY.toFixed(1)+' '+cardX.toFixed(1)+','+cardY.toFixed(1));
+    p.setAttribute('stroke',it.c);p.setAttribute('stroke-width','1.4');p.setAttribute('fill','none');p.setAttribute('opacity','0.5');p.setAttribute('stroke-linecap','round');svg.appendChild(p);
+    const d1=document.createElementNS(NS,'circle');d1.setAttribute('cx',sx.toFixed(1));d1.setAttribute('cy',it.chipY.toFixed(1));d1.setAttribute('r','3');d1.setAttribute('fill',it.c);svg.appendChild(d1);
+    const lit=()=>{p.setAttribute('opacity','0.98');p.setAttribute('stroke-width','2.4');d1.setAttribute('r','4.6');it.el.classList.add('lit');it.chip.classList.add('src-lit');};
+    const dim=()=>{p.setAttribute('opacity','0.5');p.setAttribute('stroke-width','1.4');d1.setAttribute('r','3');it.el.classList.remove('lit');it.chip.classList.remove('src-lit');};
+    it.el.addEventListener('mouseenter',lit);it.el.addEventListener('mouseleave',dim);
+    it.chip.addEventListener('mouseenter',lit);it.chip.addEventListener('mouseleave',dim);
+  });
+}
+addEventListener('load',()=>setTimeout(buildMarginalia,450));
+let _mrz;addEventListener('resize',()=>{clearTimeout(_mrz);_mrz=setTimeout(buildMarginalia,250);});
+document.addEventListener('click',e=>{
+  const j=e.target.closest('.chip.jump');if(j){e.preventDefault();const t=document.querySelector(j.dataset.jump);if(t)t.scrollIntoView();return;}
+  const c=e.target.closest('.chip.net');if(c){e.preventDefault();openNet(c.dataset.net);return;}
+  if(e.target.closest('.of'))return;
+  if(net.classList.contains('on')&&!e.target.closest('.core')&&!e.target.closest('.node')){net.classList.remove('on');}
+});
+</script>
+<script>window.__MERATH_MAR__={"en":"Musical Manuscripts","sub":"","ar":"مخطوطات الموسيقى","subAr":"الموسيقى المكتوبة والتقليد الشفوي عبر الصحراء"};</script>
+
+<style>
+#surface-veil{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:1;background:radial-gradient(120% 90% at 50% 42%,#0d3a44 0%,#08222a 55%,#04141a 100%)}
+#surface-veil.off{opacity:0;transition:opacity 520ms ease-out}
+body.surfacing #scene,body.surfacing #nav,body.surfacing header{opacity:0}
+body.surfacing.settle #scene,body.surfacing.settle #nav,body.surfacing.settle header{
+  opacity:1;transition:opacity 520ms ease-out}
+@media(prefers-reduced-motion:reduce){#surface-veil{display:none!important}
+  body.surfacing #scene,body.surfacing #nav,body.surfacing header{opacity:1!important}}
+</style>
+<script>(function(){
+  var flag=null;
+  try{flag=sessionStorage.getItem("merath:fade");sessionStorage.removeItem("merath:fade");}catch(e){}
+  if(!flag)return;                                   /* a normal visit: no veil */
+  if(Date.now()-Number(flag)>6000)return;            /* stale (back button, bookmark) */
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+
+  var veil=document.createElement('div');veil.id='surface-veil';
+  (document.body||document.documentElement).appendChild(veil);
+  document.body.classList.add('surfacing');
+
+  function settle(){
+    requestAnimationFrame(function(){requestAnimationFrame(function(){
+      document.body.classList.add('settle');
+      veil.classList.add('off');
+      setTimeout(function(){
+        veil.remove();
+        document.body.classList.remove('surfacing','settle');
+      },600);
+    });});
+  }
+  if(document.readyState==='complete')settle();
+  else addEventListener('load',settle,{once:true});
+  /* never strand the page if load stalls */
+  setTimeout(function(){if(document.getElementById('surface-veil'))settle();},1600);
+})();</script>
+
+<style>
+#fade-veil{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:0;background:radial-gradient(120% 90% at 50% 42%,#0d3a44 0%,#08222a 55%,#04141a 100%)}
+#fade-veil.on{opacity:1;transition:opacity 380ms ease-in}
+body.leaving{overflow:hidden}
+body.leaving #sections,body.leaving #pgrid,body.leaving header,body.leaving #legend,
+body.leaving #chartdock,body.leaving #ticker{transition:opacity 320ms ease-in;opacity:.12}
+@media(prefers-reduced-motion:reduce){#fade-veil{display:none!important}}
+</style>
+<script>(function(){
+  var RM=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var going=false;
+  document.addEventListener('click',function(ev){
+    if(going)return;
+    var a=ev.target.closest&&ev.target.closest('a[href]');
+    if(!a)return;
+    var href=a.getAttribute('href')||'';
+    /* only routes into a project file */
+    if(!/^\/projects\/[\w-]+\/?$/.test(href))return;
+    if(ev.metaKey||ev.ctrlKey||ev.shiftKey||ev.altKey||ev.button!==0)return;
+    if(a.target&&a.target!=='_self')return;
+    ev.preventDefault();
+    if(RM){location.href=href;return;}
+    going=true;
+    try{sessionStorage.setItem("merath:fade",String(Date.now()));}catch(e){}
+    var veil=document.createElement('div');veil.id='fade-veil';
+    document.body.appendChild(veil);
+    document.body.classList.add('leaving');
+    requestAnimationFrame(function(){veil.classList.add('on');});
+    setTimeout(function(){location.href=href;},350);
+  },true);
+})();</script>
+
+<style>@media(max-width:860px){
+  body.mopen nav.nav{position:fixed;top:46px;inset-inline-start:0;inset-inline-end:0;background:var(--ink);
+    padding:12px 22px 18px;display:flex;flex-direction:column;gap:0;z-index:14;box-shadow:0 18px 40px rgba(0,10,16,.5)}
+  body.mopen nav.nav .full{display:block;margin:0;padding:11px 0;font-size:17px}
+}</style>
+<script>(function(){var b=document.getElementById('mtoggle');if(!b)return;
+  b.onclick=function(e){e.preventDefault();document.body.classList.toggle('mopen');};
+  document.addEventListener('click',function(e){
+    if(document.body.classList.contains('mopen')&&!e.target.closest('nav.nav')&&e.target!==b)
+      document.body.classList.remove('mopen');});
+})();</script>
+</body>
+</html>
