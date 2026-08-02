@@ -265,6 +265,15 @@ footer.site-foot .fl{margin-top:26px;font-size:11.5px;letter-spacing:.14em}
 #nav a{max-width:min(24vw,290px)}
 #nav a>span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 
+/* 2b. The shared chrome must be the same height on every page. Measured live:
+      the black nav bar is 45px on /projects, /publications, /about and the
+      landing page, and 72px here. The links are 12px on all of them and the
+      bar's own padding is 13px top and bottom on all of them — the whole 27px
+      difference is nav.nav padding 13px 0 14px, which only this shell has,
+      applied on top of the padding the bar already provides. Zeroed, the bar
+      measures 45px like everything else. */
+nav.nav{padding:0}
+
 /* 3. DETAIL DELTA (MERATH_SHARED_COMPONENTS.md §1) — the Arabic wordmark must
       NOT be bumped: same 19px as every sibling page, inheriting the Arabic
       stack from dir=rtl. The shell carried a bogus 23px/Geeza override.
@@ -876,7 +885,7 @@ const NET={
   "kh": "Launching Publication Fellowship",
   "kb": "",
   "kt_ar": "مُخرَج",
-  "kh_ar": "Launching Publication Fellowship",
+  "kh_ar": "إطلاق زمالة النشر",
   "kb_ar": "",
   "file": "",
   "edges": [
@@ -1006,7 +1015,7 @@ const NET={
   "kh": "Focal Point Art Fair",
   "kb": "",
   "kt_ar": "مُخرَج",
-  "kh_ar": "Focal Point Art Fair",
+  "kh_ar": "معرض فوكال بوينت لكتاب الفن",
   "kb_ar": "",
   "file": "",
   "edges": [
@@ -1139,7 +1148,7 @@ const NET={
   "kh": "syllabi database",
   "kb": "",
   "kt_ar": "مُخرَج",
-  "kh_ar": "syllabi database",
+  "kh_ar": "قاعدة بيانات المناهج",
   "kb_ar": "",
   "file": "",
   "edges": [
@@ -1156,7 +1165,7 @@ const NET={
   "kh": "Relational Database Training",
   "kb": "",
   "kt_ar": "مُخرَج",
-  "kh_ar": "Relational Database Training",
+  "kh_ar": "تدريب على قواعد البيانات العلائقية",
   "kb_ar": "",
   "file": "",
   "edges": [
@@ -1318,7 +1327,7 @@ const NET={
   "kh": "Bilingual Catalogue Schema",
   "kb": "",
   "kt_ar": "مُخرَج",
-  "kh_ar": "Bilingual Catalogue Schema",
+  "kh_ar": "خطاطة فهرسة ثنائية اللغة",
   "kb_ar": "",
   "file": "",
   "edges": [
@@ -1574,7 +1583,7 @@ const NET={
   "kh": "mAktoob — the story bank",
   "kb": "",
   "kt_ar": "مُخرَج",
-  "kh_ar": "mAktoob — the story bank",
+  "kh_ar": "مَكتوب — بنك الحكايات",
   "kb_ar": "",
   "file": "",
   "edges": [
@@ -1837,7 +1846,7 @@ const NET={
   "kh": "Scouts Archival Training",
   "kb": "",
   "kt_ar": "مُخرَج",
-  "kh_ar": "Scouts Archival Training",
+  "kh_ar": "تدريب أرشيفي للكشافة",
   "kb_ar": "",
   "file": "",
   "edges": [
@@ -2210,7 +2219,7 @@ const NET={
   "kh": "MESAAS presentation (Columbia University)",
   "kb": "",
   "kt_ar": "مُخرَج",
-  "kh_ar": "MESAAS presentation (Columbia University)",
+  "kh_ar": "مداخلة في MESAAS (جامعة كولومبيا)",
   "kb_ar": "",
   "file": "",
   "edges": [
@@ -2266,7 +2275,7 @@ const NET={
   "kh": "Guidebooks",
   "kb": "",
   "kt_ar": "منشور",
-  "kh_ar": "Guidebooks",
+  "kh_ar": "أدلّة",
   "kb_ar": "",
   "file": "",
   "edges": [
@@ -2688,7 +2697,7 @@ const NET={
   "kh": "The Custodians",
   "kb": "",
   "kt_ar": "مُخرَج",
-  "kh_ar": "The Custodians",
+  "kh_ar": "الأمناء",
   "kb_ar": "",
   "file": "",
   "edges": [
@@ -2727,7 +2736,7 @@ const NET={
   "kh": "Catalogue of Currency Online",
   "kb": "",
   "kt_ar": "مُخرَج",
-  "kh_ar": "Catalogue of Currency Online",
+  "kh_ar": "فهرس العملات على الشبكة",
   "kb_ar": "",
   "file": "",
   "edges": [
@@ -2810,7 +2819,7 @@ const NET={
   "kh": "Taught to Travel",
   "kb": "",
   "kt_ar": "خيط",
-  "kh_ar": "Taught to Travel",
+  "kh_ar": "تربيةٌ على السّفر",
   "kb_ar": "",
   "file": "",
   "edges": [
@@ -2972,7 +2981,7 @@ const NET={
   "kh": "Oral Database Design",
   "kb": "",
   "kt_ar": "مُخرَج",
-  "kh_ar": "Oral Database Design",
+  "kh_ar": "تصميم قاعدة بيانات شفوية",
   "kb_ar": "",
   "file": "",
   "edges": [
@@ -2999,7 +3008,7 @@ const NET={
   "kh": "Fractured Orality: Methodologies of Listening in Libyan Studies (OHA panel)",
   "kb": "",
   "kt_ar": "مُخرَج",
-  "kh_ar": "Fractured Orality: Methodologies of Listening in Libyan Studies (OHA panel)",
+  "kh_ar": "شفويةٌ مكسورة: مناهج الإنصات في الدراسات الليبية (جلسة OHA)",
   "kb_ar": "",
   "file": "",
   "edges": [
@@ -3021,7 +3030,7 @@ const NET={
   "kh": "Single editions of publications by each fellow",
   "kb": "",
   "kt_ar": "منشور",
-  "kh_ar": "Single editions of publications by each fellow",
+  "kh_ar": "إصدارات مفردة لكلّ زميل",
   "kb_ar": "",
   "file": "",
   "edges": [
@@ -3121,7 +3130,7 @@ const NET={
   "kh": "The Open Heel",
   "kb": "",
   "kt_ar": "مُخرَج",
-  "kh_ar": "The Open Heel",
+  "kh_ar": "الكَعب المفتوح",
   "kb_ar": "",
   "file": "",
   "edges": [
@@ -3143,7 +3152,7 @@ const NET={
   "kh": "mR^2 Internal Presentations",
   "kb": "",
   "kt_ar": "مُخرَج",
-  "kh_ar": "mR^2 Internal Presentations",
+  "kh_ar": "عروض داخلية لـ mR^2",
   "kb_ar": "",
   "file": "",
   "edges": [
@@ -3160,7 +3169,7 @@ const NET={
   "kh": "Trans-Saharan Sea Circulation",
   "kb": "",
   "kt_ar": "مُخرَج",
-  "kh_ar": "Trans-Saharan Sea Circulation",
+  "kh_ar": "التداول البحري العابر للصحراء",
   "kb_ar": "",
   "file": "",
   "edges": [
@@ -3307,7 +3316,7 @@ const NET={
   "kh": "Exhibition of Saharan Currency",
   "kb": "",
   "kt_ar": "مُخرَج",
-  "kh_ar": "Exhibition of Saharan Currency",
+  "kh_ar": "معرض العملة الصحراوية",
   "kb_ar": "",
   "file": "",
   "edges": [
@@ -3329,7 +3338,7 @@ const NET={
   "kh": "Platform for Repatriation",
   "kb": "",
   "kt_ar": "مُخرَج",
-  "kh_ar": "Platform for Repatriation",
+  "kh_ar": "منصّة الاستعادة",
   "kb_ar": "",
   "file": "",
   "edges": [
@@ -3346,7 +3355,7 @@ const NET={
   "kh": "Lamma — special issue (Unwritten Archives), guest-edited",
   "kb": "",
   "kt_ar": "منشور",
-  "kh_ar": "Lamma — special issue (Unwritten Archives), guest-edited",
+  "kh_ar": "لمّة — عدد خاص (أرشيفات غير مكتوبة)، بتحرير ضيف",
   "kb_ar": "",
   "file": "",
   "edges": [
@@ -3441,7 +3450,7 @@ const NET={
   "kh": "Radiographic Reverb",
   "kb": "",
   "kt_ar": "خيط",
-  "kh_ar": "Radiographic Reverb",
+  "kh_ar": "الصدى الراديوغرافي",
   "kb_ar": "",
   "file": "",
   "edges": [
@@ -3581,7 +3590,7 @@ const NET={
   "kh": "Oral-History Method",
   "kb": "",
   "kt_ar": "مُخرَج",
-  "kh_ar": "Oral-History Method",
+  "kh_ar": "منهج التاريخ الشفوي",
   "kb_ar": "",
   "file": "",
   "edges": [
@@ -3645,7 +3654,7 @@ const NET={
   "kh": "Public Presentation of Publication Fellowship",
   "kb": "",
   "kt_ar": "مُخرَج",
-  "kh_ar": "Public Presentation of Publication Fellowship",
+  "kh_ar": "عرض عام لزمالة النشر",
   "kb_ar": "",
   "file": "",
   "edges": [
@@ -3885,7 +3894,7 @@ const NET={
   "kh": "Workshops",
   "kb": "",
   "kt_ar": "مُخرَج",
-  "kh_ar": "Workshops",
+  "kh_ar": "ورش عمل",
   "kb_ar": "",
   "file": "",
   "edges": [
@@ -4000,7 +4009,7 @@ const NET={
   "kh": "Overhead",
   "kb": "",
   "kt_ar": "مُخرَج",
-  "kh_ar": "Overhead",
+  "kh_ar": "من عَلٍ",
   "kb_ar": "",
   "file": "",
   "edges": [
@@ -4076,7 +4085,7 @@ const NET={
   "kh": "19th Century Saraf Platform",
   "kb": "",
   "kt_ar": "مُخرَج",
-  "kh_ar": "19th Century Saraf Platform",
+  "kh_ar": "منصّة الصيرفة في القرن التاسع عشر",
   "kb_ar": "",
   "file": "",
   "edges": [
@@ -4204,7 +4213,7 @@ const NET={
   "kh": "Institutional Landscape",
   "kb": "",
   "kt_ar": "مُخرَج",
-  "kh_ar": "Institutional Landscape",
+  "kh_ar": "المشهد المؤسسي",
   "kb_ar": "",
   "file": "",
   "edges": [
