@@ -351,7 +351,15 @@
     .qa{grid-template-columns:1fr;gap:5vh}
     #search-panel{padding:88px 6vw 30px}
     #sp-input{font-size:15px}
-    #ticker{height:36px}
+    #ticker{height:32px}
+    /* merath build — the bar, the viewport and the row are one height */
+    .tk-view{height:32px}
+    #tk-list li{height:32px;padding:0 12px;gap:9px;font-size:9.5px;letter-spacing:.05em;text-transform:none}
+    /* the entry takes what the head leaves, and ends in an ellipsis rather
+       than being cut mid-word at the edge of the screen */
+    #tk-list li>span:last-child{overflow:hidden;text-overflow:ellipsis;min-width:0}
+    .tk-lbl{font-size:11px}
+    .tk-head::after{top:7px;height:18px}
     .tk-head{padding:0 12px;gap:8px}
     #tk-clock{font-size:11px}
     #tk-list .tk-date{min-width:52px;font-size:9.5px}
@@ -361,17 +369,21 @@
     .pgrid{display:grid;grid-template-columns:1fr;gap:154px;margin-top:calc(5vh + 104px)}   /* more sea above the first card, clear of its top islands */
     [dir="rtl"] .pgrid{margin-top:calc(5vh + 166px)}   /* Arabic intro is taller — start Sarayān lower still */
     .pgrid>*{margin-top:0 !important}
-    .pcard{height:auto;min-height:82px;width:50%}
+    .pcard{height:auto;min-height:96px;width:64%}
     .pgrid>*:nth-child(4n+1){justify-self:start}
     .pgrid>*:nth-child(4n+2){justify-self:end}
     .pgrid>*:nth-child(4n+3){justify-self:center}
     .pgrid>*:nth-child(4n){justify-self:start;margin-inline-start:16%}
     .pcard.manyout{justify-self:center !important;margin-inline-start:0 !important}   /* many islands → centre so they sit all around */
     .pf{position:relative;inset:auto;padding:10px 11px}
-    .pnum{font-size:9px;margin-bottom:4px;letter-spacing:.16em}
-    .par,.par.longt,[dir="rtl"] .par,[dir="rtl"] .par.longt{font-size:14.5px;line-height:1.16;margin-bottom:3px}
-    .pen{font-size:7px;letter-spacing:.08em}
-    [dir="rtl"] .pen{font-size:6px;letter-spacing:.05em}
+    .pnum{font-size:10.5px;margin-bottom:5px;letter-spacing:.16em}
+    /* the project's name is the point of the card — 14.5px was smaller than
+       the ticker underneath it. Arabic carries a little more because the
+       diacritics on سَرَيان need the height. */
+    .par,.par.longt{font-size:19px;line-height:1.22;margin-bottom:4px}
+    [dir="rtl"] .par,[dir="rtl"] .par.longt{font-size:20px;line-height:1.34}
+    .pen{font-size:8.5px;letter-spacing:.08em}
+    [dir="rtl"] .pen{font-size:9px;letter-spacing:0}
     .pzig{height:6px;margin:5px 0 0;width:50%}
     /* output-types raft: stack the two columns, sized so text fills the box */
     .legend{flex-direction:column;padding:18px 19px 19px;border-radius:22px;gap:16px;margin:5vh 8px 4vh;
@@ -412,12 +424,178 @@
   }
 
 </style>
-<script>/* merath build 2026-08-03T20:53:51.341Z — data from Airtable */
+<script>/* merath build 2026-08-03T23:08:04.671Z — data from Airtable */
 window.__MERATH_PROJECTS__=[{"en":"001 Sarayān","ar":"001 سَرَيان","slug":"sarayan","webOrder":1,"highlight":false},{"en":"002 Saharan Currency","ar":"002 العملة الصحراوية","slug":"saharan-currency","webOrder":2,"highlight":true},{"en":"003 Al Manahij","ar":"003 المناهج","slug":"al-manahij","webOrder":3,"highlight":false},{"en":"004 Research Methods Workshop","ar":"004 ورشة الأساليب البحثيّة","slug":"research-methods-workshop","webOrder":4,"highlight":false},{"en":"005 Archaeological Knowledge","ar":"005 المعرفة الأثرية","slug":"archaeological-knowledge","webOrder":5,"highlight":false},{"en":"006 Libya-Algeria","ar":"006 ليبيا - الجزائر","slug":"libya-algeria","webOrder":6,"highlight":false},{"en":"007 Art Formation","ar":"007 التكوين الفني","slug":"art-formation","webOrder":7,"highlight":false},{"en":"008 Held in Common","ar":"008 في المُشاع","slug":"held-in-common","webOrder":8,"highlight":false},{"en":"009 Publishing Field","ar":"009 ميدان النشر","slug":"publishing-field","webOrder":9,"highlight":false},{"en":"010 The Print Rahba","ar":"010 رحبة الطباعة","slug":"the-print-rahba","webOrder":10,"highlight":false},{"en":"011 Al-Batin","ar":"011 الباطن","slug":"al-batin","webOrder":11,"highlight":false},{"en":"012 Musical Manuscripts","ar":"012 مخطوطات الموسيقى","slug":"musical-manuscripts","webOrder":12,"highlight":false}];
 window.__MERATH_PROJECTS_DATA__={"OUT":[{"id":"01_Arc_7","ty":"Archival Records","p":"001"},{"id":"01_Arc_11","ty":"Archival Records","p":"001"},{"id":"01_Exh_8","ty":"Exhibition","p":"001"},{"id":"01_Exh_9","ty":"Exhibition","p":"001"},{"id":"01_Exh_10","ty":"Exhibition","p":"001"},{"id":"01_Med_66","ty":"Media","p":"001"},{"id":"01_Art_68","ty":"Artwork","p":"001"},{"id":"01_Pub_67","ty":"Publication","p":"001"},{"id":"02_Arc_1","ty":"Archival Records","p":"002"},{"id":"02_Exh_2","ty":"Exhibition","p":"002"},{"id":"02_Pub_3","ty":"Publication","p":"002"},{"id":"02_Pub_12","ty":"Publication","p":"002"},{"id":"02_Dig_57","ty":"Digital Production","p":"002"},{"id":"02_Tra_70","ty":"Training/Workshop","p":"002"},{"id":"03_Sin_13","ty":"Single Event","p":"003"},{"id":"03_Tra_14","ty":"Training/Workshop","p":"003"},{"id":"03_Sin_15","ty":"Single Event","p":"003"},{"id":"03_Pub_16","ty":"Publication","p":"003"},{"id":"03_Dig_58","ty":"Digital Production","p":"003"},{"id":"04_Tra_17","ty":"Training/Workshop","p":"004"},{"id":"04_Tra_18","ty":"Training/Workshop","p":"004"},{"id":"04_Arc_19","ty":"Archival Records","p":"004"},{"id":"04_Pub_20","ty":"Publication","p":"004"},{"id":"04_Pub_21","ty":"Publication","p":"004"},{"id":"04_Art_51","ty":"Artwork","p":"004"},{"id":"04_Dig_59","ty":"Digital Production","p":"004"},{"id":"04_Arc_60","ty":"Archival Records","p":"004"},{"id":"04_Dig_61","ty":"Digital Production","p":"004"},{"id":"04_Dig_62","ty":"Digital Production","p":"004"},{"id":"04_Sin_63","ty":"Single Event","p":"004"},{"id":"04_Pub_64","ty":"Publication","p":"004"},{"id":"04_Sin_65","ty":"Single Event","p":"004"},{"id":"05_Exh_22","ty":"Exhibition","p":"005"},{"id":"05_Pub_23","ty":"Publication","p":"005"},{"id":"05_Dig_24","ty":"Digital Production","p":"005"},{"id":"05_Pub_25","ty":"Publication","p":"005"},{"id":"06_Exh_6","ty":"Exhibition","p":"006"},{"id":"06_Arc_26","ty":"Archival Records","p":"006"},{"id":"06_Art_27","ty":"Artwork","p":"006"},{"id":"06_Pub_28","ty":"Publication","p":"006"},{"id":"06_Exh_29","ty":"Exhibition","p":"006"},{"id":"06_Art_40","ty":"Artwork","p":"006"},{"id":"07_Exh_4","ty":"Exhibition","p":"007"},{"id":"07_Pub_5","ty":"Publication","p":"007"},{"id":"07_Exh_39","ty":"Exhibition","p":"007"},{"id":"08_Dig_30","ty":"Digital Production","p":"008"},{"id":"09_Exh_31","ty":"Exhibition","p":"009"},{"id":"09_Art_32","ty":"Artwork","p":"009"},{"id":"09_Pub_33","ty":"Publication","p":"009"},{"id":"09_Pub_34","ty":"Publication","p":"009"},{"id":"09_Pub_35","ty":"Publication","p":"009"},{"id":"09_Pub_36","ty":"Publication","p":"009"},{"id":"09_Pub_37","ty":"Publication","p":"009"},{"id":"09_Pub_38","ty":"Publication","p":"009"},{"id":"09_Exh_41","ty":"Exhibition","p":"009"},{"id":"09_Pub_46","ty":"Publication","p":"009"},{"id":"09_Pub_50","ty":"Publication","p":"009"},{"id":"09_Pub_55","ty":"Publication","p":"009"},{"id":"09_Pub_56","ty":"Publication","p":"009"},{"id":"10_Dig_71","ty":"Digital Production","p":"010"},{"id":"10_Arc_72","ty":"Archival Records","p":"010"},{"id":"10_Arc_73","ty":"Archival Records","p":"010"},{"id":"10_Arc_74","ty":"Archival Records","p":"010"},{"id":"10_Arc_75","ty":"Archival Records","p":"010"},{"id":"10_Pub_76","ty":"Publication","p":"010"},{"id":"12_Pub_48","ty":"Publication","p":"012"},{"id":"12_Pub_69","ty":"Publication","p":"012"}],"TAGS":[["circulation","التداول","#106580"],["oral histories","التاريخ الشفوي","#D85A30"],["listening","الإصغاء","#7F77DD"],["traces","الأثر","#C9A227"],["money & value","النقود والقيمة","#E39B00"],["archives","الأرشيفات","#1D9E75"],["custody","العُهدة","#B23A48"],["schools & studios","مدارس واستوديوهات","#4C6EA8"],["bureaucracy","البيروقراطية","#8A6D3B"],["underground","ما تحت الأرض","#14181c"],["material culture","الثقافة الماديّة","#9C5BA6"],["film","الفيلم","#3A3A3A"],["borders & crossings","الحدود والعبور","#C2567E"],["technology","التقنية","#3D9BE9"],["trans-regional","عابر للأقاليم","#6B8E23"]],"TAGMAP":{"001":["circulation","trans-regional","borders & crossings","traces"],"002":["money & value","archives","trans-regional"],"003":["bureaucracy","schools & studios"],"004":["oral histories","listening","schools & studios","archives"],"005":["custody","underground","bureaucracy"],"006":["oral histories","traces","borders & crossings","trans-regional"],"007":["schools & studios","traces"],"008":["custody","film","archives"],"009":["circulation","money & value","bureaucracy"],"010":["material culture","technology"],"011":["underground","traces","technology"],"012":["listening","material culture","technology"]},"ABST":{"001":{"en":"Movement as method — memory, people and things in transit between the Sahara and the sea.","ar":"الحركة منهجاً — الذاكرة والناس والأشياء في عبورها بين الصحراء والبحر."},"002":{"en":"An archive of Saharan trade currencies — money as a record of routes, values and hands.","ar":"أرشيف لعملات التجارة الصحراوية — النقود سجلاً للطرق والقيم والأيادي."},"003":{"en":"Curricula for cultural work — how method is written, taught and handed on.","ar":"مناهج للعمل الثقافي — كيف يُكتب المنهج ويُدرَّس ويُورَّث."},"004":{"en":"Where the studio builds its methods — fieldwork, oral history and cataloguing, tested in practice.","ar":"حيث يبني الاستوديو أساليبه — عمل ميداني وتاريخ شفوي وفهرسة تُختبَر في الممارسة."},"005":{"en":"Who holds archaeological knowledge — custodianship, missions and the verbs of the field.","ar":"من يحمل المعرفة الأثرية — الوصاية والبعثات وأفعال الميدان."},"006":{"en":"A shared history across a border — Libyan voices of the Algerian revolution.","ar":"تاريخ مشترك عبر حدود — أصوات ليبية من الثورة الجزائرية."},"007":{"en":"How art was taught and formed in Libya — academies, salons and a record still being written.","ar":"كيف تكوَّن الفن وتعلَّمه الليبيون — أكاديميات وصالونات وسجلٌّ ما زال يُكتب."},"008":{"en":"What culture holds in common — shared ownership, availability and proof, with film as its first ground.","ar":"ما تملكه الثقافة في المُشاع — الملكية المشتركة والإتاحة والإثبات، والفيلم أرضُها الأولى."},"009":{"en":"The field the press stands in — eight series and the trade that moves them.","ar":"الميدان الذي تقف فيه الدار — ثماني سلاسل وتجارةٌ تحرّكها."},"010":{"en":"The print workshop — paper, riso and craft close to home.","ar":"رحبة الطباعة — ورقٌ وريزو وحِرفة قريبة من البيت."},"011":{"en":"Under the surface of the land — geology, extraction and the ledger of the rift.","ar":"تحت سطح الأرض — جيولوجيا واستخراج وسجلّ الصدع."},"012":{"en":"Musical manuscripts read again — notation, instruments and their keepers.","ar":"مخطوطات الموسيقى تُقرأ من جديد — تدوينٌ وآلات وحُرّاسها."}},"TYPEC":{"Publication":"#106580","Exhibition":"#C9A227","Artwork":"#7F77DD","Archival Records":"#D85A30","Training/Workshop":"#1D9E75","Digital Production":"#4E86C9","Single Event":"#E39B00"},"TYPEL":[["Publication","#106580","منشور"],["Exhibition","#C9A227","معرض"],["Artwork","#7F77DD","عمل فني"],["Archival Records","#D85A30","سجلات أرشيفية"],["Training/Workshop","#1D9E75","تدريب وورش"],["Digital Production","#4E86C9","إنتاج رقمي"],["Single Event","#E39B00","فعالية"]],"ABBREV":{"Publication":"Pub","Exhibition":"Exh","Artwork":"Art","Archival Records":"Arc","Training/Workshop":"Tra","Digital Production":"Dig","Single Event":"Sin"},"chrome":{"page_title":{"en":"Projects","ar":"المشاريع"},"sub_line":{"en":"Each project at merath begins as a question — tied to a memory, a place, a human relationship, or a cultural phenomenon that deserves engagement and renewed interpretation.","ar":"يبدأ كل مشروع في ميراث بسؤال — قد يرتبط بذاكرة، أو مكان، أو علاقة إنسانية، أو ظاهرة ثقافية تستحق التفاعل وإعادة القراءة."},"legend_outputs_heading":{"en":"Projects as Outputs","ar":"المشاريع كمُخرَجات"},"legend_outputs_intro":{"en":"Each project is a framework for thinking — a direction of research or creative development around a topic or convention. From the interests and methods it gathers, a project produces outputs that stand on their own and in relation to where they came from. Some projects produce many outputs; other projects stay simply as a place to think from. Below, an index of the output types so far.","ar":"كل مشروع إطارٌ للتفكير — اتجاهٌ بحثيّ أو تطويرٌ إبداعيّ حول موضوعٍ أو ظاهرة. من الاهتمامات والمناهج التي يجمعها، يُنتج المشروع مخرجاتٍ تقوم بذاتها وفي علاقتها بما انبثقت عنه. بعض المشاريع تُنتج مخرجاتٍ كثيرة، وبعضها يظلّ ببساطة مكاناً للتفكير منه. وفي ما يلي فهرسٌ بأنواع المخرجات حتى الآن."},"legend_files_heading":{"en":"Projects as Files","ar":"المشاريع كملفّات"},"legend_files_intro":{"en":"merath keeps its work as files. Each project is numbered in the order it began here — 001, 002, 003 — though some lived earlier lives, already underway before they arrived and became indexed. Every output carries three parts: its project, its type, and its number in the whole run of outputs.","ar":"يحفظ ميراث عمله كملفّات. تُرقَّم المشاريع بترتيب بدئها هنا — 001، 002، 003 — وإن كان لبعضها حياةٌ سابقة، جاريةً قبل أن تصل إلينا وتُفهرَس. ويحمل كل مخرجٍ ثلاثة أجزاء: مشروعه، ونوعه، ورقمه في تسلسل المخرجات كلّها."},"legend_tag_example":{"en":"02_Pub_12  →  project 002 · a publication · merath’s 12th output overall","ar":"02_Pub_12  →  المشروع 002 · منشور · المخرج الثاني عشر لميراث إجمالاً"},"chart_title":{"en":"THE PROJECTS — CHART","ar":"المشاريع — الخريطة"},"chart_hint":{"en":"harbours are projects · soundings beneath count their outputs · click to sail","ar":"المرافئ مشاريع · الأعماقُ تحتها تعدّ المخرجات · انقر للإبحار"},"chart_note":{"en":"Projects are numbered in the order they began at merath — though some lived earlier lives, already underway before they arrived and became indexed here.","ar":"تُرقَّم المشاريع بترتيب بدئها في ميراث — وإن كانت لبعضها حياةٌ سابقة، إذ كانت جارية قبل أن تصل إلينا وتُفهرَس هنا."},"open_file_label":{"en":"Open the file","ar":"افتحوا الملف"}}};
 </script>
 <style>footer .fcredit{margin:22px auto 0;max-width:64ch;font-size:11px;line-height:1.9;opacity:.85}footer .fcredit a{color:var(--cream)}</style>
-<meta name="description" content="Each project at merath begins as a question — tied to a memory, a place, a human relationship, or a cultural phenomenon that deserves documentation and renewed interpretation.">
+<script>window.__MERATH_FIND__=[{"t":"Sarayān","h":"/projects/sarayan"},{"t":"سَرَيان","h":"/projects/sarayan"},{"t":"Saharan Currency","h":"/projects/saharan-currency"},{"t":"العملة الصحراوية","h":"/projects/saharan-currency"},{"t":"Al Manahij","h":"/projects/al-manahij"},{"t":"المناهج","h":"/projects/al-manahij"},{"t":"Research Methods Workshop","h":"/projects/research-methods-workshop"},{"t":"ورشة الأساليب البحثيّة","h":"/projects/research-methods-workshop"},{"t":"Archaeological Knowledge","h":"/projects/archaeological-knowledge"},{"t":" المعرفة الأثرية","h":"/projects/archaeological-knowledge"},{"t":"Libya-Algeria","h":"/projects/libya-algeria"},{"t":"ليبيا - الجزائر","h":"/projects/libya-algeria"},{"t":"Art Formation","h":"/projects/art-formation"},{"t":"التكوين الفني","h":"/projects/art-formation"},{"t":"Held in Common","h":"/projects/held-in-common"},{"t":"في المُشاع","h":"/projects/held-in-common"},{"t":"Publishing Field","h":"/projects/publishing-field"},{"t":"ميدان النشر","h":"/projects/publishing-field"},{"t":"The Print Rahba","h":"/projects/the-print-rahba"},{"t":"رحبة الطباعة","h":"/projects/the-print-rahba"},{"t":"Al-Batin","h":"/projects/al-batin"},{"t":"الباطن","h":"/projects/al-batin"},{"t":"Musical Manuscripts","h":"/projects/musical-manuscripts"},{"t":"مخطوطات الموسيقى","h":"/projects/musical-manuscripts"},{"t":"AFAC","h":""},{"t":"الصندوق العربي للثقافة والفنون","h":""},{"t":"Adam Anabosi","h":""},{"t":"آدم عنبوسي","h":""},{"t":"Performing · 004","h":"/projects/research-methods-workshop"},{"t":"الأداء · 004","h":"/projects/research-methods-workshop"},{"t":"mR²","h":"/projects/research-methods-workshop"},{"t":"مR²","h":"/projects/research-methods-workshop"},{"t":"Instruments","h":"/projects/musical-manuscripts"},{"t":"الآلات","h":"/projects/musical-manuscripts"},{"t":"Fifteen films","h":"/projects/sarayan"},{"t":"خمسة عشر فيلماً","h":"/projects/sarayan"},{"t":"Dar Al-Fergiani","h":""},{"t":"دار الفرجاني","h":""},{"t":"Launching Publication Fellowship","h":"/projects/al-manahij"},{"t":"إطلاق زمالة النشر","h":"/projects/al-manahij"},{"t":"Trans-Saharan–Mediterranean Book Trade","h":"/projects/publishing-field"},{"t":"تجارة الكتاب عبر الصحراء والمتوسط","h":"/projects/publishing-field"},{"t":"Editorial Methodology","h":"/projects/publishing-field"},{"t":"منهجية التحرير","h":"/projects/publishing-field"},{"t":"Display Distribute","h":"/projects/publishing-field"},{"t":"ديسبلي ديستريبيوت","h":"/projects/publishing-field"},{"t":"Focal Point Art Fair","h":"/projects/publishing-field"},{"t":"معرض فوكال بوينت لكتاب الفن","h":"/projects/publishing-field"},{"t":"Book on Currency","h":"/projects/saharan-currency"},{"t":"كتابٌ عن العملة","h":"/projects/saharan-currency"},{"t":"syllabi database","h":"/projects/al-manahij"},{"t":"قاعدة بيانات المناهج","h":"/projects/al-manahij"},{"t":"Relational Database Training","h":"/projects/saharan-currency"},{"t":"تدريب على قواعد البيانات العلائقية","h":"/projects/saharan-currency"},{"t":"Umm Al Saraya","h":"/publications#book/LED_03"},{"t":"طبعة أم السرايا","h":"/publications#book/LED_03"},{"t":"Listening · 004","h":"/projects/research-methods-workshop"},{"t":"الإصغاء · 004","h":"/projects/research-methods-workshop"},{"t":"Architecture series — first title","h":"/projects/publishing-field"},{"t":"سلسلة العمارة — أول العناوين","h":"/projects/publishing-field"},{"t":"Educational Web","h":"/projects/sarayan"},{"t":"الشبكة التعليمية","h":"/projects/sarayan"},{"t":"merath manuals","h":"/publications#series/MM"},{"t":"مراجع ميراث","h":"/publications#series/MM"},{"t":"Bilingual Catalogue Schema","h":"/projects/research-methods-workshop"},{"t":"خطاطة فهرسة ثنائية اللغة","h":"/projects/research-methods-workshop"},{"t":"Ghadames","h":"/projects/saharan-currency"},{"t":"غدامس","h":"/projects/saharan-currency"},{"t":"Princeton Geniza Lab","h":""},{"t":"مختبر الجنيزة برينستون","h":""},{"t":"Feminist Oral History","h":"/publications#series/FOH"},{"t":"التاريخ الشفوي للمرأة","h":"/publications#series/FOH"},{"t":"Arete Foundation","h":""},{"t":"مؤسسة آريتي","h":""},{"t":"Accademia di Belle Arti di Firenze","h":""},{"t":"أكاديمية الفنون الجميلة في فلورنسا","h":""},{"t":"A Revolution Forged in Silver and Gold","h":"/publications#book/LED_01"},{"t":"ثورةٌ سُبكت بالفضة والذهب","h":"/publications#book/LED_01"},{"t":"mAktoob — the story bank","h":"/projects/research-methods-workshop"},{"t":"مَكتوب — بنك الحكايات","h":"/projects/research-methods-workshop"},{"t":"mAktoob","h":"/projects/research-methods-workshop"},{"t":"مَكتوب","h":"/projects/research-methods-workshop"},{"t":"Film Database in Libya","h":"/projects/held-in-common"},{"t":"قاعدة بيانات الأفلام في ليبيا","h":"/projects/held-in-common"},{"t":"Moving · 004","h":"/projects/research-methods-workshop"},{"t":"التَنقُّل · 004","h":"/projects/research-methods-workshop"},{"t":"May our song be worthy of those who listen","h":"/projects/sarayan"},{"t":"عسى أُغنيتُنا أن تَليقَ بمن يُصغون","h":"/projects/sarayan"},{"t":"Tahanin, Trace of a Poem from Palestine to Mecca","h":"/publications#book/LED_02"},{"t":"تحانين: أثر نشيد من فلسطين إلى مكة","h":"/publications#book/LED_02"},{"t":"Oral History","h":"/projects/libya-algeria"},{"t":"التاريخ الشفوي","h":"/projects/libya-algeria"},{"t":"Publication Design","h":"/projects/publishing-field"},{"t":"تصميم النشر","h":"/projects/publishing-field"},{"t":"Christian Bischoff","h":""},{"t":"كريستيان بيسشوف","h":""},{"t":"Scouts Archival Training","h":"/projects/research-methods-workshop"},{"t":"تدريب أرشيفي للكشافة","h":"/projects/research-methods-workshop"},{"t":"Sharjah Art Foundation","h":""},{"t":"مؤسسة الشارقة للفنون","h":""},{"t":"Qadous Research Center","h":""},{"t":"مركز قادوس البحثي","h":""},{"t":"Craft Research","h":"/projects/the-print-rahba"},{"t":"البحث الحرفي","h":"/projects/the-print-rahba"},{"t":"A Fielding and the Field Test","h":"/publications#book/LED_08"},{"t":"أخذُ الحقل والاختبار الميداني","h":"/publications#book/LED_08"},{"t":"Craft Methodology","h":"/projects/the-print-rahba"},{"t":"منهجية الحرفة","h":"/projects/the-print-rahba"},{"t":"Measuring · 004","h":"/projects/research-methods-workshop"},{"t":"القياس · 004","h":"/projects/research-methods-workshop"},{"t":"Libyan Oral History of the Algerian Revolution","h":"/projects/libya-algeria"},{"t":"التاريخ الشفوي الليبي للثورة الجزائرية","h":"/projects/libya-algeria"},{"t":"Writing · 004","h":"/projects/research-methods-workshop"},{"t":"الكتابة · 004","h":"/projects/research-methods-workshop"},{"t":"Folklore series — first title","h":"/projects/publishing-field"},{"t":"سلسلة المأثورات الشعبية — أول العناوين","h":"/projects/publishing-field"},{"t":"Liminal, University of Bologna","h":""},{"t":"ليمينال، جامعة بولونيا","h":""},{"t":"The Custodians","h":"/projects/archaeological-knowledge"},{"t":"الحُرّاس","h":"/projects/archaeological-knowledge"},{"t":"Folklore","h":"/publications#series/FLK"},{"t":"المأثورات الشعبية","h":"/publications#series/FLK"},{"t":"MESAAS presentation (Columbia University)","h":"/projects/research-methods-workshop"},{"t":"مداخلة في MESAAS (جامعة كولومبيا)","h":"/projects/research-methods-workshop"},{"t":"Beit Ali Khalifa Zaidi","h":""},{"t":"بيت علي خليفة الزائدي","h":""},{"t":"Libyan Center for Archives and Historical Studies","h":""},{"t":"المركز الليبي للمحفوظات والدراسات التاريخية","h":""},{"t":"Guidebooks","h":"/projects/archaeological-knowledge"},{"t":"أدلّة","h":"/projects/archaeological-knowledge"},{"t":"Working Print Specimen Library","h":"/projects/the-print-rahba"},{"t":"مكتبة عاملة لعينات الطباعة","h":"/projects/the-print-rahba"},{"t":"Department of Antiquities","h":""},{"t":"دائرة الآثار","h":""},{"t":"A Sun Dawned Over Algeria 01","h":"/projects/libya-algeria"},{"t":"شمس أشرقت ع الجزائر 01","h":"/projects/libya-algeria"},{"t":"m1. Navigating Cultural Economics","h":"/projects/saharan-currency"},{"t":"م1. الاقتصاد الثقافي","h":"/projects/saharan-currency"},{"t":"University of Benghazi","h":""},{"t":"جامعة بنغازي","h":""},{"t":"Chewing Gum","h":"/projects/publishing-field"},{"t":"العلكة","h":"/projects/publishing-field"},{"t":"الأمناء","h":"/projects/archaeological-knowledge"},{"t":"A Libyan History of the Noise Floor","h":"/projects/sarayan"},{"t":"تاريخٌ ليبيٌّ لأرضية الضجيج","h":"/projects/sarayan"},{"t":"Catalogue of Currency Online","h":"/projects/saharan-currency"},{"t":"فهرس العملات على الشبكة","h":"/projects/saharan-currency"},{"t":"Tripoli Paper Database","h":"/projects/the-print-rahba"},{"t":"قاعدة بيانات الورق في طرابلس","h":"/projects/the-print-rahba"},{"t":"Jameel Arts Centre","h":""},{"t":"مركز جميل للفنون","h":""},{"t":"The Working Courtyard","h":"/projects/the-print-rahba"},{"t":"فناء العمل","h":"/projects/the-print-rahba"},{"t":"Taught to Travel","h":"/projects/sarayan"},{"t":"تربيةٌ على السّفر","h":"/projects/sarayan"},{"t":"m2. An Index for Archaeological Practices","h":"/publications#book/m2"},{"t":"م2. فهرس الممارسات الأثرية","h":"/publications#book/m2"},{"t":"RAW Material Company","h":""},{"t":"رو ماتيريال كومباني","h":""},{"t":"Libyan Artists 50-70s in Italy","h":"/projects/art-formation"},{"t":"الفنانون الليبيون في إيطاليا (الخمسينيات–السبعينيات)","h":"/projects/art-formation"},{"t":"Centrale Fies","h":""},{"t":"تشينترالي فيس","h":""},{"t":"Colour Catalogue","h":"/projects/the-print-rahba"},{"t":"كتالوج الألوان لثقافة الطباعة الليبية والإقليمية الحديثة","h":"/projects/the-print-rahba"},{"t":"Oral Database Design","h":"/projects/research-methods-workshop"},{"t":"تصميم قاعدة بيانات شفوية","h":"/projects/research-methods-workshop"},{"t":"Fractured Orality: Methodologies of Listening in Libyan Studies (OHA panel)","h":"/projects/research-methods-workshop"},{"t":"شفويةٌ مكسورة: مناهج الإنصات في الدراسات الليبية (جلسة OHA)","h":"/projects/research-methods-workshop"},{"t":"Single editions of publications by each fellow","h":"/projects/al-manahij"},{"t":"إصدارات مفردة لكلّ زميل","h":"/projects/al-manahij"},{"t":"Arab Image Foundation","h":""},{"t":"المؤسسة العربية للصورة","h":""},{"t":"Modernism in Libya","h":"/projects/art-formation"},{"t":"الحداثة في ليبيا","h":"/projects/art-formation"},{"t":"Libyan scouts movement ","h":""},{"t":"الحركة العامة للكشافة والمرشدات الليبية","h":""},{"t":"m6. On Tuning","h":"/projects/musical-manuscripts"},{"t":"مراجع ميراث 6؛ في الدوزنة","h":"/projects/musical-manuscripts"},{"t":"The Open Heel","h":"/publications#book/SS_01"},{"t":"الكَعب المفتوح","h":"/publications#book/SS_01"},{"t":"mR^2 Internal Presentations","h":"/projects/research-methods-workshop"},{"t":"عروض داخلية لـ mR^2","h":"/projects/research-methods-workshop"},{"t":"Trans-Saharan Sea Circulation","h":"/projects/publishing-field"},{"t":"التداول البحري العابر للصحراء","h":"/projects/publishing-field"},{"t":"History of Paper & the Paper Trade","h":"/projects/the-print-rahba"},{"t":"تاريخ الورق واقتصاديات تجارة الورق","h":"/projects/the-print-rahba"},{"t":"Disca — Not Imported","h":"/publications#book/LED_06"},{"t":"دسكة غير مستوردة","h":"/publications#book/LED_06"},{"t":"Dar Nuwaiji","h":""},{"t":"دار نويجي","h":""},{"t":"The Noise Floor: A History of Radio in Libya","h":"/publications#book/01_Pub_67"},{"t":"أرضية الضجيج: تاريخ الراديو في ليبيا","h":"/publications#book/01_Pub_67"},{"t":"Exhibition of Saharan Currency","h":"/projects/saharan-currency"},{"t":"معرض العملة الصحراوية","h":"/projects/saharan-currency"},{"t":"Platform for Repatriation","h":"/projects/archaeological-knowledge"},{"t":"منصّة الاستعادة","h":"/projects/archaeological-knowledge"},{"t":"Lamma — special issue (Unwritten Archives), guest-edited","h":"/projects/research-methods-workshop"},{"t":"لمّة — عدد خاص (أرشيفات غير مكتوبة)، بتحرير ضيف","h":"/projects/research-methods-workshop"},{"t":"Balga, The Open Heel: The Ledger of the Unfixed","h":"/publications#book/SS_01"},{"t":"بَلْغة / الكَعب المفتوح: دفتر اللاثابت","h":"/publications#book/SS_01"},{"t":"Accademia di Belle Arti di Roma","h":""},{"t":"أكاديمية الفنون الجميلة في روما","h":""},{"t":"Indexed (Mufahras)","h":""},{"t":"مُفَهْرَس","h":""},{"t":"Translating · 004","h":"/projects/research-methods-workshop"},{"t":"الترجمة · 004","h":"/projects/research-methods-workshop"},{"t":"Radiographic Reverb","h":"/projects/sarayan"},{"t":"الصدى الراديوغرافي","h":"/projects/sarayan"},{"t":"Natamashou","h":"/publications#series/GD"},{"t":"نَتَمَشُّوا ","h":"/publications#series/GD"},{"t":"Architecture","h":"/publications#series/ARC"},{"t":"العمارة","h":"/publications#series/ARC"},{"t":"Islamic Arts and Crafts School","h":""},{"t":"مدرسة الفنون والصنائع الإسلامية","h":""},{"t":"Art-Publication Fellowship","h":"/projects/al-manahij"},{"t":"منحة ميراث للمطبوعات الفنية","h":"/projects/al-manahij"},{"t":"Oral-History Method","h":"/projects/research-methods-workshop"},{"t":"منهج التاريخ الشفوي","h":"/projects/research-methods-workshop"},{"t":"The Salt Meadows","h":"/publications#book/LED_07"},{"t":"ذا سولت ميدوز","h":"/publications#book/LED_07"},{"t":"Public Presentation of Publication Fellowship","h":"/projects/al-manahij"},{"t":"عرض عام لزمالة النشر","h":"/projects/al-manahij"},{"t":"Archival Research","h":"/projects/libya-algeria"},{"t":"البحث الأرشيفي","h":"/projects/libya-algeria"},{"t":"Harun Farocki Institut","h":""},{"t":"معهد هارون فاروقي","h":""},{"t":"Art Modernism in Libya","h":"/projects/art-formation"},{"t":"الحداثة الفنية في ليبيا","h":"/projects/art-formation"},{"t":"m3. A Framework for Private Archives in Constrained Contexts","h":"/publications#book/m3"},{"t":"م3. إطار عمل للأرشيفات الخاصة في ظل القيود","h":"/publications#book/m3"},{"t":"Theatrical Interpretation of Mu'tamir Trabulus","h":"/projects/libya-algeria"},{"t":"التَّفسير المسرحي لمؤتمر طرابلس","h":"/projects/libya-algeria"},{"t":"CEN wa SAD: On Weights and Wobbles between the Sahara and the Sea","h":"/publications#book/LED_05"},{"t":"سين وَصاد: عن الأوزان والاهتزازات بين الصحراء والبحر","h":"/publications#book/LED_05"},{"t":"Collections","h":"/publications#series/COL"},{"t":"تحصيلة فنية ","h":"/publications#series/COL"},{"t":"Workshops","h":"/projects/al-manahij"},{"t":"ورش عمل","h":"/projects/al-manahij"},{"t":"Print & Paper Infrastructure","h":"/projects/the-print-rahba"},{"t":"البنية التحتية للطباعة والورق","h":"/projects/the-print-rahba"},{"t":"Written Materials","h":"/projects/musical-manuscripts"},{"t":"المادة المكتوبة","h":"/projects/musical-manuscripts"},{"t":"Short Stories ","h":"/publications#series/SS"},{"t":"الأقصوصة ","h":"/publications#series/SS"},{"t":"A Sun Dawned Over Algeria 02","h":"/projects/libya-algeria"},{"t":"شمس أشرقت ع الجزائر 02","h":"/projects/libya-algeria"},{"t":"Overhead","h":"/projects/sarayan"},{"t":"من عَلٍ","h":"/projects/sarayan"},{"t":"Mapping · 004","h":"/projects/research-methods-workshop"},{"t":"المَسح · 004","h":"/projects/research-methods-workshop"},{"t":"19th Century Saraf Platform","h":"/projects/saharan-currency"},{"t":"منصّة الصيرفة في القرن التاسع عشر","h":"/projects/saharan-currency"},{"t":"Exhibition Practice","h":"/projects/libya-algeria"},{"t":"ممارسة المعرض","h":"/projects/libya-algeria"},{"t":"Ledger of the Uncatalogued","h":"/publications#series/LED"},{"t":"دفتر غير مفهرس","h":"/publications#series/LED"},{"t":"Libya–Algeria Documentary Film","h":"/projects/libya-algeria"},{"t":"الفيلم الوثائقي ليبيا-الجزائر","h":"/projects/libya-algeria"},{"t":"Institutional Landscape","h":"/projects/research-methods-workshop"},{"t":"المشهد المؤسسي","h":"/projects/research-methods-workshop"},{"t":"Natural Pigment Library","h":"/projects/the-print-rahba"},{"t":"مكتبة الأصبغة الطبيعية","h":"/projects/the-print-rahba"},{"t":"Goethe-Institut","h":""},{"t":"معهد غوته","h":""},{"t":"Across the Mediterranean","h":"/projects/art-formation"},{"t":"عبر المتوسّط","h":"/projects/art-formation"},{"t":"Cairo School of Fine Arts","h":""},{"t":"مدرسة الفنون الجميلة بالقاهرة","h":""},{"t":"Tripoli Print-Shop Database","h":"/projects/the-print-rahba"},{"t":"قاعدة بيانات محلات الطباعة في طرابلس","h":"/projects/the-print-rahba"},{"t":"Monologues ","h":"/publications#series/MO"},{"t":"المُناجاة ","h":"/publications#series/MO"},{"t":"Saraya-Al Hamra Museum","h":""},{"t":"متحف السرايا الحمراء","h":""},{"t":"Saharan Instruments Organology","h":"/projects/musical-manuscripts"},{"t":"أورغانولوجيا الآلات الصحراوية","h":"/projects/musical-manuscripts"},{"t":"Bekriah Mawasi","h":""},{"t":"بكرية مواسي","h":""},{"t":"merath","h":""},{"t":"ميراث","h":""}];</script>
+<script>/* merath build — mufahras: real pixels, real links */
+(function(){
+  var NS="http://www.w3.org/2000/svg";
+  function pool(){var F=window.__MERATH_FIND__;return (F&&F.length)?F:[];}
+  function hash(t){var h=2166136261;for(var i=0;i<t.length;i++){h^=t.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+  function rnd(h){return function(){h^=h<<13;h^=h>>>17;h^=h<<5;h>>>=0;return (h%1000)/1000;};}
+
+  /* Trim to fit the column, measured rather than guessed. The old code cut at
+   * 13 characters regardless of script or column width, which is both too
+   * short for a wide screen and too long for a narrow one — and in Arabic it
+   * cut inside a ligature. getComputedTextLength is exact. */
+  function fit(el,max){
+    if(!max||max<=0)return;
+    var full=el.textContent,lo=0,hi=full.length;
+    try{if(el.getComputedTextLength()<=max)return;}catch(_e){return;}
+    while(lo<hi){
+      var mid=(lo+hi+1)>>1;
+      el.textContent=full.slice(0,mid)+"\u2026";
+      if(el.getComputedTextLength()<=max)lo=mid;else hi=mid-1;
+    }
+    el.textContent=lo>0?(full.slice(0,lo)+"\u2026"):"";
+  }
+
+  function leaf(svg,item,x,y,anchor,fs,max){
+    var g=document.createElementNS(NS,item.h?"a":"g");
+    g.setAttribute("class","lf"+(item.h?"":" dead"));
+    if(item.h){
+      g.setAttribute("href",item.h);
+      /* SVG 1.1 spelling as well — Safari below 15 ignores the plain one */
+      g.setAttributeNS("http://www.w3.org/1999/xlink","xlink:href",item.h);
+      g.setAttribute("target","_self");
+    }
+    var t=document.createElementNS(NS,"text");
+    t.setAttribute("x",x);t.setAttribute("y",y);
+    t.setAttribute("text-anchor",anchor);
+    t.setAttribute("dy",".33em");
+    t.setAttribute("font-size",fs+"px");
+    t.textContent=item.t;
+    g.appendChild(t);
+    svg.appendChild(g);
+    fit(t,max);
+    /* a finger-sized hit area behind the label, so the link is tappable and
+     * not a 12px-tall sliver of glyph */
+    if(item.h){
+      try{
+        var b=t.getBBox(),r=document.createElementNS(NS,"rect");
+        r.setAttribute("x",b.x-7);r.setAttribute("y",y-13);
+        r.setAttribute("width",Math.max(b.width+14,28));r.setAttribute("height",26);
+        r.setAttribute("fill","transparent");
+        g.insertBefore(r,t);
+      }catch(_e){}
+    }
+    return t;
+  }
+
+  function draw(svg,query){
+    if(!svg)return;
+    var W=Math.round(svg.getBoundingClientRect().width)||svg.clientWidth||600;
+    if(W<120)W=600;
+    var rtl=document.documentElement.getAttribute("dir")==="rtl";
+    var q=(query||"").trim().toLowerCase();
+    var P=pool();
+    var m=q?P.filter(function(x){return x.t.toLowerCase().indexOf(q)>=0;}):P.slice();
+    var idle=!q;
+    if(!m.length)m=[{t:"\u2014",h:""}];
+    var narrow=W<560;
+    var n=Math.min(narrow?6:7,Math.max(1,m.length));
+    var picked=[];
+    if(idle){
+      /* no query: a handful of holdings, drawn fresh each time the panel opens */
+      var r=rnd(hash(String(Date.now()))||7),used={};
+      for(var i=0;i<n;i++){
+        var k=Math.floor(r()*m.length),g=0;
+        while(used[k]&&g++<m.length)k=(k+1)%m.length;
+        used[k]=1;picked.push(m[k]);
+      }
+    }else{
+      /* a query: the first matches, in order. The old code sampled at random,
+       * so typing a word could show you a match you did not ask for while
+       * hiding the one you did — and show a different set on every keystroke. */
+      picked=m.slice(0,n);
+    }
+
+    while(svg.firstChild)svg.removeChild(svg.firstChild);
+    svg.setAttribute("preserveAspectRatio","xMidYMin meet");
+
+    var d=rtl?-1:1,H,texts=[];
+    if(narrow){
+      /* A seven-way fan across 343px gives each label 45px. No type size fixes
+       * that. On a phone the same tree is drawn as a bracket: one trunk, one
+       * row per holding, each label with the full width of the panel. */
+      var rowH=32,top=20;
+      H=top+(n-1)*rowH+22;
+      svg.setAttribute("viewBox","0 0 "+W+" "+H);
+      svg.setAttribute("height",H);
+      var rootX=rtl?(W-13):13;
+      var trunk=document.createElementNS(NS,"path");
+      trunk.setAttribute("d","M"+rootX+",2 L"+rootX+","+(top+(n-1)*rowH));
+      trunk.setAttribute("class","tk");
+      svg.appendChild(trunk);
+      for(var i2=0;i2<n;i2++){
+        var y=top+i2*rowH;
+        var p=document.createElementNS(NS,"path");
+        p.setAttribute("d","M"+rootX+","+(y-16)+" C"+rootX+","+y+" "+(rootX+d*9)+","+y+" "+(rootX+d*30)+","+y);
+        p.setAttribute("class","lfp");
+        p.setAttribute("style","stroke-dasharray:120;stroke-dashoffset:120;transition:stroke-dashoffset .5s cubic-bezier(.25,.6,.3,1) "+(0.08+i2*0.05).toFixed(2)+"s");
+        svg.appendChild(p);
+        /* text-anchor:start in BOTH directions. The svg inherits direction:rtl
+         * from the document, and under SVG's own rules "end" is the logical
+         * end — which in Arabic is the LEFT edge, so an end-anchored label
+         * runs rightwards off the panel. Caught in a real browser at 390px;
+         * jsdom has no text layout and reported it fine. "start" pins the
+         * reading-start edge at x and lets the label run the way it reads. */
+        var t2=leaf(svg,picked[i2],rootX+d*40,y,"start",13,W-53);
+        t2.setAttribute("style","opacity:0;transition:opacity .4s "+(0.22+i2*0.05).toFixed(2)+"s");
+        texts.push(t2);
+      }
+    }else{
+      H=200;
+      svg.setAttribute("viewBox","0 0 "+W+" "+H);
+      svg.setAttribute("height",H);
+      var rx=W*0.5,ry=8,ly=H-30,span=W*0.92,x0=W*0.04;
+      for(var i3=0;i3<n;i3++){
+        var lx=x0+span*((i3+0.5)/n);
+        var p2=document.createElementNS(NS,"path");
+        p2.setAttribute("d","M"+rx.toFixed(1)+","+ry+" C"+rx.toFixed(1)+","+(H*0.55).toFixed(1)+" "+lx.toFixed(1)+","+(H*0.55-14).toFixed(1)+" "+lx.toFixed(1)+","+(ly-12));
+        p2.setAttribute("class","lfp");
+        p2.setAttribute("style","stroke-dasharray:400;stroke-dashoffset:400;transition:stroke-dashoffset .6s cubic-bezier(.25,.6,.3,1) "+(0.1+i3*0.06).toFixed(2)+"s");
+        svg.appendChild(p2);
+        var t3=leaf(svg,picked[i3],lx,ly+8,"middle",12.5,span/n-10);
+        t3.setAttribute("style","opacity:0;transition:opacity .45s "+(0.3+i3*0.06).toFixed(2)+"s");
+        texts.push(t3);
+      }
+    }
+    requestAnimationFrame(function(){requestAnimationFrame(function(){
+      var ps=svg.querySelectorAll("path");
+      for(var i=0;i<ps.length;i++)ps[i].style.strokeDashoffset="0";
+      for(var j=0;j<texts.length;j++)texts[j].style.opacity=".92";
+    });});
+  }
+
+  /* Redraw on rotate / resize, so a tree drawn in portrait is not left with a
+   * portrait viewBox in landscape. */
+  var last=null;
+  function remember(svg,q){last=[svg,q];}
+  window.addEventListener("resize",function(){
+    if(!last)return;
+    var p=document.getElementById("search-panel");
+    if(p&&!p.classList.contains("open"))return;
+    draw(last[0],last[1]);
+  });
+
+  /* signatures matching the two call sites they replace */
+  window.mrPanelTree=function(svg,query){remember(svg,query);draw(svg,query);};
+  window.mrTree=function(svg,seed,query,big){if(!big)return;remember(svg,query);draw(svg,query);};
+})();
+</script>
+<style>/* merath build — mufahras leaves are links */
+#sp-tree .tk{stroke-opacity:.5}
+#sp-tree a{cursor:pointer}
+#sp-tree a text{text-decoration:none}
+#sp-tree a:hover text,#sp-tree a:focus text{fill:#E39B00}
+#sp-tree a:focus{outline:none}
+#sp-tree a:focus-visible text{fill:#E39B00;text-decoration:underline}
+#sp-tree .dead text{opacity:.55}
+</style><meta name="description" content="Each project at merath begins as a question — tied to a memory, a place, a human relationship, or a cultural phenomenon that deserves documentation and renewed interpretation.">
 <link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
@@ -741,10 +919,10 @@ function growPanelTree(seed,query){
     spTree.querySelectorAll("text").forEach(t=>t.style.opacity="0.9");
   }));
 }
-function openPanel(){spanel.classList.add("open");masthead.classList.add("panel-open");growPanelTree("open"+Date.now(),spInput.value);setTimeout(()=>spInput.focus(),650);}
+function openPanel(){spanel.classList.add("open");masthead.classList.add("panel-open");mrPanelTree(spTree,spInput.value);setTimeout(()=>spInput.focus(),650);}
 document.getElementById("sp-close").addEventListener("click",e=>{e.preventDefault();spanel.classList.remove("open");masthead.classList.remove("panel-open");});
 window.addEventListener("keydown",e=>{if(e.key==="Escape"){spanel.classList.remove("open");masthead.classList.remove("panel-open");}});
-let spT;spInput.addEventListener("input",()=>{clearTimeout(spT);spT=setTimeout(()=>growPanelTree("q",spInput.value),150);});
+let spT;spInput.addEventListener("input",()=>{clearTimeout(spT);spT=setTimeout(()=>mrPanelTree(spTree,spInput.value),150);});
 
 /* ===== outputs (Airtable 5. All Outputs, 48 records) — typed, moored to their project ===== */
 const TYPEC={"Publication":"#106580","Exhibition":"#C9A227","Artwork":"#7F77DD","Archival Records":"#D85A30","Training/Workshop":"#1D9E75","Digital Production":"#4E86C9","Single Event":"#E39B00"};
@@ -1344,7 +1522,7 @@ function tkBuild(){
   if(tkTimer)clearInterval(tkTimer);
   tkTimer=setInterval(()=>{
     tkI++;tkList.style.transition="transform .6s cubic-bezier(.2,.7,.2,1)";
-    tkList.style.transform="translateY(-"+(tkI*42)+"px)";
+    tkList.style.transform="translateY(-"+(tkI*((tkList.firstElementChild&&tkList.firstElementChild.offsetHeight)||42))+"px)";
     if(tkI>=TKD[lang].length){setTimeout(()=>{tkList.style.transition="none";tkList.style.transform="translateY(0)";tkI=0;},650);}
   },4200);
 }
