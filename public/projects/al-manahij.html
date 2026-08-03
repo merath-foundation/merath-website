@@ -263,7 +263,14 @@ footer.site-foot .fl{margin-top:26px;font-size:11.5px;letter-spacing:.14em}
 #nav{max-height:100vh;overflow-y:auto;overscroll-behavior:contain;justify-content:safe center;scrollbar-width:none}
 #nav::-webkit-scrollbar{display:none}
 #nav a{max-width:min(24vw,290px)}
-#nav a>span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+/* Labels WRAP rather than clip. They used to be cut at 38 characters by the
+   builder and then ellipsised again by CSS, so "How the Workshop works" read
+   as "How the Worksh…" against a frame with room to spare. Three lines is the
+   ceiling; the code column stays pinned to the first line. */
+#nav a{align-items:flex-start}
+#nav a>span:last-child{min-width:0;white-space:normal;overflow-wrap:anywhere;line-height:1.28;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+#nav .code{flex:0 0 auto;line-height:1.28}
 
 /* 2b. The shared chrome must be the same height on every page. Measured live:
       the black nav bar is 45px on /projects, /publications, /about and the
@@ -273,6 +280,21 @@ footer.site-foot .fl{margin-top:26px;font-size:11.5px;letter-spacing:.14em}
       applied on top of the padding the bar already provides. Zeroed, the bar
       measures 45px like everything else. */
 nav.nav{padding:0}
+/* A section that holds subsections opens them where it stands.
+   The caret sits BEFORE the label in the DOM and is moved after it with flex
+   order, because setLang writes the Arabic label into a span:last-child — put
+   anything after the label in source and the Arabic lands in it instead. */
+#nav a.par>span.car{order:9;flex:0 0 auto;margin-inline-start:8px;opacity:.5;font-size:.9em;
+  line-height:1.28;transition:transform .18s ease;transform-origin:50% 55%}
+#nav a.par.open>span.car{transform:rotate(90deg);opacity:.85}
+[dir="rtl"] #nav a.par>span.car{transform:scaleX(-1)}
+[dir="rtl"] #nav a.par.open>span.car{transform:scaleX(-1) rotate(90deg)}
+#nav a.sub{display:none}
+#nav a.sub.show{display:flex}
+#nav a.sub{margin-inline-start:16px;font-size:.94em;opacity:.9}
+#nav a.sub .code{opacity:.75}
+#nav a.sub::before{content:"";position:absolute;inset-inline-start:-9px;top:6px;bottom:6px;
+  width:1px;background:currentColor;opacity:.22}
 
 /* 3. DETAIL DELTA (MERATH_SHARED_COMPONENTS.md §1) — the Arabic wordmark must
       NOT be bumped: same 19px as every sibling page, inheriting the Arabic
@@ -284,6 +306,7 @@ nav.nav{padding:0}
       threw the wordmark and nav to the same side. */
 [dir="rtl"] .wm{font-family:inherit;font-size:19px;line-height:inherit}
 </style>
+<style>#nof.soon{cursor:default;opacity:.55;pointer-events:none}</style>
 <meta name="description" content="The Forms of Collective Study">
 <link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
@@ -563,7 +586,7 @@ function setLang(l){
     _stSet(stNext,ar?LANG.ar.st_next:enHTML.st_next);
     const u2=stNext.querySelector('.updated');if(u2)u2.innerHTML=ar?LANG.ar.updated_next:enHTML.updated_next;}
   /* network core visible UI strings */
-  const nof=document.getElementById('nof');if(nof)nof.textContent=ar?LANG.ar.openfile:'Open the file';
+  const nof=document.getElementById('nof');if(nof)nof.textContent=nof.classList.contains('soon')?(ar?'قريباً':'Coming soon'):(ar?LANG.ar.openfile:'Open the file');
   const hint=_qs('#net .hint');if(hint)hint.textContent=ar?LANG.ar.net_hint:enHTML.net_hint;
   /* recompute word gauge + re-lay marginalia after the DOM text changed */
   if(typeof totalWords!=='undefined')totalWords=wordCount();
@@ -1189,7 +1212,7 @@ const NET={
   "kt_ar": "منشور",
   "kh_ar": "طبعة أم السرايا",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#book/LED_03",
   "edges": [
    [
     "As part of",
@@ -1282,7 +1305,7 @@ const NET={
   "kt_ar": "سلسلة",
   "kh_ar": "مراجع ميراث",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#series/MM",
   "edges": [
    [
     "As part of",
@@ -1497,7 +1520,7 @@ const NET={
   "kt_ar": "سلسلة",
   "kh_ar": "التاريخ الشفوي للمرأة",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#series/FOH",
   "edges": [
    [
     "feeds",
@@ -1553,7 +1576,7 @@ const NET={
   "kt_ar": "منشور",
   "kh_ar": "ثورةٌ سُبكت بالفضة والذهب",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#book/LED_01",
   "edges": [
    [
     "As part of",
@@ -1700,7 +1723,7 @@ const NET={
   "kt_ar": "منشور",
   "kh_ar": "تحانين: أثر نشيد من فلسطين إلى مكة",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#book/LED_02",
   "edges": [
    [
     "As part of",
@@ -2023,7 +2046,7 @@ const NET={
   "kt_ar": "منشور",
   "kh_ar": "أخذُ الحقل والاختبار الميداني",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#book/LED_08",
   "edges": [
    [
     "As part of",
@@ -2204,7 +2227,7 @@ const NET={
   "kt_ar": "سلسلة",
   "kh_ar": "المأثورات الشعبية",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#series/FLK",
   "edges": [
    [
     "As part of",
@@ -2878,7 +2901,7 @@ const NET={
   "kt_ar": "منشور",
   "kh_ar": "م2. فهرس الممارسات الأثرية",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#book/m2",
   "edges": [
    [
     "cited by",
@@ -3132,7 +3155,7 @@ const NET={
   "kt_ar": "مُخرَج",
   "kh_ar": "الكَعب المفتوح",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#book/SS_01",
   "edges": [
    [
     "As part of",
@@ -3262,7 +3285,7 @@ const NET={
   "kt_ar": "منشور",
   "kh_ar": "دسكة غير مستوردة",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#book/LED_06",
   "edges": [
    [
     "As part of",
@@ -3301,7 +3324,7 @@ const NET={
   "kt_ar": "منشور",
   "kh_ar": "أرضية الضجيج: تاريخ الراديو في ليبيا",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#book/01_Pub_67",
   "edges": [
    [
     "As part of",
@@ -3374,7 +3397,7 @@ const NET={
   "kt_ar": "منشور",
   "kh_ar": "بَلْغة / الكَعب المفتوح: دفتر اللاثابت",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#book/SS_01",
   "edges": [
    [
     "As part of",
@@ -3489,7 +3512,7 @@ const NET={
   "kt_ar": "سلسلة",
   "kh_ar": "نَتَمَشُّوا ",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#series/GD",
   "edges": [
    [
     "Produced with",
@@ -3511,7 +3534,7 @@ const NET={
   "kt_ar": "سلسلة",
   "kh_ar": "العمارة",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#series/ARC",
   "edges": [
    [
     "As part of",
@@ -3629,7 +3652,7 @@ const NET={
   "kt_ar": "منشور",
   "kh_ar": "ذا سولت ميدوز",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#book/LED_07",
   "edges": [
    [
     "authored by",
@@ -3771,7 +3794,7 @@ const NET={
   "kt_ar": "منشور",
   "kh_ar": "م3. إطار عمل للأرشيفات الخاصة في ظل القيود",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#book/m3",
   "edges": [
    [
     "As part of",
@@ -3847,7 +3870,7 @@ const NET={
   "kt_ar": "مُخرَج",
   "kh_ar": "سين وَصاد: عن الأوزان والاهتزازات بين الصحراء والبحر",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#book/LED_05",
   "edges": [
    [
     "Based on",
@@ -3879,7 +3902,7 @@ const NET={
   "kt_ar": "سلسلة",
   "kh_ar": "تحصيلة فنية ",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#series/COL",
   "edges": [
    [
     "As part of",
@@ -3972,7 +3995,7 @@ const NET={
   "kt_ar": "سلسلة",
   "kh_ar": "الأقصوصة ",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#series/SS",
   "edges": [
    [
     "As part of",
@@ -4065,7 +4088,7 @@ const NET={
   "kt_ar": "منشور",
   "kh_ar": "م3. إطار عمل للأرشيفات الخاصة في ظل القيود",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#book/m3",
   "edges": [
    [
     "As part of",
@@ -4141,7 +4164,7 @@ const NET={
   "kt_ar": "سلسلة",
   "kh_ar": "دفتر غير مفهرس",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#series/LED",
   "edges": [
    [
     "As part of",
@@ -4347,7 +4370,7 @@ const NET={
   "kt_ar": "سلسلة",
   "kh_ar": "المُناجاة ",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#series/MO",
   "edges": [
    [
     "As part of",
@@ -4444,7 +4467,14 @@ function openNet(key){
   net.style.setProperty('--cc',dc);
   document.getElementById('nct').textContent=AR()?(d.kt_ar||d.kt):d.kt;document.getElementById('nch').textContent=AR()?(d.kh_ar||d.kh):d.kh;document.getElementById('ncb').textContent=AR()?(d.kb_ar||d.kb):d.kb;
   const r1=edgesOf(key);
-  document.getElementById('nec').textContent=AR()?(r1.length+' حواف'):(r1.length+' edges');document.getElementById('nof').setAttribute('href',d.file||'#');
+  document.getElementById('nec').textContent=AR()?(r1.length+' حواف'):(r1.length+' edges');(function(){var _o=document.getElementById('nof');if(!_o)return;
+   var _ar=AR();
+   if(d.file){_o.setAttribute('href',d.file);_o.classList.remove('soon');
+     _o.removeAttribute('aria-disabled');
+     _o.textContent=(_ar?'افتحوا الملف':'Open the file');}
+   else{_o.removeAttribute('href');_o.classList.add('soon');
+     _o.setAttribute('aria-disabled','true');
+     _o.textContent=(_ar?'قريباً':'Coming soon');}})();
   net.classList.add('on');
   const W=innerWidth,H=innerHeight,cx=W/2,cy=H*0.44,n=r1.length;
   const hw=178,hh=118,pad=128;
@@ -4568,6 +4598,40 @@ document.addEventListener('click',e=>{
 });
 </script>
 <script>window.__MERATH_MAR__={"en":"Al Manahij","sub":"The Forms of Collective Study","ar":"المناهج","subAr":"أشكال الدراسة الجماعية"};</script>
+<script>/* merath — the side index folds */
+(function(){
+  var nav=document.getElementById('nav'); if(!nav)return;
+  function kidsOf(id){return nav.querySelectorAll('a.sub[data-par="'+id+'"]');}
+  function idOf(a){return (a.getAttribute('href')||'').slice(1);}
+  function setOpen(a,open){
+    if(!a||!a.classList.contains('par'))return;
+    a.classList.toggle('open',open);
+    a.setAttribute('aria-expanded',open?'true':'false');
+    kidsOf(idOf(a)).forEach(function(k){k.classList.toggle('show',open);});
+  }
+  nav.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('a.par');
+    if(!a||!nav.contains(a))return;
+    setOpen(a,!a.classList.contains('open'));   /* the href still navigates */
+  });
+  /* follow the reader INTO a section, never out of one */
+  var last=null;
+  function follow(){
+    var on=nav.querySelector('a.on'); if(!on)return;
+    var want=on.classList.contains('sub')?on.getAttribute('data-par')
+            :(on.classList.contains('par')?idOf(on):null);
+    if(!want||want===last)return;
+    last=want;
+    setOpen(nav.querySelector('a.par[href="#'+want+'"]'),true);
+  }
+  var tick=false;
+  addEventListener('scroll',function(){
+    if(tick)return; tick=true;
+    requestAnimationFrame(function(){tick=false;follow();});
+  },{passive:true});
+  addEventListener('hashchange',follow);
+  follow();
+})();</script>
 
 <style>
 #surface-veil{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:1;background:radial-gradient(120% 90% at 50% 42%,#0d3a44 0%,#08222a 55%,#04141a 100%)}

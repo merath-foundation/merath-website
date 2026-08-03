@@ -263,7 +263,14 @@ footer.site-foot .fl{margin-top:26px;font-size:11.5px;letter-spacing:.14em}
 #nav{max-height:100vh;overflow-y:auto;overscroll-behavior:contain;justify-content:safe center;scrollbar-width:none}
 #nav::-webkit-scrollbar{display:none}
 #nav a{max-width:min(24vw,290px)}
-#nav a>span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+/* Labels WRAP rather than clip. They used to be cut at 38 characters by the
+   builder and then ellipsised again by CSS, so "How the Workshop works" read
+   as "How the Worksh…" against a frame with room to spare. Three lines is the
+   ceiling; the code column stays pinned to the first line. */
+#nav a{align-items:flex-start}
+#nav a>span:last-child{min-width:0;white-space:normal;overflow-wrap:anywhere;line-height:1.28;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+#nav .code{flex:0 0 auto;line-height:1.28}
 
 /* 2b. The shared chrome must be the same height on every page. Measured live:
       the black nav bar is 45px on /projects, /publications, /about and the
@@ -273,6 +280,21 @@ footer.site-foot .fl{margin-top:26px;font-size:11.5px;letter-spacing:.14em}
       applied on top of the padding the bar already provides. Zeroed, the bar
       measures 45px like everything else. */
 nav.nav{padding:0}
+/* A section that holds subsections opens them where it stands.
+   The caret sits BEFORE the label in the DOM and is moved after it with flex
+   order, because setLang writes the Arabic label into a span:last-child — put
+   anything after the label in source and the Arabic lands in it instead. */
+#nav a.par>span.car{order:9;flex:0 0 auto;margin-inline-start:8px;opacity:.5;font-size:.9em;
+  line-height:1.28;transition:transform .18s ease;transform-origin:50% 55%}
+#nav a.par.open>span.car{transform:rotate(90deg);opacity:.85}
+[dir="rtl"] #nav a.par>span.car{transform:scaleX(-1)}
+[dir="rtl"] #nav a.par.open>span.car{transform:scaleX(-1) rotate(90deg)}
+#nav a.sub{display:none}
+#nav a.sub.show{display:flex}
+#nav a.sub{margin-inline-start:16px;font-size:.94em;opacity:.9}
+#nav a.sub .code{opacity:.75}
+#nav a.sub::before{content:"";position:absolute;inset-inline-start:-9px;top:6px;bottom:6px;
+  width:1px;background:currentColor;opacity:.22}
 
 /* 3. DETAIL DELTA (MERATH_SHARED_COMPONENTS.md §1) — the Arabic wordmark must
       NOT be bumped: same 19px as every sibling page, inheriting the Arabic
@@ -284,6 +306,7 @@ nav.nav{padding:0}
       threw the wordmark and nav to the same side. */
 [dir="rtl"] .wm{font-family:inherit;font-size:19px;line-height:inherit}
 </style>
+<style>#nof.soon{cursor:default;opacity:.55;pointer-events:none}</style>
 <meta name="description" content="Art Formation — a merath project.">
 <link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
@@ -353,9 +376,9 @@ nav.nav{padding:0}
   <a href="#b10"><span class="code">007.10</span><span>Overview</span></a>
   <a href="#bstatus"><span class="code">007.01</span><span>Now / Next</span></a>
   <a href="#b40"><span class="code">007.40</span><span>A field still being built</span></a>
-  <a href="#b50" title="Art, craft, and the names we give to practice"><span class="code">007.50</span><span>Art, craft, and the names we give to…</span></a>
-  <a href="#b60" title="Beyond the studio, across the Mediterranean"><span class="code">007.60</span><span>Beyond the studio</span></a>
-  <a href="#b70" title="Where art is taught now — and what merath is building"><span class="code">007.70</span><span>Where art is taught now</span></a>
+  <a href="#b50"><span class="code">007.50</span><span>Art, craft, and the names we give to practice</span></a>
+  <a href="#b60"><span class="code">007.60</span><span>Beyond the studio, across the Mediterranean</span></a>
+  <a href="#b70"><span class="code">007.70</span><span>Where art is taught now — and what merath is building</span></a>
   <a href="#b80"><span class="code">007.80</span><span>A reflection</span></a>
   <a href="#b90"><span class="code">007.90</span><span>Partners and Funders</span></a>
 </nav>
@@ -488,7 +511,7 @@ document.getElementById('mtoggle').onclick=()=>alert('Projects · Publications �
    Chips keep the SAME data-net / data-jump values (network keys unchanged) with Arabic labels. */
 const I18N_IDS=["b10","b40","b50","b60","b70","b80","b90"];   /* prose blocks swapped by innerHTML */
 const enHTML={};                                        /* filled on load from the DOM */
-const LANG={"ar":{"nav_projects":"المشاريع","nav_publications":"المنشورات","nav_programmes":"البرامج العامة","nav_art":"الفن والإنتاج","nav_studies":"الدراسات","nav_archives":"الأرشيفات","nav_about":"من نحن","wm":"ميراث","back":"السطح — العودة إلى محيط المشاريع","sp_sub":"فهرس المقتنيات","sp_ph":"ابحث في المقتنيات — i196، عملة، غدامس…","tk_sub":"مُذكِّرات — السِّجل · ما يحدث، مُثبَّتاً في الزمن","words":"كلمة","tk":[["02.2026","عرض في بيت علي خليفة الزائدي — طرابلس"],["12.2025","أداء «سين وصاد» — مركز جميل للفنون، دبي"],["10.2025","افتتاح «شمسٌ أشرقت على الجزائر» — دار النويجي، طرابلس"],["2026","m3 · إطارٌ للأرشيفات الخاصة — صدر"],["02.2026","i595 مُقتنى — أرشيف العملة الصحراوية"],["04.2026","تجليد ألفا ستيتش — رحبة الطباعة"]],"openfile":"افتح الملف","net_hint":"انقر عُقدة لتَتبَع حافّتها · انقر بعيداً لتَطفوَ","foot_fx":"بشأن المشاريع الجديدة أو مقترحات التحليل الأرشيفي أو الاستفسارات العامة، تواصلوا معنا: info [at] merath.ly","foot_fl":"© ميراث 2026 · طرابلس، ليبيا · جميع الحقوق محفوظة","mtitle":"التكوين الفني","msub":"","nav":["نظرة عامة","الآن / التالي","حقلٌ ما زال يُبنى","الفنّ والصَّنعة، وأسماء الممارسة","أبعد من المرسم، عبر المتوسّط","أين يُدرَّس الفنّ الآن، وما الذي تبني…","تأمُّل","الشركاء والمُموّلون"],"strand":[],"tab_b10":"نظرة عامة","tab_b40":"حقلٌ ما زال يُبنى","tab_b50":"الفنّ والصَّنعة، وأسماء الممارسة","tab_b60":"أبعد من المرسم، عبر المتوسّط","tab_b70":"أين يُدرَّس الفنّ الآن، وما الذي تبنيه ميراث","tab_b80":"تأمُّل","tab_b90":"الشركاء والمُموّلون","b10":"<p class=\"h\">عبر شمال أفريقيا والمتوسط، تشكّل الفن الحديث ووسائل تعليمه في أعقاب الإمبراطورية، بين تقاليد موروثة من الصنعة، وأكاديميات للفنون الجميلة أنشأتها القوى الاستعمارية، وفنانين سافروا بحثاً عن تعليم لم تكن مدنهم تتيحه بعد. يشتغل \"التكوين الفني\" على هذا التاريخ، ويتعامل مع التعليم بوصفه فعلاً سياسياً وثقافياً بقدر ما هو تقني؛ أي الطريقة التي يقرر بها مجتمع ما ما هو الفن، ومن يحق له أن يصنعه، وأيّ التقاليد يدعيها. ويسأل، قبل كل شيء، كيف يصير المرء فناناً حيث المؤسسة التي تصنعه ما تزال قيد التكوين. تلازم الدراسة الحالة الليبية بصورة خاصة، لكنها تقرؤها داخل المنطقة التي تنتمي إليها لا بمعزل عنها؛ فالجيران، والطرقُ الواصلةُ بينهم، جزءٌ من القصة نفسِها، سات والمعلمين والطلاب جزء من تاريخ التكوين الفني في المنطقة. تأتي ميراث إلى هذا البحث بوصفها مركزاً بحثياً وجماعة فنية تعمل في تقاليد الفن المفاهيمي والفن القائم على البحث. فالبحث عندها صورة من صور الصنع، ولذلك يصبح تاريخ كيف تعلّم الآخرون أن يصنعوا موضوعاً للدراسة ومرآةً للتأمل في الممارسة نفسها.</p>","b40":"<p class=\"h\">يبدأ المشروعُ بجمع سِجلٍّ ظلّ متناثراً. فالحقلُ الذي ينبغي أن يحتضن التعليم الفني في ليبيا مازال محدوداً؛ إذ ظلّ قليلَ المأسسة، متقطّعَ الدعم، نادرَ التدوين. وبينما بنى عددٌ من البلدان المجاورة أكاديمياتها وكتبوا تواريخَهم الفنّية عبر القرن، لم تجد المعرفةُ الليبية إلا بيوتاً قليلةً تنمو فيها. ومعظمُ السِجل يبقى في الأيدي الخاصة أكثرَ منه في المجموعات العامة: في الأرشيفات العائلية للفنانين وذرّيّاتهم، الرسائل والصور ودفاتر الرسم والشهادات، أوراق تحفظ مسارات لم تجد طريقها إلى السجل العام. ومن بينهم وجوهٌ تدرّبت على الفن وبقيت سِيَرُها غيرَ مكتوبة إلى حدٍ بعيد. جيلٌ تطفو أسماؤه في ذكريات بعضِهم بعضاً، ينتظر أن يُجمَع في صورةٍ مقروءة. والعملُ هنا هو، جزئياً، بناءُ الحقل الذي يدرسه؛ فالجمعُ نفسُه جزءٌ من الحُجّة التي يحملها المشروع نفسه.</p>","b50":"<p class=\"h\">لكي يسأل كيف تعلَّم الفنّانون، يبدأ المشروعُ بالمدارس التي وُجِدت فعلاً، وبالأدوار التي أنشئت من أجلها. أقدمُها <span class=\"chip net\" style=\"--c:#106580\" data-net=\"ENT-islamic-arts-crafts-school\">مدرسة الفنون والصنائع الإسلامية في طرابلس</span> \"صَنعةٍ\"، وهي تأسيسٌ عثمانيٌّ يعود إلى تسعينيات القرن التاسع عشر، جاءت ضمن حلقةٌ من شبكة التعليم الحِرفي والصناعي التي كان العثمانيون ينشرونها في ولاياتهم. أُقيمت المدرسة لتعليم الأيتام وأبناء الأسر الفقيرة حرفاً ومهارات عملية، مثل النِجارةَ، حفرَ المعادن، التطريز، دِباغةَ الجلود، النسيج. أُغلِقت مع الغزو الإيطالي عام 1911 ثم أُعيد فتحُها عام 1913 تحت الإدارةُ الاستعمارية، قبل أن يُعاد تنظيمها أوائل الثلاثينيات في عهد الحاكم إيتالو بالبو، مع استمرار تركيزها على مجال الحِرفَ التطبيقية واليدوية. وما دُرِّس فيها، ولمن، رسم خطّاً يعود إليه المشروعُ مراراً. فقد وجهت الصَّنعةُ للمستعمَرين والفقراء، بينما ظلّ \"الفن الجميل\" فئةً أوروبية تُدرَّس في مكان آخر وتُحجَز لآخرين. وقد امتد هذا التقسيمُ نفسُه عبر شمال أفريقيا الاستعمارية، ففي الوقت الذي أنشأت فيه القوى الأوروبية أكاديميات للفنون الجميلة، وافتُتِحت <span class=\"chip net\" style=\"--c:#106580\" data-net=\"ENT-cairo-fine-arts\">أكاديميةُ القاهرة</span> مبكراً عام 1908، بينما كانت تَسوق المستعمَرين نحو الصَّنعة، ظلّ الفنانون الليبيون يغادرون بلادهم بحثاً عن أكاديميات تعليمية مماثلة. وفي ذلك السياق، أن يطالب المرءُ بلقب الفنان، كان فعلاً يعبر حدوداً رُسمت مسبقاً .</p>\n    <p class=\"h\">يشتغل المشروعُ على هذه الفئات بدلاً من أن يُسلّم بها. فالتراتبُ الموروث الذي وضع الفن الجميل فوق الصَّنعة، والأكاديميةُ فوق الورشة، والعملُ الفريد فوق النافع، صاغ من يُمكن أن يُربَّى فناناً، وما الغايةَ من ذلك التعليم. ثم تأتي مفرداتٌ لاحقةٌ فتُزعزعه من جديد، إذ يجعل الفن المفاهيمي والفن القائمُ على البحث من الفكرة ومن التقصّي ذاتِهما عملاً، فخفّفا الحدَّ التقليدي بين الصُّنع والتفكير، وبين الفن والبحث. وهنا تحديداً يتموضع اهتمام ميراث. فالمشروع يتتبع هذه الفئات وهي تتحرك عبر الزمن، بسؤالها كيف سافرت كلٌّ منها، وكيف دُرِّست، وكيف رسمت معاً خريطةَ الحياة الفنية في المنطقة. إعادة قراءتها جزءٌ ممّا وُجِد المشروعُ لأجله.</p>","b60":"<p class=\"h\">يتتبّع المشروعُ تدريبَ الفنان إلى ما بعد المرسم. فكما في أنحاء المنطقة، انتقل كثير من الذين تعلّموا الرسمَ والنحتَ إلى مجالاتٍ أخرى كتشكيل العمارة والتصميم، المسرحِ والتراث، وأسهموا في تشكيل اللغةِ البصرية للحياة العامة؛ إذ بذر التدريبُ الفني مهارات وحساسيات انتقلت إلى حقول مجاورة وإلى مؤسسات دول قيدَ البناء. وبتتبّع وجهةِ ذلك التدريب، يقرأ المشروعُ تاريخَ تعليم الفنون بوصفه تاريخاً لكيفية تكوين ثقافة إبداعية بأكملها، وكيفية رسمِ الخطوط، ثم إعادةِ رسمها، بين الفنان والمصمم والمعماري والمعلّم.</p>\n    <p class=\"h\">ويتتبع خيطٌ من المشروع مساراً واحداً، إذ يتعقّب <span class=\"chip net\" style=\"--c:#9A93EC\" data-net=\"S007-across-the-mediterranean\">عبر المتوسط</span> الفنانين الليبيين الذين عبروا إلى إيطاليا للتدرّب في أكاديميات الفنون الجميلة بمدينتي <span class=\"chip net\" style=\"--c:#106580\" data-net=\"ENT-accademia-roma\">روما</span> و<span class=\"chip net\" style=\"--c:#106580\" data-net=\"ENT-accademia-firenze\">فلورنسا</span>، خلال العقود الوسطى من القرن، وهم جزءٌ من تيّارٍ أوسعَ حمل فنانين من أنحاء جنوب المتوسط وشرقه إلى أكاديميات أوروبية، قبل أن يعودوا بما تعلموه إلى بلدانهم. لكن سِجلُّهم مشطورٌ بين ضفتين؛ ففي الجانب الإيطالي، تحفظ الأكاديميات الآثارُ الوثائقية من سجلاتُ القيد، الصور، الكتالوجات، بينما على الجانب الليبي، يبقى جزءًا كبير من الذاكرةٌ، محفوظاً في العائلات والشهادات الشخصية والتذكّر الشفوي. ثمة حدٌّ يمرّ في الأرشيف نفسِه. ويتعامل المشروعُ مع هذا الشطر بوصفه منهجاً لا مجرد عقبة بحثية: إذ يعمل على الضفتين معاً ويجمع نصفيهما في سِجلٍ واحدٍ موصول، مع قراءة ما حفظه كل جانب وما فرّط فيه، وما يُسمّيه أحدُهما ويسكت عنه الآخر أي جزءٌ في ذاته مما يُقرَأ. وقد طوّرت ميراث هذا النهج في مشروعات أخرى، من بينهما مشروع (06 | <span class=\"chip net\" style=\"--c:#5DCAA5\" data-net=\"P006\">ليبيا - الجزائر</span>)، حيث نجا تاريخٌ مشترَكٌ بقى موزعاً خارج المؤسسات الوطنية، وتعيّن لمُّه من الجانبين؛ وهنا يحمل النهجَ نفسَه إلى الفاصل بين ليبيا وإيطاليا، لفهم كيف تشكّلت مسارات التعليم الفني عبر الحدود.</p>","b70":"<p class=\"h\">والسؤالُ راهنٌ بقدر ما هو تاريخيّ. فاليوم، كما في معظم المنطقة، يجري قدرٌ كبيرٌ ممّا يُعَدّ تعليماً للفنّ في ليبيا خارج الأكاديمية الرسمية: في الإقامات الفنّية وورش العمل، الفضاءات المستقلّة وتلك التي يديرها الفنانون، الشبكات الرقمية والشتات، وفيما يتبادله الفنانون مباشرةً مع بعضُهم البعض. وإلى جانب ذلك، يواصل الكتابُ الفني دوره بتعليم هادئ خاص به؛ إذ يستطيع منشورٌ أن يحمل منهجاً، يَعرض طريقة في النظر، يضع الأعمالَ والأفكارَ في التداول قلّما يصل معرضٌ أو قاعةُ درس. وهو تقليد يمتد من الرسالة والدليل إلى كتاب الفنان المعاصر، ويرتبط مباشرةً بجوانب من عمل ميراث نفسِه على الصفحة (<span class=\"chip net\" style=\"--c:#5DCAA5\" data-net=\"P003\">03</span>، <span class=\"chip net\" style=\"--c:#5DCAA5\" data-net=\"P004\">04</span>، <span class=\"chip net\" style=\"--c:#5DCAA5\" data-net=\"P009\">09</span>، <span class=\"chip net\" style=\"--c:#5DCAA5\" data-net=\"P010\">10</span>). ويضع المشروعُ هذا الحاضرَ إلى جانب الماضي عن قصد. فالتعلّمُ المرتجَلُ المنظَّمُ ذاتياً اليومَ يتجاوب مع التكوينات المرتجَلة لأجيال سابقة صنعت مساراتها التعليمية بوسائلها الخاصة، ويُلحّ بالسؤال نفسِه: ما الذي يكونه تعليمُ الفن، وما الذي يُمكن أن يكونه، حين تكون المؤسسةُ التي توفّره ما زالت قيد الصُنع.</p>\n    <p class=\"h\">وهو سؤالٌ تحمله ميراث لنفسها. فبينما تستثمر في صناعة الفن وتعليمه معاً، تتعلّم الجماعةُ من هذه التواريخ ومن تجارب الحاضر صوبَ شيءٍ تعتزم بناءه: إقامةٌ فنّيةٌ وفضاءُ تعلُّمٍ للفنون في ليبيا، يجمع بين ما يستعيده هذا المشروع من تجارب التكوين الفني، والأساليبُ التي يطوّرها سائرُ عمل ميراث، في خدمة من ينشأون الآن.</p>","b80":"<p class=\"h\">ويقف المشروعُ إلى جانب المشاريع التي تشاركه منهجَه، بكيفية بناء الليبيين لمعرفتهم ومساراتهم التعليمية والمهنية في حقولٍ أخرى مثل (<span class=\"chip net\" style=\"--c:#5DCAA5\" data-net=\"P005\">05</span>)، ودراسةِ الحركة والانتقال في (01 | <span class=\"chip net\" style=\"--c:#5DCAA5\" data-net=\"P001\">سريان</span>). وما زال بحثُه جارٍ، جامعاً موادَّ متناثرةً وذكريات لا زالت حية، فيما ينكشف ما يُسفر عنه، والأشكالُ التي يتّخذها، مع تقدم العمل ونضجه.</p>","b90":"<p class=\"h\">قيد التطوير</p>","st_now":"المشروع في طور الجمع. لم يترك التعليم الفني في ليبيا إلا سِجلّاً رقيقاً متناثراً، والعمل يجمعه من حيث بقي — الأرشيفات العائلية للفنانين وذرّيّاتهم، الرسائل والصور ودفاتر الرسم والشهادات التي فرّط فيها السِجل العام — حتى يُجمَع جيلٌ لا تطفو أسماؤه إلا في ذكريات بعضهم بعضاً في صورةٍ مقروءة. والعملُ هنا هو، جزئياً، بناءُ الحقل الذي يدرسه.</p>\n    <p class=\"h\">وخطوطه مفتوحة على أكثر من جبهة. <span class=\"chip net\" style=\"--c:#9A93EC\" data-net=\"S007-across-the-mediterranean\">عبر المتوسّط</span>، خيط المعرض والبحث القَيمومي، قيد العمل: معرضُه الإيطالي <span class=\"chip net\" style=\"--c:#C9A227\" data-net=\"07_Exh_4\">الفنانون الليبيون في إيطاليا</span> يتتبّع الذين عبروا إلى أكاديميات روما وفلورنسا، ويعمل على ضفتَي أرشيفٍ مشطور ليجمعهما في سِجلٍ واحدٍ موصول — منهج أرشيف الحدود الذي طوّرته <span class=\"chip net\" style=\"--c:#5DCAA5\" data-net=\"P006\">06 ليبيا-الجزائر</span> عند فاصلٍ آخر. وإلى جانبه، معرضُ ليبيا <span class=\"chip net\" style=\"--c:#C9A227\" data-net=\"07_Exh_39\">الحداثة الفنية في ليبيا</span> والمطبوع <span class=\"chip net\" style=\"--c:#C9A227\" data-net=\"07_Pub_5\">الحداثة في ليبيا</span> في تطوير مبكر. وما زال السِجل يُجمَع، والذاكرة المحيطة به تُتَتبّع.","st_next":"الأفق القريب هو أن يأخذ العمل صيغته المعرضية والمطبوعة: معرضُ إيطاليا <span class=\"chip net\" style=\"--c:#9A93EC\" data-net=\"S007-across-the-mediterranean\">عبر المتوسّط</span>، ومعرضُ ليبيا <span class=\"chip net\" style=\"--c:#C9A227\" data-net=\"07_Exh_39\">الحداثة الفنية في ليبيا</span>، والمطبوع <span class=\"chip net\" style=\"--c:#C9A227\" data-net=\"07_Pub_5\">الحداثة في ليبيا</span>، وكلٌّ منها يتماسك مع جمع السِجل المتناثر والذاكرة المحيطة به.</p>\n    <p class=\"h\">وأبعدَ منها يحمل المشروع غايةً أطول. تعتزم ميراث أن تحوّل ما تستعيده هنا — التكوينات التي يكشفها هذا التاريخ، إلى جانب الأساليب التي يطوّرها سائرُ عملها في <span class=\"chip net\" style=\"--c:#5DCAA5\" data-net=\"P003\">03 المناهج</span>، <span class=\"chip net\" style=\"--c:#5DCAA5\" data-net=\"P004\">04 ورشة مناهج البحث</span>، <span class=\"chip net\" style=\"--c:#5DCAA5\" data-net=\"P009\">09 ميدان النشر</span>، <span class=\"chip net\" style=\"--c:#5DCAA5\" data-net=\"P010\">10 رحبة الطباعة</span> — صوبَ شيءٍ تبنيه: إقامةٌ فنّيةٌ وفضاءُ تعلُّمٍ للفنون في ليبيا، لمن ينشأون الآن. ويقف المشروع إلى جانب المشاريع التي تشاركه منهجَه — استعادةِ كيف بنى الليبيون تكوينهم في <span class=\"chip net\" style=\"--c:#5DCAA5\" data-net=\"P005\">05 المعرفة الأثرية</span>، ودراسةِ الحركة والانتقال في <span class=\"chip net\" style=\"--c:#5DCAA5\" data-net=\"P001\">01 سَرَيان</span> — ويتّخذ شكله النهائي مع نضج البحث.","st_now_h":"حيث يَقف العمل الآن","st_next_h":"ما يأتي تالياً","st_now_k":"007.20 · المراجعة","st_next_k":"007.30 · الأفق","st_now_x":"أين يقف العمل الآن","st_next_x":"ما الذي يأتي تالياً","st_now_line":"أين يقف","st_next_line":"ما يأتي تالياً","updated_now":"","updated_next":"","cap":[]}};
+const LANG={"ar":{"nav_projects":"المشاريع","nav_publications":"المنشورات","nav_programmes":"البرامج العامة","nav_art":"الفن والإنتاج","nav_studies":"الدراسات","nav_archives":"الأرشيفات","nav_about":"من نحن","wm":"ميراث","back":"السطح — العودة إلى محيط المشاريع","sp_sub":"فهرس المقتنيات","sp_ph":"ابحث في المقتنيات — i196، عملة، غدامس…","tk_sub":"مُذكِّرات — السِّجل · ما يحدث، مُثبَّتاً في الزمن","words":"كلمة","tk":[["02.2026","عرض في بيت علي خليفة الزائدي — طرابلس"],["12.2025","أداء «سين وصاد» — مركز جميل للفنون، دبي"],["10.2025","افتتاح «شمسٌ أشرقت على الجزائر» — دار النويجي، طرابلس"],["2026","m3 · إطارٌ للأرشيفات الخاصة — صدر"],["02.2026","i595 مُقتنى — أرشيف العملة الصحراوية"],["04.2026","تجليد ألفا ستيتش — رحبة الطباعة"]],"openfile":"افتح الملف","net_hint":"انقر عُقدة لتَتبَع حافّتها · انقر بعيداً لتَطفوَ","foot_fx":"بشأن المشاريع الجديدة أو مقترحات التحليل الأرشيفي أو الاستفسارات العامة، تواصلوا معنا: info [at] merath.ly","foot_fl":"© ميراث 2026 · طرابلس، ليبيا · جميع الحقوق محفوظة","mtitle":"التكوين الفني","msub":"","nav":["نظرة عامة","الآن / التالي","حقلٌ ما زال يُبنى","الفنّ والصَّنعة، وأسماء الممارسة","أبعد من المرسم، عبر المتوسّط","أين يُدرَّس الفنّ الآن، وما الذي تبنيه ميراث","تأمُّل","الشركاء والمُموّلون"],"strand":[],"tab_b10":"نظرة عامة","tab_b40":"حقلٌ ما زال يُبنى","tab_b50":"الفنّ والصَّنعة، وأسماء الممارسة","tab_b60":"أبعد من المرسم، عبر المتوسّط","tab_b70":"أين يُدرَّس الفنّ الآن، وما الذي تبنيه ميراث","tab_b80":"تأمُّل","tab_b90":"الشركاء والمُموّلون","b10":"<p class=\"h\">عبر شمال أفريقيا والمتوسط، تشكّل الفن الحديث ووسائل تعليمه في أعقاب الإمبراطورية، بين تقاليد موروثة من الصنعة، وأكاديميات للفنون الجميلة أنشأتها القوى الاستعمارية، وفنانين سافروا بحثاً عن تعليم لم تكن مدنهم تتيحه بعد. يشتغل \"التكوين الفني\" على هذا التاريخ، ويتعامل مع التعليم بوصفه فعلاً سياسياً وثقافياً بقدر ما هو تقني؛ أي الطريقة التي يقرر بها مجتمع ما ما هو الفن، ومن يحق له أن يصنعه، وأيّ التقاليد يدعيها. ويسأل، قبل كل شيء، كيف يصير المرء فناناً حيث المؤسسة التي تصنعه ما تزال قيد التكوين. تلازم الدراسة الحالة الليبية بصورة خاصة، لكنها تقرؤها داخل المنطقة التي تنتمي إليها لا بمعزل عنها؛ فالجيران، والطرقُ الواصلةُ بينهم، جزءٌ من القصة نفسِها، سات والمعلمين والطلاب جزء من تاريخ التكوين الفني في المنطقة. تأتي ميراث إلى هذا البحث بوصفها مركزاً بحثياً وجماعة فنية تعمل في تقاليد الفن المفاهيمي والفن القائم على البحث. فالبحث عندها صورة من صور الصنع، ولذلك يصبح تاريخ كيف تعلّم الآخرون أن يصنعوا موضوعاً للدراسة ومرآةً للتأمل في الممارسة نفسها.</p>","b40":"<p class=\"h\">يبدأ المشروعُ بجمع سِجلٍّ ظلّ متناثراً. فالحقلُ الذي ينبغي أن يحتضن التعليم الفني في ليبيا مازال محدوداً؛ إذ ظلّ قليلَ المأسسة، متقطّعَ الدعم، نادرَ التدوين. وبينما بنى عددٌ من البلدان المجاورة أكاديمياتها وكتبوا تواريخَهم الفنّية عبر القرن، لم تجد المعرفةُ الليبية إلا بيوتاً قليلةً تنمو فيها. ومعظمُ السِجل يبقى في الأيدي الخاصة أكثرَ منه في المجموعات العامة: في الأرشيفات العائلية للفنانين وذرّيّاتهم، الرسائل والصور ودفاتر الرسم والشهادات، أوراق تحفظ مسارات لم تجد طريقها إلى السجل العام. ومن بينهم وجوهٌ تدرّبت على الفن وبقيت سِيَرُها غيرَ مكتوبة إلى حدٍ بعيد. جيلٌ تطفو أسماؤه في ذكريات بعضِهم بعضاً، ينتظر أن يُجمَع في صورةٍ مقروءة. والعملُ هنا هو، جزئياً، بناءُ الحقل الذي يدرسه؛ فالجمعُ نفسُه جزءٌ من الحُجّة التي يحملها المشروع نفسه.</p>","b50":"<p class=\"h\">لكي يسأل كيف تعلَّم الفنّانون، يبدأ المشروعُ بالمدارس التي وُجِدت فعلاً، وبالأدوار التي أنشئت من أجلها. أقدمُها <span class=\"chip net\" style=\"--c:#106580\" data-net=\"ENT-islamic-arts-crafts-school\">مدرسة الفنون والصنائع الإسلامية في طرابلس</span> \"صَنعةٍ\"، وهي تأسيسٌ عثمانيٌّ يعود إلى تسعينيات القرن التاسع عشر، جاءت ضمن حلقةٌ من شبكة التعليم الحِرفي والصناعي التي كان العثمانيون ينشرونها في ولاياتهم. أُقيمت المدرسة لتعليم الأيتام وأبناء الأسر الفقيرة حرفاً ومهارات عملية، مثل النِجارةَ، حفرَ المعادن، التطريز، دِباغةَ الجلود، النسيج. أُغلِقت مع الغزو الإيطالي عام 1911 ثم أُعيد فتحُها عام 1913 تحت الإدارةُ الاستعمارية، قبل أن يُعاد تنظيمها أوائل الثلاثينيات في عهد الحاكم إيتالو بالبو، مع استمرار تركيزها على مجال الحِرفَ التطبيقية واليدوية. وما دُرِّس فيها، ولمن، رسم خطّاً يعود إليه المشروعُ مراراً. فقد وجهت الصَّنعةُ للمستعمَرين والفقراء، بينما ظلّ \"الفن الجميل\" فئةً أوروبية تُدرَّس في مكان آخر وتُحجَز لآخرين. وقد امتد هذا التقسيمُ نفسُه عبر شمال أفريقيا الاستعمارية، ففي الوقت الذي أنشأت فيه القوى الأوروبية أكاديميات للفنون الجميلة، وافتُتِحت <span class=\"chip net\" style=\"--c:#106580\" data-net=\"ENT-cairo-fine-arts\">أكاديميةُ القاهرة</span> مبكراً عام 1908، بينما كانت تَسوق المستعمَرين نحو الصَّنعة، ظلّ الفنانون الليبيون يغادرون بلادهم بحثاً عن أكاديميات تعليمية مماثلة. وفي ذلك السياق، أن يطالب المرءُ بلقب الفنان، كان فعلاً يعبر حدوداً رُسمت مسبقاً .</p>\n    <p class=\"h\">يشتغل المشروعُ على هذه الفئات بدلاً من أن يُسلّم بها. فالتراتبُ الموروث الذي وضع الفن الجميل فوق الصَّنعة، والأكاديميةُ فوق الورشة، والعملُ الفريد فوق النافع، صاغ من يُمكن أن يُربَّى فناناً، وما الغايةَ من ذلك التعليم. ثم تأتي مفرداتٌ لاحقةٌ فتُزعزعه من جديد، إذ يجعل الفن المفاهيمي والفن القائمُ على البحث من الفكرة ومن التقصّي ذاتِهما عملاً، فخفّفا الحدَّ التقليدي بين الصُّنع والتفكير، وبين الفن والبحث. وهنا تحديداً يتموضع اهتمام ميراث. فالمشروع يتتبع هذه الفئات وهي تتحرك عبر الزمن، بسؤالها كيف سافرت كلٌّ منها، وكيف دُرِّست، وكيف رسمت معاً خريطةَ الحياة الفنية في المنطقة. إعادة قراءتها جزءٌ ممّا وُجِد المشروعُ لأجله.</p>","b60":"<p class=\"h\">يتتبّع المشروعُ تدريبَ الفنان إلى ما بعد المرسم. فكما في أنحاء المنطقة، انتقل كثير من الذين تعلّموا الرسمَ والنحتَ إلى مجالاتٍ أخرى كتشكيل العمارة والتصميم، المسرحِ والتراث، وأسهموا في تشكيل اللغةِ البصرية للحياة العامة؛ إذ بذر التدريبُ الفني مهارات وحساسيات انتقلت إلى حقول مجاورة وإلى مؤسسات دول قيدَ البناء. وبتتبّع وجهةِ ذلك التدريب، يقرأ المشروعُ تاريخَ تعليم الفنون بوصفه تاريخاً لكيفية تكوين ثقافة إبداعية بأكملها، وكيفية رسمِ الخطوط، ثم إعادةِ رسمها، بين الفنان والمصمم والمعماري والمعلّم.</p>\n    <p class=\"h\">ويتتبع خيطٌ من المشروع مساراً واحداً، إذ يتعقّب <span class=\"chip net\" style=\"--c:#9A93EC\" data-net=\"S007-across-the-mediterranean\">عبر المتوسط</span> الفنانين الليبيين الذين عبروا إلى إيطاليا للتدرّب في أكاديميات الفنون الجميلة بمدينتي <span class=\"chip net\" style=\"--c:#106580\" data-net=\"ENT-accademia-roma\">روما</span> و<span class=\"chip net\" style=\"--c:#106580\" data-net=\"ENT-accademia-firenze\">فلورنسا</span>، خلال العقود الوسطى من القرن، وهم جزءٌ من تيّارٍ أوسعَ حمل فنانين من أنحاء جنوب المتوسط وشرقه إلى أكاديميات أوروبية، قبل أن يعودوا بما تعلموه إلى بلدانهم. لكن سِجلُّهم مشطورٌ بين ضفتين؛ ففي الجانب الإيطالي، تحفظ الأكاديميات الآثارُ الوثائقية من سجلاتُ القيد، الصور، الكتالوجات، بينما على الجانب الليبي، يبقى جزءًا كبير من الذاكرةٌ، محفوظاً في العائلات والشهادات الشخصية والتذكّر الشفوي. ثمة حدٌّ يمرّ في الأرشيف نفسِه. ويتعامل المشروعُ مع هذا الشطر بوصفه منهجاً لا مجرد عقبة بحثية: إذ يعمل على الضفتين معاً ويجمع نصفيهما في سِجلٍ واحدٍ موصول، مع قراءة ما حفظه كل جانب وما فرّط فيه، وما يُسمّيه أحدُهما ويسكت عنه الآخر أي جزءٌ في ذاته مما يُقرَأ. وقد طوّرت ميراث هذا النهج في مشروعات أخرى، من بينهما مشروع (06 | <span class=\"chip net\" style=\"--c:#5DCAA5\" data-net=\"P006\">ليبيا - الجزائر</span>)، حيث نجا تاريخٌ مشترَكٌ بقى موزعاً خارج المؤسسات الوطنية، وتعيّن لمُّه من الجانبين؛ وهنا يحمل النهجَ نفسَه إلى الفاصل بين ليبيا وإيطاليا، لفهم كيف تشكّلت مسارات التعليم الفني عبر الحدود.</p>","b70":"<p class=\"h\">والسؤالُ راهنٌ بقدر ما هو تاريخيّ. فاليوم، كما في معظم المنطقة، يجري قدرٌ كبيرٌ ممّا يُعَدّ تعليماً للفنّ في ليبيا خارج الأكاديمية الرسمية: في الإقامات الفنّية وورش العمل، الفضاءات المستقلّة وتلك التي يديرها الفنانون، الشبكات الرقمية والشتات، وفيما يتبادله الفنانون مباشرةً مع بعضُهم البعض. وإلى جانب ذلك، يواصل الكتابُ الفني دوره بتعليم هادئ خاص به؛ إذ يستطيع منشورٌ أن يحمل منهجاً، يَعرض طريقة في النظر، يضع الأعمالَ والأفكارَ في التداول قلّما يصل معرضٌ أو قاعةُ درس. وهو تقليد يمتد من الرسالة والدليل إلى كتاب الفنان المعاصر، ويرتبط مباشرةً بجوانب من عمل ميراث نفسِه على الصفحة (<span class=\"chip net\" style=\"--c:#5DCAA5\" data-net=\"P003\">03</span>، <span class=\"chip net\" style=\"--c:#5DCAA5\" data-net=\"P004\">04</span>، <span class=\"chip net\" style=\"--c:#5DCAA5\" data-net=\"P009\">09</span>، <span class=\"chip net\" style=\"--c:#5DCAA5\" data-net=\"P010\">10</span>). ويضع المشروعُ هذا الحاضرَ إلى جانب الماضي عن قصد. فالتعلّمُ المرتجَلُ المنظَّمُ ذاتياً اليومَ يتجاوب مع التكوينات المرتجَلة لأجيال سابقة صنعت مساراتها التعليمية بوسائلها الخاصة، ويُلحّ بالسؤال نفسِه: ما الذي يكونه تعليمُ الفن، وما الذي يُمكن أن يكونه، حين تكون المؤسسةُ التي توفّره ما زالت قيد الصُنع.</p>\n    <p class=\"h\">وهو سؤالٌ تحمله ميراث لنفسها. فبينما تستثمر في صناعة الفن وتعليمه معاً، تتعلّم الجماعةُ من هذه التواريخ ومن تجارب الحاضر صوبَ شيءٍ تعتزم بناءه: إقامةٌ فنّيةٌ وفضاءُ تعلُّمٍ للفنون في ليبيا، يجمع بين ما يستعيده هذا المشروع من تجارب التكوين الفني، والأساليبُ التي يطوّرها سائرُ عمل ميراث، في خدمة من ينشأون الآن.</p>","b80":"<p class=\"h\">ويقف المشروعُ إلى جانب المشاريع التي تشاركه منهجَه، بكيفية بناء الليبيين لمعرفتهم ومساراتهم التعليمية والمهنية في حقولٍ أخرى مثل (<span class=\"chip net\" style=\"--c:#5DCAA5\" data-net=\"P005\">05</span>)، ودراسةِ الحركة والانتقال في (01 | <span class=\"chip net\" style=\"--c:#5DCAA5\" data-net=\"P001\">سريان</span>). وما زال بحثُه جارٍ، جامعاً موادَّ متناثرةً وذكريات لا زالت حية، فيما ينكشف ما يُسفر عنه، والأشكالُ التي يتّخذها، مع تقدم العمل ونضجه.</p>","b90":"<p class=\"h\">قيد التطوير</p>","st_now":"المشروع في طور الجمع. لم يترك التعليم الفني في ليبيا إلا سِجلّاً رقيقاً متناثراً، والعمل يجمعه من حيث بقي — الأرشيفات العائلية للفنانين وذرّيّاتهم، الرسائل والصور ودفاتر الرسم والشهادات التي فرّط فيها السِجل العام — حتى يُجمَع جيلٌ لا تطفو أسماؤه إلا في ذكريات بعضهم بعضاً في صورةٍ مقروءة. والعملُ هنا هو، جزئياً، بناءُ الحقل الذي يدرسه.</p>\n    <p class=\"h\">وخطوطه مفتوحة على أكثر من جبهة. <span class=\"chip net\" style=\"--c:#9A93EC\" data-net=\"S007-across-the-mediterranean\">عبر المتوسّط</span>، خيط المعرض والبحث القَيمومي، قيد العمل: معرضُه الإيطالي <span class=\"chip net\" style=\"--c:#C9A227\" data-net=\"07_Exh_4\">الفنانون الليبيون في إيطاليا</span> يتتبّع الذين عبروا إلى أكاديميات روما وفلورنسا، ويعمل على ضفتَي أرشيفٍ مشطور ليجمعهما في سِجلٍ واحدٍ موصول — منهج أرشيف الحدود الذي طوّرته <span class=\"chip net\" style=\"--c:#5DCAA5\" data-net=\"P006\">06 ليبيا-الجزائر</span> عند فاصلٍ آخر. وإلى جانبه، معرضُ ليبيا <span class=\"chip net\" style=\"--c:#C9A227\" data-net=\"07_Exh_39\">الحداثة الفنية في ليبيا</span> والمطبوع <span class=\"chip net\" style=\"--c:#C9A227\" data-net=\"07_Pub_5\">الحداثة في ليبيا</span> في تطوير مبكر. وما زال السِجل يُجمَع، والذاكرة المحيطة به تُتَتبّع.","st_next":"الأفق القريب هو أن يأخذ العمل صيغته المعرضية والمطبوعة: معرضُ إيطاليا <span class=\"chip net\" style=\"--c:#9A93EC\" data-net=\"S007-across-the-mediterranean\">عبر المتوسّط</span>، ومعرضُ ليبيا <span class=\"chip net\" style=\"--c:#C9A227\" data-net=\"07_Exh_39\">الحداثة الفنية في ليبيا</span>، والمطبوع <span class=\"chip net\" style=\"--c:#C9A227\" data-net=\"07_Pub_5\">الحداثة في ليبيا</span>، وكلٌّ منها يتماسك مع جمع السِجل المتناثر والذاكرة المحيطة به.</p>\n    <p class=\"h\">وأبعدَ منها يحمل المشروع غايةً أطول. تعتزم ميراث أن تحوّل ما تستعيده هنا — التكوينات التي يكشفها هذا التاريخ، إلى جانب الأساليب التي يطوّرها سائرُ عملها في <span class=\"chip net\" style=\"--c:#5DCAA5\" data-net=\"P003\">03 المناهج</span>، <span class=\"chip net\" style=\"--c:#5DCAA5\" data-net=\"P004\">04 ورشة مناهج البحث</span>، <span class=\"chip net\" style=\"--c:#5DCAA5\" data-net=\"P009\">09 ميدان النشر</span>، <span class=\"chip net\" style=\"--c:#5DCAA5\" data-net=\"P010\">10 رحبة الطباعة</span> — صوبَ شيءٍ تبنيه: إقامةٌ فنّيةٌ وفضاءُ تعلُّمٍ للفنون في ليبيا، لمن ينشأون الآن. ويقف المشروع إلى جانب المشاريع التي تشاركه منهجَه — استعادةِ كيف بنى الليبيون تكوينهم في <span class=\"chip net\" style=\"--c:#5DCAA5\" data-net=\"P005\">05 المعرفة الأثرية</span>، ودراسةِ الحركة والانتقال في <span class=\"chip net\" style=\"--c:#5DCAA5\" data-net=\"P001\">01 سَرَيان</span> — ويتّخذ شكله النهائي مع نضج البحث.","st_now_h":"حيث يَقف العمل الآن","st_next_h":"ما يأتي تالياً","st_now_k":"007.20 · المراجعة","st_next_k":"007.30 · الأفق","st_now_x":"أين يقف العمل الآن","st_next_x":"ما الذي يأتي تالياً","st_now_line":"أين يقف","st_next_line":"ما يأتي تالياً","updated_now":"","updated_next":"","cap":[]}};
 let lang='en';
 function _qs(s){return document.querySelector(s);}
 function setLang(l){
@@ -558,7 +581,7 @@ function setLang(l){
     _stSet(stNext,ar?LANG.ar.st_next:enHTML.st_next);
     const u2=stNext.querySelector('.updated');if(u2)u2.innerHTML=ar?LANG.ar.updated_next:enHTML.updated_next;}
   /* network core visible UI strings */
-  const nof=document.getElementById('nof');if(nof)nof.textContent=ar?LANG.ar.openfile:'Open the file';
+  const nof=document.getElementById('nof');if(nof)nof.textContent=nof.classList.contains('soon')?(ar?'قريباً':'Coming soon'):(ar?LANG.ar.openfile:'Open the file');
   const hint=_qs('#net .hint');if(hint)hint.textContent=ar?LANG.ar.net_hint:enHTML.net_hint;
   /* recompute word gauge + re-lay marginalia after the DOM text changed */
   if(typeof totalWords!=='undefined')totalWords=wordCount();
@@ -1184,7 +1207,7 @@ const NET={
   "kt_ar": "منشور",
   "kh_ar": "طبعة أم السرايا",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#book/LED_03",
   "edges": [
    [
     "As part of",
@@ -1277,7 +1300,7 @@ const NET={
   "kt_ar": "سلسلة",
   "kh_ar": "مراجع ميراث",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#series/MM",
   "edges": [
    [
     "As part of",
@@ -1492,7 +1515,7 @@ const NET={
   "kt_ar": "سلسلة",
   "kh_ar": "التاريخ الشفوي للمرأة",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#series/FOH",
   "edges": [
    [
     "feeds",
@@ -1548,7 +1571,7 @@ const NET={
   "kt_ar": "منشور",
   "kh_ar": "ثورةٌ سُبكت بالفضة والذهب",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#book/LED_01",
   "edges": [
    [
     "As part of",
@@ -1695,7 +1718,7 @@ const NET={
   "kt_ar": "منشور",
   "kh_ar": "تحانين: أثر نشيد من فلسطين إلى مكة",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#book/LED_02",
   "edges": [
    [
     "As part of",
@@ -2018,7 +2041,7 @@ const NET={
   "kt_ar": "منشور",
   "kh_ar": "أخذُ الحقل والاختبار الميداني",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#book/LED_08",
   "edges": [
    [
     "As part of",
@@ -2199,7 +2222,7 @@ const NET={
   "kt_ar": "سلسلة",
   "kh_ar": "المأثورات الشعبية",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#series/FLK",
   "edges": [
    [
     "As part of",
@@ -2873,7 +2896,7 @@ const NET={
   "kt_ar": "منشور",
   "kh_ar": "م2. فهرس الممارسات الأثرية",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#book/m2",
   "edges": [
    [
     "cited by",
@@ -3127,7 +3150,7 @@ const NET={
   "kt_ar": "مُخرَج",
   "kh_ar": "الكَعب المفتوح",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#book/SS_01",
   "edges": [
    [
     "As part of",
@@ -3257,7 +3280,7 @@ const NET={
   "kt_ar": "منشور",
   "kh_ar": "دسكة غير مستوردة",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#book/LED_06",
   "edges": [
    [
     "As part of",
@@ -3296,7 +3319,7 @@ const NET={
   "kt_ar": "منشور",
   "kh_ar": "أرضية الضجيج: تاريخ الراديو في ليبيا",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#book/01_Pub_67",
   "edges": [
    [
     "As part of",
@@ -3369,7 +3392,7 @@ const NET={
   "kt_ar": "منشور",
   "kh_ar": "بَلْغة / الكَعب المفتوح: دفتر اللاثابت",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#book/SS_01",
   "edges": [
    [
     "As part of",
@@ -3484,7 +3507,7 @@ const NET={
   "kt_ar": "سلسلة",
   "kh_ar": "نَتَمَشُّوا ",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#series/GD",
   "edges": [
    [
     "Produced with",
@@ -3506,7 +3529,7 @@ const NET={
   "kt_ar": "سلسلة",
   "kh_ar": "العمارة",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#series/ARC",
   "edges": [
    [
     "As part of",
@@ -3624,7 +3647,7 @@ const NET={
   "kt_ar": "منشور",
   "kh_ar": "ذا سولت ميدوز",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#book/LED_07",
   "edges": [
    [
     "authored by",
@@ -3766,7 +3789,7 @@ const NET={
   "kt_ar": "منشور",
   "kh_ar": "م3. إطار عمل للأرشيفات الخاصة في ظل القيود",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#book/m3",
   "edges": [
    [
     "As part of",
@@ -3842,7 +3865,7 @@ const NET={
   "kt_ar": "مُخرَج",
   "kh_ar": "سين وَصاد: عن الأوزان والاهتزازات بين الصحراء والبحر",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#book/LED_05",
   "edges": [
    [
     "Based on",
@@ -3874,7 +3897,7 @@ const NET={
   "kt_ar": "سلسلة",
   "kh_ar": "تحصيلة فنية ",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#series/COL",
   "edges": [
    [
     "As part of",
@@ -3967,7 +3990,7 @@ const NET={
   "kt_ar": "سلسلة",
   "kh_ar": "الأقصوصة ",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#series/SS",
   "edges": [
    [
     "As part of",
@@ -4060,7 +4083,7 @@ const NET={
   "kt_ar": "منشور",
   "kh_ar": "م3. إطار عمل للأرشيفات الخاصة في ظل القيود",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#book/m3",
   "edges": [
    [
     "As part of",
@@ -4136,7 +4159,7 @@ const NET={
   "kt_ar": "سلسلة",
   "kh_ar": "دفتر غير مفهرس",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#series/LED",
   "edges": [
    [
     "As part of",
@@ -4342,7 +4365,7 @@ const NET={
   "kt_ar": "سلسلة",
   "kh_ar": "المُناجاة ",
   "kb_ar": "",
-  "file": "",
+  "file": "/publications#series/MO",
   "edges": [
    [
     "As part of",
@@ -4439,7 +4462,14 @@ function openNet(key){
   net.style.setProperty('--cc',dc);
   document.getElementById('nct').textContent=AR()?(d.kt_ar||d.kt):d.kt;document.getElementById('nch').textContent=AR()?(d.kh_ar||d.kh):d.kh;document.getElementById('ncb').textContent=AR()?(d.kb_ar||d.kb):d.kb;
   const r1=edgesOf(key);
-  document.getElementById('nec').textContent=AR()?(r1.length+' حواف'):(r1.length+' edges');document.getElementById('nof').setAttribute('href',d.file||'#');
+  document.getElementById('nec').textContent=AR()?(r1.length+' حواف'):(r1.length+' edges');(function(){var _o=document.getElementById('nof');if(!_o)return;
+   var _ar=AR();
+   if(d.file){_o.setAttribute('href',d.file);_o.classList.remove('soon');
+     _o.removeAttribute('aria-disabled');
+     _o.textContent=(_ar?'افتحوا الملف':'Open the file');}
+   else{_o.removeAttribute('href');_o.classList.add('soon');
+     _o.setAttribute('aria-disabled','true');
+     _o.textContent=(_ar?'قريباً':'Coming soon');}})();
   net.classList.add('on');
   const W=innerWidth,H=innerHeight,cx=W/2,cy=H*0.44,n=r1.length;
   const hw=178,hh=118,pad=128;
@@ -4563,6 +4593,40 @@ document.addEventListener('click',e=>{
 });
 </script>
 <script>window.__MERATH_MAR__={"en":"Art Formation","sub":"","ar":"التكوين الفني","subAr":""};</script>
+<script>/* merath — the side index folds */
+(function(){
+  var nav=document.getElementById('nav'); if(!nav)return;
+  function kidsOf(id){return nav.querySelectorAll('a.sub[data-par="'+id+'"]');}
+  function idOf(a){return (a.getAttribute('href')||'').slice(1);}
+  function setOpen(a,open){
+    if(!a||!a.classList.contains('par'))return;
+    a.classList.toggle('open',open);
+    a.setAttribute('aria-expanded',open?'true':'false');
+    kidsOf(idOf(a)).forEach(function(k){k.classList.toggle('show',open);});
+  }
+  nav.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('a.par');
+    if(!a||!nav.contains(a))return;
+    setOpen(a,!a.classList.contains('open'));   /* the href still navigates */
+  });
+  /* follow the reader INTO a section, never out of one */
+  var last=null;
+  function follow(){
+    var on=nav.querySelector('a.on'); if(!on)return;
+    var want=on.classList.contains('sub')?on.getAttribute('data-par')
+            :(on.classList.contains('par')?idOf(on):null);
+    if(!want||want===last)return;
+    last=want;
+    setOpen(nav.querySelector('a.par[href="#'+want+'"]'),true);
+  }
+  var tick=false;
+  addEventListener('scroll',function(){
+    if(tick)return; tick=true;
+    requestAnimationFrame(function(){tick=false;follow();});
+  },{passive:true});
+  addEventListener('hashchange',follow);
+  follow();
+})();</script>
 
 <style>
 #surface-veil{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:1;background:radial-gradient(120% 90% at 50% 42%,#0d3a44 0%,#08222a 55%,#04141a 100%)}
