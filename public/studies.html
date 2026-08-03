@@ -11,7 +11,133 @@ p{opacity:.75;margin:0 0 26px}a{color:var(--ink);text-decoration:none;border-bot
 .mark{width:34px;height:34px;margin:0 auto 20px;border:2px solid var(--ink);border-radius:50%;
 border-top-color:transparent;animation:s 2.4s linear infinite}@keyframes s{to{transform:rotate(360deg)}}
 @media(prefers-reduced-motion:reduce){.mark{animation:none}}
-</style></head><body><div class="w"><div class="mark"></div>
+</style><meta name="description" content="Studies at merath — En route — this part of the archive is being prepared.">
+<link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+<meta name="theme-color" content="#D9F164">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="merath">
+<meta property="og:locale" content="en_GB">
+<meta property="og:locale:alternate" content="ar_LY">
+<meta property="og:title" content="Studies — merath">
+<meta property="og:description" content="Studies at merath — En route — this part of the archive is being prepared.">
+<meta property="og:url" content="https://merath.ly/studies">
+<meta property="og:image" content="https://merath.ly/assets/merath-share.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="merath">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Studies — merath">
+<meta name="twitter:description" content="Studies at merath — En route — this part of the archive is being prepared.">
+<meta name="twitter:image" content="https://merath.ly/assets/merath-share.png">
+<link rel="canonical" href="https://merath.ly/studies">
+</head><body><div class="w"><div class="mark"></div>
 <h1>Studies</h1><div class="ar">الدراسات</div>
 <p>En route — this part of the archive is being prepared.<br><span dir="rtl">في الطريق — هذا الجزء قيد الإعداد.</span></p>
-<a href="/">← merath</a></div></body></html>
+<script>/* these pages have no toggle to restore through, so honour the stored
+  choice directly: mirror the document and put the reader's language first */
+(function(){var w=null;try{w=localStorage.getItem('merath.lang');}catch(e){}
+ if(w!=='ar')return;
+ var h=document.documentElement;h.setAttribute('lang','ar');h.setAttribute('dir','rtl');
+ var t=document.querySelector('h1'),a=document.querySelector('.ar');
+ if(t&&a&&t.parentNode){var x=t.textContent;t.textContent=a.textContent;a.textContent=x;
+   t.setAttribute('dir','rtl');a.setAttribute('dir','ltr');}
+ var p=document.querySelector('p'),s=p&&p.querySelector('span');
+ if(p&&s){var en=p.firstChild;p.insertBefore(s,en);s.setAttribute('dir','rtl');
+   var br=p.querySelector('br');if(br)p.insertBefore(br,en);}
+})();</script>
+<a href="/">← merath</a></div><script>/* merath — remember the reader's language */
+(function(){
+  var KEY='merath.lang';
+
+  /* Read the stored choice FIRST, before anything else in this script runs.
+   * Every page calls its own applyLang() during boot, which writes
+   * <html lang="en">. If the recorder were listening by then it would save
+   * that "en" over the reader's stored "ar", and the restore below would
+   * find nothing to do — the preference would be erased by the very code
+   * meant to honour it. Capturing it here closes that window. */
+  var want=null; try{want=localStorage.getItem(KEY);}catch(e){}
+
+  /* …and stay silent until the restore has settled, so the page's own boot
+   * cannot be mistaken for the reader changing their mind. */
+  var armed=false;
+
+  function cur(){
+    var l=(document.documentElement.getAttribute('lang')||'en').toLowerCase();
+    return l.indexOf('ar')===0?'ar':'en';
+  }
+  function save(v){ if(!armed)return; try{localStorage.setItem(KEY,v);}catch(e){} }
+
+  /* Record every change once armed, however it was made. */
+  try{
+    new MutationObserver(function(){save(cur());})
+      .observe(document.documentElement,{attributes:true,attributeFilter:['lang','dir']});
+  }catch(e){}
+
+  /* A real click from the reader always counts, whenever it happens. */
+  document.addEventListener('click',function(e){
+    var t=e.target;
+    if(t&&t.closest&&t.closest('#lang-btn,#lang,#m-lang')){armed=true;save(cur());}
+  },true);
+
+  /* The control differs per page: the section pages use #lang-btn (with
+   * #m-lang in the mobile drawer), the project detail shell uses #lang. */
+  function control(){
+    return document.getElementById('lang-btn')
+        || document.getElementById('lang')
+        || document.getElementById('m-lang');
+  }
+  var tries=0;
+  function restore(){
+    if(!want||want===cur()){armed=true;return;}
+    var b=control();
+    if(!b){ if(tries++<20)return setTimeout(restore,100); armed=true; return; }
+    b.click();
+    /* If the page finishes booting after us and resets to English, put it
+     * back — but only a few times, so a page that genuinely refuses Arabic
+     * cannot spin. */
+    if(tries++<4)return setTimeout(restore,250);
+    armed=true;
+  }
+  if(document.readyState==='complete')setTimeout(restore,60);
+  else addEventListener('load',function(){setTimeout(restore,60);});
+})();
+</script>
+<script>/* merath — keep the painted ground as tall as the page */
+(function(){
+  if(!window.ResizeObserver)return;
+  var last=0,timer=null,burst=0,lastFire=0;
+  function height(){
+    return Math.max(document.body?document.body.scrollHeight:0,
+                    document.documentElement.scrollHeight);
+  }
+  function settle(){
+    var h=height();
+    if(Math.abs(h-last)<8)return;      /* ignore sub-pixel churn */
+    last=h;
+    clearTimeout(timer);
+    timer=setTimeout(function(){
+      var now=Date.now();
+      /* Guard against a relayout that itself changes the height and calls us
+       * straight back — but ONLY against that. An earlier version counted
+       * every dispatch for the life of the page, and normal boot churn (cards
+       * rendering, the chart drawing, fonts swapping) used the whole budget
+       * within the first second, muting the observer before the reader had
+       * scrolled anywhere. A gap of a couple of seconds means the page has
+       * settled and the next change is a real one. */
+      if(now-lastFire>2000)burst=0;
+      if(burst++>6)return;
+      lastFire=now;
+      window.dispatchEvent(new Event('resize'));
+    },140);                            /* longer than the pages' own debounce */
+  }
+  try{new ResizeObserver(settle).observe(document.body);}catch(e){}
+  addEventListener('load',function(){last=height();setTimeout(settle,300);});
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){setTimeout(settle,50);});
+  /* Mobile browsers collapse the address bar mid-scroll, which changes the
+   * visual viewport without always firing a window resize. */
+  if(window.visualViewport)visualViewport.addEventListener('resize',settle);
+})();
+</script>
+</body></html>
