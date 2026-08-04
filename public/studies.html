@@ -1,4 +1,51 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8">
+<!doctype html><html lang="en"><head>
+<style id="mr-lang-css">
+html.mr-wait body{visibility:hidden}
+html.mr-quiet *,html.mr-quiet *::before,html.mr-quiet *::after{
+  transition:none!important;animation:none!important}
+html.mr-reveal body{animation:mrFade .22s ease-out both}
+@keyframes mrFade{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){html.mr-reveal body{animation:none}}
+</style>
+<script>/* merath — arrive in the reader's language */
+(function(){
+  var w=null; try{w=localStorage.getItem('merath.lang');}catch(e){}
+  if(w!=='ar')return;
+  var h=document.documentElement;
+  /* This script touches NOTHING but its own two classes.
+   *
+   * It tried twice to be cleverer, and both attempts were worse than the flash
+   * they were meant to remove.
+   *
+   *   lang="ar" — the restore below decides whether to act by comparing the
+   *     stored choice against <html lang>. Writing lang here makes a page whose
+   *     own boot has not yet run look, to the restore, like a page already in
+   *     Arabic: it returns without clicking, and the reader gets English text
+   *     inside a mirrored frame. nav-depth caught it on six pages.
+   *
+   *   dir="rtl" — worse. The detail shell's setGauge() runs at parse time and
+   *     reads LANG.ar.words when, and only when, dir is already rtl. LANG is a
+   *     const declared two hundred lines further down, so that read is a
+   *     temporal-dead-zone ReferenceError, and it kills the whole script: no
+   *     NET, no openNet, no ticker, no language toggle, no index fold. Every
+   *     project page would have arrived in Arabic as a dead skeleton.
+   *
+   * Neither was buying anything. The reader cannot see the document until the
+   * hold lifts, so mirroring it early is invisible by construction. Hold the
+   * body, silence the transitions, let the page's own applyLang do every other
+   * part of the work exactly as it does for a click. */
+  h.classList.add('mr-wait','mr-quiet');
+  window.__mrReveal=function(){
+    if(!h.classList.contains('mr-wait'))return;
+    h.classList.remove('mr-wait'); h.classList.add('mr-reveal');
+    /* let the reveal paint before transitions are allowed again, or the
+     * suppressed switch animation starts up as the page appears */
+    setTimeout(function(){h.classList.remove('mr-quiet');},60);
+    setTimeout(function(){h.classList.remove('mr-reveal');},400);
+  };
+  setTimeout(window.__mrReveal,1400);
+})();
+</script><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Studies — merath</title>
 <style>
@@ -13,7 +60,9 @@ border-top-color:transparent;animation:s 2.4s linear infinite}@keyframes s{to{tr
 @media(prefers-reduced-motion:reduce){.mark{animation:none}}
 </style><style>footer .fcredit{margin:22px auto 0;max-width:64ch;font-size:11px;line-height:1.9;opacity:.85}footer .fcredit a{color:var(--cream)}</style>
 <meta name="description" content="Studies at merath — En route — this part of the archive is being prepared.">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
 <meta name="theme-color" content="#D9F164">
@@ -47,6 +96,10 @@ border-top-color:transparent;animation:s 2.4s linear infinite}@keyframes s{to{tr
  var p=document.querySelector('p'),s=p&&p.querySelector('span');
  if(p&&s){var en=p.firstChild;p.insertBefore(s,en);s.setAttribute('dir','rtl');
    var br=p.querySelector('br');if(br)p.insertBefore(br,en);}
+ /* these pages have no language button for the restore to click, so tell the
+    first-paint hold that the swap is done rather than making it wait out its
+    1400ms safety timer */
+ try{if(window.__mrReveal)window.__mrReveal();}catch(e){}
 })();</script>
 <a href="/">← merath</a></div>
 <style>
@@ -119,17 +172,23 @@ footer.sf a{color:var(--cream)}
         || document.getElementById('lang')
         || document.getElementById('m-lang');
   }
+  /* the head script is holding the page back until this settles */
+  function reveal(){ try{ if(window.__mrReveal)window.__mrReveal(); }catch(e){} }
+
   var tries=0;
   function restore(){
-    if(!want||want===cur()){armed=true;return;}
+    if(!want||want===cur()){armed=true;reveal();return;}
     var b=control();
-    if(!b){ if(tries++<20)return setTimeout(restore,100); armed=true; return; }
+    if(!b){ if(tries++<20)return setTimeout(restore,100); armed=true; reveal(); return; }
     b.click();
     /* If the page finishes booting after us and resets to English, put it
      * back — but only a few times, so a page that genuinely refuses Arabic
      * cannot spin. */
     if(tries++<4)return setTimeout(restore,250);
     armed=true;
+    /* one frame after the last correction, so the DOM the reader sees is the
+     * settled one rather than the middle of the switch */
+    requestAnimationFrame(function(){requestAnimationFrame(reveal);});
   }
   if(document.readyState==='complete')setTimeout(restore,60);
   else addEventListener('load',function(){setTimeout(restore,60);});

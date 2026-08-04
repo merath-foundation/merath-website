@@ -1,6 +1,53 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
+<style id="mr-lang-css">
+html.mr-wait body{visibility:hidden}
+html.mr-quiet *,html.mr-quiet *::before,html.mr-quiet *::after{
+  transition:none!important;animation:none!important}
+html.mr-reveal body{animation:mrFade .22s ease-out both}
+@keyframes mrFade{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){html.mr-reveal body{animation:none}}
+</style>
+<script>/* merath — arrive in the reader's language */
+(function(){
+  var w=null; try{w=localStorage.getItem('merath.lang');}catch(e){}
+  if(w!=='ar')return;
+  var h=document.documentElement;
+  /* This script touches NOTHING but its own two classes.
+   *
+   * It tried twice to be cleverer, and both attempts were worse than the flash
+   * they were meant to remove.
+   *
+   *   lang="ar" — the restore below decides whether to act by comparing the
+   *     stored choice against <html lang>. Writing lang here makes a page whose
+   *     own boot has not yet run look, to the restore, like a page already in
+   *     Arabic: it returns without clicking, and the reader gets English text
+   *     inside a mirrored frame. nav-depth caught it on six pages.
+   *
+   *   dir="rtl" — worse. The detail shell's setGauge() runs at parse time and
+   *     reads LANG.ar.words when, and only when, dir is already rtl. LANG is a
+   *     const declared two hundred lines further down, so that read is a
+   *     temporal-dead-zone ReferenceError, and it kills the whole script: no
+   *     NET, no openNet, no ticker, no language toggle, no index fold. Every
+   *     project page would have arrived in Arabic as a dead skeleton.
+   *
+   * Neither was buying anything. The reader cannot see the document until the
+   * hold lifts, so mirroring it early is invisible by construction. Hold the
+   * body, silence the transitions, let the page's own applyLang do every other
+   * part of the work exactly as it does for a click. */
+  h.classList.add('mr-wait','mr-quiet');
+  window.__mrReveal=function(){
+    if(!h.classList.contains('mr-wait'))return;
+    h.classList.remove('mr-wait'); h.classList.add('mr-reveal');
+    /* let the reveal paint before transitions are allowed again, or the
+     * suppressed switch animation starts up as the page appears */
+    setTimeout(function(){h.classList.remove('mr-quiet');},60);
+    setTimeout(function(){h.classList.remove('mr-reveal');},400);
+  };
+  setTimeout(window.__mrReveal,1400);
+})();
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>merath</title>
@@ -244,7 +291,7 @@
   @keyframes featherA{0%{transform:translate(0,0) rotate(0deg)}25%{transform:translate(22px,18px) rotate(9deg)}50%{transform:translate(-6px,38px) rotate(-7deg)}75%{transform:translate(18px,58px) rotate(6deg)}100%{transform:translate(0,76px) rotate(0deg)}}
   @keyframes featherB{0%{transform:translate(0,0) rotate(0deg)}25%{transform:translate(-20px,16px) rotate(-8deg)}50%{transform:translate(8px,34px) rotate(6deg)}75%{transform:translate(-16px,52px) rotate(-5deg)}100%{transform:translate(0,70px) rotate(0deg)}}
 </style>
-<script>/* merath build 2026-08-03T23:08:04.653Z — data from Airtable */
+<script>/* merath build 2026-08-04T22:29:38.218Z — data from Airtable */
 window.__MERATH_LANDING__={"intro":[{"en":"merath works with what moves and changes: memory, objects, people, languages, and the relationships that take shape across place and time.","ar":"تنشغل ميراث بما يتحرك ويتغير: الذاكرة، والأشياء، والناس، واللغات، والعلاقات التي تتشكل عبر المكان والزمن."},{"en":"A collective of artists, researchers, writers, designers and anthropologists, working from Tripoli, between the Sahara and the sea.","ar":"جماعةٌ من الفنانين والباحثين والكتّاب والمصمِّمين والأنثروبولوجيين، تعمل من طرابلس، بين الصحراء والبحر."},{"en":"We build the networks that carry knowledge — and then make those networks the subject of the work.","ar":"نبني الشبكات التي تحمل المعرفة، ثم نجعل منها موضوعاً لعملنا."},{"en":"Open to invitations, to interventions, and to the imagining of other futures.","ar":"منفتحون على الدعوات والمُداخلات، وعلى تخيُّل مستقبلاتٍ أُخرى."}],"sections":[{"key":"projects","titleEn":"Projects","titleAr":"المشاريع","blurbEn":"Each project at merath begins as a question — tied to a memory, a place, a human relationship, or a cultural phenomenon that deserves documentation and renewed interpretation. Thirteen inquiries currently shape the practice, each unfolding through research, collaboration, and form.\n","blurbAr":"يبدأ كل مشروع في ميراث بسؤال — قد يرتبط بذاكرة، أو مكان، أو علاقة إنسانية، أو ظاهرة ثقافية تستحق التوثيق وإعادة القراءة. ثلاثة عشر بحثاً تُشكِّل الممارسة اليوم، يتكشّف كلٌّ منها عبر البحث والتعاون والشكل."},{"key":"publications","titleEn":"Publications","titleAr":"المنشورات","blurbEn":"Publishing is a core practice that shapes merath. In the independent press, we choose what we print, how we print it, and what kind of object the printed thing wants to be — books, manuals and editions moving across eight series.\n","blurbAr":"النشرُ ممارسةٌ أساسية تُشكِّل ميراث، وفي دار النشر المستقلة نختار ما نطبعه وكيف نطبعه، وأي جسدٍ يريد المطبوع أن يتّخذ — كتباً وأدلةً وإصداراتٍ تتنقل عبر ثماني سلاسل."},{"key":"programmes","titleEn":"Programmes","titleAr":"البرامج العامة","blurbEn":"Workshops, talks and public events are the mechanisms through which we engage our community — learning opportunities and a space to think and experiment collectively, in the studio in Tripoli and well beyond it.\n","blurbAr":"ورش العمل واللقاءات الحوارية والفعاليات العامة هي الآليات التي نُشرك بها مجتمعنا — فرصاً للتعلم ومساحةً للتفكير والتجريب الجماعي، في الاستوديو بطرابلس وأبعد منه بكثير."},{"key":"artProduction","titleEn":"Art & Production","titleAr":"الفن والإنتاج","blurbEn":"Our mission began by wanting to make work: we use the resources we build as a collective to make artworks, films, performance pieces and other creative productions, and to carry them to audiences across the region.\n","blurbAr":"انطلقت رحلتنا من الرغبة في صناعة العمل: نوظّف الموارد التي نبنيها جماعياً في إنتاج أعمال فنية وأفلام وعروض أدائية وأشكال إبداعية أخرى، ونحملها إلى جمهورها عبر المنطقة."},{"key":"studies","titleEn":"Studies","titleAr":"الدراسات","blurbEn":"We publish reports and visions for the future of cultural infrastructure and museum development — research commissioned and self-initiated, offered as working tools for institutions and practitioners alike.\n","blurbAr":"نُصدر تقارير وتصورات استشرافية لمستقبل البنية التحتية الثقافية وتطوير العمل المتحفي — أبحاثاً بتكليفٍ وأخرى بمبادرةٍ منا، نقدّمها أدواتِ عملٍ للمؤسسات والممارسين على السواء."},{"key":"archives","titleEn":"Archives","titleAr":"الأرشيفات","blurbEn":"Archives are central to what we do — organising, cataloguing and preserving private and larger collections so they can be shared as public resources, and building the tools that keep them alive.\n","blurbAr":"الأرشيفات ركيزة ما نقوم به — ننظّم المجموعات الخاصة والكبرى ونفهرسها ونحفظها لتُشارَك بوصفها موارد عامة، ونبني الأدوات التي تُبقيها حيّةً متاحة."}],"footer":{"contactEn":"For new projects, suggestions for archival analysis or general inquiries, connect with us: info [at] merath.ly\n","contactAr":"بشأن المشاريع الجديدة أو مقترحات التحليل الأرشيفي أو الاستفسارات العامة، تواصلوا معنا: info [at] merath.ly","rightsEn":"© merath 2026 · Tripoli, Libya · All rights reserved","rightsAr":"© ميراث 2026 · طرابلس، ليبيا · جميع الحقوق محفوظة","privacyEn":"Privacy","privacyAr":"الخصوصية","termsEn":"Terms of use","termsAr":"شروط الاستخدام","joinEn":"Join the team","joinAr":"انضموا للفريق"},"searchPool":["Sarayān","سَرَيان","Saharan Currency","العملة الصحراوية","Al Manahij","المناهج","Research Methods Workshop","ورشة الأساليب البحثيّة","Archaeological Knowledge"," المعرفة الأثرية","Libya-Algeria","ليبيا - الجزائر","Art Formation","التكوين الفني","Held in Common","في المُشاع","Publishing Field","ميدان النشر","The Print Rahba","رحبة الطباعة","Al-Batin","الباطن","Musical Manuscripts","مخطوطات الموسيقى","AFAC","الصندوق العربي للثقافة والفنون","Adam Anabosi","آدم عنبوسي","Performing · 004","الأداء · 004","mR²","مR²","Instruments","الآلات","Fifteen films","خمسة عشر فيلماً","Dar Al-Fergiani","دار الفرجاني","Launching Publication Fellowship","إطلاق زمالة النشر","Trans-Saharan–Mediterranean Book Trade","تجارة الكتاب عبر الصحراء والمتوسط","Editorial Methodology","منهجية التحرير","Display Distribute","ديسبلي ديستريبيوت","Focal Point Art Fair","معرض فوكال بوينت لكتاب الفن","Book on Currency","كتابٌ عن العملة","syllabi database","قاعدة بيانات المناهج","Relational Database Training","تدريب على قواعد البيانات العلائقية","Umm Al Saraya","طبعة أم السرايا","Listening · 004","الإصغاء · 004","Architecture series — first title","سلسلة العمارة — أول العناوين","Educational Web","الشبكة التعليمية","merath manuals","مراجع ميراث","Bilingual Catalogue Schema","خطاطة فهرسة ثنائية اللغة","Ghadames","غدامس","Princeton Geniza Lab","مختبر الجنيزة برينستون","Feminist Oral History","التاريخ الشفوي للمرأة","Arete Foundation","مؤسسة آريتي","Accademia di Belle Arti di Firenze","أكاديمية الفنون الجميلة في فلورنسا","A Revolution Forged in Silver and Gold","ثورةٌ سُبكت بالفضة والذهب","mAktoob — the story bank","مَكتوب — بنك الحكايات","mAktoob","مَكتوب","Film Database in Libya","قاعدة بيانات الأفلام في ليبيا","Moving · 004","التَنقُّل · 004","May our song be worthy of those who listen","عسى أُغنيتُنا أن تَليقَ بمن يُصغون","Tahanin, Trace of a Poem from Palestine to Mecca","تحانين: أثر نشيد من فلسطين إلى مكة","Oral History","التاريخ الشفوي","Publication Design","تصميم النشر","Christian Bischoff","كريستيان بيسشوف","Scouts Archival Training","تدريب أرشيفي للكشافة","Sharjah Art Foundation","مؤسسة الشارقة للفنون","Qadous Research Center","مركز قادوس البحثي","Craft Research","البحث الحرفي","A Fielding and the Field Test","أخذُ الحقل والاختبار الميداني","Craft Methodology","منهجية الحرفة","Measuring · 004","القياس · 004","Libyan Oral History of the Algerian Revolution","التاريخ الشفوي الليبي للثورة الجزائرية","Writing · 004","الكتابة · 004","Folklore series — first title","سلسلة المأثورات الشعبية — أول العناوين","Liminal, University of Bologna","ليمينال، جامعة بولونيا","The Custodians","الحُرّاس","Folklore","المأثورات الشعبية","MESAAS presentation (Columbia University)","مداخلة في MESAAS (جامعة كولومبيا)","Beit Ali Khalifa Zaidi","بيت علي خليفة الزائدي","Libyan Center for Archives and Historical Studies","المركز الليبي للمحفوظات والدراسات التاريخية","Guidebooks","أدلّة","Working Print Specimen Library","مكتبة عاملة لعينات الطباعة","Department of Antiquities","دائرة الآثار","A Sun Dawned Over Algeria 01","شمس أشرقت ع الجزائر 01","m1. Navigating Cultural Economics","م1. الاقتصاد الثقافي","University of Benghazi","جامعة بنغازي","Chewing Gum","العلكة","الأمناء","A Libyan History of the Noise Floor","تاريخٌ ليبيٌّ لأرضية الضجيج","Catalogue of Currency Online","فهرس العملات على الشبكة","Tripoli Paper Database","قاعدة بيانات الورق في طرابلس","Jameel Arts Centre","مركز جميل للفنون","The Working Courtyard","فناء العمل","Taught to Travel","تربيةٌ على السّفر","m2. An Index for Archaeological Practices","م2. فهرس الممارسات الأثرية","RAW Material Company","رو ماتيريال كومباني","Libyan Artists 50-70s in Italy","الفنانون الليبيون في إيطاليا (الخمسينيات–السبعينيات)","Centrale Fies","تشينترالي فيس","Colour Catalogue","كتالوج الألوان لثقافة الطباعة الليبية والإقليمية الحديثة","Oral Database Design","تصميم قاعدة بيانات شفوية","Fractured Orality: Methodologies of Listening in Libyan Studies (OHA panel)","شفويةٌ مكسورة: مناهج الإنصات في الدراسات الليبية (جلسة OHA)","Single editions of publications by each fellow","إصدارات مفردة لكلّ زميل","Arab Image Foundation","المؤسسة العربية للصورة","Modernism in Libya","الحداثة في ليبيا","Libyan scouts movement ","الحركة العامة للكشافة والمرشدات الليبية","m6. On Tuning","مراجع ميراث 6؛ في الدوزنة","The Open Heel","الكَعب المفتوح","mR^2 Internal Presentations","عروض داخلية لـ mR^2","Trans-Saharan Sea Circulation","التداول البحري العابر للصحراء","History of Paper & the Paper Trade","تاريخ الورق واقتصاديات تجارة الورق","Disca — Not Imported","دسكة غير مستوردة","Dar Nuwaiji","دار نويجي","The Noise Floor: A History of Radio in Libya","أرضية الضجيج: تاريخ الراديو في ليبيا","Exhibition of Saharan Currency","معرض العملة الصحراوية","Platform for Repatriation","منصّة الاستعادة","Lamma — special issue (Unwritten Archives), guest-edited","لمّة — عدد خاص (أرشيفات غير مكتوبة)، بتحرير ضيف","Balga, The Open Heel: The Ledger of the Unfixed","بَلْغة / الكَعب المفتوح: دفتر اللاثابت","Accademia di Belle Arti di Roma","أكاديمية الفنون الجميلة في روما","Indexed (Mufahras)","مُفَهْرَس","Translating · 004","الترجمة · 004","Radiographic Reverb","الصدى الراديوغرافي","Natamashou","نَتَمَشُّوا ","Architecture","العمارة","Islamic Arts and Crafts School","مدرسة الفنون والصنائع الإسلامية","Art-Publication Fellowship","منحة ميراث للمطبوعات الفنية","Oral-History Method","منهج التاريخ الشفوي","The Salt Meadows","ذا سولت ميدوز","Public Presentation of Publication Fellowship","عرض عام لزمالة النشر","Archival Research","البحث الأرشيفي","Harun Farocki Institut","معهد هارون فاروقي","Art Modernism in Libya","الحداثة الفنية في ليبيا","m3. A Framework for Private Archives in Constrained Contexts","م3. إطار عمل للأرشيفات الخاصة في ظل القيود","Theatrical Interpretation of Mu'tamir Trabulus","التَّفسير المسرحي لمؤتمر طرابلس","CEN wa SAD: On Weights and Wobbles between the Sahara and the Sea","سين وَصاد: عن الأوزان والاهتزازات بين الصحراء والبحر","Collections","تحصيلة فنية ","Workshops","ورش عمل","Print & Paper Infrastructure","البنية التحتية للطباعة والورق","Written Materials","المادة المكتوبة","Short Stories ","الأقصوصة ","A Sun Dawned Over Algeria 02","شمس أشرقت ع الجزائر 02","Overhead","من عَلٍ","Mapping · 004","المَسح · 004","19th Century Saraf Platform","منصّة الصيرفة في القرن التاسع عشر","Exhibition Practice","ممارسة المعرض","Ledger of the Uncatalogued","دفتر غير مفهرس","Libya–Algeria Documentary Film","الفيلم الوثائقي ليبيا-الجزائر","Institutional Landscape","المشهد المؤسسي","Natural Pigment Library","مكتبة الأصبغة الطبيعية","Goethe-Institut","معهد غوته","Across the Mediterranean","عبر المتوسّط","Cairo School of Fine Arts","مدرسة الفنون الجميلة بالقاهرة","Tripoli Print-Shop Database","قاعدة بيانات محلات الطباعة في طرابلس","Monologues ","المُناجاة ","Saraya-Al Hamra Museum","متحف السرايا الحمراء","Saharan Instruments Organology","أورغانولوجيا الآلات الصحراوية","Bekriah Mawasi","بكرية مواسي","merath","ميراث"]};
 </script>
 <style>footer .fcredit{margin:22px auto 0;max-width:64ch;font-size:11px;line-height:1.9;opacity:.85}footer .fcredit a{color:var(--cream)}</style>
@@ -415,7 +462,9 @@ window.__MERATH_LANDING__={"intro":[{"en":"merath works with what moves and chan
 #sp-tree a:focus-visible text{fill:#E39B00;text-decoration:underline}
 #sp-tree .dead text{opacity:.55}
 </style><meta name="description" content="merath works with what moves and changes: memory, objects, people, languages, and the relationships that take shape across place and time. A collective of artists, researchers, writers, designers and anthropologists, working from Tripoli, between the Sahara and the sea.">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
 <meta name="theme-color" content="#D9F164">
@@ -1201,17 +1250,23 @@ body.leaving #chartdock,body.leaving #ticker{transition:opacity 320ms ease-in;op
         || document.getElementById('lang')
         || document.getElementById('m-lang');
   }
+  /* the head script is holding the page back until this settles */
+  function reveal(){ try{ if(window.__mrReveal)window.__mrReveal(); }catch(e){} }
+
   var tries=0;
   function restore(){
-    if(!want||want===cur()){armed=true;return;}
+    if(!want||want===cur()){armed=true;reveal();return;}
     var b=control();
-    if(!b){ if(tries++<20)return setTimeout(restore,100); armed=true; return; }
+    if(!b){ if(tries++<20)return setTimeout(restore,100); armed=true; reveal(); return; }
     b.click();
     /* If the page finishes booting after us and resets to English, put it
      * back — but only a few times, so a page that genuinely refuses Arabic
      * cannot spin. */
     if(tries++<4)return setTimeout(restore,250);
     armed=true;
+    /* one frame after the last correction, so the DOM the reader sees is the
+     * settled one rather than the middle of the switch */
+    requestAnimationFrame(function(){requestAnimationFrame(reveal);});
   }
   if(document.readyState==='complete')setTimeout(restore,60);
   else addEventListener('load',function(){setTimeout(restore,60);});
