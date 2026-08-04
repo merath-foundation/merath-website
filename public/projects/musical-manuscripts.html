@@ -660,7 +660,7 @@ function setGauge(){const max=document.body.scrollHeight-innerHeight,p=max>0?Mat
     if(scrollY+innerHeight-54 > _foot.offsetTop){gauge.style.position='absolute';gauge.style.bottom='auto';gauge.style.top=(_foot.offsetTop-gh)+'px';}
     else{gauge.style.position='fixed';gauge.style.top='auto';gauge.style.bottom='80px';}}
   if(_foot&&_nav){const ftv=_foot.getBoundingClientRect().top;_nav.style.height=Math.max(200,Math.min(innerHeight,ftv)).toFixed(0)+'px';}   /* the index rail stops at the top of the footer */
-  const ids=['b00','bstatus','b10','b20','b30','b40','b50'];let cur='b00';ids.forEach(id=>{const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<170)cur=id;});
+  const ids=(function(){if(window.__mrSpy)return window.__mrSpy;var out=[];document.querySelectorAll('#nav a[href^="#"]').forEach(function(a){var el=document.getElementById(a.getAttribute('href').slice(1));if(el)out.push(el);});out.sort(function(p,q){return (p.compareDocumentPosition(q)&4)?-1:1;});if(out.length)window.__mrSpy=out;return out;})();var cur=ids.length?ids[0].id:'';for(var _i=0;_i<ids.length;_i++){if(ids[_i].getBoundingClientRect().top<170)cur=ids[_i].id;}
   document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+cur));}
 addEventListener('scroll',setGauge,{passive:true});
 addEventListener('load',()=>{totalWords=wordCount();setGauge();});setGauge();
@@ -4789,6 +4789,17 @@ document.addEventListener('click',e=>{
   },{passive:true});
   addEventListener('hashchange',follow);
   follow();
+
+  /* the tooltip carries the full heading in whichever language is being read */
+  function titles(){
+    var ar=document.documentElement.getAttribute('dir')==='rtl';
+    nav.querySelectorAll('a[data-full]').forEach(function(a){
+      a.setAttribute('title', ar ? (a.getAttribute('data-full-ar')||a.getAttribute('data-full'))
+                                 : a.getAttribute('data-full'));
+    });
+  }
+  titles();
+  new MutationObserver(titles).observe(document.documentElement,{attributes:true,attributeFilter:['dir']});
 })();</script>
 
 <style>
