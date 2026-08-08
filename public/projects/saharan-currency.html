@@ -529,7 +529,13 @@ nav.nav{padding:0}
 #sp-tree a:focus{outline:none}
 #sp-tree a:focus-visible text{fill:#E39B00;text-decoration:underline}
 #sp-tree .dead text{opacity:.55}
-</style><meta name="description" content="The Archive of Equivalence">
+</style><style>/* the wordmark goes home, the nav says where you are — build.mjs */
+  a.wm{text-decoration:none;color:inherit}
+  a.wm:hover{color:var(--saff,#E39B00)}
+  header nav.nav a.on{color:var(--saff,#E39B00);cursor:default}
+  header nav.nav a.on:hover{border-bottom-color:transparent}
+</style>
+<meta name="description" content="The Archive of Equivalence">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon.png">
 <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48.png">
@@ -578,11 +584,11 @@ nav.nav{padding:0}
 
 <header>
   <div class="hleft">
-    <div class="hrow"><span class="wm">merath</span></div>
+    <div class="hrow"><a class="wm" href="/">merath</a></div>
   </div>
   <div id="nav-strip" aria-hidden="true"></div>
   <nav class="nav">
-    <a class="full" href="/projects">Projects</a><a class="full" href="/publications">Publications</a><a class="full" href="/programmes">Programmes</a><a class="full" href="/art-production">Art &amp; Production</a><a class="full" href="/studies">Studies</a><a class="full" href="/archives">Archives</a><a class="full" href="/about">About</a><a id="mtoggle">Menu</a><a class="lang" id="lang">ع</a>
+    <a class="full on" aria-current="page" href="/projects">Projects</a><a class="full" href="/publications">Publications</a><a class="full" href="/programmes">Programmes</a><a class="full" href="/art-production">Art &amp; Production</a><a class="full" href="/studies">Studies</a><a class="full" href="/archives">Archives</a><a class="full" href="/about">About</a><a id="mtoggle">Menu</a><a class="lang" id="lang">ع</a>
   </nav>
 </header>
 <div id="fold-wrap"><svg id="mini-tree" width="300" height="200" viewBox="0 0 300 200" aria-hidden="true"></svg></div>
