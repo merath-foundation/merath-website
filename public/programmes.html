@@ -2137,7 +2137,7 @@ main{overflow-x:visible;overflow-y:clip}
 .lt-c svg{width:20px;height:7px;flex:0 0 auto}
 [dir="rtl"] .lt-c svg{transform:scaleX(-1)}
 </style>
-<script>/* merath build 2026-08-08T19:56:00.080Z — data from Airtable */
+<script>/* merath build 2026-08-08T20:55:47.979Z — data from Airtable */
 
 </script>
 <style>/* programmes ticker, phone — build.mjs */
@@ -2335,13 +2335,22 @@ main{overflow-x:visible;overflow-y:clip}
 </style>
 <style>/* the side tabs invert against their page — build.mjs */
 @media(min-width:1100px){
-  /* INDEX — ink tab on the cream page */
-  #railbooks.closed{background:var(--ink);border-color:var(--ink);padding:13px 7px 14px}
-  #railbooks.closed .rtab{gap:11px;padding:2px 0 3px}
-  #railbooks.closed .rtab .rlbl{color:var(--cream);font-size:12.5px;letter-spacing:.24em}
-  [dir="rtl"] #railbooks.closed .rtab .rlbl{font-size:14px;letter-spacing:.03em}
+  /* INDEX — ink tab on the cream page.
+     WIDTH, not padding. The closed rail is width:28px with box-sizing
+     border-box and overflow hidden, so adding padding does not widen the tab —
+     it shrinks the content inside a box that stays 28px and clips what no
+     longer fits. Two passes were spent adjusting padding and measuring no
+     change. The declaration that has to be overridden is the width itself, and
+     ours only wins because it ties on specificity and comes later. */
+  #railbooks.closed{background:var(--ink);border-color:var(--ink);
+    width:48px;min-height:150px;padding:16px 0 17px}
+  #railbooks.closed .rtab{gap:12px;padding:2px 0 3px}
+  #railbooks.closed .rtab .rlbl,
+  [dir="rtl"] #railbooks.closed .rtab .rlbl{color:var(--cream);font-size:13.5px}
+  #railbooks.closed .rtab .rlbl{letter-spacing:.24em}
+  [dir="rtl"] #railbooks.closed .rtab .rlbl{font-size:15px;letter-spacing:.03em}
   /* the icon is drawn with inline stroke="var(--ink)" — invisible on ink */
-  #railbooks.closed .rtab svg{width:17px;height:19px}
+  #railbooks.closed .rtab svg{width:20px;height:22px}
   #railbooks.closed .rtab svg rect{stroke:var(--cream)}
   #railbooks.closed:hover{background:#000}
 
@@ -2350,6 +2359,12 @@ main{overflow-x:visible;overflow-y:clip}
   #caltab .ar{color:var(--ink);font-size:16px}
   #caltab:hover{background:#fff}
 }
+</style>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/29LTBukra-Regular.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/29LTBukra-Medium.woff2" crossorigin>
+<style>/* 29LT Bukra, licensed — build.mjs */
+  @font-face{font-family:"29LT Bukra";src:url("/fonts/29LTBukra-Regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+  @font-face{font-family:"29LT Bukra";src:url("/fonts/29LTBukra-Medium.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap}
 </style>
 <style>/* current page — build.mjs markNavActive */
   nav a.on,.drawer a.on,#drawer a.on{color:var(--saff);cursor:default}
@@ -2504,7 +2519,7 @@ main{overflow-x:visible;overflow-y:clip}
     <a href="https://www.facebook.com/merath.ly" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.23.2 2.23.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12z"/></svg></a>
   </div>
   <p class="fx" data-i18n="footContact">For new projects, suggestions for archival analysis or general inquiries, connect with us: info [at] merath.ly</p>
-  <p class="fcredit"><span data-i18n="footBuilt">Designed and built in-house at merath — running on Sanity, deployed in the open from a public GitHub repository.</span> <a href="https://github.com/merath-foundation/merath-website" target="_blank" rel="noopener" dir="ltr">github.com/merath-foundation</a></p>
+  <p class="fcredit"><span data-i18n="footBuilt">Designed and built in-house at merath — running on Sanity, deployed in the open from a public GitHub repository.</span> <a href="https://github.com/merath-foundation/merath-website" target="_blank" rel="noopener" dir="ltr">github.com/merath-foundation</a> <span class="ftype"><style>footer .ftype-ar{display:none}[dir="rtl"] footer .ftype-en{display:none}[dir="rtl"] footer .ftype-ar{display:inline}</style><span class="ftype-en">Typeset in 29LT Bukra — Arabic by Pascal Zoghbi, Latin by Ian Party.</span><span class="ftype-ar" dir="rtl">صُفَّ بخط 29LT Bukra — العربية لباسكال زغبي، واللاتينية لإيان بارتي.</span></span></p>
   <p class="fl" data-i18n="footRights">© merath 2026 · Tripoli, Libya · All rights reserved</p>
 </footer>
 
