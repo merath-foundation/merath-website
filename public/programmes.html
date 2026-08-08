@@ -2137,7 +2137,7 @@ main{overflow-x:visible;overflow-y:clip}
 .lt-c svg{width:20px;height:7px;flex:0 0 auto}
 [dir="rtl"] .lt-c svg{transform:scaleX(-1)}
 </style>
-<script>/* merath build 2026-08-08T18:14:39.270Z — data from Airtable */
+<script>/* merath build 2026-08-08T19:56:00.080Z — data from Airtable */
 
 </script>
 <style>/* programmes ticker, phone — build.mjs */
@@ -2332,6 +2332,24 @@ main{overflow-x:visible;overflow-y:clip}
 </style><style>/* the grid column already dodges the aside — build.mjs */
   .pg-sub{max-width:100%}
   .pg-sub p:first-child,.pg-sub p:not(:first-child){max-width:100%}
+</style>
+<style>/* the side tabs invert against their page — build.mjs */
+@media(min-width:1100px){
+  /* INDEX — ink tab on the cream page */
+  #railbooks.closed{background:var(--ink);border-color:var(--ink);padding:13px 7px 14px}
+  #railbooks.closed .rtab{gap:11px;padding:2px 0 3px}
+  #railbooks.closed .rtab .rlbl{color:var(--cream);font-size:12.5px;letter-spacing:.24em}
+  [dir="rtl"] #railbooks.closed .rtab .rlbl{font-size:14px;letter-spacing:.03em}
+  /* the icon is drawn with inline stroke="var(--ink)" — invisible on ink */
+  #railbooks.closed .rtab svg{width:17px;height:19px}
+  #railbooks.closed .rtab svg rect{stroke:var(--cream)}
+  #railbooks.closed:hover{background:#000}
+
+  /* CALENDAR — cream tab on the near-black page */
+  #caltab{flex:0 0 54px;background:var(--cream);color:var(--ink);border-color:var(--ink)}
+  #caltab .ar{color:var(--ink);font-size:16px}
+  #caltab:hover{background:#fff}
+}
 </style>
 <style>/* current page — build.mjs markNavActive */
   nav a.on,.drawer a.on,#drawer a.on{color:var(--saff);cursor:default}
