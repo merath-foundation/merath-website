@@ -2137,7 +2137,7 @@ main{overflow-x:visible;overflow-y:clip}
 .lt-c svg{width:20px;height:7px;flex:0 0 auto}
 [dir="rtl"] .lt-c svg{transform:scaleX(-1)}
 </style>
-<script>/* merath build 2026-08-08T17:27:25.501Z — data from Airtable */
+<script>/* merath build 2026-08-08T17:44:24.467Z — data from Airtable */
 
 </script>
 <style>/* programmes ticker, phone — build.mjs */
@@ -2196,7 +2196,7 @@ main{overflow-x:visible;overflow-y:clip}
     t.setAttribute("text-anchor",anchor);
     t.setAttribute("dy",".33em");
     t.setAttribute("font-size",fs+"px");
-    t.textContent=item.t;
+    t.textContent=item.t;if(/[\u0600-\u06FF]/.test(item.t))t.setAttribute("class","ar");
     g.appendChild(t);
     svg.appendChild(g);
     fit(t,max);
