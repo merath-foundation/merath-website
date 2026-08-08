@@ -2137,7 +2137,7 @@ main{overflow-x:visible;overflow-y:clip}
 .lt-c svg{width:20px;height:7px;flex:0 0 auto}
 [dir="rtl"] .lt-c svg{transform:scaleX(-1)}
 </style>
-<script>/* merath build 2026-08-08T17:12:00.350Z — data from Airtable */
+<script>/* merath build 2026-08-08T17:27:25.501Z — data from Airtable */
 
 </script>
 <style>/* programmes ticker, phone — build.mjs */
@@ -4408,7 +4408,7 @@ function buildCal(){
  function open(){body.classList.add("cal-open");body.classList.remove("mnav");sync();
   var f=pan.querySelector(".cmo.now")||pan.querySelector(".cmo");
   if(f&&f.scrollIntoView)f.scrollIntoView({block:"center"});}
- function close(refocus){mrHash("");if(!isOpen())return;body.classList.remove("cal-open");sync();
+ function close(refocus){if(!isOpen())return;body.classList.remove("cal-open");sync();
   if(refocus&&btn&&getComputedStyle(btn).display!=="none")btn.focus();}
  function toggle(e){if(e){e.preventDefault();e.stopPropagation();}isOpen()?close(true):open();}
  function key(e){if(e.key==="Enter"||e.key===" ")toggle(e);}
@@ -5309,10 +5309,13 @@ function mrBoot(){
   });
 }
 
-/* closing by the browser's Back is the same gesture as closing by the X */
+/* Closing by the browser's Back is the same gesture as closing by the X, so it
+ * must call the same function the X calls — pvClose. The first version called
+ * close() and closePanel(), which sound right and are not: close(refocus) shuts
+ * the CALENDAR and closePanel() shuts the SEARCH panel. Both were patched, both
+ * reported as landed, and neither had anything to do with the pop-up. */
 function mrCloseAll(){
-  try{ if(typeof close==="function")close(); }catch(_e){}
-  try{ if(typeof closePanel==="function")closePanel(); }catch(_e){}
+  try{ if(typeof pvClose==="function")pvClose(); }catch(_e){}
 }
 
 function openSeq(id){mrHash("event/"+id);
@@ -5323,7 +5326,7 @@ function openSeq(id){mrHash("event/"+id);
  seqIdx=_ix;
  pvRender();pvEl.classList.add("open");pvEl.setAttribute("aria-hidden","false");
 }
-function pvClose(){pvSideSet(false);pvEl.classList.remove("open");
+function pvClose(){mrHash("");pvSideSet(false);pvEl.classList.remove("open");
  if(sheetEl)sheetEl.classList.remove("full","ledgersheet");pvEl.setAttribute("aria-hidden","true");
  if(sheetEl)sheetEl.classList.remove("sky");}
 document.getElementById("sheetX").addEventListener("click",pvClose);
@@ -5413,7 +5416,7 @@ function growPanelTree(seed,query){
 }
 function openPanel(){if(!spanel)return;if(window.merathCalClose)window.merathCalClose();spanel.classList.add("open");masthead.classList.add("panel-open");
  growPanelTree("open"+Date.now(),spInput?spInput.value:"");if(spInput)setTimeout(function(){spInput.focus();},650);}
-function closePanel(){mrHash("");if(!spanel)return;spanel.classList.remove("open");masthead.classList.remove("panel-open");}
+function closePanel(){if(!spanel)return;spanel.classList.remove("open");masthead.classList.remove("panel-open");}
 var spc=document.getElementById("sp-close");if(spc)spc.addEventListener("click",function(e){e.preventDefault();closePanel();});
 window.addEventListener("keydown",function(e){if(e.key==="Escape")closePanel();});
 var spT;if(spInput)spInput.addEventListener("input",function(){clearTimeout(spT);spT=setTimeout(function(){mrPanelTree(spTree,spInput.value);},150);});
