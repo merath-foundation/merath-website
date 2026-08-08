@@ -302,7 +302,7 @@ html.mr-reveal body{animation:mrFade .22s ease-out both}
   #sp-input::placeholder{opacity:.45;color:var(--ink)}
   #sp-tree{width:100%;display:block;overflow:visible}
   #sp-tree path{fill:none;stroke:var(--ink);stroke-width:1.7;stroke-linecap:round}
-  #sp-tree text{fill:var(--ink);font-size:12px;letter-spacing:.04em;font-family:inherit}
+  #sp-tree text{fill:var(--ink);font-size:12px;letter-spacing:.04em;font-family:inherit}#sp-tree text.ar{letter-spacing:normal;font-family:"29LT Bukra","IBM Plex Sans Arabic","Geeza Pro","Noto Naskh Arabic",serif;font-size:13px}
 
 /* ============ v15 — DAYLIGHT ABOVE, NIGHT BELOW ============ */
 :root{
@@ -324,7 +324,7 @@ html.mr-reveal body{animation:mrFade .22s ease-out both}
 html,body{background:var(--cream)}
 body{color:var(--ink)}
 main{position:relative;z-index:4;padding:0}
-.introrow{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);gap:5vw;align-items:start;
+.introrow{display:grid;grid-template-columns:minmax(0,1fr) min(460px,36vw);gap:44px;align-items:start;
  padding:18vh var(--textR) 10vh var(--textL)}
 h1.pg{font-size:44px;font-weight:500;letter-spacing:.01em;margin-bottom:10px;color:var(--ink)}
 .pg-sub{color:var(--saff);font-size:15.5px;letter-spacing:.02em;line-height:1.95;max-width:58ch}
@@ -2137,7 +2137,7 @@ main{overflow-x:visible;overflow-y:clip}
 .lt-c svg{width:20px;height:7px;flex:0 0 auto}
 [dir="rtl"] .lt-c svg{transform:scaleX(-1)}
 </style>
-<script>/* merath build 2026-08-08T12:36:45.296Z — data from Airtable */
+<script>/* merath build 2026-08-08T16:58:04.618Z — data from Airtable */
 
 </script>
 <style>/* programmes ticker, phone — build.mjs */
@@ -2324,7 +2324,20 @@ main{overflow-x:visible;overflow-y:clip}
 #sp-tree a:focus{outline:none}
 #sp-tree a:focus-visible text{fill:#E39B00;text-decoration:underline}
 #sp-tree .dead text{opacity:.55}
-</style><style>/* current page — build.mjs markNavActive */
+</style><style>/* one measure for the opening paragraphs — build.mjs */
+  .pg-sub{max-width:min(66%,72ch)}
+  .pg-sub p:first-child{max-width:min(62%,66ch)}
+  .pg-sub2,.pg-sub p:not(:first-child){max-width:min(66%,72ch)}
+  @media(max-width:1100px){
+    .pg-sub{max-width:min(82%,66ch)}
+    .pg-sub p:first-child{max-width:min(78%,60ch)}
+    .pg-sub2,.pg-sub p:not(:first-child){max-width:min(82%,66ch)}
+  }
+  @media(max-width:720px){
+    .pg-sub,.pg-sub2,.pg-sub p{max-width:100%}
+  }
+</style>
+<style>/* current page — build.mjs markNavActive */
   nav a.on,.drawer a.on,#drawer a.on{color:var(--saff);cursor:default}
   nav a.on:hover,.drawer a.on:hover,#drawer a.on:hover{border-bottom-color:transparent}
 </style>
@@ -2354,7 +2367,7 @@ main{overflow-x:visible;overflow-y:clip}
 <link rel="canonical" href="https://merath.ly/programmes">
 </head>
 <body>
-<h2 class="sr-only">merath programmes. The page opens in daylight with an introduction and the current open calls; below that it passes into a night sky where the programme itself is read. Today sits at the top and time descends away from it on one shared scale, read in five different units — exhibitions in months, fairs in editions, workshops in weeks, talks in nights, gatherings in seasons. A pulsing orb on the left switches horizon between what is coming and the record already held. A calendar tab on the right navigates by month. A legend above the footer explains the five kinds of programme.</h2>
+<h2 class="sr-only" data-i18n="srPage">merath programmes. The page opens in daylight with an introduction and the current open calls; below that it passes into a night sky where the programme itself is read. Today sits at the top and time descends away from it on one shared scale, read in five different units — exhibitions in months, fairs in editions, workshops in weeks, talks in nights, gatherings in seasons. A pulsing orb on the left switches horizon between what is coming and the record already held. A calendar tab on the right navigates by month. A legend above the footer explains the five kinds of programme.</h2>
 <header id="masthead">
   <div class="hleft"><span class="wm"><a href="/" data-i18n="wm">merath</a></span></div>
   <div id="nav-strip" aria-hidden="true"></div>
@@ -2497,7 +2510,7 @@ main{overflow-x:visible;overflow-y:clip}
 var lang="en";
 function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 var CONTENT={
- en:{wm:"merath",nProjects:"Projects",nPublications:"Publications",nProgrammes:"Programmes",nArt:"Art & Production",nStudies:"Studies",nArchives:"Archives",nAbout:"About",
+ en:{srPage:"merath programmes. The page opens in daylight with an introduction and the current open calls; below that it passes into a night sky where the programme itself is read. Today sits at the top and time descends away from it on one shared scale, read in five different units — exhibitions in months, fairs in editions, workshops in weeks, talks in nights, gatherings in seasons. A pulsing orb on the left switches horizon between what is coming and the record already held. A calendar tab on the right navigates by month. A legend above the footer explains the five kinds of programme.",wm:"merath",nProjects:"Projects",nPublications:"Publications",nProgrammes:"Programmes",nArt:"Art & Production",nStudies:"Studies",nArchives:"Archives",nAbout:"About",
   chipSub:"Indexed — search the holdings ⌕",mufT:"Indexed — the catalogue",mufM:"Objects, documents, recordings and editions — each catalogued with its record, its condition, its place. Enter the holdings.",
   tkSub:"MEMOIRS — THE LEDGER · WHAT HAPPENS, SET IN TIME",
   footContact:"For new projects, suggestions for archival analysis or general inquiries, connect with us: info [at] merath.ly",
@@ -2646,7 +2659,7 @@ var CONTENT={
   lgT:"The five kinds of programme",lgS:"LEGEND",
   kWeeks:"weeks",kHeld:"held",kDue:"to come",
   _en:1},
- ar:{wm:"ميراث",nProjects:"المشاريع",nPublications:"المنشورات",nProgrammes:"البرامج",nArt:"الفن والإنتاج",nStudies:"الدراسات",nArchives:"الأرشيف",nAbout:"عن ميراث",
+ ar:{srPage:"برامج مِيراث. تبدأ الصفحة في ضوء النهار بمقدّمة وبالدعوات المفتوحة الحالية، ثم تعبر إلى سماءٍ ليلية يُقرأ فيها البرنامج نفسه. يقع اليوم في الأعلى، وينحدر الزمن مبتعدًا عنه على مقياسٍ واحد مشترك، يُقرأ بخمس وحدات مختلفة: المعارض بالأشهر، ومعارض الكتاب بالدورات، وورش العمل بالأسابيع، والندوات بالليالي، واللقاءات بالمواسم. كرةٌ نابضة تبدّل الأفق بين ما هو قادم وما حُفظ في السجل، ولسان تقويمٍ يتيح التنقّل بالشهور، ومفتاحٌ فوق التذييل يشرح أنواع البرامج الخمسة.",wm:"ميراث",nProjects:"المشاريع",nPublications:"المنشورات",nProgrammes:"البرامج",nArt:"الفن والإنتاج",nStudies:"الدراسات",nArchives:"الأرشيف",nAbout:"عن ميراث",
   chipSub:"مُفَهْرَس — ابحث في المقتنيات ⌕",mufT:"مُفَهْرَس — الفهرس",mufM:"مقتنيات ووثائق وتسجيلات وإصدارات — لكلٍّ سجلّه وحالته ومكانه. ادخل المقتنيات.",
   tkSub:"— السجل · ما يحدث، مثبّتاً في الزمن",
   footContact:"للمشاريع الجديدة أو مقترحات التحليل الأرشيفي أو الاستفسارات العامة: info [at] merath.ly",
@@ -3758,7 +3771,7 @@ function drawSky(){
  requestAnimationFrame(drawSky);
 }
 /* ===== A LANE, OPENED AS A LEDGER ===== */
-function openLedger(ak){
+function openLedger(ak){mrHash("kind/"+ak);
  var c=HEX[ak];
  /* the ledger is the whole record for a kind — both horizons, in one table */
  var all=PROG.filter(function(p){return p.ak===ak;});
@@ -3978,7 +3991,7 @@ if(net){
  var _nx=document.getElementById("nhint");
  if(_nx)_nx.addEventListener("click",netClose);
 }
-function openNet(key){
+function openNet(key){mrHash("net/"+key);
   if(!net)return;netData();
   const d=NETDB[key];if(!d)return;
   window._curNet=key;
@@ -4149,7 +4162,7 @@ function consAt(mx,my){
   if(mx>=b[0]&&mx<=b[0]+b[2]&&my>=b[1]&&my<=b[1]+b[3])hit=c;});
  return hit;
 }
-function openCons(c){
+function openCons(c){mrHash("sky/"+c);
  var sh=document.getElementById("sheet"),bd=document.getElementById("shBody"),pv=document.getElementById("pv");
  if(!sh||!bd||!pv)return;
  sh.style.setProperty("--sc","#8FB4E8");
@@ -4339,7 +4352,7 @@ function buildCalls(){
  el.innerHTML=h;
  var mb=document.getElementById("callsMore");
  if(mb)mb.addEventListener("click",openCallsSheet);}
-function openCallsSheet(){
+function openCallsSheet(){mrHash("calls");
  var list=callsList(),h='<div class="pv-tag" style="color:var(--saff)">'+esc(T("callT"))+'</div>'
   +'<h3 class="pv-h'+(lang==="ar"?" ar":"")+'">'+esc(T("ocT"))+'</h3><div class="calls-grid">';
  for(var i=0;i<list.length;i++)h+=callCard(list[i].c,list[i].st);
@@ -4404,7 +4417,7 @@ function buildCal(){
  function open(){body.classList.add("cal-open");body.classList.remove("mnav");sync();
   var f=pan.querySelector(".cmo.now")||pan.querySelector(".cmo");
   if(f&&f.scrollIntoView)f.scrollIntoView({block:"center"});}
- function close(refocus){if(!isOpen())return;body.classList.remove("cal-open");sync();
+ function close(refocus){mrHash("");if(!isOpen())return;body.classList.remove("cal-open");sync();
   if(refocus&&btn&&getComputedStyle(btn).display!=="none")btn.focus();}
  function toggle(e){if(e){e.preventDefault();e.stopPropagation();}isOpen()?close(true):open();}
  function key(e){if(e.key==="Enter"||e.key===" ")toggle(e);}
@@ -5267,7 +5280,51 @@ function pvRender(){
   a.addEventListener("click",go);
   a.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();go();}});});
 }
-function openSeq(id){
+
+/* ── addresses (build/lib/programmes.mjs) ────────────────────────────────── */
+function mrHash(h){try{
+  var want=h?("#"+h):(location.pathname+location.search);
+  if(h&&location.hash==="#"+h)return;
+  if(!h&&!location.hash)return;
+  history.replaceState(null,"",want);
+}catch(_e){}}
+
+function mrRoute(){
+  var h=(location.hash||"").replace(/^#/,"");
+  if(!h)return false;
+  var p=h.split("/"),k=p[0],v=decodeURIComponent(p.slice(1).join("/")||"");
+  try{
+    /* each guard checks the thing exists before claiming the route — an
+       address for a record that was removed must fall through to the page,
+       not open an empty panel */
+    if(k==="event"&&v){ if(typeof byId==="function"&&!byId(v))return false; openSeq(v); return true; }
+    if(k==="kind"&&v){ if(typeof ORD!=="undefined"&&ORD.indexOf(v)<0)return false; openLedger(v); return true; }
+    if(k==="sky"&&v){ openCons(v); return true; }
+    if(k==="net"&&v){ openNet(v); return true; }
+    if(k==="calls"){ openCallsSheet(); return true; }
+  }catch(_e){}
+  return false;
+}
+
+function mrBoot(){
+  var tries=0;
+  (function go(){
+    if(mrRoute()||++tries>20)return;
+    setTimeout(go,150);
+  })();
+  window.addEventListener("hashchange",function(){
+    if(!location.hash){ try{ mrCloseAll(); }catch(_e){} }
+    else mrRoute();
+  });
+}
+
+/* closing by the browser's Back is the same gesture as closing by the X */
+function mrCloseAll(){
+  try{ if(typeof close==="function")close(); }catch(_e){}
+  try{ if(typeof closePanel==="function")closePanel(); }catch(_e){}
+}
+
+function openSeq(id){mrHash("event/"+id);
  var p=byId(id);if(!p)return;
  seqList=laneEvents(p.ak,DIR==="fut");
  var _ix=seqList.map(function(x){return x.id;}).indexOf(id);
@@ -5357,7 +5414,7 @@ function growPanelTree(seed,query){
  picked.forEach(function(t,i){var lx=W*0.04+W*0.92*((i+0.5)/n);
   var d="M"+rootX+",10 C"+rootX+","+(H*0.55)+" "+lx.toFixed(1)+","+(H*0.55-14)+" "+lx.toFixed(1)+","+(H-28);
   h2+='<path d="'+d+'" style="stroke-dasharray:900;stroke-dashoffset:900;transition:stroke-dashoffset .6s cubic-bezier(.25,.6,.3,1) '+(0.1+i*0.06).toFixed(2)+'s"/>';
-  h2+='<text x="'+lx.toFixed(0)+'" y="'+(H-8)+'" text-anchor="middle" style="opacity:0;transition:opacity .45s '+(0.3+i*0.06).toFixed(2)+'s">'+esc(t)+"</text>";});
+  h2+='<text class="'+(/[\u0600-\u06FF]/.test(t)?"ar":"")+'" x="'+lx.toFixed(0)+'" y="'+(H-8)+'" text-anchor="middle" style="opacity:0;transition:opacity .45s '+(0.3+i*0.06).toFixed(2)+'s">'+esc(t)+"</text>";});
  spTree.innerHTML=h2;
  requestAnimationFrame(function(){requestAnimationFrame(function(){
   spTree.querySelectorAll("path").forEach(function(p){p.style.strokeDashoffset="0";});
@@ -5365,7 +5422,7 @@ function growPanelTree(seed,query){
 }
 function openPanel(){if(!spanel)return;if(window.merathCalClose)window.merathCalClose();spanel.classList.add("open");masthead.classList.add("panel-open");
  growPanelTree("open"+Date.now(),spInput?spInput.value:"");if(spInput)setTimeout(function(){spInput.focus();},650);}
-function closePanel(){if(!spanel)return;spanel.classList.remove("open");masthead.classList.remove("panel-open");}
+function closePanel(){mrHash("");if(!spanel)return;spanel.classList.remove("open");masthead.classList.remove("panel-open");}
 var spc=document.getElementById("sp-close");if(spc)spc.addEventListener("click",function(e){e.preventDefault();closePanel();});
 window.addEventListener("keydown",function(e){if(e.key==="Escape")closePanel();});
 var spT;if(spInput)spInput.addEventListener("input",function(){clearTimeout(spT);spT=setTimeout(function(){mrPanelTree(spTree,spInput.value);},150);});
@@ -5383,7 +5440,7 @@ function tkBuildLedger(){var el=document.getElementById("tk-list");if(!el)return
  tkIdx=0;el.style.transition="none";el.style.transform="translateY(0)";}
 setInterval(function(){var el=document.getElementById("tk-list"),tk=document.getElementById("ticker");
  if(!el||tkPause||!tk||!tk.classList.contains("show"))return;var rows=tkRows();tkIdx++;
- el.style.transition="transform .55s cubic-bezier(.35,.9,.3,1)";el.style.transform="translateY(-"+(tkIdx*((tkList.firstElementChild&&tkList.firstElementChild.offsetHeight)||42))+"px)";
+ el.style.transition="transform .55s cubic-bezier(.35,.9,.3,1)";el.style.transform="translateY(-"+(tkIdx*(((document.getElementById("tk-list")||{}).firstElementChild||{}).offsetHeight||42))+"px)";
  if(tkIdx>=rows.length)setTimeout(function(){el.style.transition="none";el.style.transform="translateY(0)";tkIdx=0;},600);},4200);
 (function(){var tk=document.getElementById("ticker");if(tk){tk.addEventListener("mouseenter",function(){tkPause=true;});tk.addEventListener("mouseleave",function(){tkPause=false;});}})();
 function tkClock(){var el=document.getElementById("tk-clock");if(el)el.textContent=new Date().toLocaleTimeString("en-GB",{timeZone:"Africa/Tripoli",hour:"2-digit",minute:"2-digit"});}
@@ -5423,6 +5480,7 @@ var lb2=document.getElementById("lang-btn");if(lb2)lb2.addEventListener("click",
 var ml2=document.getElementById("m-lang");if(ml2)ml2.addEventListener("click",function(e){e.preventDefault();toggleLang();});
 var rt;window.addEventListener("resize",function(){clearTimeout(rt);rt=setTimeout(function(){buildField();buildReading();buildFold();stripPlace();paintStars();updDusk();updGrain();seam();},200);});
 try{applyLang();}catch(e){console.warn("build failed",e);}
+try{mrBoot();}catch(e){console.warn("router failed",e);}
 })();
 
 
