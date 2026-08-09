@@ -2137,7 +2137,7 @@ main{overflow-x:visible;overflow-y:clip}
 .lt-c svg{width:20px;height:7px;flex:0 0 auto}
 [dir="rtl"] .lt-c svg{transform:scaleX(-1)}
 </style>
-<script>/* merath build 2026-08-08T22:39:45.286Z — data from Airtable */
+<script>/* merath build 2026-08-09T00:32:59.007Z — data from Airtable */
 
 </script>
 <style>/* programmes ticker, phone — build.mjs */
@@ -2162,9 +2162,8 @@ main{overflow-x:visible;overflow-y:clip}
   [dir="rtl"] .st-wh{letter-spacing:0}
   [dir="rtl"] .mlab,[dir="rtl"] .monlab{letter-spacing:0;white-space:nowrap}
 </style>
-<style>/* the calendar label keeps off the edge — lib/programmes.mjs */
-  #caltab{padding-inline:26px 8px}
-  [dir="rtl"] #caltab{padding-inline:8px 26px}
+<style>/* the label is centred by the tab's own flex — lib/programmes.mjs */
+  #caltab{padding-inline:0}
 </style>
 <style>/* the month reads by its marks — lib/programmes.mjs */
   .cmo .cm-d{gap:5px}
@@ -2342,6 +2341,14 @@ main{overflow-x:visible;overflow-y:clip}
   .pg-sub p:first-child,.pg-sub p:not(:first-child){max-width:100%}
 </style>
 <style>/* the side tabs invert against their page — build.mjs */
+/* THE OPEN MENU MUST COVER THE TAB, and this rule is deliberately OUTSIDE the
+   desktop block below, because the fault is a phone one. On a phone the rail is
+   raised to z-index 22 while the drawer sits under it, so the INDEX tab floated
+   on top of the open menu — a tab belonging to the page showing through the
+   thing that is covering the page. It drops behind while the menu is open and
+   returns when it closes. */
+body.mnav #railbooks{z-index:1}
+
 @media(min-width:1100px){
   /* INDEX — THE CLOSED TAB IS LEFT ALONE. It was inverted to ink and widened to
      48px, and that was the wrong call: at that size and weight it competed with
@@ -2353,6 +2360,13 @@ main{overflow-x:visible;overflow-y:clip}
      Framework for P…", "Tahanin, Trace of a P…" — so the index could not be read
      as an index. Widening it is what makes the titles legible; the tab that
      opens it did not need to change at all. */
+  /* the closed tab at half again its size — 28px was too quiet to find */
+  #railbooks.closed{width:42px;min-height:180px}
+  #railbooks.closed .rtab{gap:11px}
+  #railbooks.closed .rtab svg{width:19px;height:21px}
+  #railbooks.closed .rtab .rlbl{font-size:12px}
+  [dir="rtl"] #railbooks.closed .rtab .rlbl{font-size:13.5px}
+
   #railbooks:not(.closed){width:290px;max-height:74vh}
   #railbooks:not(.closed) .rrow .rt{font-size:11px;line-height:1.6;padding:2px 8px 3px}
   [dir="rtl"] #railbooks:not(.closed) .rrow .rt{font-size:12.5px}
@@ -2483,7 +2497,7 @@ main{overflow-x:visible;overflow-y:clip}
     <canvas id="calsky" aria-hidden="true"></canvas>
     <div class="cp-head"><span class="ar">تقويم</span><b data-i18n="calS">NAVIGATE BY MONTH</b><a class="cp-x" id="calX">✕</a></div>
     <div class="cp-key">
-      <span><i class="kw"></i><span data-i18n="kWeeks">weeks</span></span>
+      
       <span><i class="km"></i><span data-i18n="kHeld">held</span></span>
       <span><i class="ke"></i><span data-i18n="kDue">to come</span></span>
     </div>
