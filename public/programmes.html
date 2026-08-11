@@ -2137,7 +2137,7 @@ main{overflow-x:visible;overflow-y:clip}
 .lt-c svg{width:20px;height:7px;flex:0 0 auto}
 [dir="rtl"] .lt-c svg{transform:scaleX(-1)}
 </style>
-<script>/* merath build 2026-08-09T18:53:24.602Z — data from Airtable */
+<script>/* merath build 2026-08-11T17:35:56.357Z — data from Airtable */
 
 </script>
 <style>/* programmes ticker, phone — build.mjs */
@@ -2878,6 +2878,7 @@ var ORD=["exh","fair","wsh","talk","gath"];
 var FAIRS_LIVE=false;
 function fairsSync(cb){
  try{
+  cb&&cb(false);return; /* retired — see build/lib/fairs.mjs */
   if(!window.fetch||location.protocol==="file:"){cb&&cb(false);return;}
   fetch("publications_prototype_v2.html",{cache:"no-cache"}).then(function(r){return r.text();}).then(function(t){
    var i=t.indexOf("const FAIRS=[");if(i<0)throw 0;
@@ -2898,8 +2899,8 @@ var FAIRS_PUB=[
   coll:[{en:"The Trans-Saharan Book Trade — the framework exhibited in four sections",ar:"تجارة الكتاب عبر الصحراء — الإطار معروضاً في أقسامه الأربعة"},
         {en:"Daftar volumes carried to the stand",ar:"مجلدات الدفتر المحمولة إلى الجناح"}],
   note:{en:"The Daftar's first outing.",ar:"أول خروجٍ للدفتر."}},
- {id:"FAIR_TRIPOLI_ABF",dt:"2026-09",en:"Tripoli Art Book Fair",ar:"معرض طرابلس لكتاب الفن",date:"09.2026 · dates TBC",ours:true,loc:{en:"Tripoli, Libya",ar:"طرابلس، ليبيا"},ties:["FLK"],hue:"#E39B00",url:"",d:{en:"The fair merath is building for Tripoli \u2014 an annual floor for Libyan and Saharan presses.",ar:"المعرض الذي تبنيه ميراث لطرابلس — أرضية سنوية لدور النشر الليبية والصحراوية."},
-  eds:[{dt:"2026-09",date:"09.2026 · TBC",ours:true},{dt:"2027-09",date:"09.2027",ghost:true}],
+ {id:"FAIR_TRIPOLI_ABF",dt:"2026-10",en:"Tripoli Art Book Fair",ar:"معرض طرابلس لكتاب الفن",date:"10.2026",ours:true,loc:{en:"Tripoli, Libya",ar:"طرابلس، ليبيا"},ties:["FLK"],hue:"#E39B00",url:"",d:{en:"The fair merath is building for Tripoli \u2014 an annual floor for Libyan and Saharan presses.",ar:"المعرض الذي تبنيه ميراث لطرابلس — أرضية سنوية لدور النشر الليبية والصحراوية."},
+  eds:[{dt:"2026-10",date:"10.2026",ours:true}],
   collIds:[],
   coll:[{en:"FLK — Folklore debuts its first title, at home",ar:"المأثورات الشعبية تُطلق أول عناوينها، في البيت"}],
   note:{en:"Our own fair.",ar:"معرضُنا نحن."}},
@@ -2908,11 +2909,17 @@ var FAIRS_PUB=[
   collIds:[],coll:[],note:{en:"",ar:""}},
  {id:"FAIR_TRIPOLI_PP",dt:"2026-10",en:"Tripoli Public Prosecutor Book Fair",ar:"معرض النيابة العامة للكتاب — طرابلس",date:"10.2026",loc:{en:"Tripoli, Libya",ar:"طرابلس، ليبيا"},ties:[],hue:"#0E4F3F",url:"",d:{en:"A city fair in the Public Prosecutor\u2019s compound \u2014 books where the audits once were.",ar:"معرض مدينةٍ في مجمّع النيابة العامة — كتبٌ حيث كانت التدقيقات."},
   eds:[{dt:"2026-10",date:"10.2026"}],
-  collIds:[],coll:[],note:{en:"",ar:""}},
- {id:"FAIR_PAPERBACK",dt:"2026-11",en:"Paperback",ar:"بيبرباك",date:"11.2026",loc:{en:"Riyadh, Saudi Arabia",ar:"الرياض، السعودية"},ties:[],hue:"#6C4A8C",url:"",d:{en:"Paperback Art Book Fair at JAX District, Riyadh — the Diriyah Biennale Foundation platform for artists' publishing.",ar:"معرض بيبرباك لكتاب الفن في حي جاكس بالرياض — منصة مؤسسة بينالي الدرعية لنشر الفنانين."},eds:[{dt:"2026-11",date:"11.2026"}],collIds:[],coll:[],note:{en:"",ar:""}}
+  collIds:[],coll:[],note:{en:"",ar:""}},,
+  {id:"FAIR_SPRINT",dt:"2026-11",en:"SPRINT",ar:"سبرينت",date:"11.2026",
+   loc:{en:"Milan, Italy",ar:"ميلانو، إيطاليا"},ties:[],hue:"#3E7CB1",url:"https://www.sprintmilano.org",
+   d:{en:"The independent publishers' and artists' books salon, in Milan since 2013 — a non-profit run by artists. Tables are free to the presses it selects and the doors are free to the public. Its own risograph studio, The Riso Club, printed The Noise Floor.",
+      ar:"صالون الناشرين المستقلين وكتب الفنانين، في ميلانو منذ 2013 — مبادرة غير ربحية يقودها فنانون. الطاولات مجانية للدور التي يختارها، والدخول مجاني للجمهور. ومطبعته الريزوغرافية، ذا ريزو كلوب، هي التي طبعت «أرضية الضجيج»."},
+   eds:[{dt:"2026-11",date:"27–29.11.2026"}],collIds:["01_Pub_67"],
+   coll:[{en:"The Noise Floor, printed at The Riso Club",ar:"«أرضية الضجيج»، المطبوعة لدى ذا ريزو كلوب"}],
+   note:{en:"The fourteenth edition — 27–29 November, hosted at Dropcity.",ar:"الدورة الرابعة عشرة — 27–29 نوفمبر، في دروب سيتي."}}
 ];
-var FAIRMAP={FAIR_FOCAL:"FAIR_FOCAL",FAIR_TABF:"FAIR_TRIPOLI_ABF",FAIR_NY:"FAIR_NYABF",FAIR_PAPERBACK:"FAIR_PAPERBACK"};
-function fairPub(id){var k=FAIRMAP[id]||id,o=null;FAIRS_PUB.forEach(function(f){if(f.id===k)o=f;});return o;}
+/* FAIRMAP removed — logistics records now carry the canonical id. lib/fairs.mjs */
+function fairPub(id){var k=id,o=null;FAIRS_PUB.forEach(function(f){if(f.id===k)o=f;});return o;}
 
 var UNIT={exh:"uExh",fair:"uFair",wsh:"uWsh",talk:"uTalk",gath:"uGath"};
 var LANEL={exh:"lExh",fair:"lFair",wsh:"lWsh",talk:"lTalk",gath:"lGath"};
@@ -2950,19 +2957,15 @@ var PROG=[
   withUs:[{en:"Kayfa ta, Cairo",ar:"كيف تَ، القاهرة"}],
   beside:{id:"EXH_TSS",out:"09_Exh_31",en:"Trans-Saharan Sea Circulation",ar:"التداول عبر الصحراء والبحر"},
   crate:{n:1,g:2140,cost:null},fee:null},
- {id:"FAIR_TABF",src:null,ak:"fair",en:"Tripoli Art Book Fair",ar:"معرض طرابلس لكتاب الفن",start:"2026-09-04",end:"2026-09-06",tbc:true,loc:{en:"Tripoli",ar:"طرابلس"},
-  pubId:"FAIR_TABF",ours:true,edN:2,host:{en:"merath",ar:"ميراث"},stand:{en:"the whole floor",ar:"الطابق كاملاً"},
-  eds:[{y:"2025",date:"09.2025",state:"held"},{y:"2026",date:"09.2026",state:"now"},{y:"2027",date:"09.2027",state:"ghost"}],
+ {id:"FAIR_TRIPOLI_ABF",src:null,ak:"fair",en:"Tripoli Art Book Fair",ar:"معرض طرابلس لكتاب الفن",start:"2026-10-04",end:"2026-10-06",tbc:true,loc:{en:"Tripoli",ar:"طرابلس"},
+  pubId:"FAIR_TRIPOLI_ABF",ours:true,edN:2,host:{en:"merath",ar:"ميراث"},stand:{en:"the whole floor",ar:"الطابق كاملاً"},
+  eds:[{y:"2026",date:"10.2026",state:"now"}],
   carried:[],withUs:[],beside:null,crate:{n:0,g:null,cost:null},fee:null},
- {id:"FAIR_NY",src:null,ak:"fair",en:"NY Art Book Fair",ar:"معرض نيويورك لكتاب الفن",start:"2026-09-25",end:"2026-09-27",loc:{en:"New York",ar:"نيويورك"},
-  pubId:"FAIR_NY",edN:1,host:{en:"Printed Matter",ar:"برنتد ماتر"},stand:{en:"assigned on arrival",ar:"يُخصَّص عند الوصول"},
+ {id:"FAIR_NYABF",src:null,ak:"fair",en:"NY Art Book Fair",ar:"معرض نيويورك لكتاب الفن",start:"2026-09-25",end:"2026-09-27",loc:{en:"New York",ar:"نيويورك"},
+  pubId:"FAIR_NYABF",edN:1,host:{en:"Printed Matter",ar:"برنتد ماتر"},stand:{en:"assigned on arrival",ar:"يُخصَّص عند الوصول"},
   eds:[{y:"2026",date:"09.2026",state:"now"},{y:"2027",date:"09.2027",state:"ghost"}],
   carried:[],withUs:[],beside:null,crate:{n:1,g:null,cost:null},fee:null},
- {id:"FAIR_PAPERBACK",src:null,ak:"fair",en:"Paperback — Riyadh",ar:"بيبرباك — الرياض",start:"2026-11-05",end:"2026-11-07",loc:{en:"Riyadh",ar:"الرياض"},
-  pubId:"FAIR_PAPERBACK",edN:1,host:{en:"Diriyah Biennale Foundation · JAX",ar:"مؤسسة بينالي الدرعية · جاكس"},stand:{en:"assigned on arrival",ar:"يُخصَّص عند الوصول"},
-  eds:[{y:"2026",date:"11.2026",state:"now"},{y:"2027",date:"11.2027",state:"ghost"}],
-  carried:[],withUs:[],beside:null,crate:{n:1,g:null,cost:null},fee:null,
-  note:{en:"Our first table in the south of the Gulf.",ar:"أول طاولةٍ لنا في جنوب الخليج."}},
+ 
  {id:"WS_SCOUTS",src:"04_Tra_18",ak:"wsh",en:"Scouts archival training",ar:"تدريب الكشافة الأرشيفي",start:"2026-02-09",end:"2026-02-26",loc:{en:"Beit Khalifa Ezzaidi, Tripoli",ar:"بيت خليفة الزيدي، طرابلس"}},
 
  /* --- events that exist in the outputs record and were absent from this page.
@@ -2998,7 +3001,7 @@ var PROG=[
   concept:{en:"An art book is a work that takes the form of a book. The sequence of the pages is the argument, the paper is part of what is being said, and the reader’s hands are where it happens. What can be done with a page — its order, its weight, what it holds back until it is turned — is treated here as a way of thinking in its own right.|Twenty Saturdays in which ten fellows each carry one publication from a first idea to a bound object. The first half fills the room with mentors — from Tunis, Cairo, Algiers, Amman, Istanbul, Abu Dhabi; the second half hands the weeks back to the fellows, for the making. It closes with a book fair of the workshop\u2019s own. The fellowship is measured in Saturdays, because the week is the rhythm at which the room fills.",
            ar:"كتاب الفن عملٌ يتّخذ شكل الكتاب. تسلسلُ الصفحات هو الحجّة، والورق جزءٌ ممّا يُقال، ويدا القارئ هما المكان الذي يحدث فيه. وما يمكن فعله بالصفحة — ترتيبها، وثقلها، وما تُبقيه إلى أن تُقلَب — يُعامَل هنا بوصفه طريقةً في التفكير قائمةً بذاتها.|عشرون سبتاً يحمل فيها عشرةُ مشاركين كلٌّ منشوراً واحداً من فكرةٍ أولى إلى كتابٍ مجلَّد. يملأ النصفُ الأول الغرفةَ بالموجِّهين — من تونس والقاهرة والجزائر وعمّان وإسطنبول وأبوظبي؛ ويعيد النصفُ الثاني الأسابيعَ إلى المشاركين، للصناعة. وتُختتم بمعرض كتابٍ خاص بالورشة. تُقاس الزمالة بالسبوت، لأن الأسبوع هو الإيقاع الذي تمتلئ به الغرفة."},
   funders:[{url:"https://www.arabculturefund.org",en:"Funded by merath, with partial funding by AFAC — the Arab Fund for Arts and Culture — as part of its training and regional events grant.",ar:"بتمويل من ميراث، وبتمويل جزئي من آفاق — الصندوق العربي للثقافة والفنون — ضمن منحته للتدريب والفعاليات الإقليمية."},{url:"https://arete-foundation.org",en:"Travel and mobility support for participants and mentors was generously provided by the Arete Foundation, so that the fellowship reaches a wider geography of fellows and mentors.",ar:"قدّمت مؤسسة أريتي دعماً سخياً لسفر المشاركين والموجِّهين وتنقّلهم، لتبلغ الزمالة جغرافيا أوسع من المشاركين والموجِّهين."}],
-  related:[{k:"fair",id:"FAIR_TABF",en:"Tripoli Art Book Fair",ar:"معرض طرابلس لكتاب الفن"},{k:"wsh",href:"/projects/al-manahij",en:"003 Al Manahij — the fellowship was formed here, as a way of teaching publishing by making a book",ar:"003 المناهج — تكوّنت الزمالة هنا، بوصفها طريقةً لتعليم النشر عبر صناعة كتاب"},{k:"fair",href:"/projects/publishing-field",en:"009 Publishing Field — the fellows' books are published through it",ar:"009 حقل النشر — تُنشر كتب المشاركين من خلاله"},{k:"exh",href:"/projects/the-print-rahba",en:"010 The Print Rahba — where the books are printed and bound",ar:"010 رحبة الطباعة — حيث تُطبع الكتب وتُجلَّد"},{k:"talk",href:"/publications",en:"Some of the work made here will be published by merath — the catalogue is on the publications page",ar:"سيصدر بعض ما يُصنع هنا عن ميراث — والفهرس في صفحة المنشورات"}]},
+  related:[{k:"fair",id:"FAIR_TRIPOLI_ABF",en:"Tripoli Art Book Fair",ar:"معرض طرابلس لكتاب الفن"},{k:"wsh",href:"/projects/al-manahij",en:"003 Al Manahij — the fellowship was formed here, as a way of teaching publishing by making a book",ar:"003 المناهج — تكوّنت الزمالة هنا، بوصفها طريقةً لتعليم النشر عبر صناعة كتاب"},{k:"fair",href:"/projects/publishing-field",en:"009 Publishing Field — the fellows' books are published through it",ar:"009 حقل النشر — تُنشر كتب المشاركين من خلاله"},{k:"exh",href:"/projects/the-print-rahba",en:"010 The Print Rahba — where the books are printed and bound",ar:"010 رحبة الطباعة — حيث تُطبع الكتب وتُجلَّد"},{k:"talk",href:"/publications",en:"Some of the work made here will be published by merath — the catalogue is on the publications page",ar:"سيصدر بعض ما يُصنع هنا عن ميراث — والفهرس في صفحة المنشورات"}]},
  {id:"EVT_HERTZIANA",src:null,ak:"talk",frame:1,type:"talk",en:"Talk — Bibliotheca Hertziana",ar:"محاضرة — مكتبة هرتسيانا",start:"2025-09-25",end:"2025-09-26",loc:{en:"Rome",ar:"روما"},
   host:{en:"Bibliotheca Hertziana, Max Planck",ar:"مكتبة هرتسيانا، ماكس بلانك"},
   voices:[{en:"Moad Musbahi",ar:"معاذ مصباحي"}],remains:[{k:"rec",en:"Recording held by the institute",ar:"تسجيل محفوظ لدى المعهد"}]},
@@ -3982,7 +3985,7 @@ function netData(){
   (p.carried||[]).forEach(function(t){
    var tk="PUB-"+t.id;
    N(tk,{type:"publication",kt:"Publication · "+t.ser,kt_ar:"منشور · "+t.ser,kh:t.en,kh_ar:t.ar,kb:"",kb_ar:"",code:t.id,
-    open:(function(id){return function(){window.open("publications.html#p/"+id,"_blank");};})(t.id)});
+    open:(function(id){return function(){window.open("/publications#book/"+id,"_blank");};})(t.id)});
    E(k,"carried",tk);
    var sk="SER-"+t.ser;
    N(sk,{type:"series",kt:"Series",kt_ar:"سلسلة",kh:t.ser,kh_ar:t.ser,kb:"",kb_ar:"",code:t.ser});
@@ -4614,6 +4617,11 @@ function fairLogo(F){
  }
  return '<span class="mlogo" aria-hidden="true"><svg viewBox="-24 -24 48 48"><circle r="22" fill="#0A101A" stroke="'+hue+'" stroke-width="2"/>'+inner+'</svg></span>';
 }
+
+/* project id → its own page. Unmapped ids land on the projects index rather
+ * than on a fragment nobody reads; the build names them. See lib/crosslinks.mjs */
+var PROJ_SLUG={"SARAYAN":"sarayan","CURRENCY":"saharan-currency","ALGERIA":"libya-algeria"};
+function projHref(id){var s=PROJ_SLUG[id];return s?("/projects/"+s):"/projects";}
 function pvBody(p){
  var ak=p.ak,fut=isFut(p),liv=isLive(p),h="",dur=durDays(p);
  if(ak==="exh"){
@@ -4647,7 +4655,7 @@ function pvBody(p){
     h+='<div class="mh">'+T("fairColl2")+'</div>';
     F.coll.forEach(function(C){h+='<div class="mcoll'+(lang==="ar"?" ar":"")+'">'+esc(fL(C,"en","ar"))+'</div>';});}
    (F.ties||[]).forEach(function(tc){
-    h+='<a class="mtie" href="publications.html#s/'+esc(tc)+'" target="_blank" rel="noopener">'
+    h+='<a class="mtie" href="/publications#series/'+esc(tc)+'" target="_blank" rel="noopener">'
      +esc(SERNAME[tc]?fL(SERNAME[tc],"en","ar"):tc)+' ↗</a>';});
    if(p.beside){
     h+='<div class="mtie2">'+T("besideK2")+' <b>'+esc(fL(p.beside,"en","ar"))+'</b>'
@@ -4663,7 +4671,7 @@ function pvBody(p){
    var ids=F.collIds||[],shelf="";
    ids.forEach(function(id){
     var b=PUBMIN[id];if(!b)return;
-    shelf+='<a class="shbk" href="publications.html#p/'+esc(id)+'" target="_blank" rel="noopener" style="--bc:'+(SERCOL[b.ser]||"#8A6D3B")+'">'
+    shelf+='<a class="shbk" href="/publications#book/'+esc(id)+'" target="_blank" rel="noopener" style="--bc:'+(SERCOL[b.ser]||"#8A6D3B")+'">'
      +'<b>'+esc(id)+'</b><span'+(lang==="ar"?' class="ar"':'')+'>'
      +esc(fL(b,"en","ar").split("—")[0].slice(0,34))+'</span></a>';});
    if(!shelf)shelf='<div class="shnote">'+T("shelfOpen")+'</div>';
@@ -4677,7 +4685,7 @@ function pvBody(p){
   }
   var NOTE=(F&&F.note&&fL(F.note,"en","ar"))||(p.note&&fL(p.note,"en","ar"));
   if(NOTE)h+='<p class="mnote'+(lang==="ar"?" ar":"")+'">'+esc(NOTE)+'</p>';
-  h+='<div class="msrc"><a class="pvlink" href="publications.html#fair/'+esc((F&&F.id)||p.pubId||p.id)+'" target="_blank" rel="noopener">'
+  h+='<div class="msrc"><a class="pvlink" href="/publications#fair/'+esc((F&&F.id)||p.pubId||p.id)+'" target="_blank" rel="noopener">'
    +T("fairCanon")+(lang==="ar"?" ↖":" ↗")+'</a>'
    +'<span class="msrcn">'+T(FAIRS_LIVE?"fairLive":"fairCopy")+'</span></div>';
  } else if(ak==="wsh"){
@@ -5120,7 +5128,7 @@ function wshPaint(){
    +wfact(T("city"),loc(p))+wfact(T("duration"),dur+" "+T("days"))
    +wfact(T("measured"),Math.max(1,Math.round(dur/30.44))+" "+T("monthsW"))
    +wfact(T("status"),T(NOW<a?"ahead":NOW>b?"held":"liveNow"))+'</div>';
-  if(p.proj)h+='<a class="pvlink" href="projects.html#'+esc(p.proj.id)+'">'+T("theProject")+' · '+esc(fL(p.proj,"en","ar"))+(lang==="ar"?" ↖":" ↗")+'</a>';
+  if(p.proj)h+='<a class="pvlink" href="'+projHref(p.proj.id)+'">'+T("theProject")+' · '+esc(fL(p.proj,"en","ar"))+(lang==="ar"?" ↖":" ↗")+'</a>';
  }
  else if(wshSec==="room"){
   var RV=venOf(p),RD=fmtFull(sMs(p));
@@ -5245,7 +5253,7 @@ function pvSideRows(p){
   +'<span class="pch-n"><b class="num">'+netDeg(p.id)+'</b> '+esc(T("netEdgesK"))+'</span>'
   +PS_ARROW+'<span class="pch-go">'+esc(T("sumOpen"))+'</span></div>';
  /* 2 — the project this came out of */
- if(p.proj)h+='<a class="pch" href="projects.html#'+esc(p.proj.id)+'">'
+ if(p.proj)h+='<a class="pch" href="'+projHref(p.proj.id)+'">'
   +'<span class="pch-k">'+esc(T("sideProj"))+'</span>'
   +'<b class="pch-v">'+esc(lang==="ar"?p.proj.ar:p.proj.en)+' \u2197</b>'
   +'<span class="pch-n num">'+esc(p.proj.id)+'</span></a>';
@@ -5263,7 +5271,7 @@ function pvSideRows(p){
    +'<b class="pch-v num">'+esc(cnt(pubs.length,"sideTitles"))+'</b>' 
    +'<div class="pch-sub">';
   pubs.forEach(function(b){h+=b.go
-   ?'<a href="publications.html#p/'+esc(b.id)+'"><span>'+esc(b.n)+' \u2197</span><i class="num">'+esc(b.id)+'</i></a>'
+   ?'<a href="/publications#book/'+esc(b.id)+'"><span>'+esc(b.n)+' \u2197</span><i class="num">'+esc(b.id)+'</i></a>'
    :'<span class="np"><span>'+esc(b.n)+'</span><i class="num">'+esc(b.id)+'</i></span>';});
   h+='</div></div>';
  }
@@ -5472,7 +5480,7 @@ if(miniTree){
 }
 /* search panel */
 var spanel=document.getElementById("search-panel"),spInput=document.getElementById("sp-input"),spTree=document.getElementById("sp-tree");
-var POOL=["Overhead","Tripoli Art Book Fair","Lamma","Fractured Orality","Ghadames","Trans-Saharan","Focal Point","Open Heel","MESAAS","Hertziana","Cen wa Sad","Scouts","Paperback","open call","seasons","editions"];
+var POOL=["Overhead","Tripoli Art Book Fair","Lamma","Fractured Orality","Ghadames","Trans-Saharan","Focal Point","Open Heel","MESAAS","Hertziana","Cen wa Sad","Scouts","open call","seasons","editions"];
 function hashStr(t){var h=2166136261;for(var i=0;i<t.length;i++){h^=t.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
 function mkRnd(h){return function(){h^=h<<13;h^=h>>>17;h^=h<<5;h>>>=0;return (h%1000)/1000;};}
 function growPanelTree(seed,query){
@@ -5538,7 +5546,7 @@ function applyLang(){
  var ns=document.getElementById("nav-strip");
  if(ns){ns.classList.add("tearing");setTimeout(function(){ns.classList.remove("tearing");},980);}
  buildCalls();buildTypeKey();buildReading();buildNowBar();buildField();buildCal();buildCats();tkBuildLedger();buildFold();updDusk();litYouare();placePlate();
- try{fairsSync(function(ok){if(ok&&pvEl&&pvEl.classList.contains("open"))pvRender();});}catch(e){}
+ /* fairsSync retired — the build writes the canonical fairs into this page; see build/lib/fairs.mjs */
  try{if(pvEl&&pvEl.classList.contains("open")){if(sheetEl&&sheetEl.classList.contains("sky")){var _c=window.__consOpen;if(_c)openCons(_c);}
  else if(sheetEl&&sheetEl.classList.contains("ledgersheet")){openLedger(window.__lgAk);}else if(!sheetEl.classList.contains("calls"))pvRender();}}catch(e){}
  var sv=document.getElementById("slitV");if(sv)sv.textContent=T(DIR==="past"?"yPast":"yFut");
