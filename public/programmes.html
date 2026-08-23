@@ -2137,7 +2137,7 @@ main{overflow-x:visible;overflow-y:clip}
 .lt-c svg{width:20px;height:7px;flex:0 0 auto}
 [dir="rtl"] .lt-c svg{transform:scaleX(-1)}
 </style>
-<script>/* merath build 2026-08-22T20:50:33.052Z — data from Airtable */
+<script>/* merath build 2026-08-23T10:39:28.745Z — data from Airtable */
 
 </script>
 <style>/* programmes ticker, phone — build.mjs */
@@ -2421,7 +2421,8 @@ body.mnav #railbooks{z-index:1}
 <meta name="twitter:image" content="https://merath.ly/assets/merath-share.png">
 <link rel="canonical" href="https://merath.ly/programmes">
 <style>/* the search label on the fold — lib/chrome.mjs */
-  #mini-tree{pointer-events:auto}
+  #mini-tree{pointer-events:none}
+  #mini-tree path{pointer-events:auto}
   #mini-tree text.mrfind{font-family:inherit;font-size:11px;letter-spacing:.13em;
     fill:var(--ink);opacity:.72;cursor:pointer;pointer-events:auto;text-transform:uppercase;
     transform-box:view-box;transition:transform .55s cubic-bezier(.34,1.18,.4,1)}
@@ -2431,7 +2432,12 @@ body.mnav #railbooks{z-index:1}
      The clip therefore opens while the letters hold still, which is the
      reveal: more of the phrase, not a bigger phrase. */
   #mini-tree.pull text.mrfind{transform:scale(.60606)}
-  @media(max-width:860px){#mini-tree text.mrfind{display:none}}
+  /* No label below 860px, so nothing here may take a tap. The fold is a
+     corner ornament on a phone and the masthead is sitting under it. */
+  @media(max-width:860px){
+    #mini-tree text.mrfind{display:none}
+    #mini-tree,#mini-tree path{pointer-events:none}
+  }
 </style>
 </head>
 <body>
