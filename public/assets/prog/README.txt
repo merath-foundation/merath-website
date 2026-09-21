@@ -3,6 +3,7 @@ Programme plates — drop pictures here and they appear on /programmes.
 The FILENAME is the key. Nothing to fill in anywhere else (for now).
 
   FAIR_NYABF-city.jpg                 the city plate on the fair sheet
+  FAIR_NYABF-2026-plan.png            the floor plan, booth ringed
   FAIR_NYABF-2026-stand.jpg           the stand, that edition
   FAIR_NYABF-2026-table.jpg           the table
   FAIR_NYABF-2026-shelf.jpg           the shelf, as it stood
@@ -11,7 +12,7 @@ The FILENAME is the key. Nothing to fill in anywhere else (for now).
   EVT_EMBARGO-promo.jpg               an event's announcement image
 
   fair, whole      <FAIR_ID>-city
-  fair, an edition <FAIR_ID>-<year>-<slot>    slot: stand table shelf reel
+  fair, an edition <FAIR_ID>-<year>-<slot>    slot: plan stand table shelf reel
   an event         <EVENT_ID>-<slot>          slot: promo
 
 .jpg .png .webp .avif are pictures. .mp4 .webm are films.
