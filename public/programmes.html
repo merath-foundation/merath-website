@@ -2176,7 +2176,7 @@ main{overflow-x:visible;overflow-y:clip}
 #pv .rsvpb b{font:600 14px/1.2 var(--serif);letter-spacing:.01em}
 #pv .rsvpb span{font:600 9px/1.4 var(--sans);letter-spacing:.13em;text-transform:uppercase;opacity:.62}
 [dir="rtl"] #pv .rsvpb span{letter-spacing:.02em;text-transform:none;font-size:11px}</style>
-<script>/* merath build 2026-10-12T20:57:58.253Z — data from Airtable */
+<script>/* merath build 2026-10-12T21:40:55.065Z — data from Airtable */
 
 </script>
 <style>/* programmes ticker, phone — build.mjs */
@@ -5778,7 +5778,7 @@ var PSL=[
  {k:"net",isOpen:function(){return !!(net&&net.classList.contains("on")&&window._curNet);},root:function(){return net;},chain:false,
   snap:function(){return{id:window._curNet,pg:window._netPg};},key:function(s){return s.id;},
   restore:function(s){window._netPg=s.pg;PSO.openNet(s.id);}},
- {k:"pv",isOpen:function(){return pvEl.classList.contains("open")&&!!PS.fn;},root:function(){return pvEl;},deferHide:true,
+ {k:"pv",isOpen:function(){return pvEl.classList.contains("open")&&!!PS.fn;},root:function(){return pvEl;},body:function(){return document.getElementById("shBody");},deferHide:true,
   snap:function(){return{fn:PS.fn,a:PS.fn==="openSeq"?((seqList[seqIdx]||{}).id||PS.a):PS.a};},key:function(s){return s.fn+"/"+s.a;},
   restore:function(s){PS.fn=s.fn;PS.a=s.a;PSO[s.fn](s.a);}}
 ];
@@ -5790,6 +5790,7 @@ function PSvis(){for(var i=0;i<PSL.length;i++){try{if(PSL[i].isOpen())return PSs
 function PSlayer(k){for(var i=0;i<PSL.length;i++)if(PSL[i].k===k)return PSL[i];}
 function PSkey(s){try{return s.k+":"+PSlayer(s.k).key(s);}catch(_e){return s.k;}}
 function PSpush(s){if(!s)return;var t=PS.st[PS.st.length-1];if(t&&PSkey(t)===PSkey(s))return;PS.st.push(s);if(PS.st.length>30)PS.st.shift();}
+function PSswap(k){try{var L=PSlayer(k),b=L&&L.body&&L.body();if(!b)return;b.classList.remove("popswap");void b.offsetWidth;b.classList.add("popswap");}catch(_e){}}
 function PSbefore(k,key){
   if(PS.back)return;
   var src;
@@ -5814,16 +5815,18 @@ function PSsettle(){var p=PS.pend;PS.pend=null;if(!p)return;
   var prev=PS.st.pop();
   if(!prev){if(p.hide)p.hide();return;}
   if(p.hide&&prev.k!==p.snap.k)p.hide();
+  var stay=!!(p.hide&&prev.k===p.snap.k);
   PS.back=true;try{PSlayer(prev.k).restore(prev);}catch(_e){}PS.back=false;
+  if(stay)PSswap(prev.k);
   var L=PSlayer(prev.k);
   setTimeout(function(){try{var r=L.root&&L.root();(prev.sc||[]).forEach(function(x){var e=PSfind(r,x[0]);if(e)e.scrollTop=x[1];});}catch(_e){}},90);
 }
-PSO.openSeq=openSeq;openSeq=function(){var a=arguments;PSbefore("pv","openSeq"+"/"+a[0]);PS.fn="openSeq";PS.a=a[0];return PSO.openSeq.apply(this,a);};
-PSO.openLedger=openLedger;openLedger=function(){var a=arguments;PSbefore("pv","openLedger"+"/"+a[0]);PS.fn="openLedger";PS.a=a[0];return PSO.openLedger.apply(this,a);};
-PSO.openCons=openCons;openCons=function(){var a=arguments;PSbefore("pv","openCons"+"/"+a[0]);PS.fn="openCons";PS.a=a[0];return PSO.openCons.apply(this,a);};
-PSO.openCallsSheet=openCallsSheet;openCallsSheet=function(){var a=arguments;PSbefore("pv","openCallsSheet"+"/"+a[0]);PS.fn="openCallsSheet";PS.a=a[0];return PSO.openCallsSheet.apply(this,a);};
+PSO.openSeq=openSeq;openSeq=function(){var a=arguments;var _w=!PS.back&&(function(){try{var c=PS.pend?PS.pend.snap:PSvis();if(c&&PSkey(c)==="pv"+":"+("openSeq"+"/"+a[0]))return false;return PSlayer("pv").isOpen()||!!(PS.pend&&PS.pend.hide);}catch(_e){return false;}})();PSbefore("pv","openSeq"+"/"+a[0]);PS.fn="openSeq";PS.a=a[0];var _r=PSO.openSeq.apply(this,a);if(_w)PSswap("pv");return _r;};
+PSO.openLedger=openLedger;openLedger=function(){var a=arguments;var _w=!PS.back&&(function(){try{var c=PS.pend?PS.pend.snap:PSvis();if(c&&PSkey(c)==="pv"+":"+("openLedger"+"/"+a[0]))return false;return PSlayer("pv").isOpen()||!!(PS.pend&&PS.pend.hide);}catch(_e){return false;}})();PSbefore("pv","openLedger"+"/"+a[0]);PS.fn="openLedger";PS.a=a[0];var _r=PSO.openLedger.apply(this,a);if(_w)PSswap("pv");return _r;};
+PSO.openCons=openCons;openCons=function(){var a=arguments;var _w=!PS.back&&(function(){try{var c=PS.pend?PS.pend.snap:PSvis();if(c&&PSkey(c)==="pv"+":"+("openCons"+"/"+a[0]))return false;return PSlayer("pv").isOpen()||!!(PS.pend&&PS.pend.hide);}catch(_e){return false;}})();PSbefore("pv","openCons"+"/"+a[0]);PS.fn="openCons";PS.a=a[0];var _r=PSO.openCons.apply(this,a);if(_w)PSswap("pv");return _r;};
+PSO.openCallsSheet=openCallsSheet;openCallsSheet=function(){var a=arguments;var _w=!PS.back&&(function(){try{var c=PS.pend?PS.pend.snap:PSvis();if(c&&PSkey(c)==="pv"+":"+("openCallsSheet"+"/"+a[0]))return false;return PSlayer("pv").isOpen()||!!(PS.pend&&PS.pend.hide);}catch(_e){return false;}})();PSbefore("pv","openCallsSheet"+"/"+a[0]);PS.fn="openCallsSheet";PS.a=a[0];var _r=PSO.openCallsSheet.apply(this,a);if(_w)PSswap("pv");return _r;};
 PSO.pvClose=pvClose;pvClose=function(){return PSclose("pv",PSO.pvClose,this,arguments);};
-PSO.openNet=openNet;openNet=function(){var a=arguments;PSbefore("net",a[0]);return PSO.openNet.apply(this,a);};
+PSO.openNet=openNet;openNet=function(){var a=arguments;var _w=!PS.back&&(function(){try{var c=PS.pend?PS.pend.snap:PSvis();if(c&&PSkey(c)==="net"+":"+(a[0]))return false;return PSlayer("net").isOpen()||!!(PS.pend&&PS.pend.hide);}catch(_e){return false;}})();PSbefore("net",a[0]);var _r=PSO.openNet.apply(this,a);if(_w)PSswap("net");return _r;};
 PSO.netClose=netClose;netClose=function(){return PSclose("net",PSO.netClose,this,arguments);};
 /* the X and the scrim were bound to the unwrapped close before this ran */
 document.addEventListener("click",function(e){var t=e.target&&e.target.closest&&e.target.closest("#sheetX,#pvScrim");if(!t)return;e.stopPropagation();e.preventDefault();pvClose();},true);
@@ -6043,5 +6046,28 @@ body.leaving #chartdock,body.leaving #ticker{transition:opacity 320ms ease-in;op
   }catch(_e){}
 }catch(_e){}})();
 </script>
+
+<style id="merath-motion">/* lib/motion.mjs — one way in, one way out, for every pop-up */
+:root{--pop-t:.6s;--pop-s:steps(7,jump-none);--pop-f:.45s}
+#pv .sheet{transition:transform var(--pop-t) var(--pop-s)}
+#slip .slipcard{transition:transform var(--pop-t) var(--pop-s)}
+#mirage{transition:background var(--pop-f) ease,visibility 0s linear var(--pop-t)}
+#mirage.on{transition:background var(--pop-f) ease,visibility 0s}
+#mirage .mplane{transition:transform var(--pop-t) var(--pop-s),opacity var(--pop-f) ease}
+#net .core{transition:opacity var(--pop-f) ease .15s,transform var(--pop-t) var(--pop-s) .15s}
+#pgbox{display:flex!important;visibility:hidden;opacity:0;pointer-events:none;
+ transition:opacity var(--pop-f) ease,visibility 0s linear var(--pop-f)}
+#pgbox.on{visibility:visible;opacity:1;pointer-events:auto;
+ transition:opacity var(--pop-f) ease,visibility 0s}
+#pgbox img{transform:translateY(32px);transition:transform var(--pop-t) var(--pop-s)}
+#pgbox.on img{transform:none}
+@keyframes merathSwap{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+.popswap{animation:merathSwap .36s steps(4,jump-none) both}
+@media (prefers-reduced-motion:reduce){
+ #pv .sheet,#slip .slipcard,#mirage .mplane,#net .core{transition-duration:0s!important}
+ #pgbox img{transition-duration:0s!important}
+ .popswap{animation:none}
+}
+</style><style id="merath-motion-rtl">[dir="rtl"] #pv .sheet{transform:translate(-50%,112%)}[dir="rtl"] #pv.open .sheet{transform:translate(-50%,0)}</style>
 </body>
 </html>
