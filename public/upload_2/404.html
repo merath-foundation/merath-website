@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>merath</title>
+<meta name="robots" content="noindex">
+<!--
+  The 404 page, and the end of a whole class of fault.
+
+  The host serves /x.html but 404s on /x/. Until now the 404 page WAS the old
+  Vite/Sanity app shell, so a trailing slash — from a link, a bookmark, a
+  pasted URL, or a search result — did not show a merath error. It showed the
+  previous website. Three separate rounds of link fixing were really attempts
+  to stop readers ever reaching this page.
+
+  So this page does two things:
+    1. If the address is a merath path with a trailing slash, it sends the
+       reader on to the same address without it. That rescues every link built
+       anywhere — including ones concatenated at runtime, which no build-time
+       rule can see — and every link already loose in the world.
+    2. Otherwise it says, in both languages, that the page is not here, and
+       looks like merath while doing it.
+
+  replace() rather than href: the broken address must not enter the history,
+  or Back returns the reader to this page.
+-->
+<style>
+  :root{--ink:#14181c;--cream:#F7F1E1;--saff:#E39B00}
+  html,body{margin:0;height:100%}
+  body{background:var(--cream);color:var(--ink);
+    font-family:"29LT Bukra","IBM Plex Sans Arabic","Helvetica Neue",Arial,system-ui,sans-serif;
+    display:flex;align-items:center;justify-content:center;text-align:center;padding:8vw}
+  .wrap{max-width:46ch}
+  .code{font-size:11px;letter-spacing:.22em;color:var(--saff);margin:0 0 18px}
+  h1{font-size:22px;font-weight:500;margin:0 0 6px}
+  .ar{font-family:"29LT Bukra","IBM Plex Sans Arabic","Geeza Pro","Noto Naskh Arabic",serif;
+    font-size:20px;opacity:.85;margin:0 0 22px}
+  p{font-size:12.5px;line-height:1.9;opacity:.75;margin:0 0 8px}
+  p.ar2{font-size:13.5px;font-family:"29LT Bukra","IBM Plex Sans Arabic","Geeza Pro",serif}
+  nav{margin-top:26px;display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
+  nav a{font-size:12px;color:var(--ink);text-decoration:none;border-bottom:1.5px solid var(--saff);padding-bottom:2px}
+  nav a:hover{color:var(--saff)}
+</style>
+<script>
+(function () {
+  try {
+    var p = location.pathname;
+    if (p.length > 1 && p.charAt(p.length - 1) === '/') {
+      var target = p.replace(/\/+$/, '');
+      if (target && target !== p) {
+        location.replace(target + location.search + location.hash);
+        return;
+      }
+    }
+    if (/\/{2,}/.test(p)) {
+      location.replace(p.replace(/\/{2,}/g, '/') + location.search + location.hash);
+    }
+  } catch (e) { /* a broken redirect must still leave the page below readable */ }
+})();
+</script>
+</head>
+<body>
+  <div class="wrap">
+    <p class="code">404</p>
+    <h1>This page is not here.</h1>
+    <div class="ar">هذه الصفحة ليست هنا.</div>
+    <p>The address may have changed, or the work may not have been published yet.</p>
+    <p class="ar2">قد يكون العنوان قد تغيّر، أو أن العمل لم يُنشر بعد.</p>
+    <nav>
+      <a href="/">merath</a>
+      <a href="/projects">Projects</a>
+      <a href="/publications">Publications</a>
+      <a href="/about">About</a>
+    </nav>
+  </div>
+</body>
+</html>
