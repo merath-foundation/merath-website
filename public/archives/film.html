@@ -637,6 +637,20 @@ html.scrolled #hband{opacity:1}
 
 /* the decades flow with the other items, so a wrap moves whole items rather than splitting the decades */
 @media(min-width:921px){.stick #sidx .grp{display:contents}}
+
+/* round 7 — the dark strip runs the full width; Submit a Record is a red button inside it, at its end */
+:root{--hl:#E0352B}
+.sidxw{background:var(--ink);padding:0 14px 0 12px;gap:0;align-items:center;min-height:50px;
+ clip-path:polygon(7px 0,calc(100% - 5px) 0,100% 14%,calc(100% - 6px) 30%,100% 46%,calc(100% - 4px) 62%,100% 78%,calc(100% - 7px) 92%,calc(100% - 2px) 100%,6px 100%,0 88%,6px 72%,1px 56%,7px 42%,2px 26%,8px 11%)}
+.stick #sidx{background:none!important;clip-path:none!important;padding:0!important}
+.subp{align-self:center!important;height:34px!important;min-height:0!important;margin-inline-start:12px;padding:0 1rem 0 .85rem!important;background:var(--hl)!important;color:var(--cream)!important;font-weight:700}
+.subp .o{font-weight:700;opacity:1;font-size:1.3em;line-height:1}
+.subp:hover,.subp:focus-visible{background:var(--cream)!important;color:var(--hl)!important}
+@media(max-width:920px){.sidxw{min-height:40px;padding:0 10px}.subp{height:28px!important;margin-inline-start:8px;padding:0 .65rem!important}}
+/* the introduction keeps the measure the projects page has (build.mjs: "publications' measure, on every page") */
+@media(min-width:1041px){.pg-sub p{max-width:calc(100% - (min(460px,36vw) - min(400px,34vw)))}}
+@media(min-width:921px) and (max-width:1040px){.pg-sub p{max-width:calc(100% - min(460px,36vw) - 44px)}}
+@media(max-width:920px){.pg-sub p{max-width:100%}}
 </style>
 </head>
 <body>

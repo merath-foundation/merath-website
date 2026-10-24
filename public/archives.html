@@ -586,13 +586,38 @@ html.scrolled #hband{opacity:1}
 #rec0 .aid.sub{font-size:12.5px}
 #rec0 .aidn{font-size:10px;letter-spacing:.06em;opacity:.5;margin:.1rem 0 .4rem}
 #rec0 .desc{max-width:68ch}
-/* the Libyan Design Archive: a second card under Submit a Record, out to its own site */
-.ocard.lda{--cc:var(--ink);margin-top:12px}
-.ocard.lda .oc-cat{background:var(--ink)}
-.ocard.lda h3{font-weight:600}
+/* the Libyan Design Archive, in the Submit a Record aside: the press ledger chip's construction
+   (lib/pressledger.mjs) — ink ground, cream Arabic, saffron caps, a lime hairline on the leading edge
+   for what belongs to merath's own circle, a 5px offset shadow */
+.ldachip{display:flex;flex-direction:column;gap:4px;margin-top:16px;background:var(--ink);color:var(--cream);
+ border:1.4px solid var(--ink);border-inline-start:4px solid var(--lime);padding:14px 18px 15px;text-decoration:none;
+ box-shadow:5px 5px 0 rgba(20,24,28,.22);transition:transform .3s,box-shadow .3s}
+.ldachip:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 rgba(20,24,28,.16)}
+.ldachip:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
+.ldachip .lda-ar{font-size:19px;color:var(--cream);align-self:flex-start}
+.ldachip b{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;color:var(--saff);align-self:flex-start}
+.ldachip .fh{font-size:10.5px;line-height:1.55;opacity:.7;color:var(--cream)}
+.ldachip .fh.go{opacity:.85;color:var(--lime)}
+[dir="rtl"] .ldachip b{letter-spacing:.06em;font-size:11px}
+[dir="rtl"] .ldachip .fh{font-size:12.5px}
+@media(max-width:920px){.ldachip{padding:10px 14px 11px}.ldachip .lda-ar{font-size:16px}}
 
 .subp{align-self:flex-start;height:50px}
 @media(max-width:920px){.subp{height:40px}}
+
+/* round 7 — the dark strip runs the full width; Submit a Record is a red button inside it, at its end */
+:root{--hl:#E0352B}
+.sidxw{background:var(--ink);padding:0 14px 0 12px;gap:0;align-items:center;min-height:50px;
+ clip-path:polygon(7px 0,calc(100% - 5px) 0,100% 14%,calc(100% - 6px) 30%,100% 46%,calc(100% - 4px) 62%,100% 78%,calc(100% - 7px) 92%,calc(100% - 2px) 100%,6px 100%,0 88%,6px 72%,1px 56%,7px 42%,2px 26%,8px 11%)}
+.stick #sidx{background:none!important;clip-path:none!important;padding:0!important}
+.subp{align-self:center!important;height:34px!important;min-height:0!important;margin-inline-start:12px;padding:0 1rem 0 .85rem!important;background:var(--hl)!important;color:var(--cream)!important;font-weight:700}
+.subp .o{font-weight:700;opacity:1;font-size:1.3em;line-height:1}
+.subp:hover,.subp:focus-visible{background:var(--cream)!important;color:var(--hl)!important}
+@media(max-width:920px){.sidxw{min-height:40px;padding:0 10px}.subp{height:28px!important;margin-inline-start:8px;padding:0 .65rem!important}}
+/* the introduction keeps the measure the projects page has (build.mjs: "publications' measure, on every page") */
+@media(min-width:1041px){.pg-sub p{max-width:calc(100% - (min(460px,36vw) - min(400px,34vw)))}}
+@media(min-width:921px) and (max-width:1040px){.pg-sub p{max-width:calc(100% - min(460px,36vw) - 44px)}}
+@media(max-width:920px){.pg-sub p{max-width:100%}}
 </style>
 </head>
 <body>
@@ -619,7 +644,7 @@ html.scrolled #hband{opacity:1}
       <div class="calls-head"><span class="ck" aria-hidden="true">◈</span><h2 id="ocT" data-i18n="ocT">Submit a Record</h2>
         <span class="oc-n">1</span></div>
       <a class="ocard" id="filmcall" href="/archives/film#submit"></a>
-      <a class="ocard lda" id="ldacard" href="https://libyandesignarchive.ly/" target="_blank" rel="noopener"></a>
+      <a class="ldachip" id="ldacard" href="https://libyandesignarchive.ly/" target="_blank" rel="noopener"></a>
     </section>
   </div>
   <nav class="where" id="where" aria-label="You are here"></nav>
@@ -679,7 +704,7 @@ const C={en:{wm:"merath",nProjects:"Projects",nPublications:"Publications",nProg
   kCat:"merath Catalogue",kFilm:"Films Archive",kNet:"the site's network",
   sLbl:"Search the index",navAdd:"Submit a Record",navAddS:"Submit",crumb:"Archives",navFilms:"The Films Archive",tw:"Search the index here",
   fFor:"{n} records for “{q}”",fLinked:"{n} records linked to {q}",fIn:"in {c} collections",fIn1:"in one collection",fIn2:"in two collections",clr:"Clear",showAll:"Show all {n}",showFew:"Show fewer",aidT:"Transliteration (IJMES) and translation in square brackets are merath's, not official.",
-  ldaCat:"Independent project",ldaH:"Libyan Design Archive",ldaP:"Visit the independent project Libyan Design Archive, which holds a collection of print, logos and ephemera. The project is run by Hasan Issa, a member of the merath team.",ldaGo:"Visit",inRun:"One of {n} {w} under this title",
+  ldaH:"Libyan Design Archive",ldaP:"An independent project holding a collection of print, logos and ephemera, run by Hasan Issa, a member of the merath team.",ldaMeta:"independent project · visit",inRun:"One of {n} {w} under this title",
   arcs:"Archives",netName:"The site's network",shareH:"Names they share",
   catT:{Book:"Books",Periodical:"Periodicals",Ephemera:"Ephemera",Photograph:"Photographs",Audio:"Audio"},
   filmK:{film:"Films",corpus:"Archive leads",lead:"Research leads",unknown:"Unidentified"},
@@ -720,7 +745,7 @@ const C={en:{wm:"merath",nProjects:"Projects",nPublications:"Publications",nProg
   kCat:"فهرس ميراث",kFilm:"أرشيف الأفلام",kNet:"شبكة الموقع",
   sLbl:"ابحثوا في الفهرس",navAdd:"أضيفوا سجلا",navAddS:"أضيفوا",crumb:"الأرشيفات",navFilms:"أرشيف الأفلام",tw:"ابحثوا في الفهرس هنا",
   fFor:"النتائج: {n} — «{q}»",fLinked:"النتائج: {n} — مرتبطة بـ{q}",fIn:"في {c} مجموعات",fIn1:"في مجموعة واحدة",fIn2:"في مجموعتين",clr:"امسحوا",showAll:"اعرضوا الكل ({n})",showFew:"اعرضوا أقل",aidT:"",
-  ldaCat:"مشروع مستقل",ldaH:"أرشيف التصميم الليبي",ldaP:"زوروا المشروع المستقل «أرشيف التصميم الليبي»، الذي يضم مجموعة من المطبوعات والشعارات والمواد العابرة. يدير المشروع حسن عيسى، عضو فريق ميراث.",ldaGo:"زوروا",inRun:"واحد من {n} {w} تحت هذا العنوان",
+  ldaH:"أرشيف التصميم الليبي",ldaP:"مشروع مستقل يضم مجموعة من المطبوعات والشعارات والمواد العابرة، يديره حسن عيسى، عضو فريق ميراث.",ldaMeta:"مشروع مستقل · زوروه",inRun:"واحد من {n} {w} تحت هذا العنوان",
   arcs:"الأرشيفات",netName:"شبكة الموقع",shareH:"أسماء مشتركة",
   catT:{Book:"كتب",Periodical:"دوريات",Ephemera:"مطبوعات عابرة",Photograph:"صور فوتوغرافية",Audio:"تسجيلات صوتية"},
   filmK:{film:"أفلام",corpus:"اتجاهات للبحث في الأرشيفات",lead:"اتجاهات للبحث في المصادر",unknown:"غير محدد"},
@@ -1232,8 +1257,9 @@ function filmCall(){const L=lang==="ar";
    <div class="oc-census" aria-label="${FILMS.filter(KNOWN).length} / ${FILMS.length}">${boxes}</div>
    <div class="oc-date"><span><span class="oc-k2">${T("fcK")}</span><span class="oc-big">${T("fcBig")}</span><span class="oc-sub">${FILM.length} ${T("fcSub")}</span></span></div>
    <div class="oc-foot"><span class="oc-go">${T("fcGo")} ${ARR()}</span><span class="oc-meta">■ ${T("fcMeta")} □</span></div>`;
-  $("#ldacard").innerHTML=`<span class="oc-cat">${T("ldaCat")}</span><h3>${T("ldaH")}</h3><p>${T("ldaP")}</p>
-   <div class="oc-foot"><span class="oc-go">${T("ldaGo")} ↗</span><span class="oc-meta" dir="ltr">libyandesignarchive.ly</span></div>`;}
+  /* the Libyan Design Archive: the press ledger's construction (publications page), in the same aside */
+  const lda=$("#ldacard");lda.setAttribute("aria-label",T("ldaH")+" — libyandesignarchive.ly");
+  lda.innerHTML=`<span class="ar lda-ar" lang="ar" dir="rtl">أرشيف التصميم الليبي</span><b lang="en" dir="ltr">Libyan Design Archive</b><span class="fh">${T("ldaP")}</span><span class="fh go">${T("ldaMeta")} ↗</span>`;}
 function build(){
   const L=lang==="ar";
   BOW=Math.round(Math.max(50,Math.min(92,innerWidth*.046)));ANG=BOW*2;document.documentElement.style.setProperty("--ang",ANG+"px");
