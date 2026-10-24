@@ -675,6 +675,15 @@ html.scrolled #hband{opacity:1}
  .bar .f{padding:3px 8px 4px;font-size:9.5px}
  .where{transition:none}
 }
+
+/* round 9 — the corner fold, as on the live site: its label stays inside the lime; it can be pulled and clicked */
+#mini-tree path,#mini-tree text.mrfind{pointer-events:auto;cursor:pointer}
+#mini-tree text.mrfind{transform-box:view-box;transition:transform .55s cubic-bezier(.34,1.18,.4,1)}
+#mini-tree text.mrfind:hover{opacity:1}
+#mini-tree.pull text.mrfind{transform:scale(.60606)}
+
+/* round 11 — the search bar is the lime under the fold, as on the Archives page */
+.bar{background:#D9F164}
 </style>
 </head>
 <body>
@@ -693,7 +702,7 @@ html.scrolled #hband{opacity:1}
 <main>
   <div class="introrow">
     <div>
-      <div class="crumb"><a class="backarc" href="/archives"><span class="ar" aria-hidden="true">←</span><span data-i18n="crumb">Archives</span></a><span class="no mono">08</span></div>
+      <div class="crumb"><span class="no mono">08</span></div>
       <h1><span class="ttl" data-i18n="h1"></span><span class="o" data-i18n="h1o"></span></h1>
       <div class="pg-sub"><p data-i18n="lede1"></p><p data-i18n="lede2"></p></div>
       <div class="tally" id="tally"></div>
@@ -881,7 +890,8 @@ function buildFold(){
   const ca=(Math.atan2(fy,FX-hx)*180/Math.PI).toFixed(1);
   let h='<g class="foldg" style="transform-origin:'+FX+'px 0px">';
   h+='<path d="M'+FX+',0 L'+hx+',0 L'+FX+','+fy+' Z" style="fill:#D9F164;stroke:none"/>';
-  h+='<text class="mrfind" x="'+(rtl?FX-12:FX+12)+'" y="'+Math.round(fy*.33)+'" text-anchor="start">'+(rtl?"ابحثوا في المقتنيات ⌕":"Search the holdings ⌕")+'</text>';
+  h+='<defs><clipPath id="mrfindclip"><path d="M'+FX+',0 L'+hx+',0 L'+FX+','+fy+' Z"/></clipPath></defs>';
+  h+='<g class="mrfindg" clip-path="url(#mrfindclip)"><text class="mrfind" x="'+(rtl?FX-9:FX+9)+'" y="'+Math.round(fy*.30)+'" text-anchor="start" style="transform-origin:'+FX+'px 0px">'+(rtl?"ابحثوا في المقتنيات ⌕":"Search the holdings ⌕")+'</text></g>';
   h+='<g class="flapg" style="transform-origin:'+hx+'px 0px;--ca:'+ca+'deg;--nca:-'+ca+'deg">';
   h+='<path d="M'+hx+',0 L'+FX+','+fy+' L'+tipx+','+tipy+' Z" style="fill:#DCD2B5;stroke:none"/>';
   h+='<path d="M'+hx+',0 L'+tipx+','+tipy+' L'+FX+','+fy+'" style="stroke-width:1.2"/></g>';
@@ -889,6 +899,7 @@ function buildFold(){
   miniTree.innerHTML=h;
 }
 miniTree.addEventListener("mouseover",()=>miniTree.classList.add("pull"));
+miniTree.addEventListener("click",e=>{if(!e.target.closest("path,text"))return;e.preventDefault();miniTree.classList.remove("pull");if(typeof foldGo==="function")foldGo();});
 miniTree.addEventListener("mouseout",e=>{if(!miniTree.contains(e.relatedTarget))miniTree.classList.remove("pull")});
 
 function norm(s){return String(s||"").toLowerCase().normalize("NFKD").replace(/[̀-ͯ]/g,"").replace(/[ً-ْٰـ]/g,"").replace(/[أإآٱ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه").replace(/[٠-٩]/g,d=>String("٠١٢٣٤٥٦٧٨٩".indexOf(d)));}
@@ -1263,6 +1274,11 @@ function centerNav(){const nv=document.getElementById("sidx"),a=nv&&nv.querySele
 addEventListener("resize",()=>requestAnimationFrame(chromeState));
 {const nv=$("#sidx");if(nv)nv.addEventListener("scroll",chromeState,{passive:true});}
 requestAnimationFrame(()=>{stripPlace();buildFold();measure();slices();onHash();});
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{stripPlace();buildFold();});
+addEventListener("load",()=>{stripPlace();});
+function foldGo(){const fq=$("#fq");if(!fq)return;
+  if(document.body.classList.contains("r")){history.pushState(null,"",location.pathname+location.search);onHash();}
+  requestAnimationFrame(()=>{const s=$("#submit"),t=s&&s.offsetParent?s:$("#reg");jumpTo(t,true);setTimeout(()=>{try{fq.focus({preventScroll:true})}catch(e){fq.focus()}},500);});}
 setTimeout(()=>$("#fold-wrap").classList.add("on"),300);setTimeout(()=>$("#ticker").classList.add("show"),700);
 function clock(){const d=new Date(new Date().toLocaleString("en-US",{timeZone:"Africa/Tripoli"}));$("#tk-clock").textContent=String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")}
 clock();setInterval(clock,20000);let ti=0;setInterval(()=>{ti=(ti+1)%3;$("#tk-list").style.transform=`translateY(-${ti*42}px)`},4200);
