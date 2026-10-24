@@ -651,6 +651,30 @@ html.scrolled #hband{opacity:1}
 @media(min-width:1041px){.pg-sub p{max-width:calc(100% - (min(460px,36vw) - min(400px,34vw)))}}
 @media(min-width:921px) and (max-width:1040px){.pg-sub p{max-width:calc(100% - min(460px,36vw) - 44px)}}
 @media(max-width:920px){.pg-sub p{max-width:100%}}
+
+/* round 8 — searching, and the phone */
+#none{margin:1.2rem var(--textR) 0 var(--textL);padding:1rem 1.1rem;border:1.5px solid var(--ink);background:#FBF7EA}
+#none p{display:flex;flex-wrap:wrap;gap:.4rem 1rem;align-items:baseline;font-size:15px}
+#submit.tuck{display:none}
+#sidx a.off{opacity:.28;pointer-events:none}
+@media(max-width:920px){#hband{display:block!important;opacity:1!important;transition:none!important}}   /* the masthead keeps its cream band on a phone, so the page never runs under "merath" */
+@media(max-width:640px){
+ /* the numbers: two to a row, the leads across the foot */
+ .tally{display:grid;grid-template-columns:1fr 1fr}
+ .tl{margin:0;padding:.75rem 0 .7rem;border:0!important;border-top:1px solid rgba(20,24,28,.2)!important}
+ .tl:nth-child(-n+2){border-top:0!important}
+ .tl:nth-child(even){border-inline-start:1px solid rgba(20,24,28,.2)!important;padding-inline-start:1rem}
+ .tl:last-child{grid-column:1/-1}
+ .tl b{font-size:40px}
+ .tl span{max-width:none}
+ /* the group that travels keeps one size: nothing under it jumps when it sticks */
+ .bar,.stick.stuck .bar{margin-top:0!important;padding:.5rem .75rem!important;transition:none!important;flex-wrap:wrap;gap:.4rem .6rem}
+ .qbox,.stick.stuck .qbox{font-size:19px!important;flex:1 1 100%;transition:none!important}
+ .bar #filters,.stick.stuck .bar #filters{display:flex!important;flex:1 1 0!important;min-width:0}
+ .bar .n,.stick.stuck .bar .n{display:block!important;flex:none!important;font-size:9px;align-self:center}
+ .bar .f{padding:3px 8px 4px;font-size:9.5px}
+ .where{transition:none}
+}
 </style>
 </head>
 <body>
@@ -686,6 +710,7 @@ html.scrolled #hband{opacity:1}
     <div class="bar"><span class="qbox" id="qbox"><input id="fq" type="search" dir="auto" autocomplete="off"></span><span id="filters"></span><span class="n mono" id="fn"></span></div>
   </div>
   <section id="submit" aria-labelledby="sbH"></section>
+  <div id="none" hidden></div>
   <section id="reg" aria-label="register"></section>
   <section id="und"></section>
   <section id="leads"></section>
@@ -933,11 +958,14 @@ function render(){
   $$("#filters .f").forEach(b=>b.onclick=()=>{FILT=b.dataset.f;render();});
   /* the register: decades, ascending, so the page reads as a history */
   const byD=new Map();DATED.forEach(f=>{const k=Math.floor(f.ys/10)*10;if(!byD.has(k))byD.set(k,[]);byD.get(k).push(f);});
-  let i=0,shown=0;const ND=byD.size;
-  $("#reg").innerHTML=[...byD.entries()].map(([dk,fs])=>{const vis=fs.filter(pass);shown+=vis.length;const g=ground(ND>1?i/(ND-1):0),pg=i?ground((i-1)/(ND-1)):{hex:"#FBF7EA"};i++;
+  let i=0,shown=0,lastG=null;const ND=byD.size,filt=!!FQ||FILT!=="all",gone=new Set();
+  $("#reg").innerHTML=[...byD.entries()].map(([dk,fs])=>{const vis=fs.filter(pass);shown+=vis.length;const g=ground(ND>1?i/(ND-1):0);i++;
+    if(filt&&!vis.length){gone.add(dk);return "";}   /* a decade with nothing to show is not drawn while you search */
+    const pg=lastG||{hex:"#FBF7EA"};lastG=g;
     return `<div class="dec${g.dark?" dk":""}" id="d${dk}" data-prev="${pg.hex}" data-dark="${g.dark?1:0}" style="background:${g.hex}"><svg class="contact" preserveAspectRatio="none"></svg>
      <h2><span class="dn" dir="ltr">${DECL(dk)}</span><span class="dk mono">${vis.length} / ${fs.length}</span></h2>
      <div class="grid">${cardsHTML(fs)}</div></div>`;}).join("");
+  $$("#sidx a[data-t^='d']").forEach(a=>a.classList.toggle("off",gone.has(+a.dataset.t.slice(1))));
   const undated=FILMS.filter(f=>!f.ys);
   const UG=["tv","doc","fic","inprod","unk"].map(k=>({k,items:undated.filter(f=>ukind(f)===k)})).filter(g=>g.items.length);
   const uopen=UOPEN||(FQ&&undated.some(pass));
@@ -954,12 +982,17 @@ function render(){
   {const dt=$("#leads details");dt.addEventListener("toggle",()=>{LOPEN=dt.open;dt.querySelector(".tg").textContent=dt.open?T("hide"):T("show");});}
   shown+=leads.filter(pass).length;
   $("#fn").textContent=`${shown} / ${F.length} ${T("shown")}`;
+  {const none=$("#none");none.hidden=!(filt&&!shown);
+   if(!none.hidden){none.innerHTML=`<p><b>${T("ihNone")}</b> <button class="lk" type="button" id="noneGo">${T("ihNew")} ${lang==="ar"?"←":"→"}</button></p>`;
+     $("#noneGo").onclick=()=>{const v=$("#fq").value.trim();$("#fq").value="";FQ="";want({title:v});render();requestAnimationFrame(()=>jumpTo($("#submit"),false));};}}
   renderSubmit();
   $("#tk-list").innerHTML=C[lang].ticker.map(t=>`<li><span class="tk-date mono">${t[0]}</span><span>${fmt(t[1],{n:F.length,k:kn,f:FILMS.length})}</span></li>`).join("");
   route();requestAnimationFrame(()=>{measure();slices();});}
 /* decades as beds: the contact is a slice that bends with your eye level (v20's horizon law, four planes) */
-function slices(){const mid=innerHeight/2,BOW=Math.round(Math.max(40,Math.min(72,innerWidth*.036)));document.documentElement.style.setProperty("--bow",BOW+"px");
+const PHONE=()=>!!(window.matchMedia&&matchMedia("(max-width:640px)").matches);
+function slices(){const mid=innerHeight/2,BOW=Math.round(Math.max(40,Math.min(72,innerWidth*.036))),ph=PHONE();document.documentElement.style.setProperty("--bow",BOW+"px");
   $$(".dec").forEach((b,ix)=>{const r=b.getBoundingClientRect(),W=r.width;let t=(mid-r.top)/(mid*.9);t=Math.max(-1,Math.min(1,t));
+    if(ph){if(b._ph===W+":"+ix)return;b._ph=W+":"+ix;t=.5;}   /* on a phone the seam holds still: it bends once, not with every flick of the thumb */
     const sgn=-Math.sign(t),mag=Math.pow(Math.abs(t),1.12);let g="",ys=[];
     for(let k=0;k<4;k++){const d=k*7,amp=BOW*(1-k*.17);ys.push([BOW+d,BOW+d+sgn*mag*amp]);}
     if(ix)for(let k=0;k<3;k++){const a=ys[k],c=ys[k+1];g+=`<polygon points="0,${a[0]} ${W/2},${a[1]} ${W},${a[0]} ${W},${c[0]} ${W/2},${c[1]} 0,${c[0]}" fill="${b.dataset.prev}" opacity="${(.5-k*.12).toFixed(2)}"/>`;}
@@ -1004,7 +1037,10 @@ const store={get(k,d){try{const v=JSON.parse(localStorage.getItem(k)||"null");re
 function loadDraft(){const v=store.get(DKEY,null);return v&&v.code?Object.assign(blank(),v):null;}
 function saveDraft(){store.set(DKEY,D);}
 let D=loadDraft()||blank(),OPEN=false,STATE="form",SENT=null,QUICK="",PENDING=null;
-const filled=(d=D)=>!!(d.t||d.ar||d.y||d.d||d.nt||d.who||d.em||(d.refs||[]).some(r=>r.u));
+/* the record's own title, filled in when someone adds to a record, is not something they wrote */
+const autoT=d=>{if(!d.att||!d.t)return false;const f=F.find(x=>x.code===d.att);return !!f&&d.t===f.clean;};
+const filled=(d=D)=>!!((d.t&&!autoT(d))||d.ar||d.y||d.d||d.nt||d.who||d.em||(d.refs||[]).some(r=>r.u));
+let FOCUS="",FOCUS_T=0;
 const asideList=()=>store.get(AKEY,[]).filter(x=>x&&x.code);
 /* an unsent entry is never thrown away: it is kept aside in this browser, and offered back in the band */
 function putAside(d){if(!filled(d))return;const l=asideList().filter(x=>x.code!==d.code);l.unshift(d);store.set(AKEY,l.slice(0,6));}
@@ -1036,10 +1072,11 @@ function want(t){const f=t.att&&F.find(x=>x.code===t.att),label=t.att?(f?f.clean
   if(filled()&&!same&&STATE!=="sending"){PENDING=Object.assign({label},t);OPEN=false;renderSubmit();return;}
   apply(t);}
 function apply(t){STATE="form";SENT=null;PENDING=null;
-  if(t.att){const f=F.find(x=>x.code===t.att);if(D.att!==t.att&&filled()){putAside(D);D=blank();}D.att=t.att;if(!D.t&&f)D.t=f.clean;D.st=Math.max(D.st,2);}
+  if(t.att){const f=F.find(x=>x.code===t.att);if(D.att!==t.att){if(filled())putAside(D);D=blank();}D.att=t.att;if(!D.t&&f)D.t=f.clean;D.st=Math.max(D.st,2);}
   else if(t.title!=null){const tt=t.title.trim();if(tt){if(filled()&&norm(tt)!==norm(D.t)){putAside(D);D=blank();}if(!D.t)D.t=tt;D.att=null;}}
   saveDraft();QUICK="";OPEN=true;renderSubmit();focusStep();}
 function renderSubmit(){const S=$("#submit");if(!S)return;const L=lang==="ar",arr=L?"←":"→";
+  S.classList.toggle("tuck",!!FQ&&!OPEN&&!PENDING&&STATE!=="done");   /* while searching, the band steps aside so the matches sit under the search */
   if(STATE==="done"&&SENT){S.innerHTML=`<div class="ok"><div class="sh"><span class="ord mono">+</span><h2 id="sbH">${T("okH")}</h2></div>
      <p>${esc(fmt(T("okP"),{t:SENT.t||T("untitled"),a:SENT.att?fmt(T("okA"),{c:SENT.att}):""}))}</p>
      <p>${T("okCode")}: <span class="okcode" dir="ltr">${esc(SENT.code)}</span></p>
@@ -1124,7 +1161,7 @@ function bindDupe(){$$("#dupe [data-att]").forEach(e=>e.onclick=()=>{D.att=e.dat
 function goStep(n){if(n>1&&!D.t.trim()&&!D.att){D.st=1;renderSubmit();const q=$("#q1");if(q){q.classList.add("need");q.querySelector(".hint").textContent=T("need");}focusStep();return;}
   D.st=Math.max(1,Math.min(5,n));saveDraft();renderSubmit();focusStep();
   const s=$("#submit");if(s&&s.getBoundingClientRect().top<SB())jumpTo(s,false);}
-function focusStep(){requestAnimationFrame(()=>{const el=$("#submit .pane.on input:not(.hp),#submit .pane.on textarea");if(el)try{el.focus({preventScroll:true})}catch(e){el.focus()}});}
+function focusStep(){requestAnimationFrame(()=>{const want=FOCUS&&$("#submit .pane.on #f_"+FOCUS);const el=want||$("#submit .pane.on input:not(.hp),#submit .pane.on textarea");if(el)try{el.focus({preventScroll:true})}catch(e){el.focus()}});}
 /* from the call card, the nav, another page (#submit), or a record (#add/CODE) */
 function openSubmit(code,scroll){document.body.classList.remove("r");
   if(code)want({att:code});else{PENDING=null;if(STATE!=="error"&&STATE!=="sending")STATE="form";SENT=null;OPEN=true;renderSubmit();}
@@ -1188,15 +1225,19 @@ function onHash(){const h=location.hash||"";
   if(/^#r\//.test(h)){route();return;}
   document.body.classList.remove("r");requestAnimationFrame(()=>{measure();slices();});}
 addEventListener("hashchange",onHash);
+document.addEventListener("click",e=>{const a=e.target.closest&&e.target.closest('a[href^="#add/"]');if(!a)return;
+  FOCUS=a.classList.contains("addy")?"y":"";clearTimeout(FOCUS_T);FOCUS_T=setTimeout(()=>{FOCUS="";},700);if(location.hash===a.getAttribute("href")){e.preventDefault();onHash();}});
 $("#callcard").addEventListener("click",e=>{e.preventDefault();if(location.hash==="#submit")openSubmit(null,true);else location.hash="#submit";});
 {const fq=$("#fq"),qb=$("#qbox"),mark=()=>qb.classList.toggle("on",document.activeElement===fq||!!fq.value);
- fq.oninput=e=>{FQ=norm(e.target.value.trim());const y=scrollY;render();scrollTo(0,y);mark();};fq.onfocus=mark;fq.onblur=mark;mark();}
+ fq.oninput=e=>{FQ=norm(e.target.value.trim());const y=scrollY;render();scrollTo(0,y);mark();
+   if(FQ){const r=$("#none").hidden?$("#reg"):$("#none");if(r&&r.getBoundingClientRect().top<SB())jumpTo(r,false);}};fq.onfocus=mark;fq.onblur=mark;mark();}
 function applyLang(){document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");document.documentElement.setAttribute("lang",lang);
-  lb.textContent=lang==="en"?"ع":"EN";lb.style.fontFamily=lang==="en"?ARSTACK:"inherit";ml.textContent=lb.textContent;
+  lb.textContent=lang==="en"?"ع":"EN";lb.style.fontFamily=lang==="en"?ARSTACK:"inherit";lb.style.fontSize=lang==="en"?"14px":"12px";
+  ml.textContent=lb.textContent;ml.style.fontFamily=lb.style.fontFamily;ml.style.fontSize=lang==="en"?"15px":"13px";
   render();buildFold();navStrip.classList.add("tearing");requestAnimationFrame(stripPlace);setTimeout(()=>navStrip.classList.remove("tearing"),980);}
 lb.onclick=e=>{e.preventDefault();lang=lang==="en"?"ar":"en";try{localStorage.setItem("merath.lang",lang)}catch(err){}applyLang();};
 ml.onclick=e=>{e.preventDefault();lb.click();};
-addEventListener("scroll",()=>requestAnimationFrame(slices),{passive:true});
+let TICK=false;addEventListener("scroll",()=>{if(TICK)return;TICK=true;requestAnimationFrame(()=>{TICK=false;slices();});},{passive:true});
 addEventListener("resize",()=>{stripPlace();buildFold();measure();slices();});
 applyLang();
 
@@ -1218,7 +1259,7 @@ var NAVON=null;
 function centerNav(){const nv=document.getElementById("sidx"),a=nv&&nv.querySelector("a.on");if(!nv||!a||a===NAVON)return;NAVON=a;
   const max=nv.scrollWidth-nv.clientWidth;if(max<=2)return;const rtl=getComputedStyle(nv).direction==="rtl";
   let x=a.offsetLeft+a.offsetWidth/2-nv.clientWidth/2;if(rtl)x-=max;nv.scrollTo({left:x,behavior:"smooth"});}
-addEventListener("scroll",()=>requestAnimationFrame(chromeState),{passive:true});
+
 addEventListener("resize",()=>requestAnimationFrame(chromeState));
 {const nv=$("#sidx");if(nv)nv.addEventListener("scroll",chromeState,{passive:true});}
 requestAnimationFrame(()=>{stripPlace();buildFold();measure();slices();onHash();});
