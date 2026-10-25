@@ -998,7 +998,7 @@ function jumpTo(el,smooth){if(!el)return;const gap=el.id==="submit"?0:10;   /* t
   scrollTo({top:Math.max(0,el.getBoundingClientRect().top+scrollY-SB()-gap),behavior:smooth?"smooth":"auto"});}
 function measure(){document.documentElement.style.setProperty("--sth",(($("#stick")||{}).offsetHeight||96)+"px");}
 function blockSize(f){if((f.web||[]).length||f.poster)return "s4";if(f.open.length>=2)return "s2";return "s3";}
-const VEIL=new Set(["08_Flm_027","08_Flm_266"]);   /* Legend of the Lost; The English Patient */
+const VEIL=new Set(["08_Flm_027","08_Flm_266","08_Flm_221"]);   /* Legend of the Lost; The English Patient; Station Six-Sahara (moad 26.10) — a black box on the page, the poster in the record */
 function blockHTML(f,grp){const s=blockSize(f),im=VEIL.has(f.code)?null:imgOf(f),p=im?im.n:"";
   const yr=s==="s2"||grp?"":`<span class="yr" dir="ltr">${esc(f.ys||"")}</span>`;
   const pl=s==="s4"&&VEIL.has(f.code)?`<span class="pl veil"><span>${esc(T("veil"))}</span></span>`:s==="s4"?`<span class="pl${im&&im.k==="s"?" still":""}">${p?`<img src="${IMG}${esc(p)}" alt="${esc(TI(f))}" loading="lazy" onerror="this.nextElementSibling.hidden=false;this.remove()"><span hidden>${esc(T("objH"))}</span>${im.k==="s"?`<span class="stl">${esc(T("stillL"))}</span>`:""}`:`<span>${esc(T("objH"))}</span>`}</span>`:"";
