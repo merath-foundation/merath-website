@@ -684,6 +684,42 @@ html.scrolled #hband{opacity:1}
 
 /* round 11 — the search bar is the lime under the fold, as on the Archives page */
 .bar{background:#D9F164}
+
+/* round 12 — the record's three facts without empty boxes: the object (with its picture) at the start, the two status lines stacked beside it */
+.cert{grid-template-columns:minmax(220px,auto) minmax(0,1fr);grid-template-rows:auto 1fr;gap:0 18px;align-items:start}
+.cp{min-height:0;background:none;border-top-width:2px;padding:.7rem 0 .9rem}
+.cp.obj{grid-row:1/3;background:#FBF7EA;padding:.8rem 1rem 1rem}
+.cp:not(.obj)+.cp:not(.obj){border-top:1px solid rgba(20,24,28,.25)}
+.cp b{font-size:17px}
+.cert:not(:has(.imgs)) {grid-template-columns:repeat(3,minmax(0,1fr))}
+.cert:not(:has(.imgs)) .cp.obj{grid-row:auto}
+@media(max-width:820px){.cert,.cert:not(:has(.imgs)){grid-template-columns:1fr}.cp.obj{grid-row:auto}}
+
+/* round 14 — the projects behind the census; the form in front of a blurred page; adding to a record made short */
+.pjo{display:inline-flex;align-items:baseline;gap:.35em;padding:.05em .5em .12em;margin:0 .1em;border:1.5px solid currentColor;color:inherit;text-decoration:none;white-space:nowrap;line-height:1.3}
+.pjo .n{font-size:.62em;letter-spacing:.06em;opacity:.65}
+.pjo .t{font-weight:600}
+.pjo .g{font-size:.8em;opacity:.7}
+.pjo:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.pg-sub .pjline{margin-top:.9rem}
+#sbveil{position:fixed;inset:0;z-index:40;background:rgba(247,241,225,.5);-webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);opacity:0;pointer-events:none;transition:opacity .25s}
+body.sbopen #sbveil,body.sbfocus #sbveil{opacity:1;pointer-events:auto}
+body.sbopen main,body.sbfocus main{z-index:auto}
+body.sbopen #submit,body.sbfocus #submit{z-index:41;box-shadow:0 0 0 1.5px var(--ink),10px 12px 0 rgba(20,24,28,.12)}
+.attbar{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:.3rem 1rem;align-items:baseline;background:#D9F164;padding:.7rem 1rem;margin:0 0 1rem}
+.attbar b{font-size:15px;font-weight:600}
+.attbar span{font-size:13px;opacity:.85}
+.sendnow{font:inherit;font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;background:#D9F164;color:var(--ink);border:1.5px solid var(--ink);padding:7px 14px 8px;cursor:pointer}
+[dir="rtl"] .sendnow{letter-spacing:0;font-size:13px}
+.sendnow:hover{background:var(--ink);color:#D9F164}
+@media (prefers-reduced-motion:reduce){#sbveil{transition:none}}
+/* round 15b — quieter: the description leads, the project is a plain link with its number */
+.pjo{display:inline;padding:0;margin:0;border:0;border-bottom:1px solid currentColor;color:inherit;text-decoration:none;font-weight:inherit;white-space:nowrap}
+.pjo .n{font-size:.68em;letter-spacing:.04em;opacity:.55;margin-inline-end:.3em;vertical-align:.08em}
+.pjo .t{font-weight:inherit}
+.pjo .g{font-size:.75em;opacity:.55;margin-inline-start:.2em}
+.pjo:hover{background:#D9F164;color:var(--ink);border-color:var(--ink)}
+.bed.dark .bl .stnote .pjo:hover{background:#D9F164;color:var(--ink)}
 </style>
 </head>
 <body>
@@ -704,7 +740,7 @@ html.scrolled #hband{opacity:1}
     <div>
       <div class="crumb"><span class="no mono">08</span></div>
       <h1><span class="ttl" data-i18n="h1"></span><span class="o" data-i18n="h1o"></span></h1>
-      <div class="pg-sub"><p data-i18n="lede1"></p><p data-i18n="lede2"></p></div>
+      <div class="pg-sub"><p data-i18n="lede1"></p><p data-i18n="lede2"></p><p class="pjline" id="pjline"></p></div>
       <div class="tally" id="tally"></div>
       <p class="intake" id="intake"></p>
     </div>
@@ -769,7 +805,7 @@ const C={en:{wm:"merath",nProjects:"Projects",nPublications:"Publications",nProg
   fAll:"All",fKnown:"Copy known",fUnk:"Not known",fLost:"Lost",fPoster:"Poster held",
   shown:"shown",
   und:"Year not yet known",undE:"These films are known, but no source we can cite gives the year they were made, so they are not guessed into the decades. They are grouped by kind. If you know when one was made, add it to its record.",
-  ugroups:{tv:"Television films",doc:"Documentaries",fic:"Fiction features",inprod:"In production",unk:"Kind not yet known"},addYear:"Add the year →",show:"Show",hide:"Hide",
+  ugroups:{tv:"Television films",doc:"Documentaries",fic:"Fiction features",inprod:"In production",unk:"Kind not yet known"},addYear:"Add the year →",pjLine:"This census is part of {hic} — merath\u2019s research on what culture holds in common: shared ownership, availability and proof, with film as its first ground.",attH:"Adding to «{t}» · {c}",attP:"Fill in only what you know — one field is enough. You can send it at any step.",sendNow:"Send now",show:"Show",hide:"Hide",
   leads:"Leads",leadsE:"Bodies of material identified but not yet listed item by item — newsreel holdings abroad, a television archive — and titles a source names that have not been seen. A lead is not a single work, so it has no year block and no numeral.",
   kinds:{corpus:"Archive lead",lead:"Research lead",unknown:"Unidentified"},
   /* submit a record */
@@ -819,7 +855,7 @@ const C={en:{wm:"merath",nProjects:"Projects",nPublications:"Publications",nProg
   fAll:"الكل",fKnown:"نسخة معروفة",fUnk:"غير معروف",fLost:"مفقود",fPoster:"ملصق محفوظ",
   shown:"معروض",
   und:"سنة غير معروفة بعد",undE:"هذه أفلام معروفة، لكن لا مصدر نستند إليه يذكر سنة صنعها، فلا تخمن في العقود. وهي مجمعة حسب النوع. إن كنتم تعرفون متى صنع أحدها، أضيفوا السنة إلى سجله.",
-  ugroups:{tv:"أفلام تلفزيونية",doc:"أفلام وثائقية",fic:"أفلام روائية",inprod:"قيد الإنتاج",unk:"نوعها غير معروف بعد"},addYear:"أضيفوا السنة ←",show:"اعرضوها",hide:"أخفوها",
+  ugroups:{tv:"أفلام تلفزيونية",doc:"أفلام وثائقية",fic:"أفلام روائية",inprod:"قيد الإنتاج",unk:"نوعها غير معروف بعد"},addYear:"أضيفوا السنة ←",pjLine:"هذا الإحصاء جزء من {hic} — بحث ميراث فيما تملكه الثقافة في المُشاع: الملكية المشتركة والإتاحة والإثبات، والفيلم أرضُه الأولى.",attH:"إضافة إلى «{t}» · {c}",attP:"املؤوا ما تعرفونه فقط — حقلٌ واحد يكفي. يمكنكم الإرسال في أي خطوة.",sendNow:"أرسلوا الآن",show:"اعرضوها",hide:"أخفوها",
   leads:"اتجاهات للبحث",leadsE:"مجموعات من المادة حُدّدت ولم تُفصَّل بعد — مقتنيات جرائد سينمائية في الخارج، أرشيف تلفزيوني — وعناوين يذكرها مصدر ولم تُشاهَد. الاتجاه للبحث ليس عملاً واحداً، فلا سنة له ولا رقم.",
   kinds:{corpus:"اتجاه للبحث في أرشيف",lead:"اتجاه للبحث في مصدر",unknown:"غير محدد"},
   sbH:"أضيفوا سجلاً",sbE:"يكفي العنوان للبدء. ابحثوا أولاً: إن كان الفيلم هنا، تنضمّ مساهمتكم إلى سجلّه. لا يمحو ما ترسلونه شيئاً، ولا يُنشر شيء قبل التحقق منه.",
@@ -952,6 +988,7 @@ function render(){
   const kn=FILMS.filter(KNOWN).length,lo=FILMS.filter(LOST).length,un=FILMS.filter(f=>f.surv==="unknown"||f.surv==="unset").length;
   $("#tally").innerHTML=[["",FILMS.length,T("tFilms")],["k",kn,T("tKnown")],["l",lo,T("tLost")],["u",un,T("tUnk")],["",F.length-FILMS.length,T("tLeads")]].map(x=>`<div class="tl ${x[0]}"><b>${x[1]}</b><span>${x[2]}</span></div>`).join("");
   $("#intake").textContent=fmt(T("intake"),{n:F.length,d});
+  {const pl=$("#pjline"),L=lang==="ar";if(pl)pl.innerHTML=esc(T("pjLine")).replace("{hic}",`<a class="pjo" href="/projects/held-in-common"><span class="n mono" dir="ltr">008</span><span class="t">${L?"في المُشاع":"Held in Common"}</span><span class="g">${L?"↖":"↗"}</span></a>`);}
   $("#callcard").innerHTML=`<span class="oc-cat">${T("ocCat")}</span><h3>${T("ocH")}</h3><p>${T("ocP")}</p><span class="oc-go">${T("ocGo")} ${lang==="ar"?"←":"→"}</span>`;
   /* the nav: Submit a Record first, then every decade, then the undated and the leads */
   $("#sidx").innerHTML=`<span class="grp"><span class="lbl">${T("navDec")}</span>${DECS.map(k=>`<a data-t="d${k}" href="#d${k}" dir="ltr">${DECL(k)}</a>`).join("")}</span>`
@@ -1087,6 +1124,9 @@ function apply(t){STATE="form";SENT=null;PENDING=null;
   else if(t.title!=null){const tt=t.title.trim();if(tt){if(filled()&&norm(tt)!==norm(D.t)){putAside(D);D=blank();}if(!D.t)D.t=tt;D.att=null;}}
   saveDraft();QUICK="";OPEN=true;renderSubmit();focusStep();}
 function renderSubmit(){const S=$("#submit");if(!S)return;const L=lang==="ar",arr=L?"←":"→";
+  /* the open form has its own address (merath.ly/archives/film#submit, or #add/<code>) and the page behind it blurs */
+  const shown=OPEN||STATE==="done"||!!PENDING;document.body.classList.toggle("sbopen",shown);
+  {const want=D.att?"#add/"+D.att:"#submit";if(OPEN&&location.hash!==want)try{history.replaceState(null,"",location.pathname+location.search+want)}catch(e){}}
   S.classList.toggle("tuck",!!FQ&&!OPEN&&!PENDING&&STATE!=="done");   /* while searching, the band steps aside so the matches sit under the search */
   if(STATE==="done"&&SENT){S.innerHTML=`<div class="ok"><div class="sh"><span class="ord mono">+</span><h2 id="sbH">${T("okH")}</h2></div>
      <p>${esc(fmt(T("okP"),{t:SENT.t||T("untitled"),a:SENT.att?fmt(T("okA"),{c:SENT.att}):""}))}</p>
@@ -1105,7 +1145,8 @@ function renderSubmit(){const S=$("#submit");if(!S)return;const L=lang==="ar",ar
       ${filled()&&!PENDING?`<div class="draft"><b>${T("draftHas")}:</b><span dir="auto">«${esc(D.t||T("untitled"))}»</span><span class="mono" dir="ltr">${esc(D.code)}</span><button class="lk" type="button" id="dGo">${T("draftGo")}</button><button class="lk" type="button" id="dNew">${T("draftNew")}</button></div>`:""}
       ${al.length?`<div class="draft"><b>${T("aside")}:</b>${al.map(x=>`<span dir="auto">«${esc(x.t||T("untitled"))}» <span class="mono" dir="ltr">${esc(x.code)}</span></span><button class="lk" type="button" data-aside="${esc(x.code)}">${T("asideGo")}</button>`).join("")}</div>`:""}</div>`;
     const q=$("#ihq");
-    q.oninput=()=>{QUICK=q.value;$("#ih").innerHTML=ihHTML();bindIh();};   /* only the matches are redrawn: the input stays, so typing (and an IME) is never interrupted */
+    q.oninput=()=>{QUICK=q.value;$("#ih").innerHTML=ihHTML();bindIh();document.body.classList.toggle("sbfocus",!!q.value.trim());};
+    q.onfocus=()=>{if(q.value.trim())document.body.classList.add("sbfocus");};   /* only the matches are redrawn: the input stays, so typing (and an IME) is never interrupted */
     q.onkeydown=e=>{if(e.key==="Enter"&&!e.isComposing){e.preventDefault();want({title:QUICK});}};
     $("#sbGo").onclick=()=>want({title:QUICK});
     bindIh();
@@ -1120,6 +1161,7 @@ function renderSubmit(){const S=$("#submit");if(!S)return;const L=lang==="ar",ar
   const pane=(n,h)=>`<div class="pane ${ST===n?"on":""}" role="tabpanel">${h}</div>`;
   S.innerHTML=`<button class="x" type="button" id="sbX">${T("close")} ✕</button>
    <div class="sh"><span class="ord mono">+</span><h2 id="sbH">${T("sbH")}</h2><em>${T("sbE")}</em></div>
+   ${D.att?`<div class="attbar"><b dir="auto">${esc(fmt(T("attH"),{t:(f=>f?TI(f):D.att)(F.find(x=>x.code===D.att)),c:D.att}))}</b><span>${T("attP")}</span></div>`:""}
    <div class="steps" role="tablist">${C[lang].steps.map((s,i)=>`<button type="button" role="tab" class="stp ${ST===i+1?"on":""} ${ST>i+1?"done":""}" data-st="${i+1}" aria-selected="${ST===i+1}"><b class="mono">0${i+1}</b>${s}</button>`).join("")}</div>
    <div class="form"><div>
     ${pane(1,`<div class="q" id="q1"><label for="f_t">${T("q1")}<span class="req">${T("req")}</span></label>
@@ -1146,6 +1188,7 @@ function renderSubmit(){const S=$("#submit");if(!S)return;const L=lang==="ar",ar
       ${ST>1?`<button type="button" class="opt" data-go="${ST-1}">${T("back")}</button>`:""}
       ${ST<5?`<button type="button" class="go2" data-go="${ST+1}">${T("cont")}</button>`
             :`<button type="button" class="go2" id="sbSend" ${sending?"disabled":""}>${sending?T("sending"):(STATE==="error"?T("errRetry"):T("send"))}</button>`}
+      ${D.att&&ST<5?`<button type="button" class="sendnow" id="sbNow" ${sending?"disabled":""}>${T("sendNow")} ${arr}</button>`:""}
       <span class="gh">${fmt(T("stepOf"),{s:ST})}</span>
     </div></div>
     <div>${card()}</div></div>`;
@@ -1162,8 +1205,8 @@ function renderSubmit(){const S=$("#submit");if(!S)return;const L=lang==="ar",ar
   $$(".rf_k").forEach(e=>e.onchange=()=>{D.refs[+e.dataset.i].k=e.value;saveDraft();});
   $$("[data-rm]").forEach(e=>e.onclick=()=>{D.refs.splice(+e.dataset.rm,1);if(!D.refs.length)D.refs=[{u:"",k:"link"}];saveDraft();again("#addref");});
   const ar=$("#addref");if(ar)ar.onclick=()=>{D.refs.push({u:"",k:"link"});saveDraft();renderSubmit();const r=$$(".rf_u");if(r.length)r[r.length-1].focus();};
-  const sd=$("#sbSend");if(sd)sd.onclick=send;
-  $("#sbX").onclick=()=>{OPEN=false;if(STATE==="error")STATE="form";if(/^#(submit|add\/)/.test(location.hash))history.replaceState(null,"",location.pathname);renderSubmit();const b=$("#sbGo");if(b)b.focus({preventScroll:true});};
+  const sd=$("#sbSend");if(sd)sd.onclick=send;const sn=$("#sbNow");if(sn)sn.onclick=send;
+  $("#sbX").onclick=()=>{OPEN=false;document.body.classList.remove("sbopen","sbfocus");if(STATE==="error")STATE="form";if(/^#(submit|add\/)/.test(location.hash))history.replaceState(null,"",location.pathname);renderSubmit();const b=$("#sbGo");if(b)b.focus({preventScroll:true});};
   bindDupe();}
 function dupHTML(dup){if(!dup.length)return "";
   return `<div class="dupe"><b>${T("matchN")}</b>${dup.map(f=>`<button type="button" class="m" data-att="${esc(f.code)}"><i class="box ${boxC(f)}"></i><span dir="auto">${esc(TI(f))}</span><em dir="ltr">${esc(f.y||"")} · ${esc(f.code)}</em></button>`).join("")}
@@ -1236,6 +1279,10 @@ function onHash(){const h=location.hash||"";
   if(/^#r\//.test(h)){route();return;}
   document.body.classList.remove("r");requestAnimationFrame(()=>{measure();slices();});}
 addEventListener("hashchange",onHash);
+{const v=document.createElement("div");v.id="sbveil";v.setAttribute("aria-hidden","true");document.body.appendChild(v);
+ v.onclick=()=>{if(document.body.classList.contains("sbopen")){const x=$("#sbX");if(x)x.click();else{STATE="form";SENT=null;OPEN=false;PENDING=null;renderSubmit();}}document.body.classList.remove("sbopen","sbfocus");
+   if(/^#(submit|add\/)/.test(location.hash))try{history.replaceState(null,"",location.pathname+location.search)}catch(e){}};
+ document.addEventListener("keydown",e=>{if(e.key!=="Escape")return;if(document.body.classList.contains("sbopen")||document.body.classList.contains("sbfocus"))v.click();});}
 document.addEventListener("click",e=>{const a=e.target.closest&&e.target.closest('a[href^="#add/"]');if(!a)return;
   FOCUS=a.classList.contains("addy")?"y":"";clearTimeout(FOCUS_T);FOCUS_T=setTimeout(()=>{FOCUS="";},700);if(location.hash===a.getAttribute("href")){e.preventDefault();onHash();}});
 $("#callcard").addEventListener("click",e=>{e.preventDefault();if(location.hash==="#submit")openSubmit(null,true);else location.hash="#submit";});

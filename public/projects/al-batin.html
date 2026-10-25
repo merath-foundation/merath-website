@@ -404,7 +404,7 @@ nav.nav{padding:0}
       R.innerHTML=m.length?'<div class="spr-cols" style="--n:1"><section class="spr-col"><ol>'+m.map(function(x){return '<li><a class="spr-it" href="'+esc(x.h||"/archives")+'"><b dir="auto">'+esc(x.t)+'</b></a></li>';}).join("")+'</ol></section></div>':"";return;}
     var N=IDX.n,tot=N.cat+N.film;
     if(!q||!q.trim()){
-      R.innerHTML='<div class="spr-idle"><p class="spr-n">'+(ar?(tot+" سجلاً في الأرشيفات، و"+N.net+" على موقع ميراث"):(tot+" records in the Archives, and "+N.net+" across merath.ly"))+'</p>'
+      R.innerHTML='<div class="spr-idle"><p class="spr-n">'+(ar?((N.all||tot).toLocaleString("en-US")+" سجلاً في قواعد البيانات كلها"):((N.all||tot).toLocaleString("en-US")+" records in all the databases"))+'</p>'
         +'<p class="spr-try"><span>'+(ar?"جرّبوا":"Try")+'</span>'+TRY[ar?"ar":"en"].map(function(t){return '<button type="button" data-q="'+esc(t)+'">'+esc(t)+'</button>';}).join("")+'</p>'
         +'<a class="spr-all" href="/archives">'+(ar?"افتحوا الأرشيفات ←":"Open the Archives →")+'</a></div>';
       R.querySelectorAll("[data-q]").forEach(function(b){b.onclick=function(){var i=document.getElementById("sp-input");if(!i)return;i.value=b.getAttribute("data-q");render(svg,i.value);try{i.focus()}catch(_e){}};});
