@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>merath — Projects</title>
+<link rel="canonical" href="https://merath.ly/projects">
+<meta name="robots" content="noindex">
+<meta http-equiv="refresh" content="0;url=/projects">
+<!--
+  This file exists because /projects/ and /projects are not the same address
+  to the host, and only one of them is ours.
+
+  The host serves /projects from public/projects.html and 404s on /projects/.
+  That would be a small fault if the 404 page were ours — it is not. The
+  deploy regenerates 404.html from app.html (see the commit "build: 404 shell
+  comes from app.html"), so the repository's 404 page, which redirects
+  trailing slashes, never reaches production: the file in the repo is 3.2 KB
+  and the file the server returns is the 405-byte shell of the previous
+  website. A reader who added one slash did not see a merath error. They saw
+  the old site, and had no way of knowing they had left.
+
+  The build now refuses to finish if any page links to a trailing slash, so
+  the site cannot create this again. But addresses already exist outside the
+  site — in bookmarks, in messages, in search results, in whatever the back
+  link put in someone's history before it was fixed — and those cannot be
+  recalled. This file catches them.
+
+  It sits at public/projects/index.html, which is what the host looks for when
+  asked for /projects/. Nothing in the deploy generates a file at that path,
+  so unlike 404.html it survives.
+
+  replace() rather than href: the slashed address must not enter the history,
+  or Back returns the reader to this page and then forward again.
+
+  The meta refresh is the no-JS path, and the canonical link tells a crawler
+  which of the two addresses is the real one.
+-->
+<script>
+(function () {
+  try {
+    location.replace('/projects' + location.search + location.hash);
+  } catch (e) { /* the meta refresh above still carries it */ }
+})();
+</script>
+<style>
+  html,body{margin:0;height:100%}
+  body{background:#F7F1E1;color:#14181c;
+    font-family:"29LT Bukra","IBM Plex Sans Arabic","Helvetica Neue",Arial,system-ui,sans-serif;
+    display:flex;align-items:center;justify-content:center;text-align:center;padding:8vw}
+  a{color:#14181c;border-bottom:1.5px solid #E39B00;text-decoration:none;padding-bottom:2px}
+</style>
+</head>
+<body>
+  <p>Taking you to <a href="/projects">Projects</a>.</p>
+</body>
+</html>
