@@ -355,6 +355,7 @@ html[lang="en"] .introrow h1 .o{font-size:clamp(15px,1.2vw + 8px,22px);margin-to
 .bar .f{font:inherit;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;border:1.5px solid var(--ink);background:none;padding:4px 10px 5px;cursor:pointer;color:var(--ink);font-weight:600}
 .bar .f[aria-pressed="true"]{background:var(--ink);color:var(--cream);border-color:var(--ink)}
 [dir="rtl"] .bar .f{letter-spacing:0;font-size:12px}
+#filters .f[data-f="feat"]{margin-inline-start:1rem}   /* the kinds of film stand apart from the survival filters */
 .bar .n{font-size:10.5px;letter-spacing:.1em;opacity:.8}
 
 /* ── SUBMIT A RECORD, at the top of the database ─────────────────────── */
@@ -725,6 +726,60 @@ body.sbopen #submit,body.sbfocus #submit{z-index:41;box-shadow:0 0 0 1.5px var(-
 .b.s4 .pl.veil{background:#14181C}
 .b.s4 .pl.veil::before{display:none}
 .b.s4 .pl.veil span{background:none;color:#F7F1E1;opacity:.8}
+/* ── the list view (moad 26.10: "rows, minimized, that expand a little when you hover them ... easier to scroll ...
+   the same ordering between years and decades ... a thumbnail of the poster or still ... the default view") ── */
+.vsw{display:inline-flex;flex:none;border:1.5px solid var(--ink);margin-inline-start:.4rem}
+.vsw button{font:inherit;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;background:none;border:0;color:var(--ink);padding:4px 10px 5px;cursor:pointer;display:inline-flex;align-items:center;gap:.4em}
+.vsw button+button{border-inline-start:1.5px solid var(--ink)}
+.vsw button[aria-pressed="true"]{background:var(--ink);color:var(--saff,#E8D84A)}
+.vsw .ic{font-size:12px;line-height:1}
+[dir="rtl"] .vsw button{letter-spacing:0;font-size:12px}
+.lst{position:relative;z-index:3}
+.ly{display:grid;grid-template-columns:96px minmax(0,1fr);border-top:2px solid var(--ink)}
+.lyh{padding:.55rem 0 .5rem}
+.lyh .yr{display:block;position:sticky;top:calc(var(--mh,74px) + var(--sth,96px) + 10px);font-size:20px;font-weight:600;letter-spacing:-.02em;line-height:1}
+.lyh .ygn{display:block;position:sticky;top:calc(var(--mh,74px) + var(--sth,96px) + 34px);font-size:9px;letter-spacing:.12em;text-transform:uppercase;opacity:.7;margin-top:.35rem}
+[dir="rtl"] .lyh .ygn{font-size:11px;letter-spacing:0}
+.lr{display:grid;grid-template-columns:auto minmax(0,2.4fr) minmax(0,1.5fr) minmax(0,.85fr) minmax(0,.95fr) 80px;gap:0 16px;align-items:center;
+  min-height:52px;padding:6px 10px;color:var(--ink);text-decoration:none;border-bottom:1px solid rgba(20,24,28,.16);transition:background .2s ease .1s}
+.lr:hover,.lr:focus-visible{background:rgba(251,247,234,.94);color:var(--ink);outline:none}
+.lr.hit{box-shadow:inset 3px 0 0 var(--lime)}
+[dir="rtl"] .lr.hit{box-shadow:inset -3px 0 0 var(--lime)}
+.lth{position:relative;display:block;align-self:start;width:40px;height:40px;overflow:hidden;background:rgba(20,24,28,.08);
+  transition:width .25s ease .12s,height .25s ease .12s}
+.lth img{display:block;width:100%;height:100%;object-fit:cover}
+.lth.still{background:#14181C;padding:4px 0}
+.lth.still img{filter:saturate(.75)}
+.lth.veil{background:#14181C}
+.lth.none{background:none;outline:1px dashed currentColor;outline-offset:-1px;opacity:.35}
+.lm{min-width:0}
+.lm .tt{display:block;font-size:14px;font-weight:500;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lm .tt2{display:block;font-size:11.5px;opacity:.6;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lx{display:block;max-height:0;opacity:0;overflow:hidden;font-size:12px;line-height:1.45;transition:max-height .25s ease .12s,opacity .2s ease .12s,margin .25s ease .12s}
+.lx .yl{display:block;font-size:9px;letter-spacing:.12em;text-transform:uppercase;opacity:.7;margin-bottom:.2rem}
+.lr .ldr{font-size:11px;opacity:.8;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lr .lty{font-size:9px;letter-spacing:.1em;text-transform:uppercase;opacity:.75;line-height:1.3}
+.lr .sv{display:flex;align-items:center;gap:6px;font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;opacity:.8;line-height:1.3}
+.lr .cd{font-size:8.5px;opacity:.5;text-align:end}
+[dir="rtl"] .lr .lty,[dir="rtl"] .lr .sv{letter-spacing:0;font-size:10.5px}
+@media (hover:hover){
+ .lr:hover .lth{width:92px;height:126px}
+ .lr:hover .lm .tt,.lr:hover .lm .tt2,.lr:hover .ldr{white-space:normal}
+ .lr:hover .lx{max-height:120px;opacity:.85;margin-top:.4rem}
+}
+.dec.dk .ly{border-top-color:var(--cream)}
+.dec.dk .lyh{color:var(--cream)}
+.dec.dk .lr{color:var(--cream);border-bottom-color:rgba(247,241,225,.2)}
+.dec.dk .lr:hover,.dec.dk .lr:focus-visible{color:var(--ink)}
+.dec.dk .lth.none{opacity:.45}
+@media(max-width:920px){
+ .ly{grid-template-columns:58px minmax(0,1fr)}
+ .lr{grid-template-columns:auto minmax(0,1fr) auto;gap:0 10px;padding:6px 6px}
+ .lr .ldr,.lr .lty,.lr .cd{display:none}
+ .lr .sv{font-size:0;gap:0}
+ .lth{width:36px;height:36px}
+}
+
 
 /* round 17 — years are compact markers; a still is shown as a still, not as a poster */
 .b .yr{font-size:20px!important;line-height:1!important;letter-spacing:-.02em!important;margin-bottom:.35rem!important}
@@ -787,7 +842,7 @@ body.sbopen #totopf{opacity:0;pointer-events:none}
   <nav class="where" id="where" aria-label="You are here"></nav>
   <div class="stick" id="stick">
     <div class="sidxw"><div class="sidxs"><div id="sidx"></div><i class="nfade" aria-hidden="true"></i></div><a class="subp" id="subp" href="#submit"></a></div>
-    <div class="bar"><span class="qbox" id="qbox"><input id="fq" type="search" dir="auto" autocomplete="off"></span><span id="filters"></span><span class="n mono" id="fn"></span></div>
+    <div class="bar"><span class="qbox" id="qbox"><input id="fq" type="search" dir="auto" autocomplete="off"></span><span id="filters"></span><span class="vsw" id="vsw" role="group"></span><span class="n mono" id="fn"></span></div>
   </div>
   <section id="submit" aria-labelledby="sbH"></section>
   <div id="none" hidden></div>
@@ -839,7 +894,7 @@ const C={en:{wm:"merath",nProjects:"Projects",nPublications:"Publications",nProg
   ocT:"Submit a Record",ocCat:"Films Archive",ocH:"Know a Libyan film?",ocP:"A title is enough to begin. Look first: if it is already here, your entry joins its record.",ocGo:"Add a film",
   navAdd:"Submit a Record",navAddS:"Submit",navDec:"Decades",navCount:"{n} records · {d}",
   ph:"Search titles, directors, years — الشظية, 1973, Zarrouk",tw:"Search the films here",
-  fAll:"All",fKnown:"Copy known",fUnk:"Not known",fLost:"Lost",fPoster:"Poster held",fImg:"Has still",
+  fAll:"All",fKnown:"Copy known",fUnk:"Not known",fLost:"Lost",fPoster:"Poster held",fImg:"Has image",fFeat:"Feature films",fShort:"Shorts",fTV:"TV films",vList:"List",vGrid:"Grid",vLab:"View",
   shown:"shown",
   und:"Year not yet known",undE:"These films are known, but no source we can cite gives the year they were made, so they are not guessed into the decades. They are grouped by kind. If you know when one was made, add it to its record.",
   ugroups:{tv:"Television films",doc:"Documentaries",fic:"Fiction features",inprod:"In production",unk:"Kind not yet known"},addYear:"Add the year →",veil:"Poster in the record",pjLine:"This census is part of {hic} — merath\u2019s research on what culture holds in common: shared ownership, availability and proof, with film as its first ground.",attH:"Adding to «{t}» · {c}",attP:"Fill in only what you know — one field is enough. You can send it at any step.",sendNow:"Send now",show:"Show",hide:"Hide",
@@ -889,7 +944,7 @@ const C={en:{wm:"merath",nProjects:"Projects",nPublications:"Publications",nProg
   ocT:"أضيفوا سجلا",ocCat:"أرشيف الأفلام",ocH:"تعرفون فيلماً ليبياً؟",ocP:"يكفي العنوان للبدء. ابحثوا أولاً: إن كان هنا، تنضمّ مساهمتكم إلى سجلّه.",ocGo:"أضيفوا فيلماً",
   navAdd:"أضيفوا سجلاً",navAddS:"أضيفوا",navDec:"العقود",navCount:"{n} سجلاً · {d}",
   ph:"ابحثوا في العناوين والمخرجين والسنوات — الشظية، 1973، الزروق",tw:"ابحثوا في الأفلام هنا",
-  fAll:"الكل",fKnown:"نسخة معروفة",fUnk:"غير معروف",fLost:"مفقود",fPoster:"ملصق محفوظ",fImg:"صورة محفوظة",
+  fAll:"الكل",fKnown:"نسخة معروفة",fUnk:"غير معروف",fLost:"مفقود",fPoster:"ملصق محفوظ",fImg:"صورة محفوظة",fFeat:"أفلام طويلة",fShort:"أفلام قصيرة",fTV:"أفلام تلفزيونية",vList:"قائمة",vGrid:"شبكة",vLab:"العرض",
   shown:"معروض",
   und:"سنة غير معروفة بعد",undE:"هذه أفلام معروفة، لكن لا مصدر نستند إليه يذكر سنة صنعها، فلا تخمن في العقود. وهي مجمعة حسب النوع. إن كنتم تعرفون متى صنع أحدها، أضيفوا السنة إلى سجله.",
   ugroups:{tv:"أفلام تلفزيونية",doc:"أفلام وثائقية",fic:"أفلام روائية",inprod:"قيد الإنتاج",unk:"نوعها غير معروف بعد"},addYear:"أضيفوا السنة ←",veil:"الملصق داخل السجل",pjLine:"هذا الإحصاء جزء من {hic} — بحث ميراث فيما تملكه الثقافة في المُشاع: الملكية المشتركة والإتاحة والإثبات، والفيلم أرضُه الأولى.",attH:"إضافة إلى «{t}» · {c}",attP:"املؤوا ما تعرفونه فقط — حقلٌ واحد يكفي. يمكنكم الإرسال في أي خطوة.",sendNow:"أرسلوا الآن",show:"اعرضوها",hide:"أخفوها",
@@ -938,6 +993,8 @@ function storedLang(){let v=null;try{v=localStorage.getItem("merath.lang")}catch
   if(!v){const m=/(?:^|;\s*)merath\.lang=(ar|en)/.exec(document.cookie||"");if(m)v=m[1];}
   return v==="ar"?"ar":"en";}
 let lang=storedLang(),FILT="all",FQ="";
+/* the view: a list by default, a grid on request; the choice is remembered in this browser */
+let VIEW=(()=>{try{const q=new URLSearchParams(location.search).get("view");if(q==="grid"||q==="list")return q;return localStorage.getItem("merath.film.view")||"list";}catch(e){return "list";}})();
 const masthead=$("#masthead"),navEl=$("header nav"),navStrip=$("#nav-strip"),lb=$("#lang-btn"),ml=$("#m-lang"),miniTree=$("#mini-tree");
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const T=k=>C[lang][k],fmt=(s,o)=>String(s).replace(/\{(\w+)\}/g,(m,k)=>o[k]!=null?o[k]:m);
@@ -1017,11 +1074,27 @@ function cardsHTML(fs){const groups=[];
     if(!grp)return g.fs.map(card).join("");
     const gs=Math.min(12,vis.reduce((a,f)=>a+SPAN[blockSize(f)],0)),gm=Math.min(6,vis.reduce((a,f)=>a+(blockSize(f)==="s4"?6:3),0));
     return `<div class="yg${tall?" tall":""}" style="--gs:${gs};--gm:${gm}"><div class="ygh"><span class="yr" dir="ltr">${g.y}</span><span class="ygn">${ygN(vis.length)}</span></div><div class="ygc">${g.fs.map(card).join("")}</div></div>`;}).join("");}
+/* the list: one row a film, grouped by year as the grid is; a thumbnail as on the card (a still framed as one,
+   the veiled ones black); the row opens a little on hover to show the director, the kind and a line of the film */
+function thumbHTML(f){if(VEIL.has(f.code))return `<span class="lth veil" title="${esc(T("veil"))}"></span>`;const im=imgOf(f);
+  if(!im)return `<span class="lth none"></span>`;
+  return `<span class="lth${im.k==="s"?" still":""}"><img src="${IMG}${esc(im.n)}" alt="" loading="lazy" onerror="this.parentNode.classList.add('none');this.remove()"></span>`;}
+function rowHTML(f){const t2=TI2(f),ty=f.ty?f.ty[lang==="ar"?1:0]:"";
+  const ln=lang==="ar"?(f.logAr||f.synAr||""):(f.log||f.synEn||""),line=ln.length>230?ln.slice(0,ln.lastIndexOf(" ",228))+" …":ln;
+  return `<a class="lr${FQ?" hit":""}" href="#r/${esc(f.code)}" data-c="${esc(f.code)}">${thumbHTML(f)}
+   <span class="lm"><span class="tt" dir="auto">${esc(TI(f))}</span>${t2?`<span class="tt2" dir="auto">${esc(t2)}</span>`:""}${line?`<span class="lx" dir="auto">${esc(line)}</span>`:""}</span>
+   <span class="ldr" dir="auto">${esc(f.dir.join(" · "))}</span><span class="lty">${esc(ty)}</span>
+   <span class="sv"><i class="box ${boxC(f)}"></i>${esc(svL(f))}</span><span class="cd mono" dir="ltr">${esc(f.code)}</span></a>`;}
+function listHTML(fs){const groups=[];
+  fs.filter(pass).sort((a,b)=>a.ys-b.ys||a.n-b.n).forEach(f=>{const g=groups[groups.length-1];if(g&&g.y===f.ys)g.fs.push(f);else groups.push({y:f.ys,fs:[f]});});
+  return groups.map(g=>`<div class="ly"><div class="lyh"><span class="yr" dir="ltr">${g.y}</span>${g.fs.length>1?`<span class="ygn">${ygN(g.fs.length)}</span>`:""}</div><div class="lrs">${g.fs.map(rowHTML).join("")}</div></div>`).join("");}
 /* every word of the search, in any order ("algeria women" finds a record holding both) */
 const QHAS=(tx,q)=>tx.includes(q)||q.split(/\s+/).filter(Boolean).every(t=>tx.includes(t));
 function pass(f){if(FQ&&!QHAS(f.tx,FQ))return false;
-  if(FILT==="known")return KNOWN(f);if(FILT==="unk")return f.surv==="unknown"||f.surv==="unset";if(FILT==="lost")return LOST(f);if(FILT==="poster")return f.poster>0;if(FILT==="img")return HASIMG(f);return true;}
-/* any picture held: a poster or a still (moad 26.10: "Has Still which includes posters and stills — so any record with images") */
+  if(FILT==="known")return KNOWN(f);if(FILT==="unk")return f.surv==="unknown"||f.surv==="unset";if(FILT==="lost")return LOST(f);if(FILT==="poster")return f.poster>0;if(FILT==="img")return HASIMG(f);
+  /* by kind (moad 26.10: "feature films, shorts, TV film in the yellow bar"): features and shorts, fiction and documentary alike */
+  const t0=f.ty?f.ty[0]:"";if(FILT==="feat")return /— Feature$/.test(t0);if(FILT==="short")return /— Short$/.test(t0);if(FILT==="tv")return t0==="TV film–series";return true;}
+/* any picture held: a poster or a still (moad 26.10: "has image ... posters and stills — so any record with images") */
 function HASIMG(f){return (f.web||[]).length>0||f.poster>0||f.stills>0;}
 /* the decades sink: the ground darkens from the 1910s to the 2020s, as if read downward into the earth */
 const STOPS=[[247,241,225],[239,227,200],[214,184,140],[160,118,74],[96,70,44],[58,43,28]];
@@ -1056,8 +1129,12 @@ function render(){
    sp.onclick=e=>{e.preventDefault();if(document.body.classList.contains("r")){history.pushState(null,"",location.pathname+location.search);document.body.classList.remove("r");}openSubmit(null,true);};}
   {const fq=$("#fq");fq.placeholder="";fq.setAttribute("aria-label",T("ph"));typer($("#qbox"),fq,T("tw"));}NAVON=null;
   requestAnimationFrame(()=>{const nv=$("#sidx");nv.classList.remove("two");if(nv.offsetHeight>60)nv.classList.add("two");});
-  $("#filters").innerHTML=[["all",T("fAll")],["known",T("fKnown")],["unk",T("fUnk")],["lost",T("fLost")],["poster",T("fPoster")],["img",T("fImg")]].map(x=>`<button type="button" class="f" data-f="${x[0]}" aria-pressed="${FILT===x[0]}">${x[1]}</button>`).join(" ");
+  $("#filters").innerHTML=[["all",T("fAll")],["known",T("fKnown")],["unk",T("fUnk")],["lost",T("fLost")],["poster",T("fPoster")],["img",T("fImg")],["feat",T("fFeat")],["short",T("fShort")],["tv",T("fTV")]].map(x=>`<button type="button" class="f" data-f="${x[0]}" aria-pressed="${FILT===x[0]}">${x[1]}</button>`).join(" ");
   $$("#filters .f").forEach(b=>b.onclick=()=>{FILT=b.dataset.f;render();});
+  $("#vsw").setAttribute("aria-label",T("vLab"));
+  $("#vsw").innerHTML=[["list","☰",T("vList")],["grid","▦",T("vGrid")]].map(x=>`<button type="button" data-v="${x[0]}" aria-pressed="${VIEW===x[0]}"><span class="ic" aria-hidden="true">${x[1]}</span>${x[2]}</button>`).join("");
+  $$("#vsw button").forEach(b=>b.onclick=()=>{if(VIEW===b.dataset.v)return;VIEW=b.dataset.v;try{localStorage.setItem("merath.film.view",VIEW);}catch(e){}render();});
+  document.body.classList.toggle("lv",VIEW==="list");
   /* the register: decades, ascending, so the page reads as a history */
   const byD=new Map();DATED.forEach(f=>{const k=Math.floor(f.ys/10)*10;if(!byD.has(k))byD.set(k,[]);byD.get(k).push(f);});
   let i=0,shown=0,lastG=null;const ND=byD.size,filt=!!FQ||FILT!=="all",gone=new Set();
@@ -1066,7 +1143,7 @@ function render(){
     const pg=lastG||{hex:"#FBF7EA"};lastG=g;
     return `<div class="dec${g.dark?" dk":""}" id="d${dk}" data-prev="${pg.hex}" data-dark="${g.dark?1:0}" style="background:${g.hex}"><svg class="contact" preserveAspectRatio="none"></svg>
      <h2><span class="dn" dir="ltr">${DECL(dk)}</span><span class="dk mono">${vis.length} / ${fs.length}</span></h2>
-     <div class="grid">${cardsHTML(fs)}</div></div>`;}).join("");
+     ${VIEW==="list"?`<div class="lst">${listHTML(fs)}</div>`:`<div class="grid">${cardsHTML(fs)}</div>`}</div>`;}).join("");
   $$("#sidx a[data-t^='d']").forEach(a=>a.classList.toggle("off",gone.has(+a.dataset.t.slice(1))));
   const undated=FILMS.filter(f=>!f.ys);
   const cnt=(vis,all)=>filt?`${vis} / ${all}`:`${all}`;   /* while you search: what matches, out of all */
