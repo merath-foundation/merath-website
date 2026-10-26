@@ -355,7 +355,9 @@ html[lang="en"] .introrow h1 .o{font-size:clamp(15px,1.2vw + 8px,22px);margin-to
 .bar .f{font:inherit;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;border:1.5px solid var(--ink);background:none;padding:4px 10px 5px;cursor:pointer;color:var(--ink);font-weight:600}
 .bar .f[aria-pressed="true"]{background:var(--ink);color:var(--cream);border-color:var(--ink)}
 [dir="rtl"] .bar .f{letter-spacing:0;font-size:12px}
-#filters .f[data-f="feat"]{margin-inline-start:1rem}   /* the kinds of film stand apart from the survival filters */
+#filters .f[data-f="poster"],#filters .f[data-f="feat"]{margin-inline-start:1rem}   /* three groups stand apart: survival, pictures, kind */
+#filters .f.rs{border-style:dashed;margin-inline-start:1rem}
+#filters .f.rs[hidden]{display:inline-block;visibility:hidden}
 .bar .n{font-size:10.5px;letter-spacing:.1em;opacity:.8}
 
 /* ── SUBMIT A RECORD, at the top of the database ─────────────────────── */
@@ -894,7 +896,7 @@ const C={en:{wm:"merath",nProjects:"Projects",nPublications:"Publications",nProg
   ocT:"Submit a Record",ocCat:"Films Archive",ocH:"Know a Libyan film?",ocP:"A title is enough to begin. Look first: if it is already here, your entry joins its record.",ocGo:"Add a film",
   navAdd:"Submit a Record",navAddS:"Submit",navDec:"Decades",navCount:"{n} records · {d}",
   ph:"Search titles, directors, years — الشظية, 1973, Zarrouk",tw:"Search the films here",
-  fAll:"All",fKnown:"Copy known",fUnk:"Not known",fLost:"Lost",fPoster:"Poster held",fImg:"Has image",fFeat:"Feature films",fShort:"Shorts",fTV:"TV films",vList:"List",vGrid:"Grid",vLab:"View",
+  fAll:"All",fReset:"Reset",fKnown:"Copy known",fUnk:"Not known",fLost:"Lost",fPoster:"Poster held",fImg:"Has image",fFeat:"Feature films",fShort:"Shorts",fTV:"TV films",vList:"List",vGrid:"Grid",vLab:"View",
   shown:"shown",
   und:"Year not yet known",undE:"These films are known, but no source we can cite gives the year they were made, so they are not guessed into the decades. They are grouped by kind. If you know when one was made, add it to its record.",
   ugroups:{tv:"Television films",doc:"Documentaries",fic:"Fiction features",inprod:"In production",unk:"Kind not yet known"},addYear:"Add the year →",veil:"Poster in the record",pjLine:"This census is part of {hic} — merath\u2019s research on what culture holds in common: shared ownership, availability and proof, with film as its first ground.",attH:"Adding to «{t}» · {c}",attP:"Fill in only what you know — one field is enough. You can send it at any step.",sendNow:"Send now",show:"Show",hide:"Hide",
@@ -944,7 +946,7 @@ const C={en:{wm:"merath",nProjects:"Projects",nPublications:"Publications",nProg
   ocT:"أضيفوا سجلا",ocCat:"أرشيف الأفلام",ocH:"تعرفون فيلماً ليبياً؟",ocP:"يكفي العنوان للبدء. ابحثوا أولاً: إن كان هنا، تنضمّ مساهمتكم إلى سجلّه.",ocGo:"أضيفوا فيلماً",
   navAdd:"أضيفوا سجلاً",navAddS:"أضيفوا",navDec:"العقود",navCount:"{n} سجلاً · {d}",
   ph:"ابحثوا في العناوين والمخرجين والسنوات — الشظية، 1973، الزروق",tw:"ابحثوا في الأفلام هنا",
-  fAll:"الكل",fKnown:"نسخة معروفة",fUnk:"غير معروف",fLost:"مفقود",fPoster:"ملصق محفوظ",fImg:"صورة محفوظة",fFeat:"أفلام طويلة",fShort:"أفلام قصيرة",fTV:"أفلام تلفزيونية",vList:"قائمة",vGrid:"شبكة",vLab:"العرض",
+  fAll:"الكل",fReset:"إلغاء التصفية",fKnown:"نسخة معروفة",fUnk:"غير معروف",fLost:"مفقود",fPoster:"ملصق محفوظ",fImg:"صورة محفوظة",fFeat:"أفلام طويلة",fShort:"أفلام قصيرة",fTV:"أفلام تلفزيونية",vList:"قائمة",vGrid:"شبكة",vLab:"العرض",
   shown:"معروض",
   und:"سنة غير معروفة بعد",undE:"هذه أفلام معروفة، لكن لا مصدر نستند إليه يذكر سنة صنعها، فلا تخمن في العقود. وهي مجمعة حسب النوع. إن كنتم تعرفون متى صنع أحدها، أضيفوا السنة إلى سجله.",
   ugroups:{tv:"أفلام تلفزيونية",doc:"أفلام وثائقية",fic:"أفلام روائية",inprod:"قيد الإنتاج",unk:"نوعها غير معروف بعد"},addYear:"أضيفوا السنة ←",veil:"الملصق داخل السجل",pjLine:"هذا الإحصاء جزء من {hic} — بحث ميراث فيما تملكه الثقافة في المُشاع: الملكية المشتركة والإتاحة والإثبات، والفيلم أرضُه الأولى.",attH:"إضافة إلى «{t}» · {c}",attP:"املؤوا ما تعرفونه فقط — حقلٌ واحد يكفي. يمكنكم الإرسال في أي خطوة.",sendNow:"أرسلوا الآن",show:"اعرضوها",hide:"أخفوها",
@@ -992,7 +994,9 @@ const ARSTACK='"Geeza Pro","IBM Plex Sans Arabic","Noto Naskh Arabic",serif';
 function storedLang(){let v=null;try{v=localStorage.getItem("merath.lang")}catch(e){}
   if(!v){const m=/(?:^|;\s*)merath\.lang=(ar|en)/.exec(document.cookie||"");if(m)v=m[1];}
   return v==="ar"?"ar":"en";}
-let lang=storedLang(),FILT="all",FQ="";
+let lang=storedLang(),FILT={s:"",i:"",k:""},FQ="";
+/* the filters come in three groups; within a group a second choice replaces the first, across groups they add up */
+const FG={known:"s",unk:"s",lost:"s",poster:"i",img:"i",feat:"k",short:"k",tv:"k"},FON=()=>!!(FILT.s||FILT.i||FILT.k);
 /* the view: a list by default, a grid on request; the choice is remembered in this browser */
 let VIEW=(()=>{try{const q=new URLSearchParams(location.search).get("view");if(q==="grid"||q==="list")return q;return localStorage.getItem("merath.film.view")||"list";}catch(e){return "list";}})();
 const masthead=$("#masthead"),navEl=$("header nav"),navStrip=$("#nav-strip"),lb=$("#lang-btn"),ml=$("#m-lang"),miniTree=$("#mini-tree");
@@ -1091,9 +1095,11 @@ function listHTML(fs){const groups=[];
 /* every word of the search, in any order ("algeria women" finds a record holding both) */
 const QHAS=(tx,q)=>tx.includes(q)||q.split(/\s+/).filter(Boolean).every(t=>tx.includes(t));
 function pass(f){if(FQ&&!QHAS(f.tx,FQ))return false;
-  if(FILT==="known")return KNOWN(f);if(FILT==="unk")return f.surv==="unknown"||f.surv==="unset";if(FILT==="lost")return LOST(f);if(FILT==="poster")return f.poster>0;if(FILT==="img")return HASIMG(f);
+  if(FILT.s==="known"&&!KNOWN(f))return false;if(FILT.s==="unk"&&!(f.surv==="unknown"||f.surv==="unset"))return false;if(FILT.s==="lost"&&!LOST(f))return false;
+  if(FILT.i==="poster"&&!(f.poster>0))return false;if(FILT.i==="img"&&!HASIMG(f))return false;
   /* by kind (moad 26.10: "feature films, shorts, TV film in the yellow bar"): features and shorts, fiction and documentary alike */
-  const t0=f.ty?f.ty[0]:"";if(FILT==="feat")return /— Feature$/.test(t0);if(FILT==="short")return /— Short$/.test(t0);if(FILT==="tv")return t0==="TV film–series";return true;}
+  const t0=f.ty?f.ty[0]:"";if(FILT.k==="feat"&&!/— Feature$/.test(t0))return false;if(FILT.k==="short"&&!/— Short$/.test(t0))return false;if(FILT.k==="tv"&&t0!=="TV film–series")return false;
+  return true;}
 /* any picture held: a poster or a still (moad 26.10: "has image ... posters and stills — so any record with images") */
 function HASIMG(f){return (f.web||[]).length>0||f.poster>0||f.stills>0;}
 /* the decades sink: the ground darkens from the 1910s to the 2020s, as if read downward into the earth */
@@ -1129,15 +1135,17 @@ function render(){
    sp.onclick=e=>{e.preventDefault();if(document.body.classList.contains("r")){history.pushState(null,"",location.pathname+location.search);document.body.classList.remove("r");}openSubmit(null,true);};}
   {const fq=$("#fq");fq.placeholder="";fq.setAttribute("aria-label",T("ph"));typer($("#qbox"),fq,T("tw"));}NAVON=null;
   requestAnimationFrame(()=>{const nv=$("#sidx");nv.classList.remove("two");if(nv.offsetHeight>60)nv.classList.add("two");});
-  $("#filters").innerHTML=[["all",T("fAll")],["known",T("fKnown")],["unk",T("fUnk")],["lost",T("fLost")],["poster",T("fPoster")],["img",T("fImg")],["feat",T("fFeat")],["short",T("fShort")],["tv",T("fTV")]].map(x=>`<button type="button" class="f" data-f="${x[0]}" aria-pressed="${FILT===x[0]}">${x[1]}</button>`).join(" ");
-  $$("#filters .f").forEach(b=>b.onclick=()=>{FILT=b.dataset.f;render();});
+  $("#filters").innerHTML=[["known",T("fKnown")],["unk",T("fUnk")],["lost",T("fLost")],["poster",T("fPoster")],["img",T("fImg")],["feat",T("fFeat")],["short",T("fShort")],["tv",T("fTV")]].map(x=>`<button type="button" class="f" data-f="${x[0]}" aria-pressed="${FILT[FG[x[0]]]===x[0]}">${x[1]}</button>`).join(" ")
+    +` <button type="button" class="f rs" id="frs"${FON()?"":" hidden"}><span aria-hidden="true">× </span>${T("fReset")}</button>`;
+  $$("#filters .f[data-f]").forEach(b=>b.onclick=()=>{const v=b.dataset.f,g=FG[v];FILT[g]=FILT[g]===v?"":v;render();});
+  $("#frs").onclick=()=>{FILT={s:"",i:"",k:""};render();};
   $("#vsw").setAttribute("aria-label",T("vLab"));
   $("#vsw").innerHTML=[["list","☰",T("vList")],["grid","▦",T("vGrid")]].map(x=>`<button type="button" data-v="${x[0]}" aria-pressed="${VIEW===x[0]}"><span class="ic" aria-hidden="true">${x[1]}</span>${x[2]}</button>`).join("");
   $$("#vsw button").forEach(b=>b.onclick=()=>{if(VIEW===b.dataset.v)return;VIEW=b.dataset.v;try{localStorage.setItem("merath.film.view",VIEW);}catch(e){}render();});
   document.body.classList.toggle("lv",VIEW==="list");
   /* the register: decades, ascending, so the page reads as a history */
   const byD=new Map();DATED.forEach(f=>{const k=Math.floor(f.ys/10)*10;if(!byD.has(k))byD.set(k,[]);byD.get(k).push(f);});
-  let i=0,shown=0,lastG=null;const ND=byD.size,filt=!!FQ||FILT!=="all",gone=new Set();
+  let i=0,shown=0,lastG=null;const ND=byD.size,filt=!!FQ||FON(),gone=new Set();
   $("#reg").innerHTML=[...byD.entries()].map(([dk,fs])=>{const vis=fs.filter(pass);shown+=vis.length;const g=ground(ND>1?i/(ND-1):0);i++;
     if(filt&&!vis.length){gone.add(dk);return "";}   /* a decade with nothing to show is not drawn while you search */
     const pg=lastG||{hex:"#FBF7EA"};lastG=g;
@@ -1162,6 +1170,7 @@ function render(){
   $("#leads").innerHTML=`<details${lopen?" open":""}><summary><span class="ord mono">◇</span><h2>${T("leads")}</h2><span class="cnt mono" dir="ltr">${cnt(leads.filter(pass).length,leads.length)}</span><span class="tg">${lopen?T("hide"):T("show")}</span></summary><em class="le">${T("leadsE")}</em>${leads.map(f=>`<a class="ld ${pass(f)?"":"hide"}" href="#r/${esc(f.code)}"><span class="k mono" dir="ltr">${esc(f.code)}<br>${esc(C[lang].kinds[f.kind]||"")}</span><span><b dir="auto">${esc(TI(f))}</b>${f.en&&f.en!==f.t?`<span class="t2" dir="auto">${esc(f.en)}</span>`:""}</span><span class="mono" style="font-size:9.5px;opacity:.6" dir="ltr">${esc(f.y||"")}</span></a>`).join("")}</details>`;
   {const dt=$("#leads details");dt.addEventListener("toggle",()=>{LOPEN=dt.open;dt.querySelector(".tg").textContent=dt.open?T("hide"):T("show");});}
   shown+=leads.filter(pass).length;$("#leads").hidden=filt&&!leads.some(pass);
+  ["und","leads"].forEach(k=>$$(`#sidx a[data-t="${k}"]`).forEach(a=>a.classList.toggle("off",$("#"+k).hidden)));
   $("#fn").textContent=`${shown} / ${F.length} ${T("shown")}`;
   {const none=$("#none");none.hidden=!(filt&&!shown);
    if(!none.hidden){none.innerHTML=`<p><b>${T("ihNone")}</b> <button class="lk" type="button" id="noneGo">${T("ihNew")} ${lang==="ar"?"←":"→"}</button></p>`;
@@ -1186,7 +1195,7 @@ function slices(){const mid=innerHeight/2,BOW=Math.round(Math.max(40,Math.min(72
   const line=SB()+24;let cur=null;
   if(!document.body.classList.contains("r")){const s=$("#submit");if(s&&s.getBoundingClientRect().top<line)cur="submit";
     DECS.forEach(k=>{const h=$("#d"+k+" h2");if(h&&h.getBoundingClientRect().top<line)cur="d"+k;});
-    ["und","leads"].forEach(k=>{const el=$("#"+k);if(el&&el.getBoundingClientRect().top<line)cur=k;});}
+    ["und","leads"].forEach(k=>{const el=$("#"+k);if(el&&!el.hidden&&el.getBoundingClientRect().top<line)cur=k;});}
   $$("#sidx a").forEach(a=>a.classList.toggle("on",a.dataset.t===cur));
   where(cur);centerNav();chromeState();}
 let WHERE="";
