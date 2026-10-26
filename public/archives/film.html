@@ -839,7 +839,7 @@ const C={en:{wm:"merath",nProjects:"Projects",nPublications:"Publications",nProg
   ocT:"Submit a Record",ocCat:"Films Archive",ocH:"Know a Libyan film?",ocP:"A title is enough to begin. Look first: if it is already here, your entry joins its record.",ocGo:"Add a film",
   navAdd:"Submit a Record",navAddS:"Submit",navDec:"Decades",navCount:"{n} records · {d}",
   ph:"Search titles, directors, years — الشظية, 1973, Zarrouk",tw:"Search the films here",
-  fAll:"All",fKnown:"Copy known",fUnk:"Not known",fLost:"Lost",fPoster:"Poster held",
+  fAll:"All",fKnown:"Copy known",fUnk:"Not known",fLost:"Lost",fPoster:"Poster held",fImg:"Has still",
   shown:"shown",
   und:"Year not yet known",undE:"These films are known, but no source we can cite gives the year they were made, so they are not guessed into the decades. They are grouped by kind. If you know when one was made, add it to its record.",
   ugroups:{tv:"Television films",doc:"Documentaries",fic:"Fiction features",inprod:"In production",unk:"Kind not yet known"},addYear:"Add the year →",veil:"Poster in the record",pjLine:"This census is part of {hic} — merath\u2019s research on what culture holds in common: shared ownership, availability and proof, with film as its first ground.",attH:"Adding to «{t}» · {c}",attP:"Fill in only what you know — one field is enough. You can send it at any step.",sendNow:"Send now",show:"Show",hide:"Hide",
@@ -889,7 +889,7 @@ const C={en:{wm:"merath",nProjects:"Projects",nPublications:"Publications",nProg
   ocT:"أضيفوا سجلا",ocCat:"أرشيف الأفلام",ocH:"تعرفون فيلماً ليبياً؟",ocP:"يكفي العنوان للبدء. ابحثوا أولاً: إن كان هنا، تنضمّ مساهمتكم إلى سجلّه.",ocGo:"أضيفوا فيلماً",
   navAdd:"أضيفوا سجلاً",navAddS:"أضيفوا",navDec:"العقود",navCount:"{n} سجلاً · {d}",
   ph:"ابحثوا في العناوين والمخرجين والسنوات — الشظية، 1973، الزروق",tw:"ابحثوا في الأفلام هنا",
-  fAll:"الكل",fKnown:"نسخة معروفة",fUnk:"غير معروف",fLost:"مفقود",fPoster:"ملصق محفوظ",
+  fAll:"الكل",fKnown:"نسخة معروفة",fUnk:"غير معروف",fLost:"مفقود",fPoster:"ملصق محفوظ",fImg:"صورة محفوظة",
   shown:"معروض",
   und:"سنة غير معروفة بعد",undE:"هذه أفلام معروفة، لكن لا مصدر نستند إليه يذكر سنة صنعها، فلا تخمن في العقود. وهي مجمعة حسب النوع. إن كنتم تعرفون متى صنع أحدها، أضيفوا السنة إلى سجله.",
   ugroups:{tv:"أفلام تلفزيونية",doc:"أفلام وثائقية",fic:"أفلام روائية",inprod:"قيد الإنتاج",unk:"نوعها غير معروف بعد"},addYear:"أضيفوا السنة ←",veil:"الملصق داخل السجل",pjLine:"هذا الإحصاء جزء من {hic} — بحث ميراث فيما تملكه الثقافة في المُشاع: الملكية المشتركة والإتاحة والإثبات، والفيلم أرضُه الأولى.",attH:"إضافة إلى «{t}» · {c}",attP:"املؤوا ما تعرفونه فقط — حقلٌ واحد يكفي. يمكنكم الإرسال في أي خطوة.",sendNow:"أرسلوا الآن",show:"اعرضوها",hide:"أخفوها",
@@ -1020,7 +1020,9 @@ function cardsHTML(fs){const groups=[];
 /* every word of the search, in any order ("algeria women" finds a record holding both) */
 const QHAS=(tx,q)=>tx.includes(q)||q.split(/\s+/).filter(Boolean).every(t=>tx.includes(t));
 function pass(f){if(FQ&&!QHAS(f.tx,FQ))return false;
-  if(FILT==="known")return KNOWN(f);if(FILT==="unk")return f.surv==="unknown"||f.surv==="unset";if(FILT==="lost")return LOST(f);if(FILT==="poster")return f.poster>0;return true;}
+  if(FILT==="known")return KNOWN(f);if(FILT==="unk")return f.surv==="unknown"||f.surv==="unset";if(FILT==="lost")return LOST(f);if(FILT==="poster")return f.poster>0;if(FILT==="img")return HASIMG(f);return true;}
+/* any picture held: a poster or a still (moad 26.10: "Has Still which includes posters and stills — so any record with images") */
+function HASIMG(f){return (f.web||[]).length>0||f.poster>0||f.stills>0;}
 /* the decades sink: the ground darkens from the 1910s to the 2020s, as if read downward into the earth */
 const STOPS=[[247,241,225],[239,227,200],[214,184,140],[160,118,74],[96,70,44],[58,43,28]];
 function ground(t){const x=t*(STOPS.length-1),i=Math.min(STOPS.length-2,Math.floor(x)),f=x-i;const c=STOPS[i].map((v,j)=>Math.round(v+(STOPS[i+1][j]-v)*f));
@@ -1054,7 +1056,7 @@ function render(){
    sp.onclick=e=>{e.preventDefault();if(document.body.classList.contains("r")){history.pushState(null,"",location.pathname+location.search);document.body.classList.remove("r");}openSubmit(null,true);};}
   {const fq=$("#fq");fq.placeholder="";fq.setAttribute("aria-label",T("ph"));typer($("#qbox"),fq,T("tw"));}NAVON=null;
   requestAnimationFrame(()=>{const nv=$("#sidx");nv.classList.remove("two");if(nv.offsetHeight>60)nv.classList.add("two");});
-  $("#filters").innerHTML=[["all",T("fAll")],["known",T("fKnown")],["unk",T("fUnk")],["lost",T("fLost")],["poster",T("fPoster")]].map(x=>`<button type="button" class="f" data-f="${x[0]}" aria-pressed="${FILT===x[0]}">${x[1]}</button>`).join(" ");
+  $("#filters").innerHTML=[["all",T("fAll")],["known",T("fKnown")],["unk",T("fUnk")],["lost",T("fLost")],["poster",T("fPoster")],["img",T("fImg")]].map(x=>`<button type="button" class="f" data-f="${x[0]}" aria-pressed="${FILT===x[0]}">${x[1]}</button>`).join(" ");
   $$("#filters .f").forEach(b=>b.onclick=()=>{FILT=b.dataset.f;render();});
   /* the register: decades, ascending, so the page reads as a history */
   const byD=new Map();DATED.forEach(f=>{const k=Math.floor(f.ys/10)*10;if(!byD.has(k))byD.set(k,[]);byD.get(k).push(f);});
