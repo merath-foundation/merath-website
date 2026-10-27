@@ -268,6 +268,20 @@ footer .fl{margin-top:14px;font-size:11.5px;letter-spacing:.14em}
   footer{padding:7vh var(--textR) calc(4vh + 60px) var(--textL)}
 }
 
+/* the phone menu — verbatim from about_prototype.html (make-proto.py) */
+  #m-nav{position:fixed;top:0;left:0;right:0;z-index:14;background:var(--ink);padding:58px 28px 44px;transform:translateY(-104%);transition:transform .55s steps(6,jump-none);
+    clip-path:polygon(0 0,100% 0,100% calc(100% - 12px),96% 100%,91% calc(100% - 10px),84% calc(100% - 2px),77% calc(100% - 11px),69% calc(100% - 3px),61% calc(100% - 12px),52% calc(100% - 4px),44% calc(100% - 11px),36% calc(100% - 2px),28% calc(100% - 10px),20% calc(100% - 3px),12% calc(100% - 12px),5% calc(100% - 4px),0 calc(100% - 10px))}
+  body.mnav #m-nav{transform:none}
+  #m-nav a{display:block;color:var(--cream);text-decoration:none;font-size:19px;padding:11px 0;letter-spacing:.02em}
+  #m-nav .mn-x{position:absolute;top:16px;inset-inline-end:20px;font-size:16px;padding:6px;cursor:pointer}
+  #m-nav{z-index:30}
+
+/* the phone header shakes and steps as the desktop strip does (make-proto.py, as build.mjs PHONE_TEAR_CSS) */
+#m-head{transition:background-color .5s steps(5,jump-none)}
+#m-head a{transition:color .5s steps(5,jump-none)}
+#m-head.tearing{animation:stripTear .9s steps(4,jump-none)}
+@media(prefers-reduced-motion:reduce){#m-head,#m-head a{transition:none}#m-head.tearing{animation:none}}
+
 /* ══ v3 ═══════════════════════════════════════════════════════════════ */
 :root{--dcream:#EFE7D2;--fc:var(--post);--mh:74px}
 @media(max-width:920px){:root{--mh:56px}}
@@ -825,6 +839,10 @@ body.sbopen #totopf{opacity:0;pointer-events:none}
   </nav>
   <div id="m-head"><a id="m-menu" data-i18n="mMenu">Menu</a><a id="m-lang">ع</a></div>
 </header>
+<div id="m-nav">
+  <a class="mn-x">✕</a>
+  <a href="/projects" data-i18n="nProjects">Projects</a><a href="/publications" data-i18n="nPublications">Publications</a><a href="/programmes" data-i18n="nProgrammes">Programmes</a><a href="/art-production" data-i18n="nArt">Art &amp; Production</a><a href="/studies" data-i18n="nStudies">Studies</a><a href="/archives" data-i18n="nArchives">Archives</a><a href="/about" data-i18n="nAbout">About</a>
+</div>
 <div id="fold-wrap"><svg id="mini-tree" width="300" height="200" viewBox="0 0 300 200" aria-hidden="true"></svg></div>
 
 <main>
@@ -1035,6 +1053,10 @@ function buildFold(){
 miniTree.addEventListener("mouseover",()=>miniTree.classList.add("pull"));
 miniTree.addEventListener("click",e=>{if(!e.target.closest("path,text"))return;e.preventDefault();miniTree.classList.remove("pull");if(typeof foldGo==="function")foldGo();});
 miniTree.addEventListener("mouseout",e=>{if(!miniTree.contains(e.relatedTarget))miniTree.classList.remove("pull")});
+document.getElementById("m-menu").addEventListener("click",e=>{e.preventDefault();document.body.classList.toggle("mnav");});
+document.getElementById("m-nav").addEventListener("click",e=>{if(e.target.tagName==="A"&&!e.target.id)document.body.classList.remove("mnav");});
+(function(){var ns=document.getElementById("nav-strip"),mh=document.getElementById("m-head");if(!ns||!mh||!window.MutationObserver)return;
+new MutationObserver(function(){mh.classList.toggle("tearing",ns.classList.contains("tearing"));}).observe(ns,{attributes:true,attributeFilter:["class"]});})();
 
 function norm(s){return String(s||"").toLowerCase().normalize("NFKD").replace(/[̀-ͯ]/g,"").replace(/[ً-ْٰـ]/g,"").replace(/[أإآٱ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه").replace(/[٠-٩]/g,d=>String("٠١٢٣٤٥٦٧٨٩".indexOf(d)));}
 /* search reads the whole public record (moad 25.10: "if i search algeria i get nothing"): titles, people and companies,
