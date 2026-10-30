@@ -69,7 +69,7 @@ button:hover:not(:disabled){background:transparent;color:var(--ink)}
   <div class="bar" id="bar"><i></i></div>
   <p class="msg" id="m" role="status" aria-live="polite"></p>
   <p class="note">
-    هذه الصفحة مشفّرة: لا توجد نسخة مقروءة من الأداة داخل الملف، وكلمة المرور هي مفتاح فكّ التشفير لا بوّابة أمامه.
+    هذه أداة عمل داخلية مخصّصة لفريق ميراث.
     <br>This page is encrypted — there is no readable copy of the tool inside the file, and the password is the
     decryption key rather than a gate in front of one.
     <br><a href="/publications">← المنشورات · Publications</a>
@@ -96,7 +96,7 @@ button:hover:not(:disabled){background:transparent;color:var(--ink)}
       return false;
     }
     bar.classList.add("on");
-    if (!quiet) say("جارٍ فكّ التشفير… — decrypting…");
+    if (!quiet) say("جارٍ فتح الملف… — decrypting…");
     try{
       var base = await crypto.subtle.importKey("raw", new TextEncoder().encode(pw),
                     "PBKDF2", false, ["deriveKey"]);
