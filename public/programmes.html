@@ -1226,6 +1226,17 @@ body.night #calpanel{border-inline-start:0;border-inline-end:1px solid var(--edg
 .lg-s{font:400 11px/1.3 var(--sans);opacity:.5;text-align:end}
 [dir="rtl"] .lg-s{font-size:12.5px}
 .lgr.live .lg-s{color:var(--saff);opacity:1}
+/* 08.11.2026 — the "all" ledger: one kind column in place of the two kind-specific figures */
+.lg-k,.lg-kh{grid-column:span 2}
+.lg-k{font:600 9px/1.3 var(--sans);letter-spacing:.14em;text-transform:uppercase}
+[dir="rtl"] .lg-k{letter-spacing:0;text-transform:none;font-size:11.5px}
+.ltab[data-empty]{opacity:.82}
+@media(max-width:900px){.lgr .lg-k{grid-column:2;grid-row:3}}
+/* 08.11.2026 (moad: "the top colour line goes under the nav bar") — a full sheet stops below the header:
+   --pvTop is the header's measured foot (set by setPvTop), so the coloured top edge is always in view */
+@media(min-width:901px){
+ #pv .sheet.full{height:min(94vh,calc(100vh - var(--pvTop,110px) - 12px));max-height:min(94vh,calc(100vh - var(--pvTop,110px) - 12px))}
+}
 .lgr.live .lg-w{filter:brightness(1.3)}
 @media(max-width:900px){
  #pv .sheet.ledgersheet .wshf{display:none}
@@ -2171,7 +2182,7 @@ main{overflow-x:visible;overflow-y:clip}
 #pv .rsvpb b{font:600 14px/1.2 var(--serif);letter-spacing:.01em}
 #pv .rsvpb span{font:600 9px/1.4 var(--sans);letter-spacing:.13em;text-transform:uppercase;opacity:.62}
 [dir="rtl"] #pv .rsvpb span{letter-spacing:.02em;text-transform:none;font-size:11px}</style>
-<script>/* merath build 2026-10-31T21:01:25.086Z — data from Airtable */
+<script>/* merath build 2026-11-08T10:54:56.263Z — data from Airtable */
 
 </script>
 <style>/* programmes ticker, phone — build.mjs */
@@ -2587,7 +2598,7 @@ var CONTENT={
   fairSame:"The same record as the publications page, read on the night side.",
   lgWhole:"the whole record",lgSide:"side",lgSrc:"record",noRec:"no record",lgSourced:"in the record",
   uOneMonth:"months",uOneEd:"editions",uOneWeek:"weeks",uOneNight:"nights",uOneSeason:"season",
-  lgAll:"in all",lgUnit:"unit",lgDate:"date",lgWhat:"what",lgWhere:"where",lgWhen:"when",
+  lgAll:"in all",lAllK:"All programmes",tAllK:"All",lgKind:"kind",lgUnit:"unit",lgDate:"date",lgWhat:"what",lgWhere:"where",lgWhen:"when",
   lgNone:"This lane is empty on this horizon.",
 
   satLead:"Every Saturday, for the run of the workshop.",satLeadOpen:"Every Saturday, with no closing date set.",
@@ -2740,7 +2751,7 @@ var CONTENT={
   fairSame:"السجل نفسه الموجود في صفحة المطبوعات، مقروءاً على الجهة الليلية.",
   lgWhole:"السجل كاملاً",lgSide:"الجهة",lgSrc:"القيد",noRec:"بلا قيد",lgSourced:"مُقيَّد",
   uOneMonth:"أشهر",uOneEd:"دورات",uOneWeek:"أسابيع",uOneNight:"ليالٍ",uOneSeason:"فصل",
-  lgAll:"في المجمل",lgUnit:"الوحدة",lgDate:"التاريخ",lgWhat:"ما هو",lgWhere:"أين",lgWhen:"متى",
+  lgAll:"في المجمل",lAllK:"كل البرامج",tAllK:"الكل",lgKind:"النوع",lgUnit:"الوحدة",lgDate:"التاريخ",lgWhat:"ما هو",lgWhere:"أين",lgWhen:"متى",
   lgNone:"هذا المسار خالٍ على هذا الأفق.",
 
   satLead:"كل سبت، على امتداد الورشة.",satLeadOpen:"كل سبت، بلا تاريخ ختام.",
@@ -3518,7 +3529,7 @@ function buildField(){
   var lastIn=[];
   for(i=0;i<items.length;i++){var it=items[i];if(it.col<0)continue;
    var pr=lastIn[it.col];it.y=pr?Math.max(it.top,pr.y+pr.blk+GAPY):it.top;lastIn[it.col]=it;}
-  var inner='<button type="button" class="ltab" id="'+lid+'" data-ak="'+ak+'"'+(evs.length?"":" disabled")+'>'
+  var inner='<button type="button" class="ltab" id="'+lid+'" data-ak="'+ak+'"'+(evs.length?"":" data-empty=\"1\"")+'>'
    +esc(T(LANEL[ak]))+' \u00b7 '+evs.length+' '+T(fut?"ahead":"held")
    +(split?' <i class="ntn">'+nt+'</i>':'')+'<em class="lt-c">'+esc(T("seeAll"))
    +'<svg viewBox="0 0 22 8" aria-hidden="true"><path d="M0 4h17M13.5 1 17 4l-3.5 3" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>'
@@ -3870,10 +3881,16 @@ function drawSky(){
  requestAnimationFrame(drawSky);
 }
 /* ===== A LANE, OPENED AS A LEDGER ===== */
-function openLedger(ak){mrHash("kind/"+ak);
- var c=HEX[ak];
+function setPvTop(){try{var h=document.querySelector("header");if(!h)return;var r=h.getBoundingClientRect(),n=h.querySelector("nav"),b=r.bottom;
+ if(n){var nr=n.getBoundingClientRect();if(nr.height)b=Math.max(b,nr.bottom);}var st=document.getElementById("nav-strip");if(st){var sr=st.getBoundingClientRect();if(sr.height)b=Math.max(b,sr.bottom);}
+ document.documentElement.style.setProperty("--pvTop",Math.round(b)+"px");}catch(e){}}
+window.addEventListener("resize",setPvTop);window.addEventListener("load",setPvTop);
+function openLedger(ak){mrHash("kind/"+ak);setPvTop();
+ /* 08.11.2026 (moad: "can you have an 'all' option too"): ak "all" is every kind in one table; each row keeps
+    its own kind's colour and unit, and the two kind-specific columns become one "kind" column */
+ var ALL=(ak==="all"),c=ALL?"#E39B00":HEX[ak],TABS=["all"].concat(ORD);
  /* the ledger is the whole record for a kind — both horizons, in one table */
- var all=PROG.filter(function(p){return p.ak===ak;});
+ var all=PROG.filter(function(p){return ALL||p.ak===ak;});
  all.sort(function(a,b){return sMs(b)-sMs(a);});
  var sh=document.getElementById("sheet"),bd=document.getElementById("shBody"),pv=document.getElementById("pv");
  if(!sh||!bd||!pv)return;
@@ -3884,7 +3901,7 @@ function openLedger(ak){mrHash("kind/"+ak);
  all.forEach(function(p){
   if(isLive(p))live++;else if(isFut(p))ahead++;else held++;
   var u=parseFloat(unitFor(p,isFut(p),true));if(!isNaN(u))unitTot+=u;
-  var a1=LGCOL[ak][0][1](p),b1=LGCOL[ak][1][1](p);
+  var a1=ALL?null:LGCOL[ak][0][1](p),b1=ALL?null:LGCOL[ak][1][1](p);
   if(p.src)srcN++;
   if(a1!==null&&a1!==undefined&&a1!==""){var x=parseFloat(a1);if(!isNaN(x)){fA+=x;fAn++;}}
   if(b1!==null&&b1!==undefined&&b1!==""){var y=parseFloat(b1);if(!isNaN(y)){fB+=y;fBn++;}}});
@@ -3893,37 +3910,38 @@ function openLedger(ak){mrHash("kind/"+ak);
   var fut=isFut(p),liv=isLive(p),strad=straddles(p),d=new Date(sMs(p)).getFullYear();
   if(d!==yr){yr=d;rows+='<div class="lg-yr num">'+yr+'</div>';}
   var e=eMs(p),span=e&&e!==sMs(p)?fmtDM(sMs(p))+" – "+fmtDM(e):fmtDM(sMs(p));
-  rows+='<button class="lgr'+(liv?" live":"")+(fut&&!liv?" ahead":"")+'" data-id="'+esc(p.id)+'">'
+  rows+='<button class="lgr'+(liv?" live":"")+(fut&&!liv?" ahead":"")+'" data-id="'+esc(p.id)+'"'+(ALL?' style="--sc:'+HEX[p.ak]+'"':'')+'>'
    +(function(){var u=unitFor(p,fut,true);
       return u===null?'<span class="lg-w pend">—</span>':'<span class="lg-w num">'+esc(u)+'</span>';})()
    +'<span class="lg-u">'+esc(p.ak==="gath"?T(seasonOf(sMs(p))):T(UNITONE[p.ak]))+'</span>'
    +'<span class="lg-d num">'+esc(span)+'</span>'
    +'<span class="lg-t'+(lang==="ar"?" ar":"")+'">'+esc(nm(p))+(strad?' <i class="lg-x">↕</i>':'')+'</span>'
    +'<span class="lg-l">'+esc(loc(p))+'</span>'
-   +lgCell(LGCOL[ak][0][1](p))+lgCell(LGCOL[ak][1][1](p))
+   +(ALL?'<span class="lg-k" style="color:'+HEX[p.ak]+'">'+esc(T(TYPEL[p.ak]))+'</span>':lgCell(LGCOL[ak][0][1](p))+lgCell(LGCOL[ak][1][1](p)))
    +'<span class="lg-src'+(p.src?"":" none")+'">'+esc(p.src||T("noRec"))+'</span>'
    +'<span class="lg-h '+(liv?"live":fut?"fut":"past")+'">'+T(liv?"liveNow":fut?"yFut":"yPast")+'</span>'
    +'<span class="lg-s">'+(liv?T("ongoing"):esc(relWord(p,fut)))+'</span>'
    +'<span class="sarw">›</span></button>';});
  if(!all.length)rows='<p class="pvnote">'+T("lgNone")+'</p>';
- bd.innerHTML='<div class="pv-head"><div class="pv-tag" style="color:'+c+'">'+esc(T(TYPEL[ak]))+' · '+T("lgWhole")+'</div>'
-  +'<h3 class="pv-h'+(lang==="ar"?" ar":"")+'">'+esc(T(LANEL[ak]))+'</h3>'
-  +'<div class="lgtabs" role="tablist">'+ORD.map(function(k){
-     var n=PROG.filter(function(q){return q.ak===k;}).length;
+ bd.innerHTML='<div class="pv-head"><div class="pv-tag" style="color:'+c+'">'+esc(T(ALL?"tAllK":TYPEL[ak]))+' · '+T("lgWhole")+'</div>'
+  +'<h3 class="pv-h'+(lang==="ar"?" ar":"")+'">'+esc(T(ALL?"lAllK":LANEL[ak]))+'</h3>'
+  +'<div class="lgtabs" role="tablist">'+TABS.map(function(k){
+     var n=k==="all"?PROG.length:PROG.filter(function(q){return q.ak===k;}).length;
      return '<button class="lgt'+(k===ak?" on":"")+'" role="tab" aria-selected="'+(k===ak)+'"'
-      +' data-lane="'+k+'" style="--tc:'+HEX[k]+'">'
-      +'<span class="lgt-l">'+esc(T(TYPEL[k]))+'</span>'
+      +' data-lane="'+k+'" style="--tc:'+(k==="all"?"#F7F2E4":HEX[k])+'">'
+      +'<span class="lgt-l">'+esc(T(k==="all"?"tAllK":TYPEL[k]))+'</span>'
       +'<span class="lgt-n num">'+n+'</span></button>';}).join("")+'</div></div>' 
   +'<div class="lgwrap"><div class="lg-sum">'
   +lgFig(all.length,T("lgAll"))+lgFig(live,T("liveNow"))+lgFig(held,T("held"))+lgFig(ahead,T("ahead"))
-  +lgFig(Math.round(unitTot),T(UNIT[ak]),false)
+  +(ALL?lgFig(srcN+" / "+all.length,T("lgSourced"),false):
+   lgFig(Math.round(unitTot),T(UNIT[ak]),false)
   +lgFig(fAn?Math.round(fA):"—",T(LGCOL[ak][0][0]),!fAn)
   +lgFig(fBn?Math.round(fB):"—",T(LGCOL[ak][1][0]),!fBn)
   +lgFig(srcN+" / "+all.length,T("lgSourced"),false)
-  +lgFig(T(UNIT[ak]),T("measured"),true)+'</div>' 
+  +lgFig(T(UNIT[ak]),T("measured"),true))+'</div>' 
   +'<div class="lgrows"><div class="lg-hd"><span>'+T("lgUnit")+'</span><span></span><span>'+T("lgDate")+'</span><span>'+T("lgWhat")+'</span>'
   +'<span>'+T("lgWhere")+'</span>'
-  +'<span class="lg-fh">'+T(LGCOL[ak][0][0])+'</span><span class="lg-fh">'+T(LGCOL[ak][1][0])+'</span>'
+  +(ALL?'<span class="lg-fh lg-kh">'+T("lgKind")+'</span>':'<span class="lg-fh">'+T(LGCOL[ak][0][0])+'</span><span class="lg-fh">'+T(LGCOL[ak][1][0])+'</span>')
   +'<span>'+T("lgSrc")+'</span><span>'+T("lgSide")+'</span><span>'+T("lgWhen")+'</span><span></span></div>'
   +rows+'</div></div>';
  pv.classList.add("open");pv.setAttribute("aria-hidden","false");
@@ -3931,8 +3949,8 @@ function openLedger(ak){mrHash("kind/"+ak);
   t.addEventListener("click",function(){var k=t.getAttribute("data-lane");if(k!==ak)openLedger(k);});
   t.addEventListener("keydown",function(e){
    if(e.key==="ArrowRight"||e.key==="ArrowLeft"){
-    var i=ORD.indexOf(ak),d=(e.key==="ArrowRight")===(lang!=="ar")?1:-1;
-    e.preventDefault();openLedger(ORD[(i+d+ORD.length)%ORD.length]);}});});
+    var i=TABS.indexOf(ak),d=(e.key==="ArrowRight")===(lang!=="ar")?1:-1;
+    e.preventDefault();openLedger(TABS[(i+d+TABS.length)%TABS.length]);}});});
  var f1=bd.querySelector(".lgt.on");if(f1&&f1.focus)f1.focus();
  document.querySelectorAll("#shBody .lgr").forEach(function(b){
   b.addEventListener("click",function(){openSeq(b.getAttribute("data-id"));});});
@@ -4288,7 +4306,7 @@ function openCons(c){mrHash("sky/"+c);
   +'<div class="skymap"><svg viewBox="0 0 200 130" width="100%" height="130" aria-hidden="true">'+consSVG(c)+'</svg></div>'
   +'<p class="skyf'+(lang==="ar"?" ar":"")+'">'+esc(lang==="ar"?c.f.ar:c.f.en)+'</p>'
   +'<div class="skysrc">'+esc(lang==="ar"?c.src.ar:c.src.en)+'</div>';
- pv.classList.add("open");pv.setAttribute("aria-hidden","false");
+ setPvTop();pv.classList.add("open");pv.setAttribute("aria-hidden","false");
 }
 function consSVG(c){
  var n=c.st.length,W=200,H=130,pad=26,s="",uid="g"+(c.id||"x");
