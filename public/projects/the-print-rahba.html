@@ -6094,6 +6094,10 @@ function openNet(key){
   const hw=178,hh=118,pad=128;
   /* the cap and the pager — netview.mjs; the count above stays the TRUE total */
   const _cap=(innerWidth<=700?6:10);
+  /* R1 — a node is a name (PROGRAMMES_NETWORK_AUDIT_2026-09-02 §3; applied 19.11.2026): a ring label is at most
+     40 characters, cut at a word boundary with an ellipsis; a closing number or a short part after a dash (", 01", "— English") is
+     kept, so two volumes never shorten to the same label. The full name stays on the node's own card. */
+  const _nshort=s=>{s=String(s==null?'':s);if(s.length<=40)return s;let tail='';const d=s.lastIndexOf(' — ');if(d>0&&s.slice(d+3).split(' ').length<=2)tail=s.slice(d+3);else{const w=s.slice(s.lastIndexOf(' ')+1);if(/^[0-9]+$/.test(w))tail=w;}let t=s.slice(0,40-(tail?tail.length+2:0));const k=t.lastIndexOf(' ');if(k>12)t=t.slice(0,k);while(t&&' ,:;(—–،-'.indexOf(t.charAt(t.length-1))>=0)t=t.slice(0,-1);return t+'…'+(tail?' '+tail:'');};
   if(window._netKey!==key){window._netKey=key;window._netPg=0;}
   const _pgs=Math.max(1,Math.ceil(r1.length/_cap));
   const _pg=(window._netPg||0)%_pgs;
@@ -6112,7 +6116,7 @@ function openNet(key){
   const used={};used[key]=1;r1.forEach(e=>used[e.peer]=1);
   show.forEach((e,i)=>{
     const {word,peer,into}=e;
-    const tgt=NET[peer]||{}, label=(AR()?(tgt.kh_ar||tgt.kh):tgt.kh)||peer, type=tgt.type||"project", code=tgt.code||"";
+    const tgt=NET[peer]||{}, label=_nshort((AR()?(tgt.kh_ar||tgt.kh):tgt.kh)||peer), type=tgt.type||"project", code=tgt.code||"";
     const T=TYPE[type]||{c:"#5DCAA5",n:type}, c=T.c, rev=into;   // "into" → the arrow points back into the centre
     const ang=-Math.PI/2 + (i-(n2-1)/2)*step + (i%2?0.045:-0.045);
     const dx=Math.cos(ang),dy=Math.sin(ang),px=-dy,py=dx;
@@ -6137,7 +6141,7 @@ function openNet(key){
       hl.setAttribute('stroke',c2);hl.setAttribute('stroke-width','1');hl.setAttribute('fill','none');hl.setAttribute('opacity','0');nsvg.appendChild(hl);
       setTimeout(()=>{hl.style.transition='opacity .6s';hl.setAttribute('opacity','0.15');},300+i*70);
       const hn=document.createElement('div');hn.className='node halo clk';hn.style.left=hx.toFixed(1)+'px';hn.style.top=hy.toFixed(1)+'px';hn.style.setProperty('--nc',c2);hn.style.setProperty('--ly',(hy<cy?-28:24)+'px');
-      hn.innerHTML='<div class="dot" style="transform:scale(.6)"></div><div class="lab"><div class="nl">'+((AR()?(t2.kh_ar||t2.kh):t2.kh)||x.peer)+'</div></div>';
+      hn.innerHTML='<div class="dot" style="transform:scale(.6)"></div><div class="lab"><div class="nl">'+_nshort((AR()?(t2.kh_ar||t2.kh):t2.kh)||x.peer)+'</div></div>';
       hn.onclick=ev=>{ev.stopPropagation();openNet(x.peer);};
       net.appendChild(hn);setTimeout(()=>hn.style.opacity='0.42',440+i*70);
     });

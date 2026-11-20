@@ -2182,7 +2182,7 @@ main{overflow-x:visible;overflow-y:clip}
 #pv .rsvpb b{font:600 14px/1.2 var(--serif);letter-spacing:.01em}
 #pv .rsvpb span{font:600 9px/1.4 var(--sans);letter-spacing:.13em;text-transform:uppercase;opacity:.62}
 [dir="rtl"] #pv .rsvpb span{letter-spacing:.02em;text-transform:none;font-size:11px}</style>
-<script>/* merath build 2026-11-08T10:54:56.263Z — data from Airtable */
+<script>/* merath build 2026-11-20T00:58:07.554Z — data from Airtable */
 
 </script>
 <style>/* programmes ticker, phone — build.mjs */
@@ -3073,7 +3073,7 @@ var PROG=[
  {id:"EVT_ALGIERS60",src:"06_Sin_78",ak:"talk",type:"conference",
   en:"The Price of Admission: The Battle of Algiers and the Economies of Revolutionary Cinema",
   ar:"ثمن الدخول: معركة الجزائر واقتصادات السينما الثورية",concept:{en:"What did revolutionary cinema cost, and who paid?|The Battle of Algiers turns sixty in 2026. This paper reads Pontecorvo's film across two economies. The first is on the record: the co-production between Casbah Film and Igor Film, through which Algerian state participation and Italian capital turned a struggle into an image, a prize and a reputation. The second is barely written down — the economy of the revolution itself, including the Libyan committee formed in 1956 to support the Army of National Liberation, whose funds came from concerts, sports tournaments, sacrificial hides and a share of the cinema takings.|Cinema paid for the revolution a decade before it filmed it. The paper asks what an accounting adequate to the film would record, and which of its debts are still outstanding.|Given by Moad Musbahi and Malak L'Ajeli.",ar:"كم كلّفت السينما الثورية، ومن دفع؟|تبلغ «معركة الجزائر» ستّين عاماً في 2026. تقرأ هذه الورقة فيلم بونتيكورفو عبر اقتصادَين. الأول مثبتٌ في السجل: الإنتاج المشترك بين «قصبة فيلم» و«إيغور فيلم»، الذي حوّلت من خلاله المشاركة الجزائرية الرسمية ورأس المال الإيطالي نضالاً إلى صورةٍ وٍ وسمعة. والثاني نادراً ما دُوِّن — اقتصاد الثورة نفسها، ومنه اللجنة الليبية المُشكَّلة عام 1956 لدعم جيش التحرير الوطني، وقد جاءت مواردها من الحفلات والدورات الرياضية وجلود الأضاحي وحصّةٍ من إيرادات دور السينما.|موّلت السينما الثورة قبل عقدٍ من تصويرها. وتسأل الورقة: ماذا يسجّل حسابٌ يليق بالفيلم، وأيُّ ديونه ما تزال قائمة؟|يلقيها معاذ المصباحي وملك العجيلي."},
-  start:"2026-11-05",end:"2026-11-07",tbc:true,
+  start:"2026-11-05",end:"2026-11-07",
   loc:{en:"Cambridge, United Kingdom",ar:"كامبريدج، المملكة المتحدة"},
   venue:{en:"St John's College, Cambridge",ar:"كامبريدج"},
   host:{en:"CRASSH, University of Cambridge",ar:"كامبريدج"},
@@ -4144,6 +4144,10 @@ function openNet(key){mrHash("net/"+key);
   const hw=178,hh=118,pad=120;
   /* the cap and the pager — netview.mjs; the count above stays the TRUE total */
   const _cap=(innerWidth<=700?6:10);
+  /* R1 — a node is a name (PROGRAMMES_NETWORK_AUDIT_2026-09-02 §3; applied 19.11.2026): a ring label is at most
+     40 characters, cut at a word boundary with an ellipsis; a closing number or a short part after a dash (", 01", "— English") is
+     kept, so two volumes never shorten to the same label. The full name stays on the node's own card. */
+  const _nshort=s=>{s=String(s==null?'':s);if(s.length<=40)return s;let tail='';const d=s.lastIndexOf(' — ');if(d>0&&s.slice(d+3).split(' ').length<=2)tail=s.slice(d+3);else{const w=s.slice(s.lastIndexOf(' ')+1);if(/^[0-9]+$/.test(w))tail=w;}let t=s.slice(0,40-(tail?tail.length+2:0));const k=t.lastIndexOf(' ');if(k>12)t=t.slice(0,k);while(t&&' ,:;(—–،-'.indexOf(t.charAt(t.length-1))>=0)t=t.slice(0,-1);return t+'…'+(tail?' '+tail:'');};
   if(window._netKey!==key){window._netKey=key;window._netPg=0;}
   const _pgs=Math.max(1,Math.ceil(r1.length/_cap));
   const _pg=(window._netPg||0)%_pgs;
@@ -4162,7 +4166,7 @@ function openNet(key){mrHash("net/"+key);
   const used={};used[key]=1;r1.forEach(e=>used[e.peer]=1);
   show.forEach((e,i)=>{
     const word=e.word,peer=e.peer,into=e.into;
-    const tgt=NETDB[peer]||{},label=(isAR?(tgt.kh_ar||tgt.kh):tgt.kh)||peer,type=tgt.type||"project",code=tgt.code||"";
+    const tgt=NETDB[peer]||{},label=_nshort((isAR?(tgt.kh_ar||tgt.kh):tgt.kh)||peer),type=tgt.type||"project",code=tgt.code||"";
     const TY=TYPEN[type]||{c:"#5DCAA5",n:type},c=TY.c,rev=into;
     const ang=-Math.PI/2+(i-(n2-1)/2)*step+(i%2?0.045:-0.045);
     const dx=Math.cos(ang),dy=Math.sin(ang),px=-dy,py=dx;
@@ -4186,7 +4190,7 @@ function openNet(key){mrHash("net/"+key);
       hl.setAttribute("stroke",c2);hl.setAttribute("stroke-width","1");hl.setAttribute("fill","none");hl.setAttribute("opacity","0");nsvg.appendChild(hl);
       setTimeout(()=>{hl.style.transition="opacity .6s";hl.setAttribute("opacity","0.15");},300+i*70);
       const hn=document.createElement("div");hn.className="node halo clk";hn.style.left=hx2.toFixed(1)+"px";hn.style.top=hy2.toFixed(1)+"px";hn.style.setProperty("--nc",c2);hn.style.setProperty("--ly",(hy2<cy?-28:24)+"px");
-      hn.innerHTML='<div class="dot" style="transform:scale(.6)"></div><div class="lab"><div class="nl">'+esc((isAR?(t2.kh_ar||t2.kh):t2.kh)||x.peer)+"</div></div>";
+      hn.innerHTML='<div class="dot" style="transform:scale(.6)"></div><div class="lab"><div class="nl">'+esc(_nshort((isAR?(t2.kh_ar||t2.kh):t2.kh)||x.peer))+"</div></div>";
       hn.onclick=ev=>{ev.stopPropagation();openNet(x.peer);};
       net.appendChild(hn);setTimeout(()=>hn.style.opacity="0.42",440+i*70);
     });
